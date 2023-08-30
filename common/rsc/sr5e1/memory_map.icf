@@ -1,0 +1,37 @@
+/****************************************************************************
+ *
+ * Copyright (c) 2022 STMicroelectronics - All Rights Reserved
+ *
+ * License terms: STMicroelectronics Proprietary in accordance with licensing
+ * terms SLA0098 at www.st.com.
+ *
+ * THIS SOFTWARE IS DISTRIBUTED "AS IS," AND ALL WARRANTIES ARE DISCLAIMED,
+ * INCLUDING MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *****************************************************************************/
+
+/* SR5E1 Memory Regions */
+define symbol __region_core1_nvm_start__      = 0x08000000;
+define symbol __region_core1_nvm_end__        = 0x080EFFFF;
+define symbol __region_core2_nvm_start__      = 0x080F0000;
+define symbol __region_core2_nvm_end__        = 0x081DFFFF;
+define symbol __region_core1_ram_start__      = 0x24000000;
+define symbol __region_core1_ram_end__        = 0x2401FFFF;
+define symbol __region_core2_ram_start__      = 0x24020000;
+define symbol __region_core2_ram_end__        = 0x2403FFFF;
+define symbol __region_core1_itcm_dir_start__ = 0x00000000;
+define symbol __region_core1_itcm_dir_end__   = 0x00007FFF;
+define symbol __region_core1_itcm_ind_start__ = 0x5A000000;
+define symbol __region_core1_itcm_ind_end__   = 0x5A007FFF;
+define symbol __region_core1_dtcm_dir_start__ = 0x20000000;
+define symbol __region_core1_dtcm_dir_end__   = 0x2000FFFF;
+define symbol __region_core1_dtcm_ind_start__ = 0x5C000000;
+define symbol __region_core1_dtcm_ind_end__   = 0x5C00FFFF;
+define symbol __region_core2_itcm_dir_start__ = 0x00000000;
+define symbol __region_core2_itcm_dir_end__   = 0x00007FFF;
+define symbol __region_core2_itcm_ind_start__ = 0x5A040000;
+define symbol __region_core2_itcm_ind_end__   = 0x5A047FFF;
+define symbol __region_core2_dtcm_dir_start__ = 0x20000000;
+define symbol __region_core2_dtcm_dir_end__   = 0x2000FFFF;
+define symbol __region_core2_dtcm_ind_start__ = 0x5C040000;
+define symbol __region_core2_dtcm_ind_end__   = 0x5C04FFFF;

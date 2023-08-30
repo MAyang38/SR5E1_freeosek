@@ -1,0 +1,172 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"ShutdownOS.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.ShutdownOS,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	ShutdownOS
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	ShutdownOS:
+  27              	.LFB0:
+  28              		.file 1 "Modules/OS/OSAL/src/ShutdownOS.c"
+   1:Modules/OS/OSAL/src/ShutdownOS.c **** /* Copyright 2008, 2009 Mariano Cerdeiro
+   2:Modules/OS/OSAL/src/ShutdownOS.c ****  * Copyright 2014, ACSE & CADIEEL
+   3:Modules/OS/OSAL/src/ShutdownOS.c ****  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+   4:Modules/OS/OSAL/src/ShutdownOS.c ****  *      CADIEEL: http://www.cadieel.org.ar
+   5:Modules/OS/OSAL/src/ShutdownOS.c ****  *
+   6:Modules/OS/OSAL/src/ShutdownOS.c ****  * This file is part of CIAA Firmware.
+   7:Modules/OS/OSAL/src/ShutdownOS.c ****  *
+   8:Modules/OS/OSAL/src/ShutdownOS.c ****  * Redistribution and use in source and binary forms, with or without
+   9:Modules/OS/OSAL/src/ShutdownOS.c ****  * modification, are permitted provided that the following conditions are met:
+  10:Modules/OS/OSAL/src/ShutdownOS.c ****  *
+  11:Modules/OS/OSAL/src/ShutdownOS.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  12:Modules/OS/OSAL/src/ShutdownOS.c ****  *    this list of conditions and the following disclaimer.
+  13:Modules/OS/OSAL/src/ShutdownOS.c ****  *
+  14:Modules/OS/OSAL/src/ShutdownOS.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  15:Modules/OS/OSAL/src/ShutdownOS.c ****  *    this list of conditions and the following disclaimer in the documentation
+  16:Modules/OS/OSAL/src/ShutdownOS.c ****  *    and/or other materials provided with the distribution.
+  17:Modules/OS/OSAL/src/ShutdownOS.c ****  *
+  18:Modules/OS/OSAL/src/ShutdownOS.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  19:Modules/OS/OSAL/src/ShutdownOS.c ****  *    contributors may be used to endorse or promote products derived from this
+  20:Modules/OS/OSAL/src/ShutdownOS.c ****  *    software without specific prior written permission.
+  21:Modules/OS/OSAL/src/ShutdownOS.c ****  *
+  22:Modules/OS/OSAL/src/ShutdownOS.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Modules/OS/OSAL/src/ShutdownOS.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Modules/OS/OSAL/src/ShutdownOS.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  25:Modules/OS/OSAL/src/ShutdownOS.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  26:Modules/OS/OSAL/src/ShutdownOS.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  27:Modules/OS/OSAL/src/ShutdownOS.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  28:Modules/OS/OSAL/src/ShutdownOS.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  29:Modules/OS/OSAL/src/ShutdownOS.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  30:Modules/OS/OSAL/src/ShutdownOS.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  31:Modules/OS/OSAL/src/ShutdownOS.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  32:Modules/OS/OSAL/src/ShutdownOS.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  33:Modules/OS/OSAL/src/ShutdownOS.c ****  *
+  34:Modules/OS/OSAL/src/ShutdownOS.c ****  */
+  35:Modules/OS/OSAL/src/ShutdownOS.c **** 
+  36:Modules/OS/OSAL/src/ShutdownOS.c **** /** \brief FreeOSEK ShutdownOS Implementation File
+  37:Modules/OS/OSAL/src/ShutdownOS.c ****  **
+  38:Modules/OS/OSAL/src/ShutdownOS.c ****  ** This file implements the ShutdownOS API
+  39:Modules/OS/OSAL/src/ShutdownOS.c ****  **
+  40:Modules/OS/OSAL/src/ShutdownOS.c ****  ** \file ShutdownOS.c
+  41:Modules/OS/OSAL/src/ShutdownOS.c ****  **
+  42:Modules/OS/OSAL/src/ShutdownOS.c ****  **/
+  43:Modules/OS/OSAL/src/ShutdownOS.c **** 
+  44:Modules/OS/OSAL/src/ShutdownOS.c **** /** \addtogroup FreeOSEK
+  45:Modules/OS/OSAL/src/ShutdownOS.c ****  ** @{ */
+  46:Modules/OS/OSAL/src/ShutdownOS.c **** /** \addtogroup FreeOSEK_Os
+  47:Modules/OS/OSAL/src/ShutdownOS.c ****  ** @{ */
+  48:Modules/OS/OSAL/src/ShutdownOS.c **** /** \addtogroup FreeOSEK_Os_Global
+  49:Modules/OS/OSAL/src/ShutdownOS.c ****  ** @{ */
+  50:Modules/OS/OSAL/src/ShutdownOS.c **** 
+  51:Modules/OS/OSAL/src/ShutdownOS.c **** /*
+  52:Modules/OS/OSAL/src/ShutdownOS.c ****  * Initials     Name
+  53:Modules/OS/OSAL/src/ShutdownOS.c ****  * ---------------------------
+  54:Modules/OS/OSAL/src/ShutdownOS.c ****  * MaCe         Mariano Cerdeiro
+  55:Modules/OS/OSAL/src/ShutdownOS.c ****  * KLi          Kang Li
+  56:Modules/OS/OSAL/src/ShutdownOS.c ****  */
+  57:Modules/OS/OSAL/src/ShutdownOS.c **** 
+  58:Modules/OS/OSAL/src/ShutdownOS.c **** /*
+  59:Modules/OS/OSAL/src/ShutdownOS.c ****  * modification history (new versions first)
+  60:Modules/OS/OSAL/src/ShutdownOS.c ****  * -----------------------------------------------------------
+  61:Modules/OS/OSAL/src/ShutdownOS.c ****  * 20090418 v0.1.5 MaCe bugfix function name to ShutdownOS
+  62:Modules/OS/OSAL/src/ShutdownOS.c ****  * 20090417 v0.1.4 MaCe upadte license
+  63:Modules/OS/OSAL/src/ShutdownOS.c ****  * 20090408 v0.1.3 MaCe add ShutdownOs_Arch service call
+  64:Modules/OS/OSAL/src/ShutdownOS.c ****  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
+  65:Modules/OS/OSAL/src/ShutdownOS.c ****  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+  66:Modules/OS/OSAL/src/ShutdownOS.c ****  * 20080810 v0.1.0 MaCe initial version
+  67:Modules/OS/OSAL/src/ShutdownOS.c ****  */
+  68:Modules/OS/OSAL/src/ShutdownOS.c **** 
+  69:Modules/OS/OSAL/src/ShutdownOS.c **** /*==================[inclusions]=============================================*/
+  70:Modules/OS/OSAL/src/ShutdownOS.c **** #include "Os_Internal.h"
+  71:Modules/OS/OSAL/src/ShutdownOS.c **** 
+  72:Modules/OS/OSAL/src/ShutdownOS.c **** /*==================[macros and definitions]=================================*/
+  73:Modules/OS/OSAL/src/ShutdownOS.c **** 
+  74:Modules/OS/OSAL/src/ShutdownOS.c **** /*==================[internal data declaration]==============================*/
+  75:Modules/OS/OSAL/src/ShutdownOS.c **** 
+  76:Modules/OS/OSAL/src/ShutdownOS.c **** /*==================[internal functions declaration]=========================*/
+  77:Modules/OS/OSAL/src/ShutdownOS.c **** 
+  78:Modules/OS/OSAL/src/ShutdownOS.c **** /*==================[internal data definition]===============================*/
+  79:Modules/OS/OSAL/src/ShutdownOS.c **** 
+  80:Modules/OS/OSAL/src/ShutdownOS.c **** /*==================[external data definition]===============================*/
+  81:Modules/OS/OSAL/src/ShutdownOS.c **** 
+  82:Modules/OS/OSAL/src/ShutdownOS.c **** /*==================[internal functions definition]==========================*/
+  83:Modules/OS/OSAL/src/ShutdownOS.c **** 
+  84:Modules/OS/OSAL/src/ShutdownOS.c **** /*==================[external functions definition]==========================*/
+  85:Modules/OS/OSAL/src/ShutdownOS.c **** void ShutdownOS
+  86:Modules/OS/OSAL/src/ShutdownOS.c **** (
+  87:Modules/OS/OSAL/src/ShutdownOS.c **** 	StatusType Error
+  88:Modules/OS/OSAL/src/ShutdownOS.c **** )
+  89:Modules/OS/OSAL/src/ShutdownOS.c **** {
+  29              		.loc 1 89 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 8
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34 0000 82B0     		sub	sp, sp, #8
+  35              		.cfi_def_cfa_offset 8
+  36 0002 0346     		mov	r3, r0
+  37 0004 8DF80730 		strb	r3, [sp, #7]
+  38              	.L2:
+  90:Modules/OS/OSAL/src/ShutdownOS.c **** 	/* \req OSEK_SYS_3.26 The system service void
+  91:Modules/OS/OSAL/src/ShutdownOS.c **** 	 * ShutdownOS ( StatusType Error ) shall be defined */
+  92:Modules/OS/OSAL/src/ShutdownOS.c **** 
+  93:Modules/OS/OSAL/src/ShutdownOS.c **** 	/* achitecture dependent shutdown service */
+  94:Modules/OS/OSAL/src/ShutdownOS.c **** 	ShutdownOs_Arch();
+  95:Modules/OS/OSAL/src/ShutdownOS.c **** 
+  96:Modules/OS/OSAL/src/ShutdownOS.c **** #if (HOOK_SHUTDOWNHOOK == OSEK_ENABLE)
+  97:Modules/OS/OSAL/src/ShutdownOS.c **** 	/* \req OSEK_ERR_1.2 The ShutdownHook hook routine shall be called when a
+  98:Modules/OS/OSAL/src/ShutdownOS.c **** 	 * system shutdown is requested by the application or by the operating
+  99:Modules/OS/OSAL/src/ShutdownOS.c **** 	 * system in case of a severe error */
+ 100:Modules/OS/OSAL/src/ShutdownOS.c **** 	ShutdownHook();
+ 101:Modules/OS/OSAL/src/ShutdownOS.c **** #endif
+ 102:Modules/OS/OSAL/src/ShutdownOS.c **** 
+ 103:Modules/OS/OSAL/src/ShutdownOS.c **** 	/* this function shall never return */
+ 104:Modules/OS/OSAL/src/ShutdownOS.c **** 	while(1);
+  39              		.loc 1 104 7 discriminator 1
+  40 0008 FEE7     		b	.L2
+  41              		.cfi_endproc
+  42              	.LFE0:
+  44 000a 00BF     		.text
+  45              	.Letext0:
+  46              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 ShutdownOS.c
+C:\Users\AAA\AppData\Local\Temp\ccOFThc9.s:19     .text.ShutdownOS:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccOFThc9.s:26     .text.ShutdownOS:00000000 ShutdownOS
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+NO UNDEFINED SYMBOLS

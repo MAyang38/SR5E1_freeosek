@@ -1,0 +1,183 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"GetTaskID.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.GetTaskID,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	GetTaskID
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	GetTaskID:
+  27              	.LFB0:
+  28              		.file 1 "Modules/OS/OSAL/src/GetTaskID.c"
+   1:Modules/OS/OSAL/src/GetTaskID.c **** /* Copyright 2008, 2009 Mariano Cerdeiro
+   2:Modules/OS/OSAL/src/GetTaskID.c ****  * Copyright 2014, ACSE & CADIEEL
+   3:Modules/OS/OSAL/src/GetTaskID.c ****  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+   4:Modules/OS/OSAL/src/GetTaskID.c ****  *      CADIEEL: http://www.cadieel.org.ar
+   5:Modules/OS/OSAL/src/GetTaskID.c ****  *
+   6:Modules/OS/OSAL/src/GetTaskID.c ****  * This file is part of CIAA Firmware.
+   7:Modules/OS/OSAL/src/GetTaskID.c ****  *
+   8:Modules/OS/OSAL/src/GetTaskID.c ****  * Redistribution and use in source and binary forms, with or without
+   9:Modules/OS/OSAL/src/GetTaskID.c ****  * modification, are permitted provided that the following conditions are met:
+  10:Modules/OS/OSAL/src/GetTaskID.c ****  *
+  11:Modules/OS/OSAL/src/GetTaskID.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  12:Modules/OS/OSAL/src/GetTaskID.c ****  *    this list of conditions and the following disclaimer.
+  13:Modules/OS/OSAL/src/GetTaskID.c ****  *
+  14:Modules/OS/OSAL/src/GetTaskID.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  15:Modules/OS/OSAL/src/GetTaskID.c ****  *    this list of conditions and the following disclaimer in the documentation
+  16:Modules/OS/OSAL/src/GetTaskID.c ****  *    and/or other materials provided with the distribution.
+  17:Modules/OS/OSAL/src/GetTaskID.c ****  *
+  18:Modules/OS/OSAL/src/GetTaskID.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  19:Modules/OS/OSAL/src/GetTaskID.c ****  *    contributors may be used to endorse or promote products derived from this
+  20:Modules/OS/OSAL/src/GetTaskID.c ****  *    software without specific prior written permission.
+  21:Modules/OS/OSAL/src/GetTaskID.c ****  *
+  22:Modules/OS/OSAL/src/GetTaskID.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Modules/OS/OSAL/src/GetTaskID.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Modules/OS/OSAL/src/GetTaskID.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  25:Modules/OS/OSAL/src/GetTaskID.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  26:Modules/OS/OSAL/src/GetTaskID.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  27:Modules/OS/OSAL/src/GetTaskID.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  28:Modules/OS/OSAL/src/GetTaskID.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  29:Modules/OS/OSAL/src/GetTaskID.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  30:Modules/OS/OSAL/src/GetTaskID.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  31:Modules/OS/OSAL/src/GetTaskID.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  32:Modules/OS/OSAL/src/GetTaskID.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  33:Modules/OS/OSAL/src/GetTaskID.c ****  *
+  34:Modules/OS/OSAL/src/GetTaskID.c ****  */
+  35:Modules/OS/OSAL/src/GetTaskID.c **** 
+  36:Modules/OS/OSAL/src/GetTaskID.c **** /** \brief FreeOSEK GetTaskID Implementation File
+  37:Modules/OS/OSAL/src/GetTaskID.c ****  **
+  38:Modules/OS/OSAL/src/GetTaskID.c ****  ** This file implements the GetTaskID API
+  39:Modules/OS/OSAL/src/GetTaskID.c ****  **
+  40:Modules/OS/OSAL/src/GetTaskID.c ****  ** \file GetTaskID.c
+  41:Modules/OS/OSAL/src/GetTaskID.c ****  **
+  42:Modules/OS/OSAL/src/GetTaskID.c ****  **/
+  43:Modules/OS/OSAL/src/GetTaskID.c **** 
+  44:Modules/OS/OSAL/src/GetTaskID.c **** /** \addtogroup FreeOSEK
+  45:Modules/OS/OSAL/src/GetTaskID.c ****  ** @{ */
+  46:Modules/OS/OSAL/src/GetTaskID.c **** /** \addtogroup FreeOSEK_Os
+  47:Modules/OS/OSAL/src/GetTaskID.c ****  ** @{ */
+  48:Modules/OS/OSAL/src/GetTaskID.c **** /** \addtogroup FreeOSEK_Os_Global
+  49:Modules/OS/OSAL/src/GetTaskID.c ****  ** @{ */
+  50:Modules/OS/OSAL/src/GetTaskID.c **** 
+  51:Modules/OS/OSAL/src/GetTaskID.c **** /*
+  52:Modules/OS/OSAL/src/GetTaskID.c ****  * Initials     Name
+  53:Modules/OS/OSAL/src/GetTaskID.c ****  * ---------------------------
+  54:Modules/OS/OSAL/src/GetTaskID.c ****  * MaCe         Mariano Cerdeiro
+  55:Modules/OS/OSAL/src/GetTaskID.c ****  * KLi          Kang Li
+  56:Modules/OS/OSAL/src/GetTaskID.c ****  */
+  57:Modules/OS/OSAL/src/GetTaskID.c **** 
+  58:Modules/OS/OSAL/src/GetTaskID.c **** /*
+  59:Modules/OS/OSAL/src/GetTaskID.c ****  * modification history (new versions first)
+  60:Modules/OS/OSAL/src/GetTaskID.c ****  * -----------------------------------------------------------
+  61:Modules/OS/OSAL/src/GetTaskID.c ****  * 20090417 v0.1.3 MaCe update license
+  62:Modules/OS/OSAL/src/GetTaskID.c ****  * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
+  63:Modules/OS/OSAL/src/GetTaskID.c ****  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+  64:Modules/OS/OSAL/src/GetTaskID.c ****  * 20080713 v0.1.0 MaCe	initial version
+  65:Modules/OS/OSAL/src/GetTaskID.c ****  */
+  66:Modules/OS/OSAL/src/GetTaskID.c **** 
+  67:Modules/OS/OSAL/src/GetTaskID.c **** /*==================[inclusions]=============================================*/
+  68:Modules/OS/OSAL/src/GetTaskID.c **** #include "Os_Internal.h"
+  69:Modules/OS/OSAL/src/GetTaskID.c **** 
+  70:Modules/OS/OSAL/src/GetTaskID.c **** /*==================[macros and definitions]=================================*/
+  71:Modules/OS/OSAL/src/GetTaskID.c **** 
+  72:Modules/OS/OSAL/src/GetTaskID.c **** /*==================[internal data declaration]==============================*/
+  73:Modules/OS/OSAL/src/GetTaskID.c **** 
+  74:Modules/OS/OSAL/src/GetTaskID.c **** /*==================[internal functions declaration]=========================*/
+  75:Modules/OS/OSAL/src/GetTaskID.c **** 
+  76:Modules/OS/OSAL/src/GetTaskID.c **** /*==================[internal data definition]===============================*/
+  77:Modules/OS/OSAL/src/GetTaskID.c **** 
+  78:Modules/OS/OSAL/src/GetTaskID.c **** /*==================[external data definition]===============================*/
+  79:Modules/OS/OSAL/src/GetTaskID.c **** 
+  80:Modules/OS/OSAL/src/GetTaskID.c **** /*==================[internal functions definition]==========================*/
+  81:Modules/OS/OSAL/src/GetTaskID.c **** 
+  82:Modules/OS/OSAL/src/GetTaskID.c **** /*==================[external functions definition]==========================*/
+  83:Modules/OS/OSAL/src/GetTaskID.c **** StatusType GetTaskID
+  84:Modules/OS/OSAL/src/GetTaskID.c **** (
+  85:Modules/OS/OSAL/src/GetTaskID.c **** 	TaskRefType TaskID
+  86:Modules/OS/OSAL/src/GetTaskID.c **** )
+  87:Modules/OS/OSAL/src/GetTaskID.c **** {
+  29              		.loc 1 87 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 8
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34 0000 82B0     		sub	sp, sp, #8
+  35              		.cfi_def_cfa_offset 8
+  36 0002 0190     		str	r0, [sp, #4]
+  88:Modules/OS/OSAL/src/GetTaskID.c **** 	/* \req OSEK_SYS_3.5 The system service StatusType
+  89:Modules/OS/OSAL/src/GetTaskID.c **** 	 ** GetTaskID ( TaskRefType TaskID ) shall be defined */
+  90:Modules/OS/OSAL/src/GetTaskID.c **** 
+  91:Modules/OS/OSAL/src/GetTaskID.c **** 	/* \req OSEK_SYS_3.5.1 Shall returns the information about the TaskID of
+  92:Modules/OS/OSAL/src/GetTaskID.c **** 	 ** the task which is currently running */
+  93:Modules/OS/OSAL/src/GetTaskID.c **** 	/* \req OSEK_SYS_3.5.2 If no task is currently running, the service returns
+  94:Modules/OS/OSAL/src/GetTaskID.c **** 	 ** INVALID_TASK as TaskType */
+  95:Modules/OS/OSAL/src/GetTaskID.c **** 	*TaskID = GetRunningTask();
+  37              		.loc 1 95 10
+  38 0004 034B     		ldr	r3, .L3
+  39 0006 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+  40 0008 019B     		ldr	r3, [sp, #4]
+  41 000a 1A70     		strb	r2, [r3]
+  96:Modules/OS/OSAL/src/GetTaskID.c **** 
+  97:Modules/OS/OSAL/src/GetTaskID.c **** 	/* \req OSEK_SYS_3.5.3 This function returns always E_OK */
+  98:Modules/OS/OSAL/src/GetTaskID.c **** 	return E_OK;
+  42              		.loc 1 98 9
+  43 000c 0023     		movs	r3, #0
+  99:Modules/OS/OSAL/src/GetTaskID.c **** }
+  44              		.loc 1 99 1
+  45 000e 1846     		mov	r0, r3
+  46 0010 02B0     		add	sp, sp, #8
+  47              		.cfi_def_cfa_offset 0
+  48              		@ sp needed
+  49 0012 7047     		bx	lr
+  50              	.L4:
+  51              		.align	2
+  52              	.L3:
+  53 0014 00000000 		.word	RunningTask
+  54              		.cfi_endproc
+  55              	.LFE0:
+  57              		.text
+  58              	.Letext0:
+  59              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+  60              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os_intern
+DEFINED SYMBOLS
+                            *ABS*:00000000 GetTaskID.c
+C:\Users\AAA\AppData\Local\Temp\ccqJQtls.s:19     .text.GetTaskID:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccqJQtls.s:26     .text.GetTaskID:00000000 GetTaskID
+C:\Users\AAA\AppData\Local\Temp\ccqJQtls.s:53     .text.GetTaskID:00000014 $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+UNDEFINED SYMBOLS
+RunningTask

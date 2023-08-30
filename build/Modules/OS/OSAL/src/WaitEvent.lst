@@ -1,0 +1,624 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"WaitEvent.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.WaitEvent,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	WaitEvent
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	WaitEvent:
+  27              	.LFB0:
+  28              		.file 1 "Modules/OS/OSAL/src/WaitEvent.c"
+   1:Modules/OS/OSAL/src/WaitEvent.c **** /* Copyright 2008, 2009, 2014 Mariano Cerdeiro
+   2:Modules/OS/OSAL/src/WaitEvent.c ****  * Copyright 2014, ACSE & CADIEEL
+   3:Modules/OS/OSAL/src/WaitEvent.c ****  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+   4:Modules/OS/OSAL/src/WaitEvent.c ****  *      CADIEEL: http://www.cadieel.org.ar
+   5:Modules/OS/OSAL/src/WaitEvent.c ****  *
+   6:Modules/OS/OSAL/src/WaitEvent.c ****  * This file is part of CIAA Firmware.
+   7:Modules/OS/OSAL/src/WaitEvent.c ****  *
+   8:Modules/OS/OSAL/src/WaitEvent.c ****  * Redistribution and use in source and binary forms, with or without
+   9:Modules/OS/OSAL/src/WaitEvent.c ****  * modification, are permitted provided that the following conditions are met:
+  10:Modules/OS/OSAL/src/WaitEvent.c ****  *
+  11:Modules/OS/OSAL/src/WaitEvent.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  12:Modules/OS/OSAL/src/WaitEvent.c ****  *    this list of conditions and the following disclaimer.
+  13:Modules/OS/OSAL/src/WaitEvent.c ****  *
+  14:Modules/OS/OSAL/src/WaitEvent.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  15:Modules/OS/OSAL/src/WaitEvent.c ****  *    this list of conditions and the following disclaimer in the documentation
+  16:Modules/OS/OSAL/src/WaitEvent.c ****  *    and/or other materials provided with the distribution.
+  17:Modules/OS/OSAL/src/WaitEvent.c ****  *
+  18:Modules/OS/OSAL/src/WaitEvent.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  19:Modules/OS/OSAL/src/WaitEvent.c ****  *    contributors may be used to endorse or promote products derived from this
+  20:Modules/OS/OSAL/src/WaitEvent.c ****  *    software without specific prior written permission.
+  21:Modules/OS/OSAL/src/WaitEvent.c ****  *
+  22:Modules/OS/OSAL/src/WaitEvent.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Modules/OS/OSAL/src/WaitEvent.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Modules/OS/OSAL/src/WaitEvent.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  25:Modules/OS/OSAL/src/WaitEvent.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  26:Modules/OS/OSAL/src/WaitEvent.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  27:Modules/OS/OSAL/src/WaitEvent.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  28:Modules/OS/OSAL/src/WaitEvent.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  29:Modules/OS/OSAL/src/WaitEvent.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  30:Modules/OS/OSAL/src/WaitEvent.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  31:Modules/OS/OSAL/src/WaitEvent.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  32:Modules/OS/OSAL/src/WaitEvent.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  33:Modules/OS/OSAL/src/WaitEvent.c ****  *
+  34:Modules/OS/OSAL/src/WaitEvent.c ****  */
+  35:Modules/OS/OSAL/src/WaitEvent.c **** 
+  36:Modules/OS/OSAL/src/WaitEvent.c **** /** \brief FreeOSEK Os WaitEvent Implementation File
+  37:Modules/OS/OSAL/src/WaitEvent.c ****  **
+  38:Modules/OS/OSAL/src/WaitEvent.c ****  ** This file implements the WaitEvent API
+  39:Modules/OS/OSAL/src/WaitEvent.c ****  **
+  40:Modules/OS/OSAL/src/WaitEvent.c ****  ** \file WaitEvent.c
+  41:Modules/OS/OSAL/src/WaitEvent.c ****  **
+  42:Modules/OS/OSAL/src/WaitEvent.c ****  **/
+  43:Modules/OS/OSAL/src/WaitEvent.c **** 
+  44:Modules/OS/OSAL/src/WaitEvent.c **** /** \addtogroup FreeOSEK
+  45:Modules/OS/OSAL/src/WaitEvent.c ****  ** @{ */
+  46:Modules/OS/OSAL/src/WaitEvent.c **** /** \addtogroup FreeOSEK_Os
+  47:Modules/OS/OSAL/src/WaitEvent.c ****  ** @{ */
+  48:Modules/OS/OSAL/src/WaitEvent.c **** /** \addtogroup FreeOSEK_Os_Global
+  49:Modules/OS/OSAL/src/WaitEvent.c ****  ** @{ */
+  50:Modules/OS/OSAL/src/WaitEvent.c **** 
+  51:Modules/OS/OSAL/src/WaitEvent.c **** /*
+  52:Modules/OS/OSAL/src/WaitEvent.c ****  * Initials     Name
+  53:Modules/OS/OSAL/src/WaitEvent.c ****  * ---------------------------
+  54:Modules/OS/OSAL/src/WaitEvent.c ****  * MaCe         Mariano Cerdeiro
+  55:Modules/OS/OSAL/src/WaitEvent.c ****  * KLi          Kang Li
+  56:Modules/OS/OSAL/src/WaitEvent.c ****  */
+  57:Modules/OS/OSAL/src/WaitEvent.c **** 
+  58:Modules/OS/OSAL/src/WaitEvent.c **** /*
+  59:Modules/OS/OSAL/src/WaitEvent.c ****  * modification history (new versions first)
+  60:Modules/OS/OSAL/src/WaitEvent.c ****  * -----------------------------------------------------------
+  61:Modules/OS/OSAL/src/WaitEvent.c ****  * 20141019 v0.1.4 MaCe use spaces instead tabs
+  62:Modules/OS/OSAL/src/WaitEvent.c ****  *                      set CONTEXT_SYS before seting invalid task
+  63:Modules/OS/OSAL/src/WaitEvent.c ****  * 20090330 v0.1.3 MaCe add NO_EVENTS evaluation
+  64:Modules/OS/OSAL/src/WaitEvent.c ****  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
+  65:Modules/OS/OSAL/src/WaitEvent.c ****  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+  66:Modules/OS/OSAL/src/WaitEvent.c ****  * 20080814 v0.1.0 MaCe	initial version
+  67:Modules/OS/OSAL/src/WaitEvent.c ****  */
+  68:Modules/OS/OSAL/src/WaitEvent.c **** 
+  69:Modules/OS/OSAL/src/WaitEvent.c **** /*==================[inclusions]=============================================*/
+  70:Modules/OS/OSAL/src/WaitEvent.c **** #include "Os_Internal.h"
+  71:Modules/OS/OSAL/src/WaitEvent.c **** 
+  72:Modules/OS/OSAL/src/WaitEvent.c **** /*==================[macros and definitions]=================================*/
+  73:Modules/OS/OSAL/src/WaitEvent.c **** 
+  74:Modules/OS/OSAL/src/WaitEvent.c **** /*==================[internal data declaration]==============================*/
+  75:Modules/OS/OSAL/src/WaitEvent.c **** 
+  76:Modules/OS/OSAL/src/WaitEvent.c **** /*==================[internal functions declaration]=========================*/
+  77:Modules/OS/OSAL/src/WaitEvent.c **** 
+  78:Modules/OS/OSAL/src/WaitEvent.c **** /*==================[internal data definition]===============================*/
+  79:Modules/OS/OSAL/src/WaitEvent.c **** 
+  80:Modules/OS/OSAL/src/WaitEvent.c **** /*==================[external data definition]===============================*/
+  81:Modules/OS/OSAL/src/WaitEvent.c **** 
+  82:Modules/OS/OSAL/src/WaitEvent.c **** /*==================[internal functions definition]==========================*/
+  83:Modules/OS/OSAL/src/WaitEvent.c **** 
+  84:Modules/OS/OSAL/src/WaitEvent.c **** /*==================[external functions definition]==========================*/
+  85:Modules/OS/OSAL/src/WaitEvent.c **** #if (NO_EVENTS == OSEK_DISABLE)
+  86:Modules/OS/OSAL/src/WaitEvent.c **** StatusType WaitEvent
+  87:Modules/OS/OSAL/src/WaitEvent.c **** (
+  88:Modules/OS/OSAL/src/WaitEvent.c ****    EventMaskType Mask
+  89:Modules/OS/OSAL/src/WaitEvent.c **** )
+  90:Modules/OS/OSAL/src/WaitEvent.c **** {
+  29              		.loc 1 90 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 16
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 00B5     		push	{lr}
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 14, -4
+  36 0002 85B0     		sub	sp, sp, #20
+  37              		.cfi_def_cfa_offset 24
+  38 0004 0190     		str	r0, [sp, #4]
+  91:Modules/OS/OSAL/src/WaitEvent.c ****    /* \req OSEK_SYS_3.18: The system service StatusType
+  92:Modules/OS/OSAL/src/WaitEvent.c ****     * WaitEvent ( EventMaskType Mask ) shall be defined */
+  93:Modules/OS/OSAL/src/WaitEvent.c **** 
+  94:Modules/OS/OSAL/src/WaitEvent.c ****    volatile uint8	flag = 1;
+  39              		.loc 1 94 19
+  40 0006 0123     		movs	r3, #1
+  41 0008 8DF80E30 		strb	r3, [sp, #14]
+  95:Modules/OS/OSAL/src/WaitEvent.c **** 
+  96:Modules/OS/OSAL/src/WaitEvent.c ****    /* \req OSEK_SYS_3.18.3 Possible return values in Standard mode is E_OK */
+  97:Modules/OS/OSAL/src/WaitEvent.c ****    StatusType ret = E_OK;
+  42              		.loc 1 97 15
+  43 000c 0023     		movs	r3, #0
+  44 000e 8DF80F30 		strb	r3, [sp, #15]
+  98:Modules/OS/OSAL/src/WaitEvent.c **** 
+  99:Modules/OS/OSAL/src/WaitEvent.c **** #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+ 100:Modules/OS/OSAL/src/WaitEvent.c ****    if ( GetCallingContext() != CONTEXT_TASK )
+  45              		.loc 1 100 29
+  46 0012 864B     		ldr	r3, .L13
+  47 0014 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  48              		.loc 1 100 7
+  49 0016 012B     		cmp	r3, #1
+  50 0018 03D0     		beq	.L2
+ 101:Modules/OS/OSAL/src/WaitEvent.c ****    {
+ 102:Modules/OS/OSAL/src/WaitEvent.c ****       /* \req OSEK_SYS_3.18.4-2/3 Extra possible return values in Extended mode
+ 103:Modules/OS/OSAL/src/WaitEvent.c ****        * are E_OS_ACCESS, E_OS_RESOURCE, E_OS_CALLEVEL */
+ 104:Modules/OS/OSAL/src/WaitEvent.c ****       ret = E_OS_CALLEVEL;
+  51              		.loc 1 104 11
+  52 001a 0223     		movs	r3, #2
+  53 001c 8DF80F30 		strb	r3, [sp, #15]
+  54 0020 E3E0     		b	.L3
+  55              	.L2:
+ 105:Modules/OS/OSAL/src/WaitEvent.c ****    }
+ 106:Modules/OS/OSAL/src/WaitEvent.c ****    else if ( !TasksConst[GetRunningTask()].ConstFlags.Extended )
+  56              		.loc 1 106 54
+  57 0022 834B     		ldr	r3, .L13+4
+  58 0024 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  59 0026 1946     		mov	r1, r3
+  60 0028 824A     		ldr	r2, .L13+8
+  61 002a 0B46     		mov	r3, r1
+  62 002c DB00     		lsls	r3, r3, #3
+  63 002e 5B1A     		subs	r3, r3, r1
+  64 0030 9B00     		lsls	r3, r3, #2
+  65 0032 1344     		add	r3, r3, r2
+  66 0034 1033     		adds	r3, r3, #16
+  67 0036 1B78     		ldrb	r3, [r3]
+  68 0038 C3F30003 		ubfx	r3, r3, #0, #1
+  69 003c DBB2     		uxtb	r3, r3
+  70              		.loc 1 106 12
+  71 003e 002B     		cmp	r3, #0
+  72 0040 03D1     		bne	.L4
+ 107:Modules/OS/OSAL/src/WaitEvent.c ****    {
+ 108:Modules/OS/OSAL/src/WaitEvent.c ****       /* \req OSEK_SYS_3.18.4-1/3 Extra possible return values in Extended mode
+ 109:Modules/OS/OSAL/src/WaitEvent.c ****        * are E_OS_ACCESS, E_OS_RESOURCE, E_OS_CALLEVEL */
+ 110:Modules/OS/OSAL/src/WaitEvent.c ****       ret = E_OS_ACCESS;
+  73              		.loc 1 110 11
+  74 0042 0123     		movs	r3, #1
+  75 0044 8DF80F30 		strb	r3, [sp, #15]
+  76 0048 CFE0     		b	.L3
+  77              	.L4:
+ 111:Modules/OS/OSAL/src/WaitEvent.c ****    }
+ 112:Modules/OS/OSAL/src/WaitEvent.c ****    else if ( TasksVar[GetRunningTask()].Resources != 0 )
+  78              		.loc 1 112 40
+  79 004a 794B     		ldr	r3, .L13+4
+  80 004c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  81 004e 1946     		mov	r1, r3
+  82 0050 794A     		ldr	r2, .L13+12
+  83 0052 0B46     		mov	r3, r1
+  84 0054 9B00     		lsls	r3, r3, #2
+  85 0056 0B44     		add	r3, r3, r1
+  86 0058 9B00     		lsls	r3, r3, #2
+  87 005a 1344     		add	r3, r3, r2
+  88 005c 1033     		adds	r3, r3, #16
+  89 005e 1B68     		ldr	r3, [r3]
+  90              		.loc 1 112 12
+  91 0060 002B     		cmp	r3, #0
+  92 0062 03D0     		beq	.L5
+ 113:Modules/OS/OSAL/src/WaitEvent.c ****    {
+ 114:Modules/OS/OSAL/src/WaitEvent.c ****       /* \req OSEK_SYS_3.18.4-3/3 Extra possible return values in Extended mode
+ 115:Modules/OS/OSAL/src/WaitEvent.c ****        * are E_OS_ACCESS, E_OS_RESOURCE, E_OS_CALLEVEL */
+ 116:Modules/OS/OSAL/src/WaitEvent.c ****       ret = E_OS_RESOURCE;
+  93              		.loc 1 116 11
+  94 0064 0623     		movs	r3, #6
+  95 0066 8DF80F30 		strb	r3, [sp, #15]
+  96 006a BEE0     		b	.L3
+  97              	.L5:
+ 117:Modules/OS/OSAL/src/WaitEvent.c ****    }
+ 118:Modules/OS/OSAL/src/WaitEvent.c ****    else
+ 119:Modules/OS/OSAL/src/WaitEvent.c **** #endif
+ 120:Modules/OS/OSAL/src/WaitEvent.c ****    {
+ 121:Modules/OS/OSAL/src/WaitEvent.c ****       /* enter to critical code */
+ 122:Modules/OS/OSAL/src/WaitEvent.c ****       IntSecure_Start();
+  98              		.loc 1 122 7
+  99 006c 734B     		ldr	r3, .L13+16
+ 100 006e 93F90030 		ldrsb	r3, [r3]
+ 101 0072 DBB2     		uxtb	r3, r3
+ 102 0074 0133     		adds	r3, r3, #1
+ 103 0076 DBB2     		uxtb	r3, r3
+ 104 0078 5AB2     		sxtb	r2, r3
+ 105 007a 704B     		ldr	r3, .L13+16
+ 106 007c 1A70     		strb	r2, [r3]
+ 107              		.syntax unified
+ 108              	@ 122 "Modules/OS/OSAL/src/WaitEvent.c" 1
+ 109 007e 72B6     		cpsid i
+ 110              	@ 0 "" 2
+ 123:Modules/OS/OSAL/src/WaitEvent.c **** 
+ 124:Modules/OS/OSAL/src/WaitEvent.c ****       if ( Mask & TasksVar[GetRunningTask()].Events )
+ 111              		.loc 1 124 45
+ 112              		.thumb
+ 113              		.syntax unified
+ 114 0080 6B4B     		ldr	r3, .L13+4
+ 115 0082 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 116 0084 1946     		mov	r1, r3
+ 117 0086 6C4A     		ldr	r2, .L13+12
+ 118 0088 0B46     		mov	r3, r1
+ 119 008a 9B00     		lsls	r3, r3, #2
+ 120 008c 0B44     		add	r3, r3, r1
+ 121 008e 9B00     		lsls	r3, r3, #2
+ 122 0090 1344     		add	r3, r3, r2
+ 123 0092 0833     		adds	r3, r3, #8
+ 124 0094 1A68     		ldr	r2, [r3]
+ 125              		.loc 1 124 17
+ 126 0096 019B     		ldr	r3, [sp, #4]
+ 127 0098 1340     		ands	r3, r3, r2
+ 128              		.loc 1 124 10
+ 129 009a 002B     		cmp	r3, #0
+ 130 009c 13D0     		beq	.L6
+ 125:Modules/OS/OSAL/src/WaitEvent.c ****       {
+ 126:Modules/OS/OSAL/src/WaitEvent.c ****          /* finish cirtical code */
+ 127:Modules/OS/OSAL/src/WaitEvent.c ****          IntSecure_End();
+ 131              		.loc 1 127 10
+ 132 009e 674B     		ldr	r3, .L13+16
+ 133 00a0 93F90030 		ldrsb	r3, [r3]
+ 134 00a4 DBB2     		uxtb	r3, r3
+ 135 00a6 013B     		subs	r3, r3, #1
+ 136 00a8 DBB2     		uxtb	r3, r3
+ 137 00aa 5AB2     		sxtb	r2, r3
+ 138 00ac 634B     		ldr	r3, .L13+16
+ 139 00ae 1A70     		strb	r2, [r3]
+ 140 00b0 624B     		ldr	r3, .L13+16
+ 141 00b2 93F90030 		ldrsb	r3, [r3]
+ 142 00b6 002B     		cmp	r3, #0
+ 143 00b8 00F39780 		bgt	.L3
+ 144              		.loc 1 127 10 is_stmt 0 discriminator 1
+ 145 00bc 5F4B     		ldr	r3, .L13+16
+ 146 00be 0022     		movs	r2, #0
+ 147 00c0 1A70     		strb	r2, [r3]
+ 148              		.syntax unified
+ 149              	@ 127 "Modules/OS/OSAL/src/WaitEvent.c" 1
+ 150 00c2 62B6     		cpsie i
+ 151              	@ 0 "" 2
+ 152              		.thumb
+ 153              		.syntax unified
+ 154 00c4 91E0     		b	.L3
+ 155              	.L6:
+ 128:Modules/OS/OSAL/src/WaitEvent.c ****       }
+ 129:Modules/OS/OSAL/src/WaitEvent.c ****       else
+ 130:Modules/OS/OSAL/src/WaitEvent.c ****       {
+ 131:Modules/OS/OSAL/src/WaitEvent.c ****          /* \req OSEK_SYS_3.18.1 The state of the calling task is set to waiting,
+ 132:Modules/OS/OSAL/src/WaitEvent.c ****           * unless at least one of the events specified in Mask has already been
+ 133:Modules/OS/OSAL/src/WaitEvent.c ****           * set */
+ 134:Modules/OS/OSAL/src/WaitEvent.c ****          TasksVar[GetRunningTask()].Flags.State = TASK_ST_WAITING;
+ 156              		.loc 1 134 42 is_stmt 1
+ 157 00c6 5A4B     		ldr	r3, .L13+4
+ 158 00c8 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 159 00ca 1946     		mov	r1, r3
+ 160              		.loc 1 134 49
+ 161 00cc 5A4A     		ldr	r2, .L13+12
+ 162 00ce 0B46     		mov	r3, r1
+ 163 00d0 9B00     		lsls	r3, r3, #2
+ 164 00d2 0B44     		add	r3, r3, r1
+ 165 00d4 9B00     		lsls	r3, r3, #2
+ 166 00d6 1A44     		add	r2, r2, r3
+ 167 00d8 1379     		ldrb	r3, [r2, #4]
+ 168 00da 43F00C03 		orr	r3, r3, #12
+ 169 00de 1371     		strb	r3, [r2, #4]
+ 135:Modules/OS/OSAL/src/WaitEvent.c **** 
+ 136:Modules/OS/OSAL/src/WaitEvent.c ****          /* set wait mask */
+ 137:Modules/OS/OSAL/src/WaitEvent.c ****          TasksVar[GetRunningTask()].EventsWait = Mask;
+ 170              		.loc 1 137 36
+ 171 00e0 534B     		ldr	r3, .L13+4
+ 172 00e2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 173 00e4 1946     		mov	r1, r3
+ 174              		.loc 1 137 48
+ 175 00e6 544A     		ldr	r2, .L13+12
+ 176 00e8 0B46     		mov	r3, r1
+ 177 00ea 9B00     		lsls	r3, r3, #2
+ 178 00ec 0B44     		add	r3, r3, r1
+ 179 00ee 9B00     		lsls	r3, r3, #2
+ 180 00f0 1344     		add	r3, r3, r2
+ 181 00f2 0C33     		adds	r3, r3, #12
+ 182 00f4 019A     		ldr	r2, [sp, #4]
+ 183 00f6 1A60     		str	r2, [r3]
+ 184              	.LBB2:
+ 138:Modules/OS/OSAL/src/WaitEvent.c **** 
+ 139:Modules/OS/OSAL/src/WaitEvent.c ****          /* save actual task context */
+ 140:Modules/OS/OSAL/src/WaitEvent.c ****          SaveContext(GetRunningTask());
+ 185              		.loc 1 140 10
+ 186 00f8 4D4B     		ldr	r3, .L13+4
+ 187 00fa 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 188 00fc 1946     		mov	r1, r3
+ 189 00fe 4E4A     		ldr	r2, .L13+12
+ 190 0100 0B46     		mov	r3, r1
+ 191 0102 9B00     		lsls	r3, r3, #2
+ 192 0104 0B44     		add	r3, r3, r1
+ 193 0106 9B00     		lsls	r3, r3, #2
+ 194 0108 1344     		add	r3, r3, r2
+ 195 010a 1B79     		ldrb	r3, [r3, #4]
+ 196 010c C3F38103 		ubfx	r3, r3, #2, #2
+ 197 0110 DBB2     		uxtb	r3, r3
+ 198 0112 032B     		cmp	r3, #3
+ 199 0114 03D1     		bne	.L7
+ 200              		.loc 1 140 10 is_stmt 0 discriminator 1
+ 201 0116 464B     		ldr	r3, .L13+4
+ 202 0118 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 203 011a 494B     		ldr	r3, .L13+20
+ 204 011c 1A70     		strb	r2, [r3]
+ 205              	.L7:
+ 206              		.loc 1 140 10 discriminator 3
+ 207 011e 0023     		movs	r3, #0
+ 208 0120 8DF80E30 		strb	r3, [sp, #14]
+ 209 0124 424B     		ldr	r3, .L13+4
+ 210 0126 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 211 0128 1846     		mov	r0, r3
+ 212 012a FFF7FEFF 		bl	RemoveTask
+ 213 012e 3F4B     		ldr	r3, .L13
+ 214 0130 0422     		movs	r2, #4
+ 215 0132 1A70     		strb	r2, [r3]
+ 216 0134 3E4B     		ldr	r3, .L13+4
+ 217 0136 FF22     		movs	r2, #255
+ 218 0138 1A70     		strb	r2, [r3]
+ 219 013a 404B     		ldr	r3, .L13+16
+ 220 013c 93F90030 		ldrsb	r3, [r3]
+ 221 0140 DBB2     		uxtb	r3, r3
+ 222 0142 013B     		subs	r3, r3, #1
+ 223 0144 DBB2     		uxtb	r3, r3
+ 224 0146 5AB2     		sxtb	r2, r3
+ 225 0148 3C4B     		ldr	r3, .L13+16
+ 226 014a 1A70     		strb	r2, [r3]
+ 227 014c 3B4B     		ldr	r3, .L13+16
+ 228 014e 93F90030 		ldrsb	r3, [r3]
+ 229 0152 002B     		cmp	r3, #0
+ 230 0154 03DC     		bgt	.L8
+ 231              		.loc 1 140 10 discriminator 4
+ 232 0156 394B     		ldr	r3, .L13+16
+ 233 0158 0022     		movs	r2, #0
+ 234 015a 1A70     		strb	r2, [r3]
+ 235              		.syntax unified
+ 236              	@ 140 "Modules/OS/OSAL/src/WaitEvent.c" 1
+ 237 015c 62B6     		cpsie i
+ 238              	@ 0 "" 2
+ 239              		.thumb
+ 240              		.syntax unified
+ 241              	.L8:
+ 242              		.loc 1 140 10 discriminator 6
+ 243 015e FFF7FEFF 		bl	Schedule
+ 244 0162 364B     		ldr	r3, .L13+16
+ 245 0164 93F90030 		ldrsb	r3, [r3]
+ 246 0168 DBB2     		uxtb	r3, r3
+ 247 016a 0133     		adds	r3, r3, #1
+ 248 016c DBB2     		uxtb	r3, r3
+ 249 016e 5AB2     		sxtb	r2, r3
+ 250 0170 324B     		ldr	r3, .L13+16
+ 251 0172 1A70     		strb	r2, [r3]
+ 252              		.syntax unified
+ 253              	@ 140 "Modules/OS/OSAL/src/WaitEvent.c" 1
+ 254 0174 72B6     		cpsid i
+ 255              	@ 0 "" 2
+ 256              		.thumb
+ 257              		.syntax unified
+ 258              	.LBE2:
+ 141:Modules/OS/OSAL/src/WaitEvent.c **** 
+ 142:Modules/OS/OSAL/src/WaitEvent.c ****          if (flag)
+ 259              		.loc 1 142 14 is_stmt 1 discriminator 6
+ 260 0176 9DF80E30 		ldrb	r3, [sp, #14]
+ 261 017a DBB2     		uxtb	r3, r3
+ 262              		.loc 1 142 13 discriminator 6
+ 263 017c 002B     		cmp	r3, #0
+ 264 017e 22D0     		beq	.L9
+ 143:Modules/OS/OSAL/src/WaitEvent.c ****          {
+ 144:Modules/OS/OSAL/src/WaitEvent.c **** 
+ 145:Modules/OS/OSAL/src/WaitEvent.c ****             /* execute this code only ones */
+ 146:Modules/OS/OSAL/src/WaitEvent.c ****             flag = 0;
+ 265              		.loc 1 146 18
+ 266 0180 0023     		movs	r3, #0
+ 267 0182 8DF80E30 		strb	r3, [sp, #14]
+ 147:Modules/OS/OSAL/src/WaitEvent.c **** 
+ 148:Modules/OS/OSAL/src/WaitEvent.c ****             /* remove of the Ready List */
+ 149:Modules/OS/OSAL/src/WaitEvent.c ****             RemoveTask(GetRunningTask());
+ 268              		.loc 1 149 13
+ 269 0186 2A4B     		ldr	r3, .L13+4
+ 270 0188 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 271 018a 1846     		mov	r0, r3
+ 272 018c FFF7FEFF 		bl	RemoveTask
+ 150:Modules/OS/OSAL/src/WaitEvent.c **** 
+ 151:Modules/OS/OSAL/src/WaitEvent.c ****             /* set system context */
+ 152:Modules/OS/OSAL/src/WaitEvent.c ****             SetActualContext(CONTEXT_SYS);
+ 273              		.loc 1 152 13
+ 274 0190 264B     		ldr	r3, .L13
+ 275 0192 0422     		movs	r2, #4
+ 276 0194 1A70     		strb	r2, [r3]
+ 153:Modules/OS/OSAL/src/WaitEvent.c **** 
+ 154:Modules/OS/OSAL/src/WaitEvent.c ****             /* set running task to invalid */
+ 155:Modules/OS/OSAL/src/WaitEvent.c ****             SetRunningTask(INVALID_TASK);
+ 277              		.loc 1 155 13
+ 278 0196 264B     		ldr	r3, .L13+4
+ 279 0198 FF22     		movs	r2, #255
+ 280 019a 1A70     		strb	r2, [r3]
+ 156:Modules/OS/OSAL/src/WaitEvent.c **** 
+ 157:Modules/OS/OSAL/src/WaitEvent.c ****             /* finish cirtical code */
+ 158:Modules/OS/OSAL/src/WaitEvent.c ****             IntSecure_End();
+ 281              		.loc 1 158 13
+ 282 019c 274B     		ldr	r3, .L13+16
+ 283 019e 93F90030 		ldrsb	r3, [r3]
+ 284 01a2 DBB2     		uxtb	r3, r3
+ 285 01a4 013B     		subs	r3, r3, #1
+ 286 01a6 DBB2     		uxtb	r3, r3
+ 287 01a8 5AB2     		sxtb	r2, r3
+ 288 01aa 244B     		ldr	r3, .L13+16
+ 289 01ac 1A70     		strb	r2, [r3]
+ 290 01ae 234B     		ldr	r3, .L13+16
+ 291 01b0 93F90030 		ldrsb	r3, [r3]
+ 292 01b4 002B     		cmp	r3, #0
+ 293 01b6 03DC     		bgt	.L10
+ 294              		.loc 1 158 13 is_stmt 0 discriminator 1
+ 295 01b8 204B     		ldr	r3, .L13+16
+ 296 01ba 0022     		movs	r2, #0
+ 297 01bc 1A70     		strb	r2, [r3]
+ 298              		.syntax unified
+ 299              	@ 158 "Modules/OS/OSAL/src/WaitEvent.c" 1
+ 300 01be 62B6     		cpsie i
+ 301              	@ 0 "" 2
+ 302              		.thumb
+ 303              		.syntax unified
+ 304              	.L10:
+ 159:Modules/OS/OSAL/src/WaitEvent.c **** 
+ 160:Modules/OS/OSAL/src/WaitEvent.c ****             /* OSEK_SYS_3.18.2 This call enforces rescheduling, if the wait
+ 161:Modules/OS/OSAL/src/WaitEvent.c ****              * condition occurs. If rescheduling takes place, the internal
+ 162:Modules/OS/OSAL/src/WaitEvent.c ****              * resource of the task is released while the task is in the
+ 163:Modules/OS/OSAL/src/WaitEvent.c ****              * waiting state */
+ 164:Modules/OS/OSAL/src/WaitEvent.c ****             (void)Schedule();
+ 305              		.loc 1 164 19 is_stmt 1
+ 306 01c0 FFF7FEFF 		bl	Schedule
+ 307 01c4 11E0     		b	.L3
+ 308              	.L9:
+ 165:Modules/OS/OSAL/src/WaitEvent.c ****          }
+ 166:Modules/OS/OSAL/src/WaitEvent.c ****          else
+ 167:Modules/OS/OSAL/src/WaitEvent.c ****          {
+ 168:Modules/OS/OSAL/src/WaitEvent.c ****             /* finish critical code */
+ 169:Modules/OS/OSAL/src/WaitEvent.c ****             IntSecure_End();
+ 309              		.loc 1 169 13
+ 310 01c6 1D4B     		ldr	r3, .L13+16
+ 311 01c8 93F90030 		ldrsb	r3, [r3]
+ 312 01cc DBB2     		uxtb	r3, r3
+ 313 01ce 013B     		subs	r3, r3, #1
+ 314 01d0 DBB2     		uxtb	r3, r3
+ 315 01d2 5AB2     		sxtb	r2, r3
+ 316 01d4 194B     		ldr	r3, .L13+16
+ 317 01d6 1A70     		strb	r2, [r3]
+ 318 01d8 184B     		ldr	r3, .L13+16
+ 319 01da 93F90030 		ldrsb	r3, [r3]
+ 320 01de 002B     		cmp	r3, #0
+ 321 01e0 03DC     		bgt	.L3
+ 322              		.loc 1 169 13 is_stmt 0 discriminator 1
+ 323 01e2 164B     		ldr	r3, .L13+16
+ 324 01e4 0022     		movs	r2, #0
+ 325 01e6 1A70     		strb	r2, [r3]
+ 326              		.syntax unified
+ 327              	@ 169 "Modules/OS/OSAL/src/WaitEvent.c" 1
+ 328 01e8 62B6     		cpsie i
+ 329              	@ 0 "" 2
+ 330              		.thumb
+ 331              		.syntax unified
+ 332              	.L3:
+ 170:Modules/OS/OSAL/src/WaitEvent.c ****          }
+ 171:Modules/OS/OSAL/src/WaitEvent.c ****       }
+ 172:Modules/OS/OSAL/src/WaitEvent.c ****    }
+ 173:Modules/OS/OSAL/src/WaitEvent.c **** 
+ 174:Modules/OS/OSAL/src/WaitEvent.c **** #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
+ 175:Modules/OS/OSAL/src/WaitEvent.c ****       (HOOK_ERRORHOOK == OSEK_ENABLE) )
+ 176:Modules/OS/OSAL/src/WaitEvent.c ****    /* \req OSEK_ERR_1.3-11/xx The ErrorHook hook routine shall be called if a
+ 177:Modules/OS/OSAL/src/WaitEvent.c ****     * system service returns a StatusType value not equal to E_OK.*/
+ 178:Modules/OS/OSAL/src/WaitEvent.c ****    /* \req OSEK_ERR_1.3.1-11/xx The hook routine ErrorHook is not called if a
+ 179:Modules/OS/OSAL/src/WaitEvent.c ****     * system service is called from the ErrorHook itself. */
+ 180:Modules/OS/OSAL/src/WaitEvent.c ****    if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
+ 333              		.loc 1 180 7 is_stmt 1
+ 334 01ea 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 335 01ee 002B     		cmp	r3, #0
+ 336 01f0 15D0     		beq	.L11
+ 337              		.loc 1 180 46 discriminator 1
+ 338 01f2 144B     		ldr	r3, .L13+24
+ 339 01f4 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 340              		.loc 1 180 25 discriminator 1
+ 341 01f6 012B     		cmp	r3, #1
+ 342 01f8 11D0     		beq	.L11
+ 181:Modules/OS/OSAL/src/WaitEvent.c ****    {
+ 182:Modules/OS/OSAL/src/WaitEvent.c ****       SetError_Api(OSServiceId_WaitEvent);
+ 343              		.loc 1 182 7
+ 344 01fa 134B     		ldr	r3, .L13+28
+ 345 01fc 1222     		movs	r2, #18
+ 346 01fe 1A60     		str	r2, [r3]
+ 183:Modules/OS/OSAL/src/WaitEvent.c ****       SetError_Param1(Mask);
+ 347              		.loc 1 183 7
+ 348 0200 124A     		ldr	r2, .L13+32
+ 349 0202 019B     		ldr	r3, [sp, #4]
+ 350 0204 1360     		str	r3, [r2]
+ 184:Modules/OS/OSAL/src/WaitEvent.c ****       SetError_Ret(ret);
+ 351              		.loc 1 184 7
+ 352 0206 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 353 020a 114A     		ldr	r2, .L13+36
+ 354 020c 1360     		str	r3, [r2]
+ 185:Modules/OS/OSAL/src/WaitEvent.c ****       SetError_Msg("ActivateTask returns != than E_OK");
+ 186:Modules/OS/OSAL/src/WaitEvent.c ****       SetError_ErrorHook();
+ 355              		.loc 1 186 7
+ 356 020e 0D4B     		ldr	r3, .L13+24
+ 357 0210 0122     		movs	r2, #1
+ 358 0212 1A70     		strb	r2, [r3]
+ 359 0214 FFF7FEFF 		bl	ErrorHook
+ 360 0218 0A4B     		ldr	r3, .L13+24
+ 361 021a 0022     		movs	r2, #0
+ 362 021c 1A70     		strb	r2, [r3]
+ 363              	.L11:
+ 187:Modules/OS/OSAL/src/WaitEvent.c ****    }
+ 188:Modules/OS/OSAL/src/WaitEvent.c **** #endif
+ 189:Modules/OS/OSAL/src/WaitEvent.c **** 
+ 190:Modules/OS/OSAL/src/WaitEvent.c ****    return ret;
+ 364              		.loc 1 190 11
+ 365 021e 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 191:Modules/OS/OSAL/src/WaitEvent.c **** }
+ 366              		.loc 1 191 1
+ 367 0222 1846     		mov	r0, r3
+ 368 0224 05B0     		add	sp, sp, #20
+ 369              		.cfi_def_cfa_offset 4
+ 370              		@ sp needed
+ 371 0226 5DF804FB 		ldr	pc, [sp], #4
+ 372              	.L14:
+ 373 022a 00BF     		.align	2
+ 374              	.L13:
+ 375 022c 00000000 		.word	ActualContext
+ 376 0230 00000000 		.word	RunningTask
+ 377 0234 00000000 		.word	TasksConst
+ 378 0238 00000000 		.word	TasksVar
+ 379 023c 00000000 		.word	SuspendAllInterrupts_Counter
+ 380 0240 00000000 		.word	WaitingTask
+ 381 0244 00000000 		.word	ErrorHookRunning
+ 382 0248 00000000 		.word	Osek_ErrorApi
+ 383 024c 00000000 		.word	Osek_ErrorParam1
+ 384 0250 00000000 		.word	Osek_ErrorRet
+ 385              		.cfi_endproc
+ 386              	.LFE0:
+ 388              		.text
+ 389              	.Letext0:
+ 390              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 391              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 392              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Types.h"
+ 393              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Cfg.h"
+ 394              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 395              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+ 396              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 397              		.file 9 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os_intern
+DEFINED SYMBOLS
+                            *ABS*:00000000 WaitEvent.c
+C:\Users\AAA\AppData\Local\Temp\ccSvBS5g.s:19     .text.WaitEvent:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccSvBS5g.s:26     .text.WaitEvent:00000000 WaitEvent
+C:\Users\AAA\AppData\Local\Temp\ccSvBS5g.s:375    .text.WaitEvent:0000022c $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+UNDEFINED SYMBOLS
+RemoveTask
+Schedule
+ErrorHook
+ActualContext
+RunningTask
+TasksConst
+TasksVar
+SuspendAllInterrupts_Counter
+WaitingTask
+ErrorHookRunning
+Osek_ErrorApi
+Osek_ErrorParam1
+Osek_ErrorRet

@@ -1,0 +1,223 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"StartOs_Arch.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.StartOs_Arch_Cpu,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	StartOs_Arch_Cpu
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	StartOs_Arch_Cpu:
+  27              	.LFB0:
+  28              		.file 1 "Modules/OS/OSAL/src/StartOs_Arch.c"
+   1:Modules/OS/OSAL/src/StartOs_Arch.c **** /* Copyright 2014, Pablo Ridolfi (UTN-FRBA)
+   2:Modules/OS/OSAL/src/StartOs_Arch.c ****  *
+   3:Modules/OS/OSAL/src/StartOs_Arch.c ****  * This file is part of CIAA Firmware.
+   4:Modules/OS/OSAL/src/StartOs_Arch.c ****  *
+   5:Modules/OS/OSAL/src/StartOs_Arch.c ****  * Redistribution and use in source and binary forms, with or without
+   6:Modules/OS/OSAL/src/StartOs_Arch.c ****  * modification, are permitted provided that the following conditions are met:
+   7:Modules/OS/OSAL/src/StartOs_Arch.c ****  *
+   8:Modules/OS/OSAL/src/StartOs_Arch.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+   9:Modules/OS/OSAL/src/StartOs_Arch.c ****  *    this list of conditions and the following disclaimer.
+  10:Modules/OS/OSAL/src/StartOs_Arch.c ****  *
+  11:Modules/OS/OSAL/src/StartOs_Arch.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  12:Modules/OS/OSAL/src/StartOs_Arch.c ****  *    this list of conditions and the following disclaimer in the documentation
+  13:Modules/OS/OSAL/src/StartOs_Arch.c ****  *    and/or other materials provided with the distribution.
+  14:Modules/OS/OSAL/src/StartOs_Arch.c ****  *
+  15:Modules/OS/OSAL/src/StartOs_Arch.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  16:Modules/OS/OSAL/src/StartOs_Arch.c ****  *    contributors may be used to endorse or promote products derived from this
+  17:Modules/OS/OSAL/src/StartOs_Arch.c ****  *    software without specific prior written permission.
+  18:Modules/OS/OSAL/src/StartOs_Arch.c ****  *
+  19:Modules/OS/OSAL/src/StartOs_Arch.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  20:Modules/OS/OSAL/src/StartOs_Arch.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  21:Modules/OS/OSAL/src/StartOs_Arch.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  22:Modules/OS/OSAL/src/StartOs_Arch.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  23:Modules/OS/OSAL/src/StartOs_Arch.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  24:Modules/OS/OSAL/src/StartOs_Arch.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  25:Modules/OS/OSAL/src/StartOs_Arch.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  26:Modules/OS/OSAL/src/StartOs_Arch.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  27:Modules/OS/OSAL/src/StartOs_Arch.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  28:Modules/OS/OSAL/src/StartOs_Arch.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  29:Modules/OS/OSAL/src/StartOs_Arch.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  30:Modules/OS/OSAL/src/StartOs_Arch.c ****  *
+  31:Modules/OS/OSAL/src/StartOs_Arch.c ****  */
+  32:Modules/OS/OSAL/src/StartOs_Arch.c **** 
+  33:Modules/OS/OSAL/src/StartOs_Arch.c **** /** \brief FreeOSEK Os StartOs Architecture Dependece Implementation File
+  34:Modules/OS/OSAL/src/StartOs_Arch.c ****  **
+  35:Modules/OS/OSAL/src/StartOs_Arch.c ****  ** This file implements the StartOs Arch API
+  36:Modules/OS/OSAL/src/StartOs_Arch.c ****  **
+  37:Modules/OS/OSAL/src/StartOs_Arch.c ****  ** \file cortexM4/StartOs_Arch.c
+  38:Modules/OS/OSAL/src/StartOs_Arch.c ****  ** \arch cortexM4
+  39:Modules/OS/OSAL/src/StartOs_Arch.c ****  **/
+  40:Modules/OS/OSAL/src/StartOs_Arch.c **** 
+  41:Modules/OS/OSAL/src/StartOs_Arch.c **** /** \addtogroup FreeOSEK
+  42:Modules/OS/OSAL/src/StartOs_Arch.c ****  ** @{ */
+  43:Modules/OS/OSAL/src/StartOs_Arch.c **** /** \addtogroup FreeOSEK_Os
+  44:Modules/OS/OSAL/src/StartOs_Arch.c ****  ** @{ */
+  45:Modules/OS/OSAL/src/StartOs_Arch.c **** /** \addtogroup FreeOSEK_Os_Internal
+  46:Modules/OS/OSAL/src/StartOs_Arch.c ****  ** @{ */
+  47:Modules/OS/OSAL/src/StartOs_Arch.c **** 
+  48:Modules/OS/OSAL/src/StartOs_Arch.c **** /*
+  49:Modules/OS/OSAL/src/StartOs_Arch.c ****  * Initials     Name
+  50:Modules/OS/OSAL/src/StartOs_Arch.c ****  * ---------------------------
+  51:Modules/OS/OSAL/src/StartOs_Arch.c ****  * PR		Pablo Ridolfi
+  52:Modules/OS/OSAL/src/StartOs_Arch.c ****  */
+  53:Modules/OS/OSAL/src/StartOs_Arch.c **** 
+  54:Modules/OS/OSAL/src/StartOs_Arch.c **** /*
+  55:Modules/OS/OSAL/src/StartOs_Arch.c ****  * modification history (new versions first)
+  56:Modules/OS/OSAL/src/StartOs_Arch.c ****  * -----------------------------------------------------------
+  57:Modules/OS/OSAL/src/StartOs_Arch.c ****  * 20140608 v0.1.2 PR	First version for Cortex-M processors.
+  58:Modules/OS/OSAL/src/StartOs_Arch.c ****  */
+  59:Modules/OS/OSAL/src/StartOs_Arch.c **** 
+  60:Modules/OS/OSAL/src/StartOs_Arch.c **** /*==================[inclusions]=============================================*/
+  61:Modules/OS/OSAL/src/StartOs_Arch.c **** #include "Os_Internal.h"
+  62:Modules/OS/OSAL/src/StartOs_Arch.c **** #include "StartOs_Arch_SysTick.h"
+  63:Modules/OS/OSAL/src/StartOs_Arch.c **** #include "OS_Internal_Arch_Cpu.h"
+  64:Modules/OS/OSAL/src/StartOs_Arch.c **** /*==================[macros and definitions]=================================*/
+  65:Modules/OS/OSAL/src/StartOs_Arch.c **** 
+  66:Modules/OS/OSAL/src/StartOs_Arch.c **** /*==================[internal data declaration]==============================*/
+  67:Modules/OS/OSAL/src/StartOs_Arch.c **** 
+  68:Modules/OS/OSAL/src/StartOs_Arch.c **** /*==================[internal functions declaration]=========================*/
+  69:Modules/OS/OSAL/src/StartOs_Arch.c **** 
+  70:Modules/OS/OSAL/src/StartOs_Arch.c **** /*==================[internal data definition]===============================*/
+  71:Modules/OS/OSAL/src/StartOs_Arch.c **** 
+  72:Modules/OS/OSAL/src/StartOs_Arch.c **** /*==================[external data definition]===============================*/
+  73:Modules/OS/OSAL/src/StartOs_Arch.c **** 
+  74:Modules/OS/OSAL/src/StartOs_Arch.c **** /*==================[internal functions definition]==========================*/
+  75:Modules/OS/OSAL/src/StartOs_Arch.c **** 
+  76:Modules/OS/OSAL/src/StartOs_Arch.c **** /*==================[external functions definition]==========================*/
+  77:Modules/OS/OSAL/src/StartOs_Arch.c **** void StartOs_Arch_Cpu(void)
+  78:Modules/OS/OSAL/src/StartOs_Arch.c **** {
+  29              		.loc 1 78 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+  79:Modules/OS/OSAL/src/StartOs_Arch.c ****    StartOs_Arch_SysTick();
+  37              		.loc 1 79 4
+  38 0002 FFF7FEFF 		bl	StartOs_Arch_SysTick
+  80:Modules/OS/OSAL/src/StartOs_Arch.c ****    Enable_User_ISRs();
+  39              		.loc 1 80 4
+  40 0006 FFF7FEFF 		bl	Enable_User_ISRs
+  81:Modules/OS/OSAL/src/StartOs_Arch.c **** }
+  41              		.loc 1 81 1
+  42 000a 00BF     		nop
+  43 000c 08BD     		pop	{r3, pc}
+  44              		.cfi_endproc
+  45              	.LFE0:
+  47 000e 00BF     		.section	.text.StartOs_Arch,"ax",%progbits
+  48              		.align	1
+  49              		.p2align 4,,15
+  50              		.global	StartOs_Arch
+  51              		.syntax unified
+  52              		.thumb
+  53              		.thumb_func
+  55              	StartOs_Arch:
+  56              	.LFB1:
+  82:Modules/OS/OSAL/src/StartOs_Arch.c **** 
+  83:Modules/OS/OSAL/src/StartOs_Arch.c **** void StartOs_Arch(void)
+  84:Modules/OS/OSAL/src/StartOs_Arch.c **** {
+  57              		.loc 1 84 1
+  58              		.cfi_startproc
+  59              		@ args = 0, pretend = 0, frame = 8
+  60              		@ frame_needed = 0, uses_anonymous_args = 0
+  61 0000 00B5     		push	{lr}
+  62              		.cfi_def_cfa_offset 4
+  63              		.cfi_offset 14, -4
+  64 0002 83B0     		sub	sp, sp, #12
+  65              		.cfi_def_cfa_offset 16
+  85:Modules/OS/OSAL/src/StartOs_Arch.c **** 	uint8f loopi;
+  86:Modules/OS/OSAL/src/StartOs_Arch.c **** 
+  87:Modules/OS/OSAL/src/StartOs_Arch.c **** 	/* init every task */
+  88:Modules/OS/OSAL/src/StartOs_Arch.c **** 	for( loopi = 0; loopi < TASKS_COUNT; loopi++)
+  66              		.loc 1 88 13
+  67 0004 0023     		movs	r3, #0
+  68 0006 0193     		str	r3, [sp, #4]
+  69              		.loc 1 88 2
+  70 0008 07E0     		b	.L3
+  71              	.L4:
+  89:Modules/OS/OSAL/src/StartOs_Arch.c **** 	{
+  90:Modules/OS/OSAL/src/StartOs_Arch.c **** 		InitStack_Arch(loopi);
+  72              		.loc 1 90 3 discriminator 3
+  73 000a 019B     		ldr	r3, [sp, #4]
+  74 000c DBB2     		uxtb	r3, r3
+  75 000e 1846     		mov	r0, r3
+  76 0010 FFF7FEFF 		bl	InitStack_Arch
+  88:Modules/OS/OSAL/src/StartOs_Arch.c **** 	{
+  77              		.loc 1 88 44 discriminator 3
+  78 0014 019B     		ldr	r3, [sp, #4]
+  79 0016 0133     		adds	r3, r3, #1
+  80 0018 0193     		str	r3, [sp, #4]
+  81              	.L3:
+  88:Modules/OS/OSAL/src/StartOs_Arch.c **** 	{
+  82              		.loc 1 88 2 discriminator 1
+  83 001a 019B     		ldr	r3, [sp, #4]
+  84 001c 032B     		cmp	r3, #3
+  85 001e F4D9     		bls	.L4
+  91:Modules/OS/OSAL/src/StartOs_Arch.c **** 	}
+  92:Modules/OS/OSAL/src/StartOs_Arch.c **** 
+  93:Modules/OS/OSAL/src/StartOs_Arch.c **** 	/* CPU dependent initialisation */
+  94:Modules/OS/OSAL/src/StartOs_Arch.c **** 	StartOs_Arch_Cpu();
+  86              		.loc 1 94 2
+  87 0020 FFF7FEFF 		bl	StartOs_Arch_Cpu
+  95:Modules/OS/OSAL/src/StartOs_Arch.c **** 
+  96:Modules/OS/OSAL/src/StartOs_Arch.c **** }
+  88              		.loc 1 96 1
+  89 0024 00BF     		nop
+  90 0026 03B0     		add	sp, sp, #12
+  91              		.cfi_def_cfa_offset 4
+  92              		@ sp needed
+  93 0028 5DF804FB 		ldr	pc, [sp], #4
+  94              		.cfi_endproc
+  95              	.LFE1:
+  97              		.text
+  98              	.Letext0:
+  99              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 100              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Types.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 StartOs_Arch.c
+C:\Users\AAA\AppData\Local\Temp\ccmf0WId.s:19     .text.StartOs_Arch_Cpu:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccmf0WId.s:26     .text.StartOs_Arch_Cpu:00000000 StartOs_Arch_Cpu
+C:\Users\AAA\AppData\Local\Temp\ccmf0WId.s:48     .text.StartOs_Arch:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccmf0WId.s:55     .text.StartOs_Arch:00000000 StartOs_Arch
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+UNDEFINED SYMBOLS
+StartOs_Arch_SysTick
+Enable_User_ISRs
+InitStack_Arch

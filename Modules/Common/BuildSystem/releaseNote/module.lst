@@ -1,0 +1,20 @@
+# ModulePATH,[Tag-1],[Tag]
+Modules/Addons/LL,,VER_0.9.0
+Modules/Boot,,VER_0.9.0
+Modules/Common/BuildSystem,,VER_0.9.0
+Modules/Drivers/Analog/SARADC,,VER_0.9.0
+Modules/Drivers/Comms/SPI,,VER_0.9.0
+Modules/Drivers/Comms/UART,,VER_0.9.0
+Modules/Drivers/System/DMA,,VER_0.9.0
+Modules/Drivers/System/GPIO,,VER_0.9.0
+Modules/Drivers/Timers/HRTIM,,VER_0.9.0
+Modules/Drivers/Timers/TIM,,VER_0.9.0
+Modules/OS/OSAL,,VER_0.9.0
+Modules/Platform/Board,,VER_0.9.0
+Modules/Platform/Clock,,VER_0.9.0
+Modules/Platform/CMSIS,,VER_0.9.0
+Modules/Platform/IRQ,,VER_0.9.0
+Modules/Platform/MCU,,VER_0.9.0
+Projects/Debug,,VER_0.9.0
+Projects/SDKTests,,VER_0.9.0
+Tools/Toolchain/ARM,,

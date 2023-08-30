@@ -1,0 +1,346 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"GetEvent.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.GetEvent,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	GetEvent
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	GetEvent:
+  27              	.LFB0:
+  28              		.file 1 "Modules/OS/OSAL/src/GetEvent.c"
+   1:Modules/OS/OSAL/src/GetEvent.c **** /* Copyright 2008, 2009 Mariano Cerdeiro
+   2:Modules/OS/OSAL/src/GetEvent.c ****  * Copyright 2014, ACSE & CADIEEL
+   3:Modules/OS/OSAL/src/GetEvent.c ****  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+   4:Modules/OS/OSAL/src/GetEvent.c ****  *      CADIEEL: http://www.cadieel.org.ar
+   5:Modules/OS/OSAL/src/GetEvent.c ****  *
+   6:Modules/OS/OSAL/src/GetEvent.c ****  * This file is part of CIAA Firmware.
+   7:Modules/OS/OSAL/src/GetEvent.c ****  *
+   8:Modules/OS/OSAL/src/GetEvent.c ****  * Redistribution and use in source and binary forms, with or without
+   9:Modules/OS/OSAL/src/GetEvent.c ****  * modification, are permitted provided that the following conditions are met:
+  10:Modules/OS/OSAL/src/GetEvent.c ****  *
+  11:Modules/OS/OSAL/src/GetEvent.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  12:Modules/OS/OSAL/src/GetEvent.c ****  *    this list of conditions and the following disclaimer.
+  13:Modules/OS/OSAL/src/GetEvent.c ****  *
+  14:Modules/OS/OSAL/src/GetEvent.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  15:Modules/OS/OSAL/src/GetEvent.c ****  *    this list of conditions and the following disclaimer in the documentation
+  16:Modules/OS/OSAL/src/GetEvent.c ****  *    and/or other materials provided with the distribution.
+  17:Modules/OS/OSAL/src/GetEvent.c ****  *
+  18:Modules/OS/OSAL/src/GetEvent.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  19:Modules/OS/OSAL/src/GetEvent.c ****  *    contributors may be used to endorse or promote products derived from this
+  20:Modules/OS/OSAL/src/GetEvent.c ****  *    software without specific prior written permission.
+  21:Modules/OS/OSAL/src/GetEvent.c ****  *
+  22:Modules/OS/OSAL/src/GetEvent.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Modules/OS/OSAL/src/GetEvent.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Modules/OS/OSAL/src/GetEvent.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  25:Modules/OS/OSAL/src/GetEvent.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  26:Modules/OS/OSAL/src/GetEvent.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  27:Modules/OS/OSAL/src/GetEvent.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  28:Modules/OS/OSAL/src/GetEvent.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  29:Modules/OS/OSAL/src/GetEvent.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  30:Modules/OS/OSAL/src/GetEvent.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  31:Modules/OS/OSAL/src/GetEvent.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  32:Modules/OS/OSAL/src/GetEvent.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  33:Modules/OS/OSAL/src/GetEvent.c ****  *
+  34:Modules/OS/OSAL/src/GetEvent.c ****  */
+  35:Modules/OS/OSAL/src/GetEvent.c **** 
+  36:Modules/OS/OSAL/src/GetEvent.c **** /** \brief FreeOSEK Os GetEvent Implementation File
+  37:Modules/OS/OSAL/src/GetEvent.c ****  **
+  38:Modules/OS/OSAL/src/GetEvent.c ****  ** This file implements the GetEvent API
+  39:Modules/OS/OSAL/src/GetEvent.c ****  **
+  40:Modules/OS/OSAL/src/GetEvent.c ****  ** \file GetEvent.c
+  41:Modules/OS/OSAL/src/GetEvent.c ****  **
+  42:Modules/OS/OSAL/src/GetEvent.c ****  **/
+  43:Modules/OS/OSAL/src/GetEvent.c **** 
+  44:Modules/OS/OSAL/src/GetEvent.c **** /** \addtogroup FreeOSEK
+  45:Modules/OS/OSAL/src/GetEvent.c ****  ** @{ */
+  46:Modules/OS/OSAL/src/GetEvent.c **** /** \addtogroup FreeOSEK_Os
+  47:Modules/OS/OSAL/src/GetEvent.c ****  ** @{ */
+  48:Modules/OS/OSAL/src/GetEvent.c **** /** \addtogroup FreeOSEK_Os_Global
+  49:Modules/OS/OSAL/src/GetEvent.c ****  ** @{ */
+  50:Modules/OS/OSAL/src/GetEvent.c **** 
+  51:Modules/OS/OSAL/src/GetEvent.c **** /*
+  52:Modules/OS/OSAL/src/GetEvent.c ****  * Initials     Name
+  53:Modules/OS/OSAL/src/GetEvent.c ****  * ---------------------------
+  54:Modules/OS/OSAL/src/GetEvent.c ****  * MaCe         Mariano Cerdeiro
+  55:Modules/OS/OSAL/src/GetEvent.c ****  * KLi          Kang Li
+  56:Modules/OS/OSAL/src/GetEvent.c ****  */
+  57:Modules/OS/OSAL/src/GetEvent.c **** 
+  58:Modules/OS/OSAL/src/GetEvent.c **** /*
+  59:Modules/OS/OSAL/src/GetEvent.c ****  * modification history (new versions first)
+  60:Modules/OS/OSAL/src/GetEvent.c ****  * -----------------------------------------------------------
+  61:Modules/OS/OSAL/src/GetEvent.c ****  * 20090330 v0.1.3 MaCe add NO_EVENTS evaluation
+  62:Modules/OS/OSAL/src/GetEvent.c ****  * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
+  63:Modules/OS/OSAL/src/GetEvent.c ****  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+  64:Modules/OS/OSAL/src/GetEvent.c ****  * 20080814 v0.1.0 MaCe	initial version
+  65:Modules/OS/OSAL/src/GetEvent.c ****  */
+  66:Modules/OS/OSAL/src/GetEvent.c **** 
+  67:Modules/OS/OSAL/src/GetEvent.c **** /*==================[inclusions]=============================================*/
+  68:Modules/OS/OSAL/src/GetEvent.c **** #include "Os_Internal.h"
+  69:Modules/OS/OSAL/src/GetEvent.c **** 
+  70:Modules/OS/OSAL/src/GetEvent.c **** /*==================[macros and definitions]=================================*/
+  71:Modules/OS/OSAL/src/GetEvent.c **** 
+  72:Modules/OS/OSAL/src/GetEvent.c **** /*==================[internal data declaration]==============================*/
+  73:Modules/OS/OSAL/src/GetEvent.c **** 
+  74:Modules/OS/OSAL/src/GetEvent.c **** /*==================[internal functions declaration]=========================*/
+  75:Modules/OS/OSAL/src/GetEvent.c **** 
+  76:Modules/OS/OSAL/src/GetEvent.c **** /*==================[internal data definition]===============================*/
+  77:Modules/OS/OSAL/src/GetEvent.c **** 
+  78:Modules/OS/OSAL/src/GetEvent.c **** /*==================[external data definition]===============================*/
+  79:Modules/OS/OSAL/src/GetEvent.c **** 
+  80:Modules/OS/OSAL/src/GetEvent.c **** /*==================[internal functions definition]==========================*/
+  81:Modules/OS/OSAL/src/GetEvent.c **** 
+  82:Modules/OS/OSAL/src/GetEvent.c **** /*==================[external functions definition]==========================*/
+  83:Modules/OS/OSAL/src/GetEvent.c **** #if (NO_EVENTS == OSEK_DISABLE)
+  84:Modules/OS/OSAL/src/GetEvent.c **** StatusType GetEvent
+  85:Modules/OS/OSAL/src/GetEvent.c **** (
+  86:Modules/OS/OSAL/src/GetEvent.c **** 	TaskType TaskID,
+  87:Modules/OS/OSAL/src/GetEvent.c **** 	EventMaskRefType Event
+  88:Modules/OS/OSAL/src/GetEvent.c **** )
+  89:Modules/OS/OSAL/src/GetEvent.c **** {
+  29              		.loc 1 89 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 16
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 00B5     		push	{lr}
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 14, -4
+  36 0002 85B0     		sub	sp, sp, #20
+  37              		.cfi_def_cfa_offset 24
+  38 0004 0346     		mov	r3, r0
+  39 0006 0091     		str	r1, [sp]
+  40 0008 8DF80730 		strb	r3, [sp, #7]
+  90:Modules/OS/OSAL/src/GetEvent.c **** 	/* \req OSEK_SYS_3.17 The system service StatusType
+  91:Modules/OS/OSAL/src/GetEvent.c **** 	 ** GetEvent ( TaskType TaskID, EventMaskRefType Event ) shall be defined*/
+  92:Modules/OS/OSAL/src/GetEvent.c **** 
+  93:Modules/OS/OSAL/src/GetEvent.c **** 	/* \req OSEK_SYS_3.17.3 Possible return values in Standard mode is E_OK */
+  94:Modules/OS/OSAL/src/GetEvent.c **** 	StatusType ret = E_OK;
+  41              		.loc 1 94 13
+  42 000c 0023     		movs	r3, #0
+  43 000e 8DF80F30 		strb	r3, [sp, #15]
+  95:Modules/OS/OSAL/src/GetEvent.c **** 
+  96:Modules/OS/OSAL/src/GetEvent.c **** #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+  97:Modules/OS/OSAL/src/GetEvent.c **** 	if ( TaskID >= TASKS_COUNT )
+  44              		.loc 1 97 5
+  45 0012 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+  46 0016 032B     		cmp	r3, #3
+  47 0018 03D9     		bls	.L2
+  98:Modules/OS/OSAL/src/GetEvent.c **** 	{
+  99:Modules/OS/OSAL/src/GetEvent.c **** 		/* \req OSEK_SYS_3.17.4-1/3 Extra possible return values in Extended mode are
+ 100:Modules/OS/OSAL/src/GetEvent.c **** 		 ** E_OS_ID, E_OS_ACCESS, E_OS_STATE */
+ 101:Modules/OS/OSAL/src/GetEvent.c **** 		ret = E_OS_ID;
+  48              		.loc 1 101 7
+  49 001a 0323     		movs	r3, #3
+  50 001c 8DF80F30 		strb	r3, [sp, #15]
+  51 0020 30E0     		b	.L3
+  52              	.L2:
+ 102:Modules/OS/OSAL/src/GetEvent.c **** 	}
+ 103:Modules/OS/OSAL/src/GetEvent.c **** 	else if ( !TasksConst[TaskID].ConstFlags.Extended )
+  53              		.loc 1 103 42
+  54 0022 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+  55 0026 2949     		ldr	r1, .L8
+  56 0028 1346     		mov	r3, r2
+  57 002a DB00     		lsls	r3, r3, #3
+  58 002c 9B1A     		subs	r3, r3, r2
+  59 002e 9B00     		lsls	r3, r3, #2
+  60 0030 0B44     		add	r3, r3, r1
+  61 0032 1033     		adds	r3, r3, #16
+  62 0034 1B78     		ldrb	r3, [r3]
+  63 0036 C3F30003 		ubfx	r3, r3, #0, #1
+  64 003a DBB2     		uxtb	r3, r3
+  65              		.loc 1 103 10
+  66 003c 002B     		cmp	r3, #0
+  67 003e 03D1     		bne	.L4
+ 104:Modules/OS/OSAL/src/GetEvent.c **** 	{
+ 105:Modules/OS/OSAL/src/GetEvent.c **** 		/* \req OSEK_SYS_3.17.4-2/3 Extra possible return values in Extended mode are
+ 106:Modules/OS/OSAL/src/GetEvent.c **** 		 ** E_OS_ID, E_OS_ACCESS, E_OS_STATE */
+ 107:Modules/OS/OSAL/src/GetEvent.c **** 		ret = E_OS_ACCESS;
+  68              		.loc 1 107 7
+  69 0040 0123     		movs	r3, #1
+  70 0042 8DF80F30 		strb	r3, [sp, #15]
+  71 0046 1DE0     		b	.L3
+  72              	.L4:
+ 108:Modules/OS/OSAL/src/GetEvent.c **** 	}
+ 109:Modules/OS/OSAL/src/GetEvent.c **** 	else if ( TasksVar[TaskID].Flags.State == TASK_ST_SUSPENDED )
+  73              		.loc 1 109 34
+  74 0048 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+  75 004c 2049     		ldr	r1, .L8+4
+  76 004e 1346     		mov	r3, r2
+  77 0050 9B00     		lsls	r3, r3, #2
+  78 0052 1344     		add	r3, r3, r2
+  79 0054 9B00     		lsls	r3, r3, #2
+  80 0056 0B44     		add	r3, r3, r1
+  81 0058 1B79     		ldrb	r3, [r3, #4]
+  82 005a C3F38103 		ubfx	r3, r3, #2, #2
+  83 005e DBB2     		uxtb	r3, r3
+  84              		.loc 1 109 10
+  85 0060 002B     		cmp	r3, #0
+  86 0062 03D1     		bne	.L5
+ 110:Modules/OS/OSAL/src/GetEvent.c **** 	{
+ 111:Modules/OS/OSAL/src/GetEvent.c **** 		/* \req OSEK_SYS_3.17.4-3/3 Extra possible return values in Extended mode are
+ 112:Modules/OS/OSAL/src/GetEvent.c **** 		 ** E_OS_ID, E_OS_ACCESS, E_OS_STATE */
+ 113:Modules/OS/OSAL/src/GetEvent.c **** 		ret = E_OS_STATE;
+  87              		.loc 1 113 7
+  88 0064 0723     		movs	r3, #7
+  89 0066 8DF80F30 		strb	r3, [sp, #15]
+  90 006a 0BE0     		b	.L3
+  91              	.L5:
+ 114:Modules/OS/OSAL/src/GetEvent.c **** 	}
+ 115:Modules/OS/OSAL/src/GetEvent.c **** 	else
+ 116:Modules/OS/OSAL/src/GetEvent.c **** #endif
+ 117:Modules/OS/OSAL/src/GetEvent.c **** 	{
+ 118:Modules/OS/OSAL/src/GetEvent.c **** 		/* \req OSEK_SYS_3.17.1 This service shall return the current state of
+ 119:Modules/OS/OSAL/src/GetEvent.c **** 		 ** all event bits of the task TaskID, not the events that the task is
+ 120:Modules/OS/OSAL/src/GetEvent.c **** 		 ** waiting for */
+ 121:Modules/OS/OSAL/src/GetEvent.c **** 		/* \req OSEK_SYS_3.17.2 The current status of the event mask of task
+ 122:Modules/OS/OSAL/src/GetEvent.c **** 		 ** TaskID shall be copied to Event */
+ 123:Modules/OS/OSAL/src/GetEvent.c **** 		*Event = TasksVar[TaskID].Events;
+  92              		.loc 1 123 28
+  93 006c 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+  94 0070 1749     		ldr	r1, .L8+4
+  95 0072 1346     		mov	r3, r2
+  96 0074 9B00     		lsls	r3, r3, #2
+  97 0076 1344     		add	r3, r3, r2
+  98 0078 9B00     		lsls	r3, r3, #2
+  99 007a 0B44     		add	r3, r3, r1
+ 100 007c 0833     		adds	r3, r3, #8
+ 101 007e 1A68     		ldr	r2, [r3]
+ 102              		.loc 1 123 10
+ 103 0080 009B     		ldr	r3, [sp]
+ 104 0082 1A60     		str	r2, [r3]
+ 105              	.L3:
+ 124:Modules/OS/OSAL/src/GetEvent.c **** 	}
+ 125:Modules/OS/OSAL/src/GetEvent.c **** 
+ 126:Modules/OS/OSAL/src/GetEvent.c **** #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
+ 127:Modules/OS/OSAL/src/GetEvent.c **** 		(HOOK_ERRORHOOK == OSEK_ENABLE) )
+ 128:Modules/OS/OSAL/src/GetEvent.c **** 	/* \req OSEK_ERR_1.3-10/xx The ErrorHook hook routine shall be called if a
+ 129:Modules/OS/OSAL/src/GetEvent.c **** 	 ** system service returns a StatusType value not equal to E_OK.*/
+ 130:Modules/OS/OSAL/src/GetEvent.c **** 	/* \req OSEK_ERR_1.3.1-10/xx The hook routine ErrorHook is not called if a
+ 131:Modules/OS/OSAL/src/GetEvent.c **** 	 ** system service is called from the ErrorHook itself. */
+ 132:Modules/OS/OSAL/src/GetEvent.c ****    if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
+ 106              		.loc 1 132 7
+ 107 0084 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 108 0088 002B     		cmp	r3, #0
+ 109 008a 19D0     		beq	.L6
+ 110              		.loc 1 132 46 discriminator 1
+ 111 008c 114B     		ldr	r3, .L8+8
+ 112 008e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 113              		.loc 1 132 25 discriminator 1
+ 114 0090 012B     		cmp	r3, #1
+ 115 0092 15D0     		beq	.L6
+ 133:Modules/OS/OSAL/src/GetEvent.c **** 	{
+ 134:Modules/OS/OSAL/src/GetEvent.c **** 		SetError_Api(OSServiceId_SetEvent);
+ 116              		.loc 1 134 3
+ 117 0094 104B     		ldr	r3, .L8+12
+ 118 0096 0F22     		movs	r2, #15
+ 119 0098 1A60     		str	r2, [r3]
+ 135:Modules/OS/OSAL/src/GetEvent.c **** 		SetError_Param1(TaskID);
+ 120              		.loc 1 135 3
+ 121 009a 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 122 009e 0F4A     		ldr	r2, .L8+16
+ 123 00a0 1360     		str	r3, [r2]
+ 136:Modules/OS/OSAL/src/GetEvent.c **** 		SetError_Param2((size_t)Event);
+ 124              		.loc 1 136 3
+ 125 00a2 009B     		ldr	r3, [sp]
+ 126 00a4 0E4A     		ldr	r2, .L8+20
+ 127 00a6 1360     		str	r3, [r2]
+ 137:Modules/OS/OSAL/src/GetEvent.c **** 		SetError_Ret(ret);
+ 128              		.loc 1 137 3
+ 129 00a8 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 130 00ac 0D4A     		ldr	r2, .L8+24
+ 131 00ae 1360     		str	r3, [r2]
+ 138:Modules/OS/OSAL/src/GetEvent.c **** 		SetError_Msg("ActivateTask returns != than E_OK");
+ 139:Modules/OS/OSAL/src/GetEvent.c **** 		SetError_ErrorHook();
+ 132              		.loc 1 139 3
+ 133 00b0 084B     		ldr	r3, .L8+8
+ 134 00b2 0122     		movs	r2, #1
+ 135 00b4 1A70     		strb	r2, [r3]
+ 136 00b6 FFF7FEFF 		bl	ErrorHook
+ 137 00ba 064B     		ldr	r3, .L8+8
+ 138 00bc 0022     		movs	r2, #0
+ 139 00be 1A70     		strb	r2, [r3]
+ 140              	.L6:
+ 140:Modules/OS/OSAL/src/GetEvent.c **** 	}
+ 141:Modules/OS/OSAL/src/GetEvent.c **** #endif
+ 142:Modules/OS/OSAL/src/GetEvent.c **** 
+ 143:Modules/OS/OSAL/src/GetEvent.c **** 	return ret;
+ 141              		.loc 1 143 9
+ 142 00c0 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 144:Modules/OS/OSAL/src/GetEvent.c **** }
+ 143              		.loc 1 144 1
+ 144 00c4 1846     		mov	r0, r3
+ 145 00c6 05B0     		add	sp, sp, #20
+ 146              		.cfi_def_cfa_offset 4
+ 147              		@ sp needed
+ 148 00c8 5DF804FB 		ldr	pc, [sp], #4
+ 149              	.L9:
+ 150              		.align	2
+ 151              	.L8:
+ 152 00cc 00000000 		.word	TasksConst
+ 153 00d0 00000000 		.word	TasksVar
+ 154 00d4 00000000 		.word	ErrorHookRunning
+ 155 00d8 00000000 		.word	Osek_ErrorApi
+ 156 00dc 00000000 		.word	Osek_ErrorParam1
+ 157 00e0 00000000 		.word	Osek_ErrorParam2
+ 158 00e4 00000000 		.word	Osek_ErrorRet
+ 159              		.cfi_endproc
+ 160              	.LFE0:
+ 162              		.text
+ 163              	.Letext0:
+ 164              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 165              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 166              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Types.h"
+ 167              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Cfg.h"
+ 168              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 169              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+ 170              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 171              		.file 9 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+DEFINED SYMBOLS
+                            *ABS*:00000000 GetEvent.c
+C:\Users\AAA\AppData\Local\Temp\ccKt2kfk.s:19     .text.GetEvent:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccKt2kfk.s:26     .text.GetEvent:00000000 GetEvent
+C:\Users\AAA\AppData\Local\Temp\ccKt2kfk.s:152    .text.GetEvent:000000cc $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+UNDEFINED SYMBOLS
+ErrorHook
+TasksConst
+TasksVar
+ErrorHookRunning
+Osek_ErrorApi
+Osek_ErrorParam1
+Osek_ErrorParam2
+Osek_ErrorRet

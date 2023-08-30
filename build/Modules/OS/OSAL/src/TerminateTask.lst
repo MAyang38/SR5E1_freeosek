@@ -1,0 +1,470 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"TerminateTask.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.TerminateTask,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	TerminateTask
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	TerminateTask:
+  27              	.LFB0:
+  28              		.file 1 "Modules/OS/OSAL/src/TerminateTask.c"
+   1:Modules/OS/OSAL/src/TerminateTask.c **** /* Copyright 2008, 2009 Mariano Cerdeiro
+   2:Modules/OS/OSAL/src/TerminateTask.c ****  * Copyright 2014, ACSE & CADIEEL
+   3:Modules/OS/OSAL/src/TerminateTask.c ****  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+   4:Modules/OS/OSAL/src/TerminateTask.c ****  *      CADIEEL: http://www.cadieel.org.ar
+   5:Modules/OS/OSAL/src/TerminateTask.c ****  *
+   6:Modules/OS/OSAL/src/TerminateTask.c ****  * This file is part of CIAA Firmware.
+   7:Modules/OS/OSAL/src/TerminateTask.c ****  *
+   8:Modules/OS/OSAL/src/TerminateTask.c ****  * Redistribution and use in source and binary forms, with or without
+   9:Modules/OS/OSAL/src/TerminateTask.c ****  * modification, are permitted provided that the following conditions are met:
+  10:Modules/OS/OSAL/src/TerminateTask.c ****  *
+  11:Modules/OS/OSAL/src/TerminateTask.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  12:Modules/OS/OSAL/src/TerminateTask.c ****  *    this list of conditions and the following disclaimer.
+  13:Modules/OS/OSAL/src/TerminateTask.c ****  *
+  14:Modules/OS/OSAL/src/TerminateTask.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  15:Modules/OS/OSAL/src/TerminateTask.c ****  *    this list of conditions and the following disclaimer in the documentation
+  16:Modules/OS/OSAL/src/TerminateTask.c ****  *    and/or other materials provided with the distribution.
+  17:Modules/OS/OSAL/src/TerminateTask.c ****  *
+  18:Modules/OS/OSAL/src/TerminateTask.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  19:Modules/OS/OSAL/src/TerminateTask.c ****  *    contributors may be used to endorse or promote products derived from this
+  20:Modules/OS/OSAL/src/TerminateTask.c ****  *    software without specific prior written permission.
+  21:Modules/OS/OSAL/src/TerminateTask.c ****  *
+  22:Modules/OS/OSAL/src/TerminateTask.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Modules/OS/OSAL/src/TerminateTask.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Modules/OS/OSAL/src/TerminateTask.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  25:Modules/OS/OSAL/src/TerminateTask.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  26:Modules/OS/OSAL/src/TerminateTask.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  27:Modules/OS/OSAL/src/TerminateTask.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  28:Modules/OS/OSAL/src/TerminateTask.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  29:Modules/OS/OSAL/src/TerminateTask.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  30:Modules/OS/OSAL/src/TerminateTask.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  31:Modules/OS/OSAL/src/TerminateTask.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  32:Modules/OS/OSAL/src/TerminateTask.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  33:Modules/OS/OSAL/src/TerminateTask.c ****  *
+  34:Modules/OS/OSAL/src/TerminateTask.c ****  */
+  35:Modules/OS/OSAL/src/TerminateTask.c **** 
+  36:Modules/OS/OSAL/src/TerminateTask.c **** /** \brief FreeOSEK Os TerminateTask Implementation File
+  37:Modules/OS/OSAL/src/TerminateTask.c ****  **
+  38:Modules/OS/OSAL/src/TerminateTask.c ****  ** This file implements the TerminateTask API
+  39:Modules/OS/OSAL/src/TerminateTask.c ****  **
+  40:Modules/OS/OSAL/src/TerminateTask.c ****  ** \file TerminateTask.c
+  41:Modules/OS/OSAL/src/TerminateTask.c ****  **
+  42:Modules/OS/OSAL/src/TerminateTask.c ****  **/
+  43:Modules/OS/OSAL/src/TerminateTask.c **** 
+  44:Modules/OS/OSAL/src/TerminateTask.c **** /** \addtogroup FreeOSEK
+  45:Modules/OS/OSAL/src/TerminateTask.c ****  ** @{ */
+  46:Modules/OS/OSAL/src/TerminateTask.c **** /** \addtogroup FreeOSEK_Os
+  47:Modules/OS/OSAL/src/TerminateTask.c ****  ** @{ */
+  48:Modules/OS/OSAL/src/TerminateTask.c **** /** \addtogroup FreeOSEK_Os_Global
+  49:Modules/OS/OSAL/src/TerminateTask.c ****  ** @{ */
+  50:Modules/OS/OSAL/src/TerminateTask.c **** 
+  51:Modules/OS/OSAL/src/TerminateTask.c **** /*
+  52:Modules/OS/OSAL/src/TerminateTask.c ****  * Initials     Name
+  53:Modules/OS/OSAL/src/TerminateTask.c ****  * ---------------------------
+  54:Modules/OS/OSAL/src/TerminateTask.c ****  * MaCe         Mariano Cerdeiro
+  55:Modules/OS/OSAL/src/TerminateTask.c ****  * KLi          Kang Li
+  56:Modules/OS/OSAL/src/TerminateTask.c ****  */
+  57:Modules/OS/OSAL/src/TerminateTask.c **** 
+  58:Modules/OS/OSAL/src/TerminateTask.c **** /*
+  59:Modules/OS/OSAL/src/TerminateTask.c ****  * modification history (new versions first)
+  60:Modules/OS/OSAL/src/TerminateTask.c ****  * -----------------------------------------------------------
+  61:Modules/OS/OSAL/src/TerminateTask.c ****  * 20090418 v0.1.7 MaCe add PostTaskHook handling
+  62:Modules/OS/OSAL/src/TerminateTask.c ****  * 20090417 v0.1.6 MaCe update license
+  63:Modules/OS/OSAL/src/TerminateTask.c ****  * 20090406 v0.1.5 MaCe add support to RES_SCHEDULER
+  64:Modules/OS/OSAL/src/TerminateTask.c ****  * 20090330 v0.1.4 MaCe set system context when terminate task
+  65:Modules/OS/OSAL/src/TerminateTask.c ****  * 20090130 v0.1.3 MaCe add OSEK_MEMMAP check
+  66:Modules/OS/OSAL/src/TerminateTask.c ****  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+  67:Modules/OS/OSAL/src/TerminateTask.c ****  * 20080810 v0.1.0 MaCe initial version
+  68:Modules/OS/OSAL/src/TerminateTask.c ****  */
+  69:Modules/OS/OSAL/src/TerminateTask.c **** 
+  70:Modules/OS/OSAL/src/TerminateTask.c **** /*==================[inclusions]=============================================*/
+  71:Modules/OS/OSAL/src/TerminateTask.c **** #include "Os_Internal.h"
+  72:Modules/OS/OSAL/src/TerminateTask.c **** 
+  73:Modules/OS/OSAL/src/TerminateTask.c **** /*==================[macros and definitions]=================================*/
+  74:Modules/OS/OSAL/src/TerminateTask.c **** 
+  75:Modules/OS/OSAL/src/TerminateTask.c **** /*==================[internal data declaration]==============================*/
+  76:Modules/OS/OSAL/src/TerminateTask.c **** 
+  77:Modules/OS/OSAL/src/TerminateTask.c **** /*==================[internal functions declaration]=========================*/
+  78:Modules/OS/OSAL/src/TerminateTask.c **** 
+  79:Modules/OS/OSAL/src/TerminateTask.c **** /*==================[internal data definition]===============================*/
+  80:Modules/OS/OSAL/src/TerminateTask.c **** 
+  81:Modules/OS/OSAL/src/TerminateTask.c **** /*==================[external data definition]===============================*/
+  82:Modules/OS/OSAL/src/TerminateTask.c **** 
+  83:Modules/OS/OSAL/src/TerminateTask.c **** /*==================[internal functions definition]==========================*/
+  84:Modules/OS/OSAL/src/TerminateTask.c **** 
+  85:Modules/OS/OSAL/src/TerminateTask.c **** /*==================[external functions definition]==========================*/
+  86:Modules/OS/OSAL/src/TerminateTask.c **** StatusType TerminateTask
+  87:Modules/OS/OSAL/src/TerminateTask.c **** (
+  88:Modules/OS/OSAL/src/TerminateTask.c **** 	void
+  89:Modules/OS/OSAL/src/TerminateTask.c **** )
+  90:Modules/OS/OSAL/src/TerminateTask.c **** {
+  29              		.loc 1 90 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 8
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 00B5     		push	{lr}
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 14, -4
+  36 0002 83B0     		sub	sp, sp, #12
+  37              		.cfi_def_cfa_offset 16
+  91:Modules/OS/OSAL/src/TerminateTask.c **** 	/* \req OSEK_SYS_3.2 The system service StatusType TerminateTask ( void )
+  92:Modules/OS/OSAL/src/TerminateTask.c **** 	 ** shall be defined. */
+  93:Modules/OS/OSAL/src/TerminateTask.c **** 
+  94:Modules/OS/OSAL/src/TerminateTask.c **** 	StatusType ret = E_OK;
+  38              		.loc 1 94 13
+  39 0004 0023     		movs	r3, #0
+  40 0006 8DF80730 		strb	r3, [sp, #7]
+  95:Modules/OS/OSAL/src/TerminateTask.c **** 
+  96:Modules/OS/OSAL/src/TerminateTask.c **** 	/* \req OSEK_SYS_3.2.4 If the version with extended status is used, the
+  97:Modules/OS/OSAL/src/TerminateTask.c **** 	 ** service returns in case of error, and provides a status which can be
+  98:Modules/OS/OSAL/src/TerminateTask.c **** 	 ** evaluated in the application. */
+  99:Modules/OS/OSAL/src/TerminateTask.c **** #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+ 100:Modules/OS/OSAL/src/TerminateTask.c **** 	if ( GetCallingContext() != CONTEXT_TASK )
+  41              		.loc 1 100 27
+  42 000a 484B     		ldr	r3, .L9
+  43 000c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  44              		.loc 1 100 5
+  45 000e 012B     		cmp	r3, #1
+  46 0010 03D0     		beq	.L2
+ 101:Modules/OS/OSAL/src/TerminateTask.c **** 	{
+ 102:Modules/OS/OSAL/src/TerminateTask.c **** 		/* \req OSEK_SYS_3.2.7-1/2 Possibly return values in Extended mode are
+ 103:Modules/OS/OSAL/src/TerminateTask.c **** 		 ** E_OS_RESOURCE or E_OS_CALLEVEL */
+ 104:Modules/OS/OSAL/src/TerminateTask.c **** 		ret = E_OS_CALLEVEL;
+  47              		.loc 1 104 7
+  48 0012 0223     		movs	r3, #2
+  49 0014 8DF80730 		strb	r3, [sp, #7]
+  50 0018 6BE0     		b	.L3
+  51              	.L2:
+ 105:Modules/OS/OSAL/src/TerminateTask.c **** 	}
+ 106:Modules/OS/OSAL/src/TerminateTask.c **** 
+ 107:Modules/OS/OSAL/src/TerminateTask.c **** #if ( (RESOURCES_COUNT != 0) || (NO_RES_SCHEDULER == OSEK_DISABLE) )
+ 108:Modules/OS/OSAL/src/TerminateTask.c **** 	/* check if on or more resources are ocupied */
+ 109:Modules/OS/OSAL/src/TerminateTask.c **** 	else if (
+ 110:Modules/OS/OSAL/src/TerminateTask.c **** #if (RESOURCES_COUNT != 0)
+ 111:Modules/OS/OSAL/src/TerminateTask.c **** 				 ( TasksVar[GetRunningTask()].Resources != 0 )
+ 112:Modules/OS/OSAL/src/TerminateTask.c **** #endif /* #if (RESOURCES_COUNT != 0) */
+ 113:Modules/OS/OSAL/src/TerminateTask.c **** #if ( (RESOURCES_COUNT != 0) && (NO_RES_SCHEDULER == OSEK_DISABLE) )
+ 114:Modules/OS/OSAL/src/TerminateTask.c **** 					||
+ 115:Modules/OS/OSAL/src/TerminateTask.c **** #endif /* #if ( (RESOURCES_COUNT != 0) && (NO_RES_SCHEDULER == OSEK_DISABLE) ) */
+ 116:Modules/OS/OSAL/src/TerminateTask.c **** #if (NO_RES_SCHEDULER == OSEK_DISABLE)
+ 117:Modules/OS/OSAL/src/TerminateTask.c **** 				 ( TasksVar[GetRunningTask()].ActualPriority == TASK_MAX_PRIORITY )
+ 118:Modules/OS/OSAL/src/TerminateTask.c **** #endif /* #if (NO_RES_SCHEDULER == OSEK_DISABLE) */
+ 119:Modules/OS/OSAL/src/TerminateTask.c **** 			  )
+ 120:Modules/OS/OSAL/src/TerminateTask.c **** 	{
+ 121:Modules/OS/OSAL/src/TerminateTask.c **** 		/* \req OSEK_SYS_3.2.7-2/2 Possibly return values in Extended mode are
+ 122:Modules/OS/OSAL/src/TerminateTask.c **** 		 ** E_OS_RESOURCE or E_OS_CALLEVEL */
+ 123:Modules/OS/OSAL/src/TerminateTask.c **** 		ret = E_OS_RESOURCE;
+ 124:Modules/OS/OSAL/src/TerminateTask.c **** 	}
+ 125:Modules/OS/OSAL/src/TerminateTask.c **** #endif /* #if ( (RESOURCES_COUNT != 0) || (NO_RES_SCHEDULER == OSEK_DISABLE) ) */
+ 126:Modules/OS/OSAL/src/TerminateTask.c **** 	else
+ 127:Modules/OS/OSAL/src/TerminateTask.c **** #endif /* #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) */
+ 128:Modules/OS/OSAL/src/TerminateTask.c **** 	{
+ 129:Modules/OS/OSAL/src/TerminateTask.c **** 
+ 130:Modules/OS/OSAL/src/TerminateTask.c **** #if (HOOK_POSTTASKHOOK == OSEK_ENABLE)
+ 131:Modules/OS/OSAL/src/TerminateTask.c **** 		PostTaskHook();
+ 132:Modules/OS/OSAL/src/TerminateTask.c **** #endif /* #if (HOOK_POSTTASKHOOK == OSEK_ENABLE) */
+ 133:Modules/OS/OSAL/src/TerminateTask.c **** 
+ 134:Modules/OS/OSAL/src/TerminateTask.c **** 		IntSecure_Start();
+  52              		.loc 1 134 3
+  53 001a 454B     		ldr	r3, .L9+4
+  54 001c 93F90030 		ldrsb	r3, [r3]
+  55 0020 DBB2     		uxtb	r3, r3
+  56 0022 0133     		adds	r3, r3, #1
+  57 0024 DBB2     		uxtb	r3, r3
+  58 0026 5AB2     		sxtb	r2, r3
+  59 0028 414B     		ldr	r3, .L9+4
+  60 002a 1A70     		strb	r2, [r3]
+  61              		.syntax unified
+  62              	@ 134 "Modules/OS/OSAL/src/TerminateTask.c" 1
+  63 002c 72B6     		cpsid i
+  64              	@ 0 "" 2
+ 135:Modules/OS/OSAL/src/TerminateTask.c **** 
+ 136:Modules/OS/OSAL/src/TerminateTask.c **** 		/* release internal resources */
+ 137:Modules/OS/OSAL/src/TerminateTask.c **** 		/* \req OSEK_SYS_3.2.2 If an internal resource is assigned to the calling
+ 138:Modules/OS/OSAL/src/TerminateTask.c **** 		 ** task, it is automatically released. */
+ 139:Modules/OS/OSAL/src/TerminateTask.c **** 		ReleaseInternalResources();
+ 140:Modules/OS/OSAL/src/TerminateTask.c **** 
+ 141:Modules/OS/OSAL/src/TerminateTask.c **** 		/* decrement activations for this task */
+ 142:Modules/OS/OSAL/src/TerminateTask.c **** 		TasksVar[GetRunningTask()].Activations--;
+  65              		.loc 1 142 29
+  66              		.thumb
+  67              		.syntax unified
+  68 002e 414B     		ldr	r3, .L9+8
+  69 0030 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  70 0032 1A46     		mov	r2, r3
+  71 0034 4049     		ldr	r1, .L9+12
+  72 0036 1346     		mov	r3, r2
+  73 0038 9B00     		lsls	r3, r3, #2
+  74 003a 1344     		add	r3, r3, r2
+  75 003c 9B00     		lsls	r3, r3, #2
+  76 003e 0B44     		add	r3, r3, r1
+  77 0040 0133     		adds	r3, r3, #1
+  78 0042 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  79              		.loc 1 142 41
+  80 0044 013B     		subs	r3, r3, #1
+  81 0046 D8B2     		uxtb	r0, r3
+  82 0048 3B49     		ldr	r1, .L9+12
+  83 004a 1346     		mov	r3, r2
+  84 004c 9B00     		lsls	r3, r3, #2
+  85 004e 1344     		add	r3, r3, r2
+  86 0050 9B00     		lsls	r3, r3, #2
+  87 0052 0B44     		add	r3, r3, r1
+  88 0054 0133     		adds	r3, r3, #1
+  89 0056 0246     		mov	r2, r0
+  90 0058 1A70     		strb	r2, [r3]
+ 143:Modules/OS/OSAL/src/TerminateTask.c **** 
+ 144:Modules/OS/OSAL/src/TerminateTask.c **** 		if (TasksVar[GetRunningTask()].Activations == 0)
+  91              		.loc 1 144 33
+  92 005a 364B     		ldr	r3, .L9+8
+  93 005c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  94 005e 1946     		mov	r1, r3
+  95 0060 354A     		ldr	r2, .L9+12
+  96 0062 0B46     		mov	r3, r1
+  97 0064 9B00     		lsls	r3, r3, #2
+  98 0066 0B44     		add	r3, r3, r1
+  99 0068 9B00     		lsls	r3, r3, #2
+ 100 006a 1344     		add	r3, r3, r2
+ 101 006c 0133     		adds	r3, r3, #1
+ 102 006e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 103              		.loc 1 144 6
+ 104 0070 002B     		cmp	r3, #0
+ 105 0072 0DD1     		bne	.L4
+ 145:Modules/OS/OSAL/src/TerminateTask.c **** 		{
+ 146:Modules/OS/OSAL/src/TerminateTask.c **** 			/* if no more activations set state to suspended */
+ 147:Modules/OS/OSAL/src/TerminateTask.c **** 			/* \req OSEK_SYS_3.2.1 The calling task shall be transferred from the
+ 148:Modules/OS/OSAL/src/TerminateTask.c **** 			 ** running state into the suspended state. */
+ 149:Modules/OS/OSAL/src/TerminateTask.c **** 			TasksVar[GetRunningTask()].Flags.State = TASK_ST_SUSPENDED;
+ 106              		.loc 1 149 36
+ 107 0074 2F4B     		ldr	r3, .L9+8
+ 108 0076 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 109 0078 1946     		mov	r1, r3
+ 110              		.loc 1 149 43
+ 111 007a 2F4A     		ldr	r2, .L9+12
+ 112 007c 0B46     		mov	r3, r1
+ 113 007e 9B00     		lsls	r3, r3, #2
+ 114 0080 0B44     		add	r3, r3, r1
+ 115 0082 9B00     		lsls	r3, r3, #2
+ 116 0084 1A44     		add	r2, r2, r3
+ 117 0086 1379     		ldrb	r3, [r2, #4]
+ 118 0088 6FF38303 		bfc	r3, #2, #2
+ 119 008c 1371     		strb	r3, [r2, #4]
+ 120 008e 0DE0     		b	.L5
+ 121              	.L4:
+ 150:Modules/OS/OSAL/src/TerminateTask.c **** 		}
+ 151:Modules/OS/OSAL/src/TerminateTask.c **** 		else
+ 152:Modules/OS/OSAL/src/TerminateTask.c **** 		{
+ 153:Modules/OS/OSAL/src/TerminateTask.c **** 			/* if more activations set state to ready */
+ 154:Modules/OS/OSAL/src/TerminateTask.c ****          TasksVar[GetRunningTask()].Flags.State = TASK_ST_READY;
+ 122              		.loc 1 154 42
+ 123 0090 284B     		ldr	r3, .L9+8
+ 124 0092 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 125 0094 1946     		mov	r1, r3
+ 126              		.loc 1 154 49
+ 127 0096 284A     		ldr	r2, .L9+12
+ 128 0098 0B46     		mov	r3, r1
+ 129 009a 9B00     		lsls	r3, r3, #2
+ 130 009c 0B44     		add	r3, r3, r1
+ 131 009e 9B00     		lsls	r3, r3, #2
+ 132 00a0 1A44     		add	r2, r2, r3
+ 133 00a2 1379     		ldrb	r3, [r2, #4]
+ 134 00a4 0121     		movs	r1, #1
+ 135 00a6 61F38303 		bfi	r3, r1, #2, #2
+ 136 00aa 1371     		strb	r3, [r2, #4]
+ 137              	.L5:
+ 155:Modules/OS/OSAL/src/TerminateTask.c **** 		}
+ 156:Modules/OS/OSAL/src/TerminateTask.c **** 
+ 157:Modules/OS/OSAL/src/TerminateTask.c **** 		/* set entry point for this task again */
+ 158:Modules/OS/OSAL/src/TerminateTask.c **** 		/* \req OSEK_SYS_3.1.2-3/3 The operating system shall ensure that the task
+ 159:Modules/OS/OSAL/src/TerminateTask.c **** 		 ** code is being executed from the first statement. */
+ 160:Modules/OS/OSAL/src/TerminateTask.c **** 		SetEntryPoint(GetRunningTask());
+ 138              		.loc 1 160 3
+ 139 00ac 214B     		ldr	r3, .L9+8
+ 140 00ae 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 141 00b0 224B     		ldr	r3, .L9+16
+ 142 00b2 1A70     		strb	r2, [r3]
+ 161:Modules/OS/OSAL/src/TerminateTask.c **** 		/* remove ready list */
+ 162:Modules/OS/OSAL/src/TerminateTask.c **** 		RemoveTask(GetRunningTask());
+ 143              		.loc 1 162 3
+ 144 00b4 1F4B     		ldr	r3, .L9+8
+ 145 00b6 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 146 00b8 1846     		mov	r0, r3
+ 147 00ba FFF7FEFF 		bl	RemoveTask
+ 163:Modules/OS/OSAL/src/TerminateTask.c **** 		/* set running task to invalid */
+ 164:Modules/OS/OSAL/src/TerminateTask.c **** 		SetRunningTask(INVALID_TASK);
+ 148              		.loc 1 164 3
+ 149 00be 1D4B     		ldr	r3, .L9+8
+ 150 00c0 FF22     		movs	r2, #255
+ 151 00c2 1A70     		strb	r2, [r3]
+ 165:Modules/OS/OSAL/src/TerminateTask.c **** 		/* set actual context SYS */
+ 166:Modules/OS/OSAL/src/TerminateTask.c **** 		SetActualContext(CONTEXT_SYS);
+ 152              		.loc 1 166 3
+ 153 00c4 194B     		ldr	r3, .L9
+ 154 00c6 0422     		movs	r2, #4
+ 155 00c8 1A70     		strb	r2, [r3]
+ 167:Modules/OS/OSAL/src/TerminateTask.c **** 
+ 168:Modules/OS/OSAL/src/TerminateTask.c **** 		IntSecure_End();
+ 156              		.loc 1 168 3
+ 157 00ca 194B     		ldr	r3, .L9+4
+ 158 00cc 93F90030 		ldrsb	r3, [r3]
+ 159 00d0 DBB2     		uxtb	r3, r3
+ 160 00d2 013B     		subs	r3, r3, #1
+ 161 00d4 DBB2     		uxtb	r3, r3
+ 162 00d6 5AB2     		sxtb	r2, r3
+ 163 00d8 154B     		ldr	r3, .L9+4
+ 164 00da 1A70     		strb	r2, [r3]
+ 165 00dc 144B     		ldr	r3, .L9+4
+ 166 00de 93F90030 		ldrsb	r3, [r3]
+ 167 00e2 002B     		cmp	r3, #0
+ 168 00e4 03DC     		bgt	.L6
+ 169              		.loc 1 168 3 is_stmt 0 discriminator 1
+ 170 00e6 124B     		ldr	r3, .L9+4
+ 171 00e8 0022     		movs	r2, #0
+ 172 00ea 1A70     		strb	r2, [r3]
+ 173              		.syntax unified
+ 174              	@ 168 "Modules/OS/OSAL/src/TerminateTask.c" 1
+ 175 00ec 62B6     		cpsie i
+ 176              	@ 0 "" 2
+ 177              		.thumb
+ 178              		.syntax unified
+ 179              	.L6:
+ 169:Modules/OS/OSAL/src/TerminateTask.c **** 
+ 170:Modules/OS/OSAL/src/TerminateTask.c **** 		/* call scheduler, never returns */
+ 171:Modules/OS/OSAL/src/TerminateTask.c **** 		/* \req OSEK_SYS_3.2.3 If the call was successful, TerminateTask does not
+ 172:Modules/OS/OSAL/src/TerminateTask.c **** 		 ** return to the call level and the status can not be evaluated. */
+ 173:Modules/OS/OSAL/src/TerminateTask.c **** 		/* \req OSEK_SYS_3.2.5 If the service TerminateTask is called
+ 174:Modules/OS/OSAL/src/TerminateTask.c **** 		 ** successfully, it enforces a rescheduling. */
+ 175:Modules/OS/OSAL/src/TerminateTask.c **** 		/* \req OSEK_SYS_3.2.6 This function will never returns in Standard
+ 176:Modules/OS/OSAL/src/TerminateTask.c **** 		 ** mode. */
+ 177:Modules/OS/OSAL/src/TerminateTask.c **** 		(void)Schedule();
+ 180              		.loc 1 177 9 is_stmt 1
+ 181 00ee FFF7FEFF 		bl	Schedule
+ 182              	.L3:
+ 178:Modules/OS/OSAL/src/TerminateTask.c **** 	}
+ 179:Modules/OS/OSAL/src/TerminateTask.c **** 
+ 180:Modules/OS/OSAL/src/TerminateTask.c **** #if (HOOK_ERRORHOOK == OSEK_ENABLE)
+ 181:Modules/OS/OSAL/src/TerminateTask.c **** 	/* \req OSEK_ERR_1.3-2/xx The ErrorHook hook routine shall be called if a
+ 182:Modules/OS/OSAL/src/TerminateTask.c **** 	 ** system service returns a StatusType value not equal to E_OK.*/
+ 183:Modules/OS/OSAL/src/TerminateTask.c **** 	/* \req OSEK_ERR_1.3.1-2/xx The hook routine ErrorHook is not called if a
+ 184:Modules/OS/OSAL/src/TerminateTask.c **** 	 ** system service is called from the ErrorHook itself. */
+ 185:Modules/OS/OSAL/src/TerminateTask.c **** 	if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
+ 183              		.loc 1 185 5
+ 184 00f2 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 185 00f6 002B     		cmp	r3, #0
+ 186 00f8 12D0     		beq	.L7
+ 187              		.loc 1 185 44 discriminator 1
+ 188 00fa 114B     		ldr	r3, .L9+20
+ 189 00fc 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 190              		.loc 1 185 23 discriminator 1
+ 191 00fe 012B     		cmp	r3, #1
+ 192 0100 0ED0     		beq	.L7
+ 186:Modules/OS/OSAL/src/TerminateTask.c **** 	{
+ 187:Modules/OS/OSAL/src/TerminateTask.c **** 		SetError_Api(OSServiceId_TerminateTask);
+ 193              		.loc 1 187 3
+ 194 0102 104B     		ldr	r3, .L9+24
+ 195 0104 0222     		movs	r2, #2
+ 196 0106 1A60     		str	r2, [r3]
+ 188:Modules/OS/OSAL/src/TerminateTask.c **** 		SetError_Ret(ret);
+ 197              		.loc 1 188 3
+ 198 0108 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 199 010c 0E4A     		ldr	r2, .L9+28
+ 200 010e 1360     		str	r3, [r2]
+ 189:Modules/OS/OSAL/src/TerminateTask.c **** 		SetError_Msg("Terminate Task returns != than E_OK");
+ 190:Modules/OS/OSAL/src/TerminateTask.c **** 		SetError_ErrorHook();
+ 201              		.loc 1 190 3
+ 202 0110 0B4B     		ldr	r3, .L9+20
+ 203 0112 0122     		movs	r2, #1
+ 204 0114 1A70     		strb	r2, [r3]
+ 205 0116 FFF7FEFF 		bl	ErrorHook
+ 206 011a 094B     		ldr	r3, .L9+20
+ 207 011c 0022     		movs	r2, #0
+ 208 011e 1A70     		strb	r2, [r3]
+ 209              	.L7:
+ 191:Modules/OS/OSAL/src/TerminateTask.c **** 	}
+ 192:Modules/OS/OSAL/src/TerminateTask.c **** #endif
+ 193:Modules/OS/OSAL/src/TerminateTask.c **** 
+ 194:Modules/OS/OSAL/src/TerminateTask.c **** 	return ret;
+ 210              		.loc 1 194 9
+ 211 0120 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 195:Modules/OS/OSAL/src/TerminateTask.c **** }
+ 212              		.loc 1 195 1
+ 213 0124 1846     		mov	r0, r3
+ 214 0126 03B0     		add	sp, sp, #12
+ 215              		.cfi_def_cfa_offset 4
+ 216              		@ sp needed
+ 217 0128 5DF804FB 		ldr	pc, [sp], #4
+ 218              	.L10:
+ 219              		.align	2
+ 220              	.L9:
+ 221 012c 00000000 		.word	ActualContext
+ 222 0130 00000000 		.word	SuspendAllInterrupts_Counter
+ 223 0134 00000000 		.word	RunningTask
+ 224 0138 00000000 		.word	TasksVar
+ 225 013c 00000000 		.word	TerminatingTask
+ 226 0140 00000000 		.word	ErrorHookRunning
+ 227 0144 00000000 		.word	Osek_ErrorApi
+ 228 0148 00000000 		.word	Osek_ErrorRet
+ 229              		.cfi_endproc
+ 230              	.LFE0:
+ 232              		.text
+ 233              	.Letext0:
+ 234              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 235              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 236              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Types.h"
+ 237              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Cfg.h"
+ 238              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+ 239              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 240              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 241              		.file 9 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os_intern
+DEFINED SYMBOLS
+                            *ABS*:00000000 TerminateTask.c
+C:\Users\AAA\AppData\Local\Temp\ccIUtVkh.s:19     .text.TerminateTask:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccIUtVkh.s:26     .text.TerminateTask:00000000 TerminateTask
+C:\Users\AAA\AppData\Local\Temp\ccIUtVkh.s:221    .text.TerminateTask:0000012c $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+UNDEFINED SYMBOLS
+RemoveTask
+Schedule
+ErrorHook
+ActualContext
+SuspendAllInterrupts_Counter
+RunningTask
+TasksVar
+TerminatingTask
+ErrorHookRunning
+Osek_ErrorApi
+Osek_ErrorRet

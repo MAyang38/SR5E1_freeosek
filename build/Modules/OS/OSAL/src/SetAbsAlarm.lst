@@ -1,0 +1,505 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"SetAbsAlarm.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.SetAbsAlarm,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	SetAbsAlarm
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	SetAbsAlarm:
+  27              	.LFB0:
+  28              		.file 1 "Modules/OS/OSAL/src/SetAbsAlarm.c"
+   1:Modules/OS/OSAL/src/SetAbsAlarm.c **** /* Copyright 2008, 2009 Mariano Cerdeiro
+   2:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * Copyright 2014, ACSE & CADIEEL
+   3:Modules/OS/OSAL/src/SetAbsAlarm.c ****  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+   4:Modules/OS/OSAL/src/SetAbsAlarm.c ****  *      CADIEEL: http://www.cadieel.org.ar
+   5:Modules/OS/OSAL/src/SetAbsAlarm.c ****  *
+   6:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * This file is part of CIAA Firmware.
+   7:Modules/OS/OSAL/src/SetAbsAlarm.c ****  *
+   8:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * Redistribution and use in source and binary forms, with or without
+   9:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * modification, are permitted provided that the following conditions are met:
+  10:Modules/OS/OSAL/src/SetAbsAlarm.c ****  *
+  11:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  12:Modules/OS/OSAL/src/SetAbsAlarm.c ****  *    this list of conditions and the following disclaimer.
+  13:Modules/OS/OSAL/src/SetAbsAlarm.c ****  *
+  14:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  15:Modules/OS/OSAL/src/SetAbsAlarm.c ****  *    this list of conditions and the following disclaimer in the documentation
+  16:Modules/OS/OSAL/src/SetAbsAlarm.c ****  *    and/or other materials provided with the distribution.
+  17:Modules/OS/OSAL/src/SetAbsAlarm.c ****  *
+  18:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  19:Modules/OS/OSAL/src/SetAbsAlarm.c ****  *    contributors may be used to endorse or promote products derived from this
+  20:Modules/OS/OSAL/src/SetAbsAlarm.c ****  *    software without specific prior written permission.
+  21:Modules/OS/OSAL/src/SetAbsAlarm.c ****  *
+  22:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  25:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  26:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  27:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  28:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  29:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  30:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  31:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  32:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  33:Modules/OS/OSAL/src/SetAbsAlarm.c ****  *
+  34:Modules/OS/OSAL/src/SetAbsAlarm.c ****  */
+  35:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+  36:Modules/OS/OSAL/src/SetAbsAlarm.c **** /** \brief FreeOSEK Os SetAbsAlarm Implementation File
+  37:Modules/OS/OSAL/src/SetAbsAlarm.c ****  **
+  38:Modules/OS/OSAL/src/SetAbsAlarm.c ****  ** This file implements the SetAbsAlarm API
+  39:Modules/OS/OSAL/src/SetAbsAlarm.c ****  **
+  40:Modules/OS/OSAL/src/SetAbsAlarm.c ****  ** \file SetAbsAlarm.c
+  41:Modules/OS/OSAL/src/SetAbsAlarm.c ****  **
+  42:Modules/OS/OSAL/src/SetAbsAlarm.c ****  **/
+  43:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+  44:Modules/OS/OSAL/src/SetAbsAlarm.c **** /** \addtogroup FreeOSEK
+  45:Modules/OS/OSAL/src/SetAbsAlarm.c ****  ** @{ */
+  46:Modules/OS/OSAL/src/SetAbsAlarm.c **** /** \addtogroup FreeOSEK_Os
+  47:Modules/OS/OSAL/src/SetAbsAlarm.c ****  ** @{ */
+  48:Modules/OS/OSAL/src/SetAbsAlarm.c **** /** \addtogroup FreeOSEK_Os_Global
+  49:Modules/OS/OSAL/src/SetAbsAlarm.c ****  ** @{ */
+  50:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+  51:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+  52:Modules/OS/OSAL/src/SetAbsAlarm.c **** /*
+  53:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * Initials     Name
+  54:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * ---------------------------
+  55:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * MaCe         Mariano Cerdeiro
+  56:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * KLi          Kang Li
+  57:Modules/OS/OSAL/src/SetAbsAlarm.c ****  */
+  58:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+  59:Modules/OS/OSAL/src/SetAbsAlarm.c **** /*
+  60:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * modification history (new versions first)
+  61:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * -----------------------------------------------------------
+  62:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * 20090424 v0.1.3 MaCe correct the calculation of the alarm time
+  63:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
+  64:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+  65:Modules/OS/OSAL/src/SetAbsAlarm.c ****  * 20080713 v0.1.0 MaCe initial version
+  66:Modules/OS/OSAL/src/SetAbsAlarm.c ****  */
+  67:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+  68:Modules/OS/OSAL/src/SetAbsAlarm.c **** /*==================[inclusions]=============================================*/
+  69:Modules/OS/OSAL/src/SetAbsAlarm.c **** #include "Os_Internal.h"
+  70:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+  71:Modules/OS/OSAL/src/SetAbsAlarm.c **** /*==================[macros and definitions]=================================*/
+  72:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+  73:Modules/OS/OSAL/src/SetAbsAlarm.c **** /*==================[internal data declaration]==============================*/
+  74:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+  75:Modules/OS/OSAL/src/SetAbsAlarm.c **** /*==================[internal functions declaration]=========================*/
+  76:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+  77:Modules/OS/OSAL/src/SetAbsAlarm.c **** /*==================[internal data definition]===============================*/
+  78:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+  79:Modules/OS/OSAL/src/SetAbsAlarm.c **** /*==================[external data definition]===============================*/
+  80:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+  81:Modules/OS/OSAL/src/SetAbsAlarm.c **** /*==================[internal functions definition]==========================*/
+  82:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+  83:Modules/OS/OSAL/src/SetAbsAlarm.c **** /*==================[external functions definition]==========================*/
+  84:Modules/OS/OSAL/src/SetAbsAlarm.c **** StatusType SetAbsAlarm
+  85:Modules/OS/OSAL/src/SetAbsAlarm.c **** (
+  86:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	AlarmType AlarmID,
+  87:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	TickType Start,
+  88:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	TickType Cycle
+  89:Modules/OS/OSAL/src/SetAbsAlarm.c **** )
+  90:Modules/OS/OSAL/src/SetAbsAlarm.c **** {
+  29              		.loc 1 90 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 24
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 00B5     		push	{lr}
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 14, -4
+  36 0002 87B0     		sub	sp, sp, #28
+  37              		.cfi_def_cfa_offset 32
+  38 0004 0346     		mov	r3, r0
+  39 0006 0291     		str	r1, [sp, #8]
+  40 0008 0192     		str	r2, [sp, #4]
+  41 000a 8DF80F30 		strb	r3, [sp, #15]
+  91:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	/* \req OSEK_SYS_3.22 The system service StatusType
+  92:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	 ** SetAbsAlarm ( AlarmType AlarmID, TickType Start, TickType Cycle )
+  93:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	 ** shall be defined */
+  94:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+  95:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	/* \req OSEK_SYS_3.22.3-1/2 Possible return values in Standard mode are E_OK,
+  96:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	 ** E_OS_STATE */
+  97:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	StatusType ret = E_OK;
+  42              		.loc 1 97 13
+  43 000e 0023     		movs	r3, #0
+  44 0010 8DF81730 		strb	r3, [sp, #23]
+  98:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+  99:Modules/OS/OSAL/src/SetAbsAlarm.c **** #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+ 100:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	/* check if the alarm id is in range */
+ 101:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	if(AlarmID >= ALARMS_COUNT)
+  45              		.loc 1 101 4
+  46 0014 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+  47 0018 012B     		cmp	r3, #1
+  48 001a 03D9     		bls	.L2
+ 102:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	{
+ 103:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		/* \req OSEK_SYS_3.22.4-1/2 Extra possible return values in Extended mode
+ 104:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		 ** are E_OS_ID, E_OS_VALUE */
+ 105:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		ret = E_OS_ID;
+  49              		.loc 1 105 7
+  50 001c 0323     		movs	r3, #3
+  51 001e 8DF81730 		strb	r3, [sp, #23]
+  52 0022 9EE0     		b	.L3
+  53              	.L2:
+ 106:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	}
+ 107:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	/* check that increment and cycle are in range */
+ 108:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	else if( (Start > CountersConst[AlarmsConst[AlarmID].Counter].MaxAllowedValue) ||
+  54              		.loc 1 108 54
+  55 0024 9DF80F20 		ldrb	r2, [sp, #15]	@ zero_extendqisi2
+  56 0028 6149     		ldr	r1, .L9
+  57 002a 1346     		mov	r3, r2
+  58 002c 9B00     		lsls	r3, r3, #2
+  59 002e 1344     		add	r3, r3, r2
+  60 0030 9B00     		lsls	r3, r3, #2
+  61 0032 0B44     		add	r3, r3, r1
+  62 0034 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  63 0036 1946     		mov	r1, r3
+  64              		.loc 1 108 63
+  65 0038 5E4A     		ldr	r2, .L9+4
+  66 003a 0B46     		mov	r3, r1
+  67 003c 9B00     		lsls	r3, r3, #2
+  68 003e 0B44     		add	r3, r3, r1
+  69 0040 9B00     		lsls	r3, r3, #2
+  70 0042 1344     		add	r3, r3, r2
+  71 0044 0833     		adds	r3, r3, #8
+  72 0046 1B68     		ldr	r3, [r3]
+  73              		.loc 1 108 9
+  74 0048 029A     		ldr	r2, [sp, #8]
+  75 004a 9A42     		cmp	r2, r3
+  76 004c 2CD8     		bhi	.L4
+  77              		.loc 1 108 81 discriminator 1
+  78 004e 019B     		ldr	r3, [sp, #4]
+  79 0050 002B     		cmp	r3, #0
+  80 0052 2DD0     		beq	.L5
+ 109:Modules/OS/OSAL/src/SetAbsAlarm.c **** 				( ( Cycle != 0 ) &&
+ 110:Modules/OS/OSAL/src/SetAbsAlarm.c **** 					( (Cycle > CountersConst[AlarmsConst[AlarmID].Counter].MaxAllowedValue) ||
+  81              		.loc 1 110 51
+  82 0054 9DF80F20 		ldrb	r2, [sp, #15]	@ zero_extendqisi2
+  83 0058 5549     		ldr	r1, .L9
+  84 005a 1346     		mov	r3, r2
+  85 005c 9B00     		lsls	r3, r3, #2
+  86 005e 1344     		add	r3, r3, r2
+  87 0060 9B00     		lsls	r3, r3, #2
+  88 0062 0B44     		add	r3, r3, r1
+  89 0064 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  90 0066 1946     		mov	r1, r3
+  91              		.loc 1 110 60
+  92 0068 524A     		ldr	r2, .L9+4
+  93 006a 0B46     		mov	r3, r1
+  94 006c 9B00     		lsls	r3, r3, #2
+  95 006e 0B44     		add	r3, r3, r1
+  96 0070 9B00     		lsls	r3, r3, #2
+  97 0072 1344     		add	r3, r3, r2
+  98 0074 0833     		adds	r3, r3, #8
+  99 0076 1B68     		ldr	r3, [r3]
+ 109:Modules/OS/OSAL/src/SetAbsAlarm.c **** 				( ( Cycle != 0 ) &&
+ 100              		.loc 1 109 22
+ 101 0078 019A     		ldr	r2, [sp, #4]
+ 102 007a 9A42     		cmp	r2, r3
+ 103 007c 14D8     		bhi	.L4
+ 111:Modules/OS/OSAL/src/SetAbsAlarm.c **** 						(Cycle < CountersConst[AlarmsConst[AlarmID].Counter].MinCycle) ) ) )
+ 104              		.loc 1 111 50
+ 105 007e 9DF80F20 		ldrb	r2, [sp, #15]	@ zero_extendqisi2
+ 106 0082 4B49     		ldr	r1, .L9
+ 107 0084 1346     		mov	r3, r2
+ 108 0086 9B00     		lsls	r3, r3, #2
+ 109 0088 1344     		add	r3, r3, r2
+ 110 008a 9B00     		lsls	r3, r3, #2
+ 111 008c 0B44     		add	r3, r3, r1
+ 112 008e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 113 0090 1946     		mov	r1, r3
+ 114              		.loc 1 111 59
+ 115 0092 484A     		ldr	r2, .L9+4
+ 116 0094 0B46     		mov	r3, r1
+ 117 0096 9B00     		lsls	r3, r3, #2
+ 118 0098 0B44     		add	r3, r3, r1
+ 119 009a 9B00     		lsls	r3, r3, #2
+ 120 009c 1344     		add	r3, r3, r2
+ 121 009e 0C33     		adds	r3, r3, #12
+ 122 00a0 1B68     		ldr	r3, [r3]
+ 110:Modules/OS/OSAL/src/SetAbsAlarm.c **** 						(Cycle < CountersConst[AlarmsConst[AlarmID].Counter].MinCycle) ) ) )
+ 123              		.loc 1 110 78
+ 124 00a2 019A     		ldr	r2, [sp, #4]
+ 125 00a4 9A42     		cmp	r2, r3
+ 126 00a6 03D2     		bcs	.L5
+ 127              	.L4:
+ 112:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	{
+ 113:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		/* \req OSEK_SYS_3.22.4-2/2 Extra possible return values in Extended mode
+ 114:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		 ** are E_OS_ID, E_OS_VALUE */
+ 115:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		ret = E_OS_VALUE;
+ 128              		.loc 1 115 7
+ 129 00a8 0823     		movs	r3, #8
+ 130 00aa 8DF81730 		strb	r3, [sp, #23]
+ 131 00ae 58E0     		b	.L3
+ 132              	.L5:
+ 116:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	}
+ 117:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	else
+ 118:Modules/OS/OSAL/src/SetAbsAlarm.c **** #endif
+ 119:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	/* check if the alarm is disable */
+ 120:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	if(AlarmsVar[AlarmID].AlarmState != 0)
+ 133              		.loc 1 120 23
+ 134 00b0 9DF80F20 		ldrb	r2, [sp, #15]	@ zero_extendqisi2
+ 135 00b4 4049     		ldr	r1, .L9+8
+ 136 00b6 1346     		mov	r3, r2
+ 137 00b8 5B00     		lsls	r3, r3, #1
+ 138 00ba 1344     		add	r3, r3, r2
+ 139 00bc 9B00     		lsls	r3, r3, #2
+ 140 00be 0B44     		add	r3, r3, r1
+ 141 00c0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 142              		.loc 1 120 4
+ 143 00c2 002B     		cmp	r3, #0
+ 144 00c4 03D0     		beq	.L6
+ 121:Modules/OS/OSAL/src/SetAbsAlarm.c ****    {
+ 122:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		/* \req OSEK_SYS_3.22.3-2/2 Possible return values in Standard mode are E_OK,
+ 123:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		 ** E_OS_STATE */
+ 124:Modules/OS/OSAL/src/SetAbsAlarm.c ****       ret = E_OS_STATE;
+ 145              		.loc 1 124 11
+ 146 00c6 0723     		movs	r3, #7
+ 147 00c8 8DF81730 		strb	r3, [sp, #23]
+ 148 00cc 49E0     		b	.L3
+ 149              	.L6:
+ 125:Modules/OS/OSAL/src/SetAbsAlarm.c ****    }
+ 126:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	else
+ 127:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	{
+ 128:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+ 129:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		IntSecure_Start();
+ 150              		.loc 1 129 3
+ 151 00ce 3B4B     		ldr	r3, .L9+12
+ 152 00d0 93F90030 		ldrsb	r3, [r3]
+ 153 00d4 DBB2     		uxtb	r3, r3
+ 154 00d6 0133     		adds	r3, r3, #1
+ 155 00d8 DBB2     		uxtb	r3, r3
+ 156 00da 5AB2     		sxtb	r2, r3
+ 157 00dc 374B     		ldr	r3, .L9+12
+ 158 00de 1A70     		strb	r2, [r3]
+ 159              		.syntax unified
+ 160              	@ 129 "Modules/OS/OSAL/src/SetAbsAlarm.c" 1
+ 161 00e0 72B6     		cpsid i
+ 162              	@ 0 "" 2
+ 130:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+ 131:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		/* enable alarm */
+ 132:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		AlarmsVar[AlarmID].AlarmState = 1;
+ 163              		.loc 1 132 21
+ 164              		.thumb
+ 165              		.syntax unified
+ 166 00e2 9DF80F20 		ldrb	r2, [sp, #15]	@ zero_extendqisi2
+ 167              		.loc 1 132 33
+ 168 00e6 3449     		ldr	r1, .L9+8
+ 169 00e8 1346     		mov	r3, r2
+ 170 00ea 5B00     		lsls	r3, r3, #1
+ 171 00ec 1344     		add	r3, r3, r2
+ 172 00ee 9B00     		lsls	r3, r3, #2
+ 173 00f0 0B44     		add	r3, r3, r1
+ 174 00f2 0122     		movs	r2, #1
+ 175 00f4 1A70     		strb	r2, [r3]
+ 133:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+ 134:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		/* set abs alarm */
+ 135:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		AlarmsVar[AlarmID].AlarmTime = GetCounter(AlarmsConst[AlarmID].Counter) + Start;
+ 176              		.loc 1 135 34
+ 177 00f6 9DF80F20 		ldrb	r2, [sp, #15]	@ zero_extendqisi2
+ 178 00fa 2D49     		ldr	r1, .L9
+ 179 00fc 1346     		mov	r3, r2
+ 180 00fe 9B00     		lsls	r3, r3, #2
+ 181 0100 1344     		add	r3, r3, r2
+ 182 0102 9B00     		lsls	r3, r3, #2
+ 183 0104 0B44     		add	r3, r3, r1
+ 184 0106 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 185 0108 1A46     		mov	r2, r3
+ 186 010a 2D4B     		ldr	r3, .L9+16
+ 187 010c 53F82210 		ldr	r1, [r3, r2, lsl #2]
+ 188              		.loc 1 135 21
+ 189 0110 9DF80F20 		ldrb	r2, [sp, #15]	@ zero_extendqisi2
+ 190              		.loc 1 135 75
+ 191 0114 029B     		ldr	r3, [sp, #8]
+ 192 0116 1944     		add	r1, r1, r3
+ 193              		.loc 1 135 32
+ 194 0118 2748     		ldr	r0, .L9+8
+ 195 011a 1346     		mov	r3, r2
+ 196 011c 5B00     		lsls	r3, r3, #1
+ 197 011e 1344     		add	r3, r3, r2
+ 198 0120 9B00     		lsls	r3, r3, #2
+ 199 0122 0344     		add	r3, r3, r0
+ 200 0124 0433     		adds	r3, r3, #4
+ 201 0126 1960     		str	r1, [r3]
+ 136:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		AlarmsVar[AlarmID].AlarmCycleTime = Cycle;
+ 202              		.loc 1 136 21
+ 203 0128 9DF80F20 		ldrb	r2, [sp, #15]	@ zero_extendqisi2
+ 204              		.loc 1 136 37
+ 205 012c 2249     		ldr	r1, .L9+8
+ 206 012e 1346     		mov	r3, r2
+ 207 0130 5B00     		lsls	r3, r3, #1
+ 208 0132 1344     		add	r3, r3, r2
+ 209 0134 9B00     		lsls	r3, r3, #2
+ 210 0136 0B44     		add	r3, r3, r1
+ 211 0138 0833     		adds	r3, r3, #8
+ 212 013a 019A     		ldr	r2, [sp, #4]
+ 213 013c 1A60     		str	r2, [r3]
+ 137:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+ 138:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		IntSecure_End();
+ 214              		.loc 1 138 3
+ 215 013e 1F4B     		ldr	r3, .L9+12
+ 216 0140 93F90030 		ldrsb	r3, [r3]
+ 217 0144 DBB2     		uxtb	r3, r3
+ 218 0146 013B     		subs	r3, r3, #1
+ 219 0148 DBB2     		uxtb	r3, r3
+ 220 014a 5AB2     		sxtb	r2, r3
+ 221 014c 1B4B     		ldr	r3, .L9+12
+ 222 014e 1A70     		strb	r2, [r3]
+ 223 0150 1A4B     		ldr	r3, .L9+12
+ 224 0152 93F90030 		ldrsb	r3, [r3]
+ 225 0156 002B     		cmp	r3, #0
+ 226 0158 03DC     		bgt	.L3
+ 227              		.loc 1 138 3 is_stmt 0 discriminator 1
+ 228 015a 184B     		ldr	r3, .L9+12
+ 229 015c 0022     		movs	r2, #0
+ 230 015e 1A70     		strb	r2, [r3]
+ 231              		.syntax unified
+ 232              	@ 138 "Modules/OS/OSAL/src/SetAbsAlarm.c" 1
+ 233 0160 62B6     		cpsie i
+ 234              	@ 0 "" 2
+ 235              		.thumb
+ 236              		.syntax unified
+ 237              	.L3:
+ 139:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	}
+ 140:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+ 141:Modules/OS/OSAL/src/SetAbsAlarm.c **** #if (HOOK_ERRORHOOK == OSEK_ENABLE)
+ 142:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	/* \req OSEK_ERR_1.3-14/xx The ErrorHook hook routine shall be called if a
+ 143:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	 ** system service returns a StatusType value not equal to E_OK.*/
+ 144:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	/* \req OSEK_ERR_1.3.1-14/xx The hook routine ErrorHook is not called if a
+ 145:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	 ** system service is called from the ErrorHook itself. */
+ 146:Modules/OS/OSAL/src/SetAbsAlarm.c ****    if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
+ 238              		.loc 1 146 7 is_stmt 1
+ 239 0162 9DF81730 		ldrb	r3, [sp, #23]	@ zero_extendqisi2
+ 240 0166 002B     		cmp	r3, #0
+ 241 0168 1CD0     		beq	.L7
+ 242              		.loc 1 146 46 discriminator 1
+ 243 016a 164B     		ldr	r3, .L9+20
+ 244 016c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 245              		.loc 1 146 25 discriminator 1
+ 246 016e 012B     		cmp	r3, #1
+ 247 0170 18D0     		beq	.L7
+ 147:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	{
+ 148:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		SetError_Api(OSServiceId_SetAbsAlarm);
+ 248              		.loc 1 148 3
+ 249 0172 154B     		ldr	r3, .L9+24
+ 250 0174 1622     		movs	r2, #22
+ 251 0176 1A60     		str	r2, [r3]
+ 149:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		SetError_Param1(AlarmID);
+ 252              		.loc 1 149 3
+ 253 0178 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 254 017c 134A     		ldr	r2, .L9+28
+ 255 017e 1360     		str	r3, [r2]
+ 150:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		SetError_Param2(Start);
+ 256              		.loc 1 150 3
+ 257 0180 134A     		ldr	r2, .L9+32
+ 258 0182 029B     		ldr	r3, [sp, #8]
+ 259 0184 1360     		str	r3, [r2]
+ 151:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		SetError_Param3(Cycle);
+ 260              		.loc 1 151 3
+ 261 0186 134A     		ldr	r2, .L9+36
+ 262 0188 019B     		ldr	r3, [sp, #4]
+ 263 018a 1360     		str	r3, [r2]
+ 152:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		SetError_Ret(ret);
+ 264              		.loc 1 152 3
+ 265 018c 9DF81730 		ldrb	r3, [sp, #23]	@ zero_extendqisi2
+ 266 0190 114A     		ldr	r2, .L9+40
+ 267 0192 1360     		str	r3, [r2]
+ 153:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		SetError_Msg("SetAbsAlarm returns != than E_OK");
+ 154:Modules/OS/OSAL/src/SetAbsAlarm.c **** 		SetError_ErrorHook();
+ 268              		.loc 1 154 3
+ 269 0194 0B4B     		ldr	r3, .L9+20
+ 270 0196 0122     		movs	r2, #1
+ 271 0198 1A70     		strb	r2, [r3]
+ 272 019a FFF7FEFF 		bl	ErrorHook
+ 273 019e 094B     		ldr	r3, .L9+20
+ 274 01a0 0022     		movs	r2, #0
+ 275 01a2 1A70     		strb	r2, [r3]
+ 276              	.L7:
+ 155:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	}
+ 156:Modules/OS/OSAL/src/SetAbsAlarm.c **** #endif
+ 157:Modules/OS/OSAL/src/SetAbsAlarm.c **** 
+ 158:Modules/OS/OSAL/src/SetAbsAlarm.c **** 	return ret;
+ 277              		.loc 1 158 9
+ 278 01a4 9DF81730 		ldrb	r3, [sp, #23]	@ zero_extendqisi2
+ 159:Modules/OS/OSAL/src/SetAbsAlarm.c **** }
+ 279              		.loc 1 159 1
+ 280 01a8 1846     		mov	r0, r3
+ 281 01aa 07B0     		add	sp, sp, #28
+ 282              		.cfi_def_cfa_offset 4
+ 283              		@ sp needed
+ 284 01ac 5DF804FB 		ldr	pc, [sp], #4
+ 285              	.L10:
+ 286              		.align	2
+ 287              	.L9:
+ 288 01b0 00000000 		.word	AlarmsConst
+ 289 01b4 00000000 		.word	CountersConst
+ 290 01b8 00000000 		.word	AlarmsVar
+ 291 01bc 00000000 		.word	SuspendAllInterrupts_Counter
+ 292 01c0 00000000 		.word	CountersVar
+ 293 01c4 00000000 		.word	ErrorHookRunning
+ 294 01c8 00000000 		.word	Osek_ErrorApi
+ 295 01cc 00000000 		.word	Osek_ErrorParam1
+ 296 01d0 00000000 		.word	Osek_ErrorParam2
+ 297 01d4 00000000 		.word	Osek_ErrorParam3
+ 298 01d8 00000000 		.word	Osek_ErrorRet
+ 299              		.cfi_endproc
+ 300              	.LFE0:
+ 302              		.text
+ 303              	.Letext0:
+ 304              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 305              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 306              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Types.h"
+ 307              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Cfg.h"
+ 308              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+ 309              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+DEFINED SYMBOLS
+                            *ABS*:00000000 SetAbsAlarm.c
+C:\Users\AAA\AppData\Local\Temp\cckkRcZZ.s:19     .text.SetAbsAlarm:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cckkRcZZ.s:26     .text.SetAbsAlarm:00000000 SetAbsAlarm
+C:\Users\AAA\AppData\Local\Temp\cckkRcZZ.s:288    .text.SetAbsAlarm:000001b0 $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+UNDEFINED SYMBOLS
+ErrorHook
+AlarmsConst
+CountersConst
+AlarmsVar
+SuspendAllInterrupts_Counter
+CountersVar
+ErrorHookRunning
+Osek_ErrorApi
+Osek_ErrorParam1
+Osek_ErrorParam2
+Osek_ErrorParam3
+Osek_ErrorRet

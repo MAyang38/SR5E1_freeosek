@@ -1,0 +1,2111 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"CDD_L9388_IF.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.CDD_L9388_Init,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	CDD_L9388_Init
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	CDD_L9388_Init:
+  27              	.LFB445:
+  28              		.file 1 "CDD/CDD_L9388/src/CDD_L9388_IF.c"
+   1:CDD/CDD_L9388/src/CDD_L9388_IF.c **** #include "CDD_L9388_IF.h"
+   2:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+   3:CDD/CDD_L9388/src/CDD_L9388_IF.c **** extern CDD_L9388_Struct_tag L9388_Rx_Register;
+   4:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+   5:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_001*/
+   6:CDD/CDD_L9388/src/CDD_L9388_IF.c **** bool CDD_L9388_Init(void)
+   7:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+  29              		.loc 1 7 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+   8:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     L9388_Read_CHIPID();
+  37              		.loc 1 8 5
+  38 0002 FFF7FEFF 		bl	L9388_Read_CHIPID
+   9:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     L9388_Read_GENSTATUS();
+  39              		.loc 1 9 5
+  40 0006 FFF7FEFF 		bl	L9388_Read_GENSTATUS
+  10:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     if(!CDD_L9388_GENCFG_Cfg())
+  41              		.loc 1 10 9
+  42 000a FFF7FEFF 		bl	CDD_L9388_GENCFG_Cfg
+  43 000e 0346     		mov	r3, r0
+  44              		.loc 1 10 8
+  45 0010 83F00103 		eor	r3, r3, #1
+  46 0014 DBB2     		uxtb	r3, r3
+  47              		.loc 1 10 7
+  48 0016 002B     		cmp	r3, #0
+  49 0018 01D0     		beq	.L2
+  11:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     {
+  12:CDD/CDD_L9388/src/CDD_L9388_IF.c ****         return FALSE;
+  50              		.loc 1 12 16
+  51 001a 0023     		movs	r3, #0
+  52 001c 0AE0     		b	.L3
+  53              	.L2:
+  13:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     }
+  14:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     else if(!CDD_L9388_GENCFG2_Cfg())
+  54              		.loc 1 14 14
+  55 001e FFF7FEFF 		bl	CDD_L9388_GENCFG2_Cfg
+  56 0022 0346     		mov	r3, r0
+  57              		.loc 1 14 13
+  58 0024 83F00103 		eor	r3, r3, #1
+  59 0028 DBB2     		uxtb	r3, r3
+  60              		.loc 1 14 12
+  61 002a 002B     		cmp	r3, #0
+  62 002c 01D0     		beq	.L4
+  15:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     {
+  16:CDD/CDD_L9388/src/CDD_L9388_IF.c ****         return FALSE;
+  63              		.loc 1 16 16
+  64 002e 0023     		movs	r3, #0
+  65 0030 00E0     		b	.L3
+  66              	.L4:
+  17:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     }
+  18:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     else
+  19:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     {
+  20:CDD/CDD_L9388/src/CDD_L9388_IF.c ****         return TRUE;
+  67              		.loc 1 20 16
+  68 0032 0123     		movs	r3, #1
+  69              	.L3:
+  21:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     }
+  22:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+  70              		.loc 1 22 1
+  71 0034 1846     		mov	r0, r3
+  72 0036 08BD     		pop	{r3, pc}
+  73              		.cfi_endproc
+  74              	.LFE445:
+  76              		.section	.text.CDD_L9388_WDG2_Init,"ax",%progbits
+  77              		.align	1
+  78              		.p2align 4,,15
+  79              		.global	CDD_L9388_WDG2_Init
+  80              		.syntax unified
+  81              		.thumb
+  82              		.thumb_func
+  84              	CDD_L9388_WDG2_Init:
+  85              	.LFB446:
+  23:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+  24:CDD/CDD_L9388/src/CDD_L9388_IF.c **** bool CDD_L9388_WDG2_Init(void)
+  25:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+  86              		.loc 1 25 1
+  87              		.cfi_startproc
+  88              		@ args = 0, pretend = 0, frame = 0
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90 0000 08B5     		push	{r3, lr}
+  91              		.cfi_def_cfa_offset 8
+  92              		.cfi_offset 3, -8
+  93              		.cfi_offset 14, -4
+  26:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     if(!CDD_L9388_WDG2STARTTMG_Cfg())
+  94              		.loc 1 26 9
+  95 0002 FFF7FEFF 		bl	CDD_L9388_WDG2STARTTMG_Cfg
+  96 0006 0346     		mov	r3, r0
+  97              		.loc 1 26 8
+  98 0008 83F00103 		eor	r3, r3, #1
+  99 000c DBB2     		uxtb	r3, r3
+ 100              		.loc 1 26 7
+ 101 000e 002B     		cmp	r3, #0
+ 102 0010 01D0     		beq	.L6
+  27:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     {
+  28:CDD/CDD_L9388/src/CDD_L9388_IF.c ****         return FALSE;
+ 103              		.loc 1 28 16
+ 104 0012 0023     		movs	r3, #0
+ 105 0014 1EE0     		b	.L7
+ 106              	.L6:
+  29:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     }
+  30:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     else if(!CDD_L9388_WDG2DELTATMG_Cfg())
+ 107              		.loc 1 30 14
+ 108 0016 FFF7FEFF 		bl	CDD_L9388_WDG2DELTATMG_Cfg
+ 109 001a 0346     		mov	r3, r0
+ 110              		.loc 1 30 13
+ 111 001c 83F00103 		eor	r3, r3, #1
+ 112 0020 DBB2     		uxtb	r3, r3
+ 113              		.loc 1 30 12
+ 114 0022 002B     		cmp	r3, #0
+ 115 0024 01D0     		beq	.L8
+  31:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     {
+  32:CDD/CDD_L9388/src/CDD_L9388_IF.c ****         return FALSE;
+ 116              		.loc 1 32 16
+ 117 0026 0023     		movs	r3, #0
+ 118 0028 14E0     		b	.L7
+ 119              	.L8:
+  33:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     }
+  34:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     else if(!CDD_L9388_WDG2TOUTTMG_Cfg())
+ 120              		.loc 1 34 14
+ 121 002a FFF7FEFF 		bl	CDD_L9388_WDG2TOUTTMG_Cfg
+ 122 002e 0346     		mov	r3, r0
+ 123              		.loc 1 34 13
+ 124 0030 83F00103 		eor	r3, r3, #1
+ 125 0034 DBB2     		uxtb	r3, r3
+ 126              		.loc 1 34 12
+ 127 0036 002B     		cmp	r3, #0
+ 128 0038 01D0     		beq	.L9
+  35:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     {
+  36:CDD/CDD_L9388/src/CDD_L9388_IF.c ****         return FALSE;
+ 129              		.loc 1 36 16
+ 130 003a 0023     		movs	r3, #0
+ 131 003c 0AE0     		b	.L7
+ 132              	.L9:
+  37:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     }
+  38:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     else if(!CDD_L9388_WDG2PGM_Cfg())
+ 133              		.loc 1 38 14
+ 134 003e FFF7FEFF 		bl	CDD_L9388_WDG2PGM_Cfg
+ 135 0042 0346     		mov	r3, r0
+ 136              		.loc 1 38 13
+ 137 0044 83F00103 		eor	r3, r3, #1
+ 138 0048 DBB2     		uxtb	r3, r3
+ 139              		.loc 1 38 12
+ 140 004a 002B     		cmp	r3, #0
+ 141 004c 01D0     		beq	.L10
+  39:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     {
+  40:CDD/CDD_L9388/src/CDD_L9388_IF.c ****         return FALSE;
+ 142              		.loc 1 40 16
+ 143 004e 0023     		movs	r3, #0
+ 144 0050 00E0     		b	.L7
+ 145              	.L10:
+  41:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     }
+  42:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     else
+  43:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     {
+  44:CDD/CDD_L9388/src/CDD_L9388_IF.c ****         return TRUE;
+ 146              		.loc 1 44 16
+ 147 0052 0123     		movs	r3, #1
+ 148              	.L7:
+  45:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     }
+  46:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 149              		.loc 1 46 1
+ 150 0054 1846     		mov	r0, r3
+ 151 0056 08BD     		pop	{r3, pc}
+ 152              		.cfi_endproc
+ 153              	.LFE446:
+ 155              		.global	channel
+ 156              		.section	.bss.channel,"aw",%nobits
+ 159              	channel:
+ 160 0000 00       		.space	1
+ 161              		.global	mode
+ 162              		.section	.bss.mode,"aw",%nobits
+ 165              	mode:
+ 166 0000 00       		.space	1
+ 167              		.section	.text.CDD_L9388_Solenoid_Drivers_Global_conf,"ax",%progbits
+ 168              		.align	1
+ 169              		.p2align 4,,15
+ 170              		.global	CDD_L9388_Solenoid_Drivers_Global_conf
+ 171              		.syntax unified
+ 172              		.thumb
+ 173              		.thumb_func
+ 175              	CDD_L9388_Solenoid_Drivers_Global_conf:
+ 176              	.LFB447:
+  47:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+  48:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_003?��005*/
+  49:CDD/CDD_L9388/src/CDD_L9388_IF.c **** uint8_t channel = 0;
+  50:CDD/CDD_L9388/src/CDD_L9388_IF.c **** uint8_t mode = SOLENDR_PWM_MODE;
+  51:CDD/CDD_L9388/src/CDD_L9388_IF.c **** void CDD_L9388_Solenoid_Drivers_Global_conf(uint8_t channel,uint8_t mode,bool target)
+  52:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 177              		.loc 1 52 1
+ 178              		.cfi_startproc
+ 179              		@ args = 0, pretend = 0, frame = 8
+ 180              		@ frame_needed = 0, uses_anonymous_args = 0
+ 181 0000 00B5     		push	{lr}
+ 182              		.cfi_def_cfa_offset 4
+ 183              		.cfi_offset 14, -4
+ 184 0002 83B0     		sub	sp, sp, #12
+ 185              		.cfi_def_cfa_offset 16
+ 186 0004 0346     		mov	r3, r0
+ 187 0006 8DF80730 		strb	r3, [sp, #7]
+ 188 000a 0B46     		mov	r3, r1
+ 189 000c 8DF80630 		strb	r3, [sp, #6]
+ 190 0010 1346     		mov	r3, r2
+ 191 0012 8DF80530 		strb	r3, [sp, #5]
+  53:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     L9388_Set_SOLSERVENA(channel,target);
+ 192              		.loc 1 53 5
+ 193 0016 9DF80520 		ldrb	r2, [sp, #5]	@ zero_extendqisi2
+ 194 001a 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 195 001e 1146     		mov	r1, r2
+ 196 0020 1846     		mov	r0, r3
+ 197 0022 FFF7FEFF 		bl	L9388_Set_SOLSERVENA
+  54:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     L9388_Set_SOLENDR(channel,mode);
+ 198              		.loc 1 54 5
+ 199 0026 9DF80620 		ldrb	r2, [sp, #6]	@ zero_extendqisi2
+ 200 002a 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 201 002e 1146     		mov	r1, r2
+ 202 0030 1846     		mov	r0, r3
+ 203 0032 FFF7FEFF 		bl	L9388_Set_SOLENDR
+  55:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 204              		.loc 1 55 1
+ 205 0036 00BF     		nop
+ 206 0038 03B0     		add	sp, sp, #12
+ 207              		.cfi_def_cfa_offset 4
+ 208              		@ sp needed
+ 209 003a 5DF804FB 		ldr	pc, [sp], #4
+ 210              		.cfi_endproc
+ 211              	.LFE447:
+ 213 003e 00BF     		.section	.text.CDD_L9388_NO_TC_Current_set,"ax",%progbits
+ 214              		.align	1
+ 215              		.p2align 4,,15
+ 216              		.global	CDD_L9388_NO_TC_Current_set
+ 217              		.syntax unified
+ 218              		.thumb
+ 219              		.thumb_func
+ 221              	CDD_L9388_NO_TC_Current_set:
+ 222              	.LFB448:
+  56:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+  57:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_004*/
+  58:CDD/CDD_L9388/src/CDD_L9388_IF.c **** void CDD_L9388_NO_TC_Current_set(uint8_t channel,uint8_t Current_Value)
+  59:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 223              		.loc 1 59 1
+ 224              		.cfi_startproc
+ 225              		@ args = 0, pretend = 0, frame = 8
+ 226              		@ frame_needed = 0, uses_anonymous_args = 0
+ 227 0000 00B5     		push	{lr}
+ 228              		.cfi_def_cfa_offset 4
+ 229              		.cfi_offset 14, -4
+ 230 0002 83B0     		sub	sp, sp, #12
+ 231              		.cfi_def_cfa_offset 16
+ 232 0004 0346     		mov	r3, r0
+ 233 0006 0A46     		mov	r2, r1
+ 234 0008 8DF80730 		strb	r3, [sp, #7]
+ 235 000c 1346     		mov	r3, r2
+ 236 000e 8DF80630 		strb	r3, [sp, #6]
+  60:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     L9388_Set_NO_TC_Current(Current_Value,channel);
+ 237              		.loc 1 60 5
+ 238 0012 9DF80630 		ldrb	r3, [sp, #6]	@ zero_extendqisi2
+ 239 0016 9BB2     		uxth	r3, r3
+ 240 0018 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 241 001c 1146     		mov	r1, r2
+ 242 001e 1846     		mov	r0, r3
+ 243 0020 FFF7FEFF 		bl	L9388_Set_NO_TC_Current
+  61:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 244              		.loc 1 61 1
+ 245 0024 00BF     		nop
+ 246 0026 03B0     		add	sp, sp, #12
+ 247              		.cfi_def_cfa_offset 4
+ 248              		@ sp needed
+ 249 0028 5DF804FB 		ldr	pc, [sp], #4
+ 250              		.cfi_endproc
+ 251              	.LFE448:
+ 253              		.section	.text.CDD_L9388_NO_TC_PWM_set,"ax",%progbits
+ 254              		.align	1
+ 255              		.p2align 4,,15
+ 256              		.global	CDD_L9388_NO_TC_PWM_set
+ 257              		.syntax unified
+ 258              		.thumb
+ 259              		.thumb_func
+ 261              	CDD_L9388_NO_TC_PWM_set:
+ 262              	.LFB449:
+  62:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+  63:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_004*/
+  64:CDD/CDD_L9388/src/CDD_L9388_IF.c **** void CDD_L9388_NO_TC_PWM_set(uint8_t channel,uint16_t PWM_Value)
+  65:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 263              		.loc 1 65 1
+ 264              		.cfi_startproc
+ 265              		@ args = 0, pretend = 0, frame = 8
+ 266              		@ frame_needed = 0, uses_anonymous_args = 0
+ 267 0000 00B5     		push	{lr}
+ 268              		.cfi_def_cfa_offset 4
+ 269              		.cfi_offset 14, -4
+ 270 0002 83B0     		sub	sp, sp, #12
+ 271              		.cfi_def_cfa_offset 16
+ 272 0004 0346     		mov	r3, r0
+ 273 0006 0A46     		mov	r2, r1
+ 274 0008 8DF80730 		strb	r3, [sp, #7]
+ 275 000c 1346     		mov	r3, r2	@ movhi
+ 276 000e ADF80430 		strh	r3, [sp, #4]	@ movhi
+  66:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Set_NO_TC_PWM(PWM_Value,channel);
+ 277              		.loc 1 66 2
+ 278 0012 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 279 0016 BDF80430 		ldrh	r3, [sp, #4]
+ 280 001a 1146     		mov	r1, r2
+ 281 001c 1846     		mov	r0, r3
+ 282 001e FFF7FEFF 		bl	L9388_Set_NO_TC_PWM
+  67:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 283              		.loc 1 67 1
+ 284 0022 00BF     		nop
+ 285 0024 03B0     		add	sp, sp, #12
+ 286              		.cfi_def_cfa_offset 4
+ 287              		@ sp needed
+ 288 0026 5DF804FB 		ldr	pc, [sp], #4
+ 289              		.cfi_endproc
+ 290              	.LFE449:
+ 292 002a 00BF     		.section	.text.CDD_L9388_ESV_Current_set,"ax",%progbits
+ 293              		.align	1
+ 294              		.p2align 4,,15
+ 295              		.global	CDD_L9388_ESV_Current_set
+ 296              		.syntax unified
+ 297              		.thumb
+ 298              		.thumb_func
+ 300              	CDD_L9388_ESV_Current_set:
+ 301              	.LFB450:
+  68:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+  69:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_006*/
+  70:CDD/CDD_L9388/src/CDD_L9388_IF.c **** void CDD_L9388_ESV_Current_set(uint8_t channel,uint8_t Current_Value)
+  71:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 302              		.loc 1 71 1
+ 303              		.cfi_startproc
+ 304              		@ args = 0, pretend = 0, frame = 8
+ 305              		@ frame_needed = 0, uses_anonymous_args = 0
+ 306 0000 00B5     		push	{lr}
+ 307              		.cfi_def_cfa_offset 4
+ 308              		.cfi_offset 14, -4
+ 309 0002 83B0     		sub	sp, sp, #12
+ 310              		.cfi_def_cfa_offset 16
+ 311 0004 0346     		mov	r3, r0
+ 312 0006 0A46     		mov	r2, r1
+ 313 0008 8DF80730 		strb	r3, [sp, #7]
+ 314 000c 1346     		mov	r3, r2
+ 315 000e 8DF80630 		strb	r3, [sp, #6]
+  72:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     L9388_Set_ESV_Current(Current_Value,channel);
+ 316              		.loc 1 72 5
+ 317 0012 9DF80630 		ldrb	r3, [sp, #6]	@ zero_extendqisi2
+ 318 0016 9BB2     		uxth	r3, r3
+ 319 0018 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 320 001c 1146     		mov	r1, r2
+ 321 001e 1846     		mov	r0, r3
+ 322 0020 FFF7FEFF 		bl	L9388_Set_ESV_Current
+  73:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 323              		.loc 1 73 1
+ 324 0024 00BF     		nop
+ 325 0026 03B0     		add	sp, sp, #12
+ 326              		.cfi_def_cfa_offset 4
+ 327              		@ sp needed
+ 328 0028 5DF804FB 		ldr	pc, [sp], #4
+ 329              		.cfi_endproc
+ 330              	.LFE450:
+ 332              		.section	.text.CDD_L9388_ESV_PWM_set,"ax",%progbits
+ 333              		.align	1
+ 334              		.p2align 4,,15
+ 335              		.global	CDD_L9388_ESV_PWM_set
+ 336              		.syntax unified
+ 337              		.thumb
+ 338              		.thumb_func
+ 340              	CDD_L9388_ESV_PWM_set:
+ 341              	.LFB451:
+  74:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+  75:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_006*/
+  76:CDD/CDD_L9388/src/CDD_L9388_IF.c **** void CDD_L9388_ESV_PWM_set(uint8_t channel,uint16_t PWM_Value)
+  77:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 342              		.loc 1 77 1
+ 343              		.cfi_startproc
+ 344              		@ args = 0, pretend = 0, frame = 8
+ 345              		@ frame_needed = 0, uses_anonymous_args = 0
+ 346 0000 00B5     		push	{lr}
+ 347              		.cfi_def_cfa_offset 4
+ 348              		.cfi_offset 14, -4
+ 349 0002 83B0     		sub	sp, sp, #12
+ 350              		.cfi_def_cfa_offset 16
+ 351 0004 0346     		mov	r3, r0
+ 352 0006 0A46     		mov	r2, r1
+ 353 0008 8DF80730 		strb	r3, [sp, #7]
+ 354 000c 1346     		mov	r3, r2	@ movhi
+ 355 000e ADF80430 		strh	r3, [sp, #4]	@ movhi
+  78:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Set_ESV_PWM(PWM_Value,channel);
+ 356              		.loc 1 78 2
+ 357 0012 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 358 0016 BDF80430 		ldrh	r3, [sp, #4]
+ 359 001a 1146     		mov	r1, r2
+ 360 001c 1846     		mov	r0, r3
+ 361 001e FFF7FEFF 		bl	L9388_Set_ESV_PWM
+  79:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 362              		.loc 1 79 1
+ 363 0022 00BF     		nop
+ 364 0024 03B0     		add	sp, sp, #12
+ 365              		.cfi_def_cfa_offset 4
+ 366              		@ sp needed
+ 367 0026 5DF804FB 		ldr	pc, [sp], #4
+ 368              		.cfi_endproc
+ 369              	.LFE451:
+ 371 002a 00BF     		.section	.text.CDD_L9388_ON_OFF_Config,"ax",%progbits
+ 372              		.align	1
+ 373              		.p2align 4,,15
+ 374              		.global	CDD_L9388_ON_OFF_Config
+ 375              		.syntax unified
+ 376              		.thumb
+ 377              		.thumb_func
+ 379              	CDD_L9388_ON_OFF_Config:
+ 380              	.LFB452:
+  80:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+  81:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_007*/
+  82:CDD/CDD_L9388/src/CDD_L9388_IF.c **** void CDD_L9388_ON_OFF_Config(uint8_t channel,bool On_Off_Switch)
+  83:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 381              		.loc 1 83 1
+ 382              		.cfi_startproc
+ 383              		@ args = 0, pretend = 0, frame = 8
+ 384              		@ frame_needed = 0, uses_anonymous_args = 0
+ 385 0000 00B5     		push	{lr}
+ 386              		.cfi_def_cfa_offset 4
+ 387              		.cfi_offset 14, -4
+ 388 0002 83B0     		sub	sp, sp, #12
+ 389              		.cfi_def_cfa_offset 16
+ 390 0004 0346     		mov	r3, r0
+ 391 0006 0A46     		mov	r2, r1
+ 392 0008 8DF80730 		strb	r3, [sp, #7]
+ 393 000c 1346     		mov	r3, r2
+ 394 000e 8DF80630 		strb	r3, [sp, #6]
+  84:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Set_ON_OFF(channel, On_Off_Switch);
+ 395              		.loc 1 84 2
+ 396 0012 9DF80620 		ldrb	r2, [sp, #6]	@ zero_extendqisi2
+ 397 0016 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 398 001a 1146     		mov	r1, r2
+ 399 001c 1846     		mov	r0, r3
+ 400 001e FFF7FEFF 		bl	L9388_Set_ON_OFF
+  85:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 401              		.loc 1 85 1
+ 402 0022 00BF     		nop
+ 403 0024 03B0     		add	sp, sp, #12
+ 404              		.cfi_def_cfa_offset 4
+ 405              		@ sp needed
+ 406 0026 5DF804FB 		ldr	pc, [sp], #4
+ 407              		.cfi_endproc
+ 408              	.LFE452:
+ 410 002a 00BF     		.section	.text.CDD_L9388_SHLS_Conf,"ax",%progbits
+ 411              		.align	1
+ 412              		.p2align 4,,15
+ 413              		.global	CDD_L9388_SHLS_Conf
+ 414              		.syntax unified
+ 415              		.thumb
+ 416              		.thumb_func
+ 418              	CDD_L9388_SHLS_Conf:
+ 419              	.LFB453:
+  86:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+  87:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_008*/
+  88:CDD/CDD_L9388/src/CDD_L9388_IF.c **** void CDD_L9388_SHLS_Conf(bool Low_High_Switch,bool On_Off_Switch)
+  89:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 420              		.loc 1 89 1
+ 421              		.cfi_startproc
+ 422              		@ args = 0, pretend = 0, frame = 8
+ 423              		@ frame_needed = 0, uses_anonymous_args = 0
+ 424 0000 00B5     		push	{lr}
+ 425              		.cfi_def_cfa_offset 4
+ 426              		.cfi_offset 14, -4
+ 427 0002 83B0     		sub	sp, sp, #12
+ 428              		.cfi_def_cfa_offset 16
+ 429 0004 0346     		mov	r3, r0
+ 430 0006 0A46     		mov	r2, r1
+ 431 0008 8DF80730 		strb	r3, [sp, #7]
+ 432 000c 1346     		mov	r3, r2
+ 433 000e 8DF80630 		strb	r3, [sp, #6]
+  90:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Set_SHLS(Low_High_Switch, On_Off_Switch);
+ 434              		.loc 1 90 2
+ 435 0012 9DF80620 		ldrb	r2, [sp, #6]	@ zero_extendqisi2
+ 436 0016 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 437 001a 1146     		mov	r1, r2
+ 438 001c 1846     		mov	r0, r3
+ 439 001e FFF7FEFF 		bl	L9388_Set_SHLS
+  91:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 440              		.loc 1 91 1
+ 441 0022 00BF     		nop
+ 442 0024 03B0     		add	sp, sp, #12
+ 443              		.cfi_def_cfa_offset 4
+ 444              		@ sp needed
+ 445 0026 5DF804FB 		ldr	pc, [sp], #4
+ 446              		.cfi_endproc
+ 447              	.LFE453:
+ 449 002a 00BF     		.section	.text.CDD_L9388_Read_NO_TC_Exception,"ax",%progbits
+ 450              		.align	1
+ 451              		.p2align 4,,15
+ 452              		.global	CDD_L9388_Read_NO_TC_Exception
+ 453              		.syntax unified
+ 454              		.thumb
+ 455              		.thumb_func
+ 457              	CDD_L9388_Read_NO_TC_Exception:
+ 458              	.LFB454:
+  92:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+  93:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_009*/
+  94:CDD/CDD_L9388/src/CDD_L9388_IF.c **** void CDD_L9388_Read_NO_TC_Exception(uint8_t channel)
+  95:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 459              		.loc 1 95 1
+ 460              		.cfi_startproc
+ 461              		@ args = 0, pretend = 0, frame = 8
+ 462              		@ frame_needed = 0, uses_anonymous_args = 0
+ 463 0000 00B5     		push	{lr}
+ 464              		.cfi_def_cfa_offset 4
+ 465              		.cfi_offset 14, -4
+ 466 0002 83B0     		sub	sp, sp, #12
+ 467              		.cfi_def_cfa_offset 16
+ 468 0004 0346     		mov	r3, r0
+ 469 0006 8DF80730 		strb	r3, [sp, #7]
+  96:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_NO_TC_Exception(channel);
+ 470              		.loc 1 96 2
+ 471 000a 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 472 000e 1846     		mov	r0, r3
+ 473 0010 FFF7FEFF 		bl	L9388_Read_NO_TC_Exception
+  97:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 474              		.loc 1 97 1
+ 475 0014 00BF     		nop
+ 476 0016 03B0     		add	sp, sp, #12
+ 477              		.cfi_def_cfa_offset 4
+ 478              		@ sp needed
+ 479 0018 5DF804FB 		ldr	pc, [sp], #4
+ 480              		.cfi_endproc
+ 481              	.LFE454:
+ 483              		.section	.text.CDD_L9388_Read_ESV_Exception,"ax",%progbits
+ 484              		.align	1
+ 485              		.p2align 4,,15
+ 486              		.global	CDD_L9388_Read_ESV_Exception
+ 487              		.syntax unified
+ 488              		.thumb
+ 489              		.thumb_func
+ 491              	CDD_L9388_Read_ESV_Exception:
+ 492              	.LFB455:
+  98:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+  99:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_010*/
+ 100:CDD/CDD_L9388/src/CDD_L9388_IF.c **** void CDD_L9388_Read_ESV_Exception(uint8_t channel)
+ 101:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 493              		.loc 1 101 1
+ 494              		.cfi_startproc
+ 495              		@ args = 0, pretend = 0, frame = 8
+ 496              		@ frame_needed = 0, uses_anonymous_args = 0
+ 497 0000 00B5     		push	{lr}
+ 498              		.cfi_def_cfa_offset 4
+ 499              		.cfi_offset 14, -4
+ 500 0002 83B0     		sub	sp, sp, #12
+ 501              		.cfi_def_cfa_offset 16
+ 502 0004 0346     		mov	r3, r0
+ 503 0006 8DF80730 		strb	r3, [sp, #7]
+ 102:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_ESV_Exception(channel);
+ 504              		.loc 1 102 2
+ 505 000a 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 506 000e 1846     		mov	r0, r3
+ 507 0010 FFF7FEFF 		bl	L9388_Read_ESV_Exception
+ 103:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 508              		.loc 1 103 1
+ 509 0014 00BF     		nop
+ 510 0016 03B0     		add	sp, sp, #12
+ 511              		.cfi_def_cfa_offset 4
+ 512              		@ sp needed
+ 513 0018 5DF804FB 		ldr	pc, [sp], #4
+ 514              		.cfi_endproc
+ 515              	.LFE455:
+ 517              		.section	.text.CDD_L9388_Read_ON_OFF_diag,"ax",%progbits
+ 518              		.align	1
+ 519              		.p2align 4,,15
+ 520              		.global	CDD_L9388_Read_ON_OFF_diag
+ 521              		.syntax unified
+ 522              		.thumb
+ 523              		.thumb_func
+ 525              	CDD_L9388_Read_ON_OFF_diag:
+ 526              	.LFB456:
+ 104:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 105:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_011*/
+ 106:CDD/CDD_L9388/src/CDD_L9388_IF.c **** void CDD_L9388_Read_ON_OFF_diag(uint8_t channel)
+ 107:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 527              		.loc 1 107 1
+ 528              		.cfi_startproc
+ 529              		@ args = 0, pretend = 0, frame = 8
+ 530              		@ frame_needed = 0, uses_anonymous_args = 0
+ 531 0000 00B5     		push	{lr}
+ 532              		.cfi_def_cfa_offset 4
+ 533              		.cfi_offset 14, -4
+ 534 0002 83B0     		sub	sp, sp, #12
+ 535              		.cfi_def_cfa_offset 16
+ 536 0004 0346     		mov	r3, r0
+ 537 0006 8DF80730 		strb	r3, [sp, #7]
+ 108:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_ON_OFF_diag(channel);
+ 538              		.loc 1 108 2
+ 539 000a 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 540 000e 1846     		mov	r0, r3
+ 541 0010 FFF7FEFF 		bl	L9388_Read_ON_OFF_diag
+ 109:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 542              		.loc 1 109 1
+ 543 0014 00BF     		nop
+ 544 0016 03B0     		add	sp, sp, #12
+ 545              		.cfi_def_cfa_offset 4
+ 546              		@ sp needed
+ 547 0018 5DF804FB 		ldr	pc, [sp], #4
+ 548              		.cfi_endproc
+ 549              	.LFE456:
+ 551              		.section	.text.CDD_L9388_WDG2_Mainfunction,"ax",%progbits
+ 552              		.align	1
+ 553              		.p2align 4,,15
+ 554              		.global	CDD_L9388_WDG2_Mainfunction
+ 555              		.syntax unified
+ 556              		.thumb
+ 557              		.thumb_func
+ 559              	CDD_L9388_WDG2_Mainfunction:
+ 560              	.LFB457:
+ 110:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 111:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_012*/
+ 112:CDD/CDD_L9388/src/CDD_L9388_IF.c **** void CDD_L9388_WDG2_Mainfunction(void)
+ 113:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 561              		.loc 1 113 1
+ 562              		.cfi_startproc
+ 563              		@ args = 0, pretend = 0, frame = 0
+ 564              		@ frame_needed = 0, uses_anonymous_args = 0
+ 565 0000 08B5     		push	{r3, lr}
+ 566              		.cfi_def_cfa_offset 8
+ 567              		.cfi_offset 3, -8
+ 568              		.cfi_offset 14, -4
+ 114:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     CDD_L9396_WDG2_Feeding_Service();
+ 569              		.loc 1 114 5
+ 570 0002 FFF7FEFF 		bl	CDD_L9396_WDG2_Feeding_Service
+ 115:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 571              		.loc 1 115 1
+ 572 0006 00BF     		nop
+ 573 0008 08BD     		pop	{r3, pc}
+ 574              		.cfi_endproc
+ 575              	.LFE457:
+ 577 000a 00BF     		.section	.text.CDD_L9388_NO_Ch1_Init_demo,"ax",%progbits
+ 578              		.align	1
+ 579              		.p2align 4,,15
+ 580              		.global	CDD_L9388_NO_Ch1_Init_demo
+ 581              		.syntax unified
+ 582              		.thumb
+ 583              		.thumb_func
+ 585              	CDD_L9388_NO_Ch1_Init_demo:
+ 586              	.LFB458:
+ 116:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 117:CDD/CDD_L9388/src/CDD_L9388_IF.c **** void CDD_L9388_NO_Ch1_Init_demo(void)
+ 118:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 587              		.loc 1 118 1
+ 588              		.cfi_startproc
+ 589              		@ args = 0, pretend = 0, frame = 0
+ 590              		@ frame_needed = 0, uses_anonymous_args = 0
+ 591 0000 08B5     		push	{r3, lr}
+ 592              		.cfi_def_cfa_offset 8
+ 593              		.cfi_offset 3, -8
+ 594              		.cfi_offset 14, -4
+ 119:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     L9388_Set_NO_TC_PWM(10000,channel);
+ 595              		.loc 1 119 5
+ 596 0002 0E4B     		ldr	r3, .L23
+ 597 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 598 0006 1946     		mov	r1, r3
+ 599 0008 42F21070 		movw	r0, #10000
+ 600 000c FFF7FEFF 		bl	L9388_Set_NO_TC_PWM
+ 120:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     L9388_Set_NO_TC_Current(100,channel);
+ 601              		.loc 1 120 5
+ 602 0010 0A4B     		ldr	r3, .L23
+ 603 0012 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 604 0014 1946     		mov	r1, r3
+ 605 0016 6420     		movs	r0, #100
+ 606 0018 FFF7FEFF 		bl	L9388_Set_NO_TC_Current
+ 121:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     L9388_Set_SOLSERVENA(channel,1);
+ 607              		.loc 1 121 5
+ 608 001c 074B     		ldr	r3, .L23
+ 609 001e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 610 0020 0121     		movs	r1, #1
+ 611 0022 1846     		mov	r0, r3
+ 612 0024 FFF7FEFF 		bl	L9388_Set_SOLSERVENA
+ 122:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     L9388_Set_SOLENDR(channel,mode);
+ 613              		.loc 1 122 5
+ 614 0028 044B     		ldr	r3, .L23
+ 615 002a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 616 002c 044A     		ldr	r2, .L23+4
+ 617 002e 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 618 0030 1146     		mov	r1, r2
+ 619 0032 1846     		mov	r0, r3
+ 620 0034 FFF7FEFF 		bl	L9388_Set_SOLENDR
+ 123:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 621              		.loc 1 123 1
+ 622 0038 00BF     		nop
+ 623 003a 08BD     		pop	{r3, pc}
+ 624              	.L24:
+ 625              		.align	2
+ 626              	.L23:
+ 627 003c 00000000 		.word	channel
+ 628 0040 00000000 		.word	mode
+ 629              		.cfi_endproc
+ 630              	.LFE458:
+ 632              		.section	.text.CDD_L9388_ReadADVoltage,"ax",%progbits
+ 633              		.align	1
+ 634              		.p2align 4,,15
+ 635              		.global	CDD_L9388_ReadADVoltage
+ 636              		.syntax unified
+ 637              		.thumb
+ 638              		.thumb_func
+ 640              	CDD_L9388_ReadADVoltage:
+ 641              	.LFB459:
+ 124:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 125:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_013*/
+ 126:CDD/CDD_L9388/src/CDD_L9388_IF.c **** uint32_t CDD_L9388_ReadADVoltage(L9388_ADCType ADC_Channel)
+ 127:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {   
+ 642              		.loc 1 127 1
+ 643              		.cfi_startproc
+ 644              		@ args = 0, pretend = 0, frame = 16
+ 645              		@ frame_needed = 0, uses_anonymous_args = 0
+ 646 0000 00B5     		push	{lr}
+ 647              		.cfi_def_cfa_offset 4
+ 648              		.cfi_offset 14, -4
+ 649 0002 85B0     		sub	sp, sp, #20
+ 650              		.cfi_def_cfa_offset 24
+ 651 0004 0346     		mov	r3, r0
+ 652 0006 8DF80730 		strb	r3, [sp, #7]
+ 128:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     uint32_t ADC_Value = 0;
+ 653              		.loc 1 128 14
+ 654 000a 0023     		movs	r3, #0
+ 655 000c 0393     		str	r3, [sp, #12]
+ 129:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     ADC_Value = CDD_L9388_Read_ADC(ADC_Channel);
+ 656              		.loc 1 129 17
+ 657 000e 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 658 0012 1846     		mov	r0, r3
+ 659 0014 FFF7FEFF 		bl	CDD_L9388_Read_ADC
+ 660 0018 0390     		str	r0, [sp, #12]
+ 130:CDD/CDD_L9388/src/CDD_L9388_IF.c ****     return ADC_Value;
+ 661              		.loc 1 130 12
+ 662 001a 039B     		ldr	r3, [sp, #12]
+ 131:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 663              		.loc 1 131 1
+ 664 001c 1846     		mov	r0, r3
+ 665 001e 05B0     		add	sp, sp, #20
+ 666              		.cfi_def_cfa_offset 4
+ 667              		@ sp needed
+ 668 0020 5DF804FB 		ldr	pc, [sp], #4
+ 669              		.cfi_endproc
+ 670              	.LFE459:
+ 672              		.section	.text.CDD_L9388_Pump_Config,"ax",%progbits
+ 673              		.align	1
+ 674              		.p2align 4,,15
+ 675              		.global	CDD_L9388_Pump_Config
+ 676              		.syntax unified
+ 677              		.thumb
+ 678              		.thumb_func
+ 680              	CDD_L9388_Pump_Config:
+ 681              	.LFB460:
+ 132:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 133:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_014*/
+ 134:CDD/CDD_L9388/src/CDD_L9388_IF.c **** void CDD_L9388_Pump_Config(bool On_Off_Switch,uint16_t Period,uint8_t Dutycycle)
+ 135:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 682              		.loc 1 135 1
+ 683              		.cfi_startproc
+ 684              		@ args = 0, pretend = 0, frame = 8
+ 685              		@ frame_needed = 0, uses_anonymous_args = 0
+ 686 0000 00B5     		push	{lr}
+ 687              		.cfi_def_cfa_offset 4
+ 688              		.cfi_offset 14, -4
+ 689 0002 83B0     		sub	sp, sp, #12
+ 690              		.cfi_def_cfa_offset 16
+ 691 0004 0346     		mov	r3, r0
+ 692 0006 8DF80730 		strb	r3, [sp, #7]
+ 693 000a 0B46     		mov	r3, r1	@ movhi
+ 694 000c ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 695 0010 1346     		mov	r3, r2
+ 696 0012 8DF80630 		strb	r3, [sp, #6]
+ 136:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Set_Pump_On_Off(On_Off_Switch);
+ 697              		.loc 1 136 2
+ 698 0016 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 699 001a 1846     		mov	r0, r3
+ 700 001c FFF7FEFF 		bl	L9388_Set_Pump_On_Off
+ 137:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Pump_Config(Period,Dutycycle);
+ 701              		.loc 1 137 2
+ 702 0020 9DF80620 		ldrb	r2, [sp, #6]	@ zero_extendqisi2
+ 703 0024 BDF80430 		ldrh	r3, [sp, #4]
+ 704 0028 1146     		mov	r1, r2
+ 705 002a 1846     		mov	r0, r3
+ 706 002c FFF7FEFF 		bl	L9388_Pump_Config
+ 138:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 707              		.loc 1 138 1
+ 708 0030 00BF     		nop
+ 709 0032 03B0     		add	sp, sp, #12
+ 710              		.cfi_def_cfa_offset 4
+ 711              		@ sp needed
+ 712 0034 5DF804FB 		ldr	pc, [sp], #4
+ 713              		.cfi_endproc
+ 714              	.LFE460:
+ 716              		.section	.text.CDD_L9388_WSI_Config,"ax",%progbits
+ 717              		.align	1
+ 718              		.p2align 4,,15
+ 719              		.global	CDD_L9388_WSI_Config
+ 720              		.syntax unified
+ 721              		.thumb
+ 722              		.thumb_func
+ 724              	CDD_L9388_WSI_Config:
+ 725              	.LFB461:
+ 139:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 140:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_015*/
+ 141:CDD/CDD_L9388/src/CDD_L9388_IF.c **** void CDD_L9388_WSI_Config(bool En_Disable_Flag,uint8_t WSI_Sensor_Type,uint8_t channel)
+ 142:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 726              		.loc 1 142 1
+ 727              		.cfi_startproc
+ 728              		@ args = 0, pretend = 0, frame = 8
+ 729              		@ frame_needed = 0, uses_anonymous_args = 0
+ 730 0000 00B5     		push	{lr}
+ 731              		.cfi_def_cfa_offset 4
+ 732              		.cfi_offset 14, -4
+ 733 0002 83B0     		sub	sp, sp, #12
+ 734              		.cfi_def_cfa_offset 16
+ 735 0004 0346     		mov	r3, r0
+ 736 0006 8DF80730 		strb	r3, [sp, #7]
+ 737 000a 0B46     		mov	r3, r1
+ 738 000c 8DF80630 		strb	r3, [sp, #6]
+ 739 0010 1346     		mov	r3, r2
+ 740 0012 8DF80530 		strb	r3, [sp, #5]
+ 143:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_WSICTRL_INIT(En_Disable_Flag);
+ 741              		.loc 1 143 2
+ 742 0016 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 743 001a 1846     		mov	r0, r3
+ 744 001c FFF7FEFF 		bl	L9388_WSICTRL_INIT
+ 144:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Config_WSI_Type(channel,WSI_Sensor_Type);
+ 745              		.loc 1 144 2
+ 746 0020 9DF80620 		ldrb	r2, [sp, #6]	@ zero_extendqisi2
+ 747 0024 9DF80530 		ldrb	r3, [sp, #5]	@ zero_extendqisi2
+ 748 0028 1146     		mov	r1, r2
+ 749 002a 1846     		mov	r0, r3
+ 750 002c FFF7FEFF 		bl	L9388_Config_WSI_Type
+ 145:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 751              		.loc 1 145 1
+ 752 0030 00BF     		nop
+ 753 0032 03B0     		add	sp, sp, #12
+ 754              		.cfi_def_cfa_offset 4
+ 755              		@ sp needed
+ 756 0034 5DF804FB 		ldr	pc, [sp], #4
+ 757              		.cfi_endproc
+ 758              	.LFE461:
+ 760              		.section	.text.CDD_L9388_VPWR_Diag,"ax",%progbits
+ 761              		.align	1
+ 762              		.p2align 4,,15
+ 763              		.global	CDD_L9388_VPWR_Diag
+ 764              		.syntax unified
+ 765              		.thumb
+ 766              		.thumb_func
+ 768              	CDD_L9388_VPWR_Diag:
+ 769              	.LFB462:
+ 146:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 147:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_Diag_001*/
+ 148:CDD/CDD_L9388/src/CDD_L9388_IF.c **** bool CDD_L9388_VPWR_Diag(void)
+ 149:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 770              		.loc 1 149 1
+ 771              		.cfi_startproc
+ 772              		@ args = 0, pretend = 0, frame = 8
+ 773              		@ frame_needed = 0, uses_anonymous_args = 0
+ 774 0000 00B5     		push	{lr}
+ 775              		.cfi_def_cfa_offset 4
+ 776              		.cfi_offset 14, -4
+ 777 0002 83B0     		sub	sp, sp, #12
+ 778              		.cfi_def_cfa_offset 16
+ 150:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	bool result = 0;
+ 779              		.loc 1 150 7
+ 780 0004 0023     		movs	r3, #0
+ 781 0006 8DF80730 		strb	r3, [sp, #7]
+ 151:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_GENSTATUS();
+ 782              		.loc 1 151 2
+ 783 000a FFF7FEFF 		bl	L9388_Read_GENSTATUS
+ 152:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	if((L9388_Rx_Register.GENSTATUS.B.VPWR_OV)||(L9388_Rx_Register.GENSTATUS.B.VPWR_UV))
+ 784              		.loc 1 152 5
+ 785 000e 0B4B     		ldr	r3, .L33
+ 786 0010 DB79     		ldrb	r3, [r3, #7]	@ zero_extendqisi2
+ 787 0012 03F01003 		and	r3, r3, #16
+ 788 0016 DBB2     		uxtb	r3, r3
+ 789              		.loc 1 152 4
+ 790 0018 002B     		cmp	r3, #0
+ 791 001a 06D1     		bne	.L30
+ 792              		.loc 1 152 44 discriminator 1
+ 793 001c 074B     		ldr	r3, .L33
+ 794 001e DB79     		ldrb	r3, [r3, #7]	@ zero_extendqisi2
+ 795 0020 03F02003 		and	r3, r3, #32
+ 796 0024 DBB2     		uxtb	r3, r3
+ 797 0026 002B     		cmp	r3, #0
+ 798 0028 02D0     		beq	.L31
+ 799              	.L30:
+ 153:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 154:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		result = 1;
+ 800              		.loc 1 154 10
+ 801 002a 0123     		movs	r3, #1
+ 802 002c 8DF80730 		strb	r3, [sp, #7]
+ 803              	.L31:
+ 155:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 156:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	return result;
+ 804              		.loc 1 156 9
+ 805 0030 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 157:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 806              		.loc 1 157 1
+ 807 0034 1846     		mov	r0, r3
+ 808 0036 03B0     		add	sp, sp, #12
+ 809              		.cfi_def_cfa_offset 4
+ 810              		@ sp needed
+ 811 0038 5DF804FB 		ldr	pc, [sp], #4
+ 812              	.L34:
+ 813              		.align	2
+ 814              	.L33:
+ 815 003c 00000000 		.word	L9388_Rx_Register
+ 816              		.cfi_endproc
+ 817              	.LFE462:
+ 819              		.section	.text.CDD_L9388_VDD_Diag,"ax",%progbits
+ 820              		.align	1
+ 821              		.p2align 4,,15
+ 822              		.global	CDD_L9388_VDD_Diag
+ 823              		.syntax unified
+ 824              		.thumb
+ 825              		.thumb_func
+ 827              	CDD_L9388_VDD_Diag:
+ 828              	.LFB463:
+ 158:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 159:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_Diag_002*/
+ 160:CDD/CDD_L9388/src/CDD_L9388_IF.c **** bool CDD_L9388_VDD_Diag(void)
+ 161:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 829              		.loc 1 161 1
+ 830              		.cfi_startproc
+ 831              		@ args = 0, pretend = 0, frame = 8
+ 832              		@ frame_needed = 0, uses_anonymous_args = 0
+ 833 0000 00B5     		push	{lr}
+ 834              		.cfi_def_cfa_offset 4
+ 835              		.cfi_offset 14, -4
+ 836 0002 83B0     		sub	sp, sp, #12
+ 837              		.cfi_def_cfa_offset 16
+ 162:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	bool result = 0;
+ 838              		.loc 1 162 7
+ 839 0004 0023     		movs	r3, #0
+ 840 0006 8DF80730 		strb	r3, [sp, #7]
+ 163:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_VDDFLT();
+ 841              		.loc 1 163 2
+ 842 000a FFF7FEFF 		bl	L9388_Read_VDDFLT
+ 164:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	if(L9388_Rx_Register.VDDFLT.R != 0)
+ 843              		.loc 1 164 29
+ 844 000e 064B     		ldr	r3, .L38
+ 845 0010 DB8A     		ldrh	r3, [r3, #22]
+ 846              		.loc 1 164 4
+ 847 0012 002B     		cmp	r3, #0
+ 848 0014 02D0     		beq	.L36
+ 165:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 166:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		result = 1;
+ 849              		.loc 1 166 10
+ 850 0016 0123     		movs	r3, #1
+ 851 0018 8DF80730 		strb	r3, [sp, #7]
+ 852              	.L36:
+ 167:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 168:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	return result;
+ 853              		.loc 1 168 9
+ 854 001c 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 169:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 855              		.loc 1 169 1
+ 856 0020 1846     		mov	r0, r3
+ 857 0022 03B0     		add	sp, sp, #12
+ 858              		.cfi_def_cfa_offset 4
+ 859              		@ sp needed
+ 860 0024 5DF804FB 		ldr	pc, [sp], #4
+ 861              	.L39:
+ 862              		.align	2
+ 863              	.L38:
+ 864 0028 00000000 		.word	L9388_Rx_Register
+ 865              		.cfi_endproc
+ 866              	.LFE463:
+ 868              		.section	.text.CDD_L9388_VDD5_Diag,"ax",%progbits
+ 869              		.align	1
+ 870              		.p2align 4,,15
+ 871              		.global	CDD_L9388_VDD5_Diag
+ 872              		.syntax unified
+ 873              		.thumb
+ 874              		.thumb_func
+ 876              	CDD_L9388_VDD5_Diag:
+ 877              	.LFB464:
+ 170:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 171:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_Diag_003*/
+ 172:CDD/CDD_L9388/src/CDD_L9388_IF.c **** bool CDD_L9388_VDD5_Diag(void)
+ 173:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 878              		.loc 1 173 1
+ 879              		.cfi_startproc
+ 880              		@ args = 0, pretend = 0, frame = 8
+ 881              		@ frame_needed = 0, uses_anonymous_args = 0
+ 882 0000 00B5     		push	{lr}
+ 883              		.cfi_def_cfa_offset 4
+ 884              		.cfi_offset 14, -4
+ 885 0002 83B0     		sub	sp, sp, #12
+ 886              		.cfi_def_cfa_offset 16
+ 174:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	bool result = 0;
+ 887              		.loc 1 174 7
+ 888 0004 0023     		movs	r3, #0
+ 889 0006 8DF80730 		strb	r3, [sp, #7]
+ 175:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_VDD5FLT();
+ 890              		.loc 1 175 2
+ 891 000a FFF7FEFF 		bl	L9388_Read_VDD5FLT
+ 176:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	if(L9388_Rx_Register.VDDSTATUS.R &0xF000)
+ 892              		.loc 1 176 32
+ 893 000e 074B     		ldr	r3, .L43
+ 894 0010 1B8B     		ldrh	r3, [r3, #24]
+ 895              		.loc 1 176 35
+ 896 0012 03F47043 		and	r3, r3, #61440
+ 897              		.loc 1 176 4
+ 898 0016 002B     		cmp	r3, #0
+ 899 0018 02D0     		beq	.L41
+ 177:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 178:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		result = 1;
+ 900              		.loc 1 178 10
+ 901 001a 0123     		movs	r3, #1
+ 902 001c 8DF80730 		strb	r3, [sp, #7]
+ 903              	.L41:
+ 179:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 180:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	return result;
+ 904              		.loc 1 180 9
+ 905 0020 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 181:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 906              		.loc 1 181 1
+ 907 0024 1846     		mov	r0, r3
+ 908 0026 03B0     		add	sp, sp, #12
+ 909              		.cfi_def_cfa_offset 4
+ 910              		@ sp needed
+ 911 0028 5DF804FB 		ldr	pc, [sp], #4
+ 912              	.L44:
+ 913              		.align	2
+ 914              	.L43:
+ 915 002c 00000000 		.word	L9388_Rx_Register
+ 916              		.cfi_endproc
+ 917              	.LFE464:
+ 919              		.section	.text.CDD_L9388_Charge_Pump_Diag,"ax",%progbits
+ 920              		.align	1
+ 921              		.p2align 4,,15
+ 922              		.global	CDD_L9388_Charge_Pump_Diag
+ 923              		.syntax unified
+ 924              		.thumb
+ 925              		.thumb_func
+ 927              	CDD_L9388_Charge_Pump_Diag:
+ 928              	.LFB465:
+ 182:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 183:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_Diag_004*/
+ 184:CDD/CDD_L9388/src/CDD_L9388_IF.c **** bool CDD_L9388_Charge_Pump_Diag(void)
+ 185:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 929              		.loc 1 185 1
+ 930              		.cfi_startproc
+ 931              		@ args = 0, pretend = 0, frame = 8
+ 932              		@ frame_needed = 0, uses_anonymous_args = 0
+ 933 0000 00B5     		push	{lr}
+ 934              		.cfi_def_cfa_offset 4
+ 935              		.cfi_offset 14, -4
+ 936 0002 83B0     		sub	sp, sp, #12
+ 937              		.cfi_def_cfa_offset 16
+ 186:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	bool result = 0;
+ 938              		.loc 1 186 7
+ 939 0004 0023     		movs	r3, #0
+ 940 0006 8DF80730 		strb	r3, [sp, #7]
+ 187:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_GENSTATUS();
+ 941              		.loc 1 187 2
+ 942 000a FFF7FEFF 		bl	L9388_Read_GENSTATUS
+ 188:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	if((L9388_Rx_Register.GENSTATUS.B.CP_OV)||(L9388_Rx_Register.GENSTATUS.B.CP_UV))
+ 943              		.loc 1 188 5
+ 944 000e 0B4B     		ldr	r3, .L49
+ 945 0010 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 946 0012 03F02003 		and	r3, r3, #32
+ 947 0016 DBB2     		uxtb	r3, r3
+ 948              		.loc 1 188 4
+ 949 0018 002B     		cmp	r3, #0
+ 950 001a 06D1     		bne	.L46
+ 951              		.loc 1 188 42 discriminator 1
+ 952 001c 074B     		ldr	r3, .L49
+ 953 001e 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 954 0020 03F04003 		and	r3, r3, #64
+ 955 0024 DBB2     		uxtb	r3, r3
+ 956 0026 002B     		cmp	r3, #0
+ 957 0028 02D0     		beq	.L47
+ 958              	.L46:
+ 189:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 190:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		result = 1;
+ 959              		.loc 1 190 10
+ 960 002a 0123     		movs	r3, #1
+ 961 002c 8DF80730 		strb	r3, [sp, #7]
+ 962              	.L47:
+ 191:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 192:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	return result;
+ 963              		.loc 1 192 9
+ 964 0030 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 193:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 965              		.loc 1 193 1
+ 966 0034 1846     		mov	r0, r3
+ 967 0036 03B0     		add	sp, sp, #12
+ 968              		.cfi_def_cfa_offset 4
+ 969              		@ sp needed
+ 970 0038 5DF804FB 		ldr	pc, [sp], #4
+ 971              	.L50:
+ 972              		.align	2
+ 973              	.L49:
+ 974 003c 00000000 		.word	L9388_Rx_Register
+ 975              		.cfi_endproc
+ 976              	.LFE465:
+ 978              		.section	.text.CDD_L9388_Oscillator_Diag,"ax",%progbits
+ 979              		.align	1
+ 980              		.p2align 4,,15
+ 981              		.global	CDD_L9388_Oscillator_Diag
+ 982              		.syntax unified
+ 983              		.thumb
+ 984              		.thumb_func
+ 986              	CDD_L9388_Oscillator_Diag:
+ 987              	.LFB466:
+ 194:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 195:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_Diag_005*/
+ 196:CDD/CDD_L9388/src/CDD_L9388_IF.c **** bool CDD_L9388_Oscillator_Diag(void)
+ 197:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 988              		.loc 1 197 1
+ 989              		.cfi_startproc
+ 990              		@ args = 0, pretend = 0, frame = 8
+ 991              		@ frame_needed = 0, uses_anonymous_args = 0
+ 992 0000 00B5     		push	{lr}
+ 993              		.cfi_def_cfa_offset 4
+ 994              		.cfi_offset 14, -4
+ 995 0002 83B0     		sub	sp, sp, #12
+ 996              		.cfi_def_cfa_offset 16
+ 198:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	bool result = 0;
+ 997              		.loc 1 198 7
+ 998 0004 0023     		movs	r3, #0
+ 999 0006 8DF80730 		strb	r3, [sp, #7]
+ 199:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_GENSTATUS();
+ 1000              		.loc 1 199 2
+ 1001 000a FFF7FEFF 		bl	L9388_Read_GENSTATUS
+ 200:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	if((L9388_Rx_Register.GENSTATUS.B.OSC_FRQ_MON)||(L9388_Rx_Register.GENSTATUS.B.OSC_SELF_TEST_RESUL
+ 1002              		.loc 1 200 5
+ 1003 000e 0F4B     		ldr	r3, .L55
+ 1004 0010 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 1005 0012 03F00203 		and	r3, r3, #2
+ 1006 0016 DBB2     		uxtb	r3, r3
+ 1007              		.loc 1 200 4
+ 1008 0018 002B     		cmp	r3, #0
+ 1009 001a 0DD1     		bne	.L52
+ 1010              		.loc 1 200 48 discriminator 1
+ 1011 001c 0B4B     		ldr	r3, .L55
+ 1012 001e 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 1013 0020 03F00403 		and	r3, r3, #4
+ 1014 0024 DBB2     		uxtb	r3, r3
+ 1015 0026 002B     		cmp	r3, #0
+ 1016 0028 06D1     		bne	.L52
+ 1017              		.loc 1 200 102 discriminator 2
+ 1018 002a 084B     		ldr	r3, .L55
+ 1019 002c 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 1020 002e 03F00103 		and	r3, r3, #1
+ 1021 0032 DBB2     		uxtb	r3, r3
+ 1022 0034 002B     		cmp	r3, #0
+ 1023 0036 02D0     		beq	.L53
+ 1024              	.L52:
+ 201:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 202:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		result = 1;
+ 1025              		.loc 1 202 10
+ 1026 0038 0123     		movs	r3, #1
+ 1027 003a 8DF80730 		strb	r3, [sp, #7]
+ 1028              	.L53:
+ 203:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 204:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	return result;
+ 1029              		.loc 1 204 9
+ 1030 003e 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 205:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 1031              		.loc 1 205 1
+ 1032 0042 1846     		mov	r0, r3
+ 1033 0044 03B0     		add	sp, sp, #12
+ 1034              		.cfi_def_cfa_offset 4
+ 1035              		@ sp needed
+ 1036 0046 5DF804FB 		ldr	pc, [sp], #4
+ 1037              	.L56:
+ 1038 004a 00BF     		.align	2
+ 1039              	.L55:
+ 1040 004c 00000000 		.word	L9388_Rx_Register
+ 1041              		.cfi_endproc
+ 1042              	.LFE466:
+ 1044              		.global	Die_Temperature
+ 1045              		.section	.bss.Die_Temperature,"aw",%nobits
+ 1046              		.align	2
+ 1049              	Die_Temperature:
+ 1050 0000 00000000 		.space	4
+ 1051              		.section	.text.CDD_L9388_Die_Temperature_Diag,"ax",%progbits
+ 1052              		.align	1
+ 1053              		.p2align 4,,15
+ 1054              		.global	CDD_L9388_Die_Temperature_Diag
+ 1055              		.syntax unified
+ 1056              		.thumb
+ 1057              		.thumb_func
+ 1059              	CDD_L9388_Die_Temperature_Diag:
+ 1060              	.LFB467:
+ 206:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 207:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_Diag_006*/
+ 208:CDD/CDD_L9388/src/CDD_L9388_IF.c **** float Die_Temperature = 0;
+ 209:CDD/CDD_L9388/src/CDD_L9388_IF.c **** bool CDD_L9388_Die_Temperature_Diag(void)
+ 210:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 1061              		.loc 1 210 1
+ 1062              		.cfi_startproc
+ 1063              		@ args = 0, pretend = 0, frame = 8
+ 1064              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1065 0000 00B5     		push	{lr}
+ 1066              		.cfi_def_cfa_offset 4
+ 1067              		.cfi_offset 14, -4
+ 1068 0002 83B0     		sub	sp, sp, #12
+ 1069              		.cfi_def_cfa_offset 16
+ 211:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	bool result = 0;
+ 1070              		.loc 1 211 7
+ 1071 0004 0023     		movs	r3, #0
+ 1072 0006 8DF80730 		strb	r3, [sp, #7]
+ 212:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 213:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_GENSTATUS();
+ 1073              		.loc 1 213 2
+ 1074 000a FFF7FEFF 		bl	L9388_Read_GENSTATUS
+ 214:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	Die_Temperature = L9388_Read_Die_Temperature();
+ 1075              		.loc 1 214 20
+ 1076 000e FFF7FEFF 		bl	L9388_Read_Die_Temperature
+ 1077 0012 F0EE407A 		vmov.f32	s15, s0
+ 1078              		.loc 1 214 18
+ 1079 0016 094B     		ldr	r3, .L60
+ 1080 0018 C3ED007A 		vstr.32	s15, [r3]
+ 215:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	if(L9388_Rx_Register.GENSTATUS.B.T_SD_INT)
+ 1081              		.loc 1 215 5
+ 1082 001c 084B     		ldr	r3, .L60+4
+ 1083 001e 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 1084 0020 03F00803 		and	r3, r3, #8
+ 1085 0024 DBB2     		uxtb	r3, r3
+ 1086              		.loc 1 215 4
+ 1087 0026 002B     		cmp	r3, #0
+ 1088 0028 02D0     		beq	.L58
+ 216:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 217:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		result = 1;
+ 1089              		.loc 1 217 10
+ 1090 002a 0123     		movs	r3, #1
+ 1091 002c 8DF80730 		strb	r3, [sp, #7]
+ 1092              	.L58:
+ 218:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 219:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	return result;
+ 1093              		.loc 1 219 9
+ 1094 0030 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 220:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 1095              		.loc 1 220 1
+ 1096 0034 1846     		mov	r0, r3
+ 1097 0036 03B0     		add	sp, sp, #12
+ 1098              		.cfi_def_cfa_offset 4
+ 1099              		@ sp needed
+ 1100 0038 5DF804FB 		ldr	pc, [sp], #4
+ 1101              	.L61:
+ 1102              		.align	2
+ 1103              	.L60:
+ 1104 003c 00000000 		.word	Die_Temperature
+ 1105 0040 00000000 		.word	L9388_Rx_Register
+ 1106              		.cfi_endproc
+ 1107              	.LFE467:
+ 1109              		.section	.text.CDD_L9388_Prun_WD_Diag,"ax",%progbits
+ 1110              		.align	1
+ 1111              		.p2align 4,,15
+ 1112              		.global	CDD_L9388_Prun_WD_Diag
+ 1113              		.syntax unified
+ 1114              		.thumb
+ 1115              		.thumb_func
+ 1117              	CDD_L9388_Prun_WD_Diag:
+ 1118              	.LFB468:
+ 221:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 222:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_Diag_007*/
+ 223:CDD/CDD_L9388/src/CDD_L9388_IF.c **** bool CDD_L9388_Prun_WD_Diag(void)
+ 224:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 1119              		.loc 1 224 1
+ 1120              		.cfi_startproc
+ 1121              		@ args = 0, pretend = 0, frame = 8
+ 1122              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1123 0000 00B5     		push	{lr}
+ 1124              		.cfi_def_cfa_offset 4
+ 1125              		.cfi_offset 14, -4
+ 1126 0002 83B0     		sub	sp, sp, #12
+ 1127              		.cfi_def_cfa_offset 16
+ 225:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	bool result = 0;
+ 1128              		.loc 1 225 7
+ 1129 0004 0023     		movs	r3, #0
+ 1130 0006 8DF80730 		strb	r3, [sp, #7]
+ 226:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_GENSTATUS();
+ 1131              		.loc 1 226 2
+ 1132 000a FFF7FEFF 		bl	L9388_Read_GENSTATUS
+ 227:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	if(L9388_Rx_Register.GENSTATUS.B.WDOG_TO)
+ 1133              		.loc 1 227 5
+ 1134 000e 084B     		ldr	r3, .L65
+ 1135 0010 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 1136 0012 03F01003 		and	r3, r3, #16
+ 1137 0016 DBB2     		uxtb	r3, r3
+ 1138              		.loc 1 227 4
+ 1139 0018 002B     		cmp	r3, #0
+ 1140 001a 02D0     		beq	.L63
+ 228:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 229:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		result = 1;
+ 1141              		.loc 1 229 10
+ 1142 001c 0123     		movs	r3, #1
+ 1143 001e 8DF80730 		strb	r3, [sp, #7]
+ 1144              	.L63:
+ 230:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 231:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	return result;
+ 1145              		.loc 1 231 9
+ 1146 0022 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 232:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 1147              		.loc 1 232 1
+ 1148 0026 1846     		mov	r0, r3
+ 1149 0028 03B0     		add	sp, sp, #12
+ 1150              		.cfi_def_cfa_offset 4
+ 1151              		@ sp needed
+ 1152 002a 5DF804FB 		ldr	pc, [sp], #4
+ 1153              	.L66:
+ 1154 002e 00BF     		.align	2
+ 1155              	.L65:
+ 1156 0030 00000000 		.word	L9388_Rx_Register
+ 1157              		.cfi_endproc
+ 1158              	.LFE468:
+ 1160              		.section	.text.CDD_L9388_SPI_Diag,"ax",%progbits
+ 1161              		.align	1
+ 1162              		.p2align 4,,15
+ 1163              		.global	CDD_L9388_SPI_Diag
+ 1164              		.syntax unified
+ 1165              		.thumb
+ 1166              		.thumb_func
+ 1168              	CDD_L9388_SPI_Diag:
+ 1169              	.LFB469:
+ 233:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 234:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_Diag_008*/
+ 235:CDD/CDD_L9388/src/CDD_L9388_IF.c **** bool CDD_L9388_SPI_Diag(void)
+ 236:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 1170              		.loc 1 236 1
+ 1171              		.cfi_startproc
+ 1172              		@ args = 0, pretend = 0, frame = 8
+ 1173              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1174 0000 00B5     		push	{lr}
+ 1175              		.cfi_def_cfa_offset 4
+ 1176              		.cfi_offset 14, -4
+ 1177 0002 83B0     		sub	sp, sp, #12
+ 1178              		.cfi_def_cfa_offset 16
+ 237:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	bool result = 0;
+ 1179              		.loc 1 237 7
+ 1180 0004 0023     		movs	r3, #0
+ 1181 0006 8DF80730 		strb	r3, [sp, #7]
+ 238:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_GENSTATUS();
+ 1182              		.loc 1 238 2
+ 1183 000a FFF7FEFF 		bl	L9388_Read_GENSTATUS
+ 239:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	if(L9388_Rx_Register.COMMUNICATION_FAULTS.R)
+ 1184              		.loc 1 239 43
+ 1185 000e 064B     		ldr	r3, .L70
+ 1186 0010 5B89     		ldrh	r3, [r3, #10]
+ 1187              		.loc 1 239 4
+ 1188 0012 002B     		cmp	r3, #0
+ 1189 0014 02D0     		beq	.L68
+ 240:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 241:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		result = 1;
+ 1190              		.loc 1 241 10
+ 1191 0016 0123     		movs	r3, #1
+ 1192 0018 8DF80730 		strb	r3, [sp, #7]
+ 1193              	.L68:
+ 242:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 243:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	return result;
+ 1194              		.loc 1 243 9
+ 1195 001c 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 244:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 1196              		.loc 1 244 1
+ 1197 0020 1846     		mov	r0, r3
+ 1198 0022 03B0     		add	sp, sp, #12
+ 1199              		.cfi_def_cfa_offset 4
+ 1200              		@ sp needed
+ 1201 0024 5DF804FB 		ldr	pc, [sp], #4
+ 1202              	.L71:
+ 1203              		.align	2
+ 1204              	.L70:
+ 1205 0028 00000000 		.word	L9388_Rx_Register
+ 1206              		.cfi_endproc
+ 1207              	.LFE469:
+ 1209              		.section	.text.CDD_L9388_PUMPDR_Diag,"ax",%progbits
+ 1210              		.align	1
+ 1211              		.p2align 4,,15
+ 1212              		.global	CDD_L9388_PUMPDR_Diag
+ 1213              		.syntax unified
+ 1214              		.thumb
+ 1215              		.thumb_func
+ 1217              	CDD_L9388_PUMPDR_Diag:
+ 1218              	.LFB470:
+ 245:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 246:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_Diag_009*/
+ 247:CDD/CDD_L9388/src/CDD_L9388_IF.c **** bool CDD_L9388_PUMPDR_Diag(void)
+ 248:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 1219              		.loc 1 248 1
+ 1220              		.cfi_startproc
+ 1221              		@ args = 0, pretend = 0, frame = 8
+ 1222              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1223 0000 00B5     		push	{lr}
+ 1224              		.cfi_def_cfa_offset 4
+ 1225              		.cfi_offset 14, -4
+ 1226 0002 83B0     		sub	sp, sp, #12
+ 1227              		.cfi_def_cfa_offset 16
+ 249:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	bool result = 0;
+ 1228              		.loc 1 249 7
+ 1229 0004 0023     		movs	r3, #0
+ 1230 0006 8DF80730 		strb	r3, [sp, #7]
+ 250:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_PUMPDR();
+ 1231              		.loc 1 250 2
+ 1232 000a FFF7FEFF 		bl	L9388_Read_PUMPDR
+ 251:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	if(L9388_Rx_Register.PUMPDR.B.PMP_BIST_STATUS == 0x3)
+ 1233              		.loc 1 251 48
+ 1234 000e 0C4B     		ldr	r3, .L76
+ 1235 0010 5B7D     		ldrb	r3, [r3, #21]	@ zero_extendqisi2
+ 1236 0012 03F06003 		and	r3, r3, #96
+ 1237 0016 DBB2     		uxtb	r3, r3
+ 1238              		.loc 1 251 4
+ 1239 0018 602B     		cmp	r3, #96
+ 1240 001a 02D1     		bne	.L73
+ 252:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 253:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		result = 1;
+ 1241              		.loc 1 253 10
+ 1242 001c 0123     		movs	r3, #1
+ 1243 001e 8DF80730 		strb	r3, [sp, #7]
+ 1244              	.L73:
+ 254:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 255:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 256:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	if(L9388_Rx_Register.PUMPDR.R & 0x1FF)
+ 1245              		.loc 1 256 29
+ 1246 0022 074B     		ldr	r3, .L76
+ 1247 0024 9B8A     		ldrh	r3, [r3, #20]
+ 1248              		.loc 1 256 32
+ 1249 0026 C3F30803 		ubfx	r3, r3, #0, #9
+ 1250              		.loc 1 256 4
+ 1251 002a 002B     		cmp	r3, #0
+ 1252 002c 02D0     		beq	.L74
+ 257:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 258:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		result = 1;
+ 1253              		.loc 1 258 10
+ 1254 002e 0123     		movs	r3, #1
+ 1255 0030 8DF80730 		strb	r3, [sp, #7]
+ 1256              	.L74:
+ 259:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 260:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	return result;
+ 1257              		.loc 1 260 9
+ 1258 0034 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 261:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 1259              		.loc 1 261 1
+ 1260 0038 1846     		mov	r0, r3
+ 1261 003a 03B0     		add	sp, sp, #12
+ 1262              		.cfi_def_cfa_offset 4
+ 1263              		@ sp needed
+ 1264 003c 5DF804FB 		ldr	pc, [sp], #4
+ 1265              	.L77:
+ 1266              		.align	2
+ 1267              	.L76:
+ 1268 0040 00000000 		.word	L9388_Rx_Register
+ 1269              		.cfi_endproc
+ 1270              	.LFE470:
+ 1272              		.section	.text.CDD_L9388_VSO_Diag,"ax",%progbits
+ 1273              		.align	1
+ 1274              		.p2align 4,,15
+ 1275              		.global	CDD_L9388_VSO_Diag
+ 1276              		.syntax unified
+ 1277              		.thumb
+ 1278              		.thumb_func
+ 1280              	CDD_L9388_VSO_Diag:
+ 1281              	.LFB471:
+ 262:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 263:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_Diag_010*/
+ 264:CDD/CDD_L9388/src/CDD_L9388_IF.c **** bool CDD_L9388_VSO_Diag(void)
+ 265:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 1282              		.loc 1 265 1
+ 1283              		.cfi_startproc
+ 1284              		@ args = 0, pretend = 0, frame = 8
+ 1285              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1286 0000 00B5     		push	{lr}
+ 1287              		.cfi_def_cfa_offset 4
+ 1288              		.cfi_offset 14, -4
+ 1289 0002 83B0     		sub	sp, sp, #12
+ 1290              		.cfi_def_cfa_offset 16
+ 266:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	bool result = 0;
+ 1291              		.loc 1 266 7
+ 1292 0004 0023     		movs	r3, #0
+ 1293 0006 8DF80730 		strb	r3, [sp, #7]
+ 267:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_VSODR();
+ 1294              		.loc 1 267 2
+ 1295 000a FFF7FEFF 		bl	L9388_Read_VSODR
+ 268:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	if(L9388_Rx_Register.VSODR.R &0x7E)
+ 1296              		.loc 1 268 28
+ 1297 000e 074B     		ldr	r3, .L81
+ 1298 0010 DB8B     		ldrh	r3, [r3, #30]
+ 1299              		.loc 1 268 31
+ 1300 0012 03F07E03 		and	r3, r3, #126
+ 1301              		.loc 1 268 4
+ 1302 0016 002B     		cmp	r3, #0
+ 1303 0018 02D0     		beq	.L79
+ 269:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 270:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		result = 1;
+ 1304              		.loc 1 270 10
+ 1305 001a 0123     		movs	r3, #1
+ 1306 001c 8DF80730 		strb	r3, [sp, #7]
+ 1307              	.L79:
+ 271:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 272:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	return result;
+ 1308              		.loc 1 272 9
+ 1309 0020 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 273:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 1310              		.loc 1 273 1
+ 1311 0024 1846     		mov	r0, r3
+ 1312 0026 03B0     		add	sp, sp, #12
+ 1313              		.cfi_def_cfa_offset 4
+ 1314              		@ sp needed
+ 1315 0028 5DF804FB 		ldr	pc, [sp], #4
+ 1316              	.L82:
+ 1317              		.align	2
+ 1318              	.L81:
+ 1319 002c 00000000 		.word	L9388_Rx_Register
+ 1320              		.cfi_endproc
+ 1321              	.LFE471:
+ 1323              		.section	.text.CDD_L9388_RESOUTPUT_Diag,"ax",%progbits
+ 1324              		.align	1
+ 1325              		.p2align 4,,15
+ 1326              		.global	CDD_L9388_RESOUTPUT_Diag
+ 1327              		.syntax unified
+ 1328              		.thumb
+ 1329              		.thumb_func
+ 1331              	CDD_L9388_RESOUTPUT_Diag:
+ 1332              	.LFB472:
+ 274:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 275:CDD/CDD_L9388/src/CDD_L9388_IF.c **** /*SysRqmt_L9388_Diag_011*/
+ 276:CDD/CDD_L9388/src/CDD_L9388_IF.c **** bool CDD_L9388_RESOUTPUT_Diag(void)
+ 277:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 1333              		.loc 1 277 1
+ 1334              		.cfi_startproc
+ 1335              		@ args = 0, pretend = 0, frame = 8
+ 1336              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1337 0000 00B5     		push	{lr}
+ 1338              		.cfi_def_cfa_offset 4
+ 1339              		.cfi_offset 14, -4
+ 1340 0002 83B0     		sub	sp, sp, #12
+ 1341              		.cfi_def_cfa_offset 16
+ 278:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	bool result = 0;
+ 1342              		.loc 1 278 7
+ 1343 0004 0023     		movs	r3, #0
+ 1344 0006 8DF80730 		strb	r3, [sp, #7]
+ 279:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_RESOUTPUT();
+ 1345              		.loc 1 279 2
+ 1346 000a FFF7FEFF 		bl	L9388_Read_RESOUTPUT
+ 280:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	if(L9388_Rx_Register.RESOUTPUT.R &0x7F)
+ 1347              		.loc 1 280 32
+ 1348 000e 074B     		ldr	r3, .L86
+ 1349 0010 DB8C     		ldrh	r3, [r3, #38]
+ 1350              		.loc 1 280 35
+ 1351 0012 03F07F03 		and	r3, r3, #127
+ 1352              		.loc 1 280 4
+ 1353 0016 002B     		cmp	r3, #0
+ 1354 0018 02D0     		beq	.L84
+ 281:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 282:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		result = 1;
+ 1355              		.loc 1 282 10
+ 1356 001a 0123     		movs	r3, #1
+ 1357 001c 8DF80730 		strb	r3, [sp, #7]
+ 1358              	.L84:
+ 283:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 284:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	return result;
+ 1359              		.loc 1 284 9
+ 1360 0020 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 285:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 1361              		.loc 1 285 1
+ 1362 0024 1846     		mov	r0, r3
+ 1363 0026 03B0     		add	sp, sp, #12
+ 1364              		.cfi_def_cfa_offset 4
+ 1365              		@ sp needed
+ 1366 0028 5DF804FB 		ldr	pc, [sp], #4
+ 1367              	.L87:
+ 1368              		.align	2
+ 1369              	.L86:
+ 1370 002c 00000000 		.word	L9388_Rx_Register
+ 1371              		.cfi_endproc
+ 1372              	.LFE472:
+ 1374              		.section	.text.CDD_L9388_Init_For_Test,"ax",%progbits
+ 1375              		.align	1
+ 1376              		.p2align 4,,15
+ 1377              		.global	CDD_L9388_Init_For_Test
+ 1378              		.syntax unified
+ 1379              		.thumb
+ 1380              		.thumb_func
+ 1382              	CDD_L9388_Init_For_Test:
+ 1383              	.LFB473:
+ 286:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 287:CDD/CDD_L9388/src/CDD_L9388_IF.c **** void CDD_L9388_Init_For_Test(uint8_t pwmtype)
+ 288:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 1384              		.loc 1 288 1
+ 1385              		.cfi_startproc
+ 1386              		@ args = 0, pretend = 0, frame = 16
+ 1387              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1388 0000 00B5     		push	{lr}
+ 1389              		.cfi_def_cfa_offset 4
+ 1390              		.cfi_offset 14, -4
+ 1391 0002 85B0     		sub	sp, sp, #20
+ 1392              		.cfi_def_cfa_offset 24
+ 1393 0004 0346     		mov	r3, r0
+ 1394 0006 8DF80730 		strb	r3, [sp, #7]
+ 289:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	CDD_L9388_GENCFG_Cfg();
+ 1395              		.loc 1 289 2
+ 1396 000a FFF7FEFF 		bl	CDD_L9388_GENCFG_Cfg
+ 290:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	/*VSO\SEL_OUT*/
+ 291:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Set_VSOSER();
+ 1397              		.loc 1 291 2
+ 1398 000e FFF7FEFF 		bl	L9388_Set_VSOSER
+ 292:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	/*Pump*/
+ 293:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	CDD_L9388_Pump_Config(1, 10000, 50);
+ 1399              		.loc 1 293 2
+ 1400 0012 3222     		movs	r2, #50
+ 1401 0014 42F21071 		movw	r1, #10000
+ 1402 0018 0120     		movs	r0, #1
+ 1403 001a FFF7FEFF 		bl	CDD_L9388_Pump_Config
+ 294:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	/*NO_TC*/
+ 295:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	uint8_t i = 0;
+ 1404              		.loc 1 295 10
+ 1405 001e 0023     		movs	r3, #0
+ 1406 0020 8DF80F30 		strb	r3, [sp, #15]
+ 296:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	for(i=0;i<6;i++)
+ 1407              		.loc 1 296 7
+ 1408 0024 0023     		movs	r3, #0
+ 1409 0026 8DF80F30 		strb	r3, [sp, #15]
+ 1410              		.loc 1 296 2
+ 1411 002a 2CE0     		b	.L89
+ 1412              	.L92:
+ 297:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 298:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		if(pwmtype == 0)
+ 1413              		.loc 1 298 5
+ 1414 002c 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 1415 0030 002B     		cmp	r3, #0
+ 1416 0032 07D1     		bne	.L90
+ 299:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 			L9388_Set_NO_TC_PWM(10000,i);
+ 1417              		.loc 1 299 4
+ 1418 0034 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 1419 0038 1946     		mov	r1, r3
+ 1420 003a 42F21070 		movw	r0, #10000
+ 1421 003e FFF7FEFF 		bl	L9388_Set_NO_TC_PWM
+ 1422 0042 06E0     		b	.L91
+ 1423              	.L90:
+ 300:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		else
+ 301:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 			L9388_Set_NO_TC_PWM(16368,i);
+ 1424              		.loc 1 301 4
+ 1425 0044 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 1426 0048 1946     		mov	r1, r3
+ 1427 004a 43F6F070 		movw	r0, #16368
+ 1428 004e FFF7FEFF 		bl	L9388_Set_NO_TC_PWM
+ 1429              	.L91:
+ 302:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		L9388_Set_NO_TC_Current(500,i);
+ 1430              		.loc 1 302 3 discriminator 2
+ 1431 0052 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 1432 0056 1946     		mov	r1, r3
+ 1433 0058 4FF4FA70 		mov	r0, #500
+ 1434 005c FFF7FEFF 		bl	L9388_Set_NO_TC_Current
+ 303:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		L9388_Set_SOLSERVENA(i,1);
+ 1435              		.loc 1 303 3 discriminator 2
+ 1436 0060 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 1437 0064 0121     		movs	r1, #1
+ 1438 0066 1846     		mov	r0, r3
+ 1439 0068 FFF7FEFF 		bl	L9388_Set_SOLSERVENA
+ 304:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		L9388_Set_SOLENDR(i,mode);
+ 1440              		.loc 1 304 3 discriminator 2
+ 1441 006c 2E4B     		ldr	r3, .L97
+ 1442 006e 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 1443 0070 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 1444 0074 1146     		mov	r1, r2
+ 1445 0076 1846     		mov	r0, r3
+ 1446 0078 FFF7FEFF 		bl	L9388_Set_SOLENDR
+ 296:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 1447              		.loc 1 296 15 discriminator 2
+ 1448 007c 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 1449 0080 0133     		adds	r3, r3, #1
+ 1450 0082 8DF80F30 		strb	r3, [sp, #15]
+ 1451              	.L89:
+ 296:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 1452              		.loc 1 296 2 discriminator 1
+ 1453 0086 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 1454 008a 052B     		cmp	r3, #5
+ 1455 008c CED9     		bls	.L92
+ 305:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 306:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	/*ESV*/
+ 307:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	for(i=0;i<2;i++)
+ 1456              		.loc 1 307 7
+ 1457 008e 0023     		movs	r3, #0
+ 1458 0090 8DF80F30 		strb	r3, [sp, #15]
+ 1459              		.loc 1 307 2
+ 1460 0094 29E0     		b	.L93
+ 1461              	.L94:
+ 308:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 309:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		L9388_Set_ESV_PWM(4000,i);
+ 1462              		.loc 1 309 3 discriminator 3
+ 1463 0096 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 1464 009a 1946     		mov	r1, r3
+ 1465 009c 4FF47A60 		mov	r0, #4000
+ 1466 00a0 FFF7FEFF 		bl	L9388_Set_ESV_PWM
+ 310:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		L9388_Set_ESV_Current(1000,i);
+ 1467              		.loc 1 310 3 discriminator 3
+ 1468 00a4 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 1469 00a8 1946     		mov	r1, r3
+ 1470 00aa 4FF47A70 		mov	r0, #1000
+ 1471 00ae FFF7FEFF 		bl	L9388_Set_ESV_Current
+ 311:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		L9388_Set_SOLSERVENA(i+6,1);
+ 1472              		.loc 1 311 3 discriminator 3
+ 1473 00b2 9DF80F30 		ldrb	r3, [sp, #15]
+ 1474 00b6 0633     		adds	r3, r3, #6
+ 1475 00b8 DBB2     		uxtb	r3, r3
+ 1476 00ba 0121     		movs	r1, #1
+ 1477 00bc 1846     		mov	r0, r3
+ 1478 00be FFF7FEFF 		bl	L9388_Set_SOLSERVENA
+ 312:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		L9388_Set_SOLENDR(i+6,mode);
+ 1479              		.loc 1 312 3 discriminator 3
+ 1480 00c2 9DF80F30 		ldrb	r3, [sp, #15]
+ 1481 00c6 0633     		adds	r3, r3, #6
+ 1482 00c8 DBB2     		uxtb	r3, r3
+ 1483 00ca 174A     		ldr	r2, .L97
+ 1484 00cc 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 1485 00ce 1146     		mov	r1, r2
+ 1486 00d0 1846     		mov	r0, r3
+ 1487 00d2 FFF7FEFF 		bl	L9388_Set_SOLENDR
+ 313:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		CDD_L9388_Read_ESV_Exception(i);
+ 1488              		.loc 1 313 3 discriminator 3
+ 1489 00d6 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 1490 00da 1846     		mov	r0, r3
+ 1491 00dc FFF7FEFF 		bl	CDD_L9388_Read_ESV_Exception
+ 307:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 1492              		.loc 1 307 15 discriminator 3
+ 1493 00e0 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 1494 00e4 0133     		adds	r3, r3, #1
+ 1495 00e6 8DF80F30 		strb	r3, [sp, #15]
+ 1496              	.L93:
+ 307:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 1497              		.loc 1 307 2 discriminator 1
+ 1498 00ea 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 1499 00ee 012B     		cmp	r3, #1
+ 1500 00f0 D1D9     		bls	.L94
+ 314:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 315:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	/*NC*/
+ 316:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	for(i=0;i<4;i++)
+ 1501              		.loc 1 316 7
+ 1502 00f2 0023     		movs	r3, #0
+ 1503 00f4 8DF80F30 		strb	r3, [sp, #15]
+ 1504              		.loc 1 316 2
+ 1505 00f8 0AE0     		b	.L95
+ 1506              	.L96:
+ 317:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 318:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		L9388_Set_ON_OFF(i, 1);
+ 1507              		.loc 1 318 3 discriminator 3
+ 1508 00fa 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 1509 00fe 0121     		movs	r1, #1
+ 1510 0100 1846     		mov	r0, r3
+ 1511 0102 FFF7FEFF 		bl	L9388_Set_ON_OFF
+ 316:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 1512              		.loc 1 316 15 discriminator 3
+ 1513 0106 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 1514 010a 0133     		adds	r3, r3, #1
+ 1515 010c 8DF80F30 		strb	r3, [sp, #15]
+ 1516              	.L95:
+ 316:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 1517              		.loc 1 316 2 discriminator 1
+ 1518 0110 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 1519 0114 032B     		cmp	r3, #3
+ 1520 0116 F0D9     		bls	.L96
+ 319:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 320:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	/*SHLS*/
+ 321:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Set_SHLS(0, 1);	
+ 1521              		.loc 1 321 2
+ 1522 0118 0121     		movs	r1, #1
+ 1523 011a 0020     		movs	r0, #0
+ 1524 011c FFF7FEFF 		bl	L9388_Set_SHLS
+ 322:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 323:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 324:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }
+ 1525              		.loc 1 324 1
+ 1526 0120 00BF     		nop
+ 1527 0122 05B0     		add	sp, sp, #20
+ 1528              		.cfi_def_cfa_offset 4
+ 1529              		@ sp needed
+ 1530 0124 5DF804FB 		ldr	pc, [sp], #4
+ 1531              	.L98:
+ 1532              		.align	2
+ 1533              	.L97:
+ 1534 0128 00000000 		.word	mode
+ 1535              		.cfi_endproc
+ 1536              	.LFE473:
+ 1538              		.section	.text.CDD_L9388_Read_Status_For_Test,"ax",%progbits
+ 1539              		.align	1
+ 1540              		.p2align 4,,15
+ 1541              		.global	CDD_L9388_Read_Status_For_Test
+ 1542              		.syntax unified
+ 1543              		.thumb
+ 1544              		.thumb_func
+ 1546              	CDD_L9388_Read_Status_For_Test:
+ 1547              	.LFB474:
+ 325:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 326:CDD/CDD_L9388/src/CDD_L9388_IF.c **** void CDD_L9388_Read_Status_For_Test(void)
+ 327:CDD/CDD_L9388/src/CDD_L9388_IF.c **** {
+ 1548              		.loc 1 327 1
+ 1549              		.cfi_startproc
+ 1550              		@ args = 0, pretend = 0, frame = 8
+ 1551              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1552 0000 00B5     		push	{lr}
+ 1553              		.cfi_def_cfa_offset 4
+ 1554              		.cfi_offset 14, -4
+ 1555 0002 83B0     		sub	sp, sp, #12
+ 1556              		.cfi_def_cfa_offset 16
+ 328:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_CHIPID();
+ 1557              		.loc 1 328 2
+ 1558 0004 FFF7FEFF 		bl	L9388_Read_CHIPID
+ 329:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_GENSTATUS();
+ 1559              		.loc 1 329 2
+ 1560 0008 FFF7FEFF 		bl	L9388_Read_GENSTATUS
+ 330:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_VDDFLT();
+ 1561              		.loc 1 330 2
+ 1562 000c FFF7FEFF 		bl	L9388_Read_VDDFLT
+ 331:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_VDD5FLT();
+ 1563              		.loc 1 331 2
+ 1564 0010 FFF7FEFF 		bl	L9388_Read_VDD5FLT
+ 332:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_PUMPDR();
+ 1565              		.loc 1 332 2
+ 1566 0014 FFF7FEFF 		bl	L9388_Read_PUMPDR
+ 333:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_VSODR();
+ 1567              		.loc 1 333 2
+ 1568 0018 FFF7FEFF 		bl	L9388_Read_VSODR
+ 334:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_RESOUTPUT();
+ 1569              		.loc 1 334 2
+ 1570 001c FFF7FEFF 		bl	L9388_Read_RESOUTPUT
+ 335:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	CDD_L9388_Read_ADC(0);
+ 1571              		.loc 1 335 2
+ 1572 0020 0020     		movs	r0, #0
+ 1573 0022 FFF7FEFF 		bl	CDD_L9388_Read_ADC
+ 336:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	uint8_t i = 0;
+ 1574              		.loc 1 336 10
+ 1575 0026 0023     		movs	r3, #0
+ 1576 0028 8DF80730 		strb	r3, [sp, #7]
+ 337:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	for(i=0;i<6;i++)
+ 1577              		.loc 1 337 7
+ 1578 002c 0023     		movs	r3, #0
+ 1579 002e 8DF80730 		strb	r3, [sp, #7]
+ 1580              		.loc 1 337 2
+ 1581 0032 09E0     		b	.L100
+ 1582              	.L101:
+ 338:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 339:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		CDD_L9388_Read_NO_TC_Exception(i);
+ 1583              		.loc 1 339 3 discriminator 3
+ 1584 0034 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 1585 0038 1846     		mov	r0, r3
+ 1586 003a FFF7FEFF 		bl	CDD_L9388_Read_NO_TC_Exception
+ 337:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	for(i=0;i<6;i++)
+ 1587              		.loc 1 337 15 discriminator 3
+ 1588 003e 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 1589 0042 0133     		adds	r3, r3, #1
+ 1590 0044 8DF80730 		strb	r3, [sp, #7]
+ 1591              	.L100:
+ 337:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	for(i=0;i<6;i++)
+ 1592              		.loc 1 337 2 discriminator 1
+ 1593 0048 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 1594 004c 052B     		cmp	r3, #5
+ 1595 004e F1D9     		bls	.L101
+ 340:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 341:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	for(i=0;i<2;i++)
+ 1596              		.loc 1 341 7
+ 1597 0050 0023     		movs	r3, #0
+ 1598 0052 8DF80730 		strb	r3, [sp, #7]
+ 1599              		.loc 1 341 2
+ 1600 0056 09E0     		b	.L102
+ 1601              	.L103:
+ 342:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 343:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 		CDD_L9388_Read_ESV_Exception(i);
+ 1602              		.loc 1 343 3 discriminator 3
+ 1603 0058 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 1604 005c 1846     		mov	r0, r3
+ 1605 005e FFF7FEFF 		bl	CDD_L9388_Read_ESV_Exception
+ 341:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 1606              		.loc 1 341 15 discriminator 3
+ 1607 0062 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 1608 0066 0133     		adds	r3, r3, #1
+ 1609 0068 8DF80730 		strb	r3, [sp, #7]
+ 1610              	.L102:
+ 341:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	{
+ 1611              		.loc 1 341 2 discriminator 1
+ 1612 006c 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 1613 0070 012B     		cmp	r3, #1
+ 1614 0072 F1D9     		bls	.L103
+ 344:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	}
+ 345:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_SOLSERVENA();
+ 1615              		.loc 1 345 2
+ 1616 0074 FFF7FEFF 		bl	L9388_Read_SOLSERVENA
+ 346:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	L9388_Read_SOLENDR();
+ 1617              		.loc 1 346 2
+ 1618 0078 FFF7FEFF 		bl	L9388_Read_SOLENDR
+ 347:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 348:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 	
+ 349:CDD/CDD_L9388/src/CDD_L9388_IF.c **** 
+ 350:CDD/CDD_L9388/src/CDD_L9388_IF.c **** }...
+ 1619              		.loc 1 350 1
+ 1620 007c 00BF     		nop
+ 1621 007e 03B0     		add	sp, sp, #12
+ 1622              		.cfi_def_cfa_offset 4
+ 1623              		@ sp needed
+ 1624 0080 5DF804FB 		ldr	pc, [sp], #4
+ 1625              		.cfi_endproc
+ 1626              	.LFE474:
+ 1628              		.text
+ 1629              	.Letext0:
+ 1630              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 1631              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 1632              		.file 4 "CDD/CDD_L9388/include/CDD_L9388_Struct.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 CDD_L9388_IF.c
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:19     .text.CDD_L9388_Init:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:26     .text.CDD_L9388_Init:00000000 CDD_L9388_Init
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:77     .text.CDD_L9388_WDG2_Init:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:84     .text.CDD_L9388_WDG2_Init:00000000 CDD_L9388_WDG2_Init
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:159    .bss.channel:00000000 channel
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:160    .bss.channel:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:165    .bss.mode:00000000 mode
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:166    .bss.mode:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:168    .text.CDD_L9388_Solenoid_Drivers_Global_conf:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:175    .text.CDD_L9388_Solenoid_Drivers_Global_conf:00000000 CDD_L9388_Solenoid_Drivers_Global_conf
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:214    .text.CDD_L9388_NO_TC_Current_set:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:221    .text.CDD_L9388_NO_TC_Current_set:00000000 CDD_L9388_NO_TC_Current_set
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:254    .text.CDD_L9388_NO_TC_PWM_set:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:261    .text.CDD_L9388_NO_TC_PWM_set:00000000 CDD_L9388_NO_TC_PWM_set
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:293    .text.CDD_L9388_ESV_Current_set:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:300    .text.CDD_L9388_ESV_Current_set:00000000 CDD_L9388_ESV_Current_set
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:333    .text.CDD_L9388_ESV_PWM_set:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:340    .text.CDD_L9388_ESV_PWM_set:00000000 CDD_L9388_ESV_PWM_set
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:372    .text.CDD_L9388_ON_OFF_Config:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:379    .text.CDD_L9388_ON_OFF_Config:00000000 CDD_L9388_ON_OFF_Config
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:411    .text.CDD_L9388_SHLS_Conf:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:418    .text.CDD_L9388_SHLS_Conf:00000000 CDD_L9388_SHLS_Conf
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:450    .text.CDD_L9388_Read_NO_TC_Exception:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:457    .text.CDD_L9388_Read_NO_TC_Exception:00000000 CDD_L9388_Read_NO_TC_Exception
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:484    .text.CDD_L9388_Read_ESV_Exception:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:491    .text.CDD_L9388_Read_ESV_Exception:00000000 CDD_L9388_Read_ESV_Exception
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:518    .text.CDD_L9388_Read_ON_OFF_diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:525    .text.CDD_L9388_Read_ON_OFF_diag:00000000 CDD_L9388_Read_ON_OFF_diag
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:552    .text.CDD_L9388_WDG2_Mainfunction:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:559    .text.CDD_L9388_WDG2_Mainfunction:00000000 CDD_L9388_WDG2_Mainfunction
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:578    .text.CDD_L9388_NO_Ch1_Init_demo:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:585    .text.CDD_L9388_NO_Ch1_Init_demo:00000000 CDD_L9388_NO_Ch1_Init_demo
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:627    .text.CDD_L9388_NO_Ch1_Init_demo:0000003c $d
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:633    .text.CDD_L9388_ReadADVoltage:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:640    .text.CDD_L9388_ReadADVoltage:00000000 CDD_L9388_ReadADVoltage
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:673    .text.CDD_L9388_Pump_Config:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:680    .text.CDD_L9388_Pump_Config:00000000 CDD_L9388_Pump_Config
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:717    .text.CDD_L9388_WSI_Config:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:724    .text.CDD_L9388_WSI_Config:00000000 CDD_L9388_WSI_Config
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:761    .text.CDD_L9388_VPWR_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:768    .text.CDD_L9388_VPWR_Diag:00000000 CDD_L9388_VPWR_Diag
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:815    .text.CDD_L9388_VPWR_Diag:0000003c $d
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:820    .text.CDD_L9388_VDD_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:827    .text.CDD_L9388_VDD_Diag:00000000 CDD_L9388_VDD_Diag
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:864    .text.CDD_L9388_VDD_Diag:00000028 $d
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:869    .text.CDD_L9388_VDD5_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:876    .text.CDD_L9388_VDD5_Diag:00000000 CDD_L9388_VDD5_Diag
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:915    .text.CDD_L9388_VDD5_Diag:0000002c $d
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:920    .text.CDD_L9388_Charge_Pump_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:927    .text.CDD_L9388_Charge_Pump_Diag:00000000 CDD_L9388_Charge_Pump_Diag
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:974    .text.CDD_L9388_Charge_Pump_Diag:0000003c $d
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:979    .text.CDD_L9388_Oscillator_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:986    .text.CDD_L9388_Oscillator_Diag:00000000 CDD_L9388_Oscillator_Diag
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1040   .text.CDD_L9388_Oscillator_Diag:0000004c $d
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1049   .bss.Die_Temperature:00000000 Die_Temperature
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1046   .bss.Die_Temperature:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1052   .text.CDD_L9388_Die_Temperature_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1059   .text.CDD_L9388_Die_Temperature_Diag:00000000 CDD_L9388_Die_Temperature_Diag
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1104   .text.CDD_L9388_Die_Temperature_Diag:0000003c $d
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1110   .text.CDD_L9388_Prun_WD_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1117   .text.CDD_L9388_Prun_WD_Diag:00000000 CDD_L9388_Prun_WD_Diag
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1156   .text.CDD_L9388_Prun_WD_Diag:00000030 $d
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1161   .text.CDD_L9388_SPI_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1168   .text.CDD_L9388_SPI_Diag:00000000 CDD_L9388_SPI_Diag
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1205   .text.CDD_L9388_SPI_Diag:00000028 $d
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1210   .text.CDD_L9388_PUMPDR_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1217   .text.CDD_L9388_PUMPDR_Diag:00000000 CDD_L9388_PUMPDR_Diag
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1268   .text.CDD_L9388_PUMPDR_Diag:00000040 $d
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1273   .text.CDD_L9388_VSO_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1280   .text.CDD_L9388_VSO_Diag:00000000 CDD_L9388_VSO_Diag
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1319   .text.CDD_L9388_VSO_Diag:0000002c $d
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1324   .text.CDD_L9388_RESOUTPUT_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1331   .text.CDD_L9388_RESOUTPUT_Diag:00000000 CDD_L9388_RESOUTPUT_Diag
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1370   .text.CDD_L9388_RESOUTPUT_Diag:0000002c $d
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1375   .text.CDD_L9388_Init_For_Test:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1382   .text.CDD_L9388_Init_For_Test:00000000 CDD_L9388_Init_For_Test
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1534   .text.CDD_L9388_Init_For_Test:00000128 $d
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1539   .text.CDD_L9388_Read_Status_For_Test:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cctWPCJh.s:1546   .text.CDD_L9388_Read_Status_For_Test:00000000 CDD_L9388_Read_Status_For_Test
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.typedefs.h.36.07fe3956b4e751037cfee70edcd0b397
+                           .group:00000000 wm4.clock_cfg.h.23.3c8ba5c0347398a4587362787f86fe62
+                           .group:00000000 wm4.sr5e1xx.h.22.568547583bf3c00ded67adadc0110f08
+                           .group:00000000 wm4.cmsis_version.h.32.0f826810625204eca22a19868bdc7586
+                           .group:00000000 wm4.core_cm7.h.66.a4062db891274e2143912fc0bd7e55e3
+                           .group:00000000 wm4.cmsis_gcc.h.26.498d0ad17a45fc9ef20fdc01caf02259
+                           .group:00000000 wm4.core_cm7.h.305.f28cb27b64654b9b703ea60dbab0003d
+                           .group:00000000 wm4.mpu_armv7.h.32.83326921a797fa9d6f70449916b4b839
+                           .group:00000000 wm4.cachel1_armv7.h.32.abd77761a989e008b0c60891114a33c7
+                           .group:00000000 wm4.core_cm7.h.2376.07b7b0525701732543280b71e0cd2400
+                           .group:00000000 wm4.SR5E1_ADC.h.14.21608e6aff125ba995dd767d6d8dc311
+                           .group:00000000 wm4.SR5E1_CEM.h.14.01fe5742c8f1ae35b1f3af05932f702e
+                           .group:00000000 wm4.SR5E1_CMU.h.14.2617b38b159abe38028862394531e06d
+                           .group:00000000 wm4.SR5E1_COMP.h.14.4b6fdfe4f5f7fd9bedf3a99b98bdf4cd
+                           .group:00000000 wm4.SR5E1_CORDIC.h.14.354fbf7c9eaf6963d38eaa25cf28ffe8
+                           .group:00000000 wm4.SR5E1_CRC.h.14.270685b4f0bb89cdb48054af5fe3c4ef
+                           .group:00000000 wm4.SR5E1_DAC.h.14.8c26a0ff04b0cfeb55306cc3f22187b8
+                           .group:00000000 wm4.SR5E1_DBGMCU.h.14.427df893d53a8044654f017ba01c25ed
+                           .group:00000000 wm4.SR5E1_DMA.h.14.a7f9a92f844b40a86965798c2e64240b
+                           .group:00000000 wm4.SR5E1_DMAMUX.h.14.471b3b4dfd4d41515f1df49493698866
+                           .group:00000000 wm4.SR5E1_EXTI.h.14.a325ea3fe89cd84894660551c33241ea
+                           .group:00000000 wm4.SR5E1_FCCU.h.14.0ebf0f0f36e079d28613ad2c80e17e23
+                           .group:00000000 wm4.SR5E1_FDCAN.h.14.ac57101fad5dbc798bfb93f34c899de7
+                           .group:00000000 wm4.SR5E1_FLASH_REG_ITF.h.14.d23d1d44923f9b20b8c8fdb51d66aefd
+                           .group:00000000 wm4.SR5E1_GPIO.h.14.1c84071e130d7c64b62470ab0e18a1f1
+                           .group:00000000 wm4.SR5E1_HRTIM.h.24.03932387d2522e6bd5c772a4edaf2f5d
+                           .group:00000000 wm4.SR5E1_HSEM.h.14.cbe70eee519f01b16452c3f8c99d8df1
+                           .group:00000000 wm4.SR5E1_I2C.h.14.350ba3e0f4fd57828457efa80135c36c
+                           .group:00000000 wm4.SR5E1_IWDG.h.14.20b7c5f05cf7ae94464c360d7af3660d
+                           .group:00000000 wm4.SR5E1_NVM_CTRL.h.14.5f442617f0628d4f16258f211c614ef9
+                           .group:00000000 wm4.SR5E1_PLLDIG.h.14.bd87a8e6917eee17dae2f312c8e5fa53
+                           .group:00000000 wm4.SR5E1_PMC_DIG.h.14.6b7406ff48d7bcd1e53033a370604200
+                           .group:00000000 wm4.SR5E1_RCC.h.14.56734803c71534de286e793a53649740
+                           .group:00000000 wm4.SR5E1_RTC.h.14.47037cbc7d8175dbf2be1dc0bb955e3f
+                           .group:00000000 wm4.SR5E1_SD_ADC.h.14.552b97d0b8f3c1fd4df6d8964b2f1a80
+                           .group:00000000 wm4.SR5E1_SPI.h.14.42d52112e540f85ade4d9135f8b87d72
+                           .group:00000000 wm4.SR5E1_SSCM.h.14.8e6a2ad0ce5fca422fc3d69939b6125b
+                           .group:00000000 wm4.SR5E1_SYSCFG.h.14.02b969490118ce4069914b5e94f7ca65
+                           .group:00000000 wm4.SR5E1_TDM.h.14.a40ed7928cad243a57fd233fccf01ad2
+                           .group:00000000 wm4.SR5E1_TIM.h.14.05b8efc5395873619642d61a4b0b5a54
+                           .group:00000000 wm4.SR5E1_UART.h.14.eec3ab82b02b3bdb3de500483675b83f
+                           .group:00000000 wm4.SR5E1_WWDG.h.14.59b45efc70e442cc6ef03702aad4ad88
+                           .group:00000000 wm4.irq_numbers.h.38.b76ee9208c5ae3feb2392b512990cf71
+                           .group:00000000 wm4.regs.h.23.38915225b13378a72a9bf21e632c378b
+                           .group:00000000 wm4.clock.h.37.c942461032b5a15e2a4133c6666f70ce
+                           .group:00000000 wm4.gpio.h.25.d41a0c19fda8c2de42e666afb48ec15a
+                           .group:00000000 wm4.irq.h.37.78714f25754c8b09d1428599101f6cc7
+                           .group:00000000 wm4.osal_cfg.h.23.b97ea04faf646103324df3ecc2655260
+                           .group:00000000 wm4.osal.h.38.40390df6c87bbed5f1c054e622a926ee
+                           .group:00000000 wm4.test_env.h.57.690797a2e7b6aa0f01d5a7ba687211c6
+                           .group:00000000 wm4.evbe7000p.h.25.2f49fb17c3dd8379489c2784aa8b2c97
+                           .group:00000000 wm4.test_env.h.92.68c13ade9b3e38ad2c77de7ebbfe3e53
+                           .group:00000000 wm4.CDD_L9388_Struct.h.30.c97c44dfb835ac2f11130b1e90187324
+                           .group:00000000 wm4.dmamux.h.25.337aea179f6dbcc87c52aae26d38f76e
+                           .group:00000000 wm4.dma.h.40.f77dd217a06ceba13a3cfdd4102a73c1
+                           .group:00000000 wm4.SPI_LLD_Init.h.9.4b7d91fdd0a6a204eaba9ee0f6a090bc
+                           .group:00000000 wm4.CDD_L9388_LLD.h.4.c0e4ee74ebd31d158c70a54c5d929771
+                           .group:00000000 wm4.CDD_L9388_Drv.h.48.882eb2ef8129725000639b48ce9e3b10
+
+UNDEFINED SYMBOLS
+L9388_Read_CHIPID
+L9388_Read_GENSTATUS
+CDD_L9388_GENCFG_Cfg
+CDD_L9388_GENCFG2_Cfg
+CDD_L9388_WDG2STARTTMG_Cfg
+CDD_L9388_WDG2DELTATMG_Cfg
+CDD_L9388_WDG2TOUTTMG_Cfg
+CDD_L9388_WDG2PGM_Cfg
+L9388_Set_SOLSERVENA
+L9388_Set_SOLENDR
+L9388_Set_NO_TC_Current
+L9388_Set_NO_TC_PWM
+L9388_Set_ESV_Current
+L9388_Set_ESV_PWM
+L9388_Set_ON_OFF
+L9388_Set_SHLS
+L9388_Read_NO_TC_Exception
+L9388_Read_ESV_Exception
+L9388_Read_ON_OFF_diag
+CDD_L9396_WDG2_Feeding_Service
+CDD_L9388_Read_ADC
+L9388_Set_Pump_On_Off
+L9388_Pump_Config
+L9388_WSICTRL_INIT
+L9388_Config_WSI_Type
+L9388_Rx_Register
+L9388_Read_VDDFLT
+L9388_Read_VDD5FLT
+L9388_Read_Die_Temperature
+L9388_Read_PUMPDR
+L9388_Read_VSODR
+L9388_Read_RESOUTPUT
+L9388_Set_VSOSER
+L9388_Read_SOLSERVENA
+L9388_Read_SOLENDR

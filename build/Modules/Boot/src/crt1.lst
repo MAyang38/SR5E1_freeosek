@@ -1,0 +1,746 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"crt1.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.__core_init,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.weak	__core_init
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	__core_init:
+  27              	.LFB146:
+  28              		.file 1 "Modules/Boot/src/crt1.c"
+   1:Modules/Boot/src/crt1.c **** /****************************************************************************
+   2:Modules/Boot/src/crt1.c ****  *
+   3:Modules/Boot/src/crt1.c ****  * Copyright (c) 2022 STMicroelectronics - All Rights Reserved
+   4:Modules/Boot/src/crt1.c ****  *
+   5:Modules/Boot/src/crt1.c ****  * License terms: STMicroelectronics Proprietary in accordance with licensing
+   6:Modules/Boot/src/crt1.c ****  * terms SLA0098 at www.st.com.
+   7:Modules/Boot/src/crt1.c ****  *
+   8:Modules/Boot/src/crt1.c ****  * THIS SOFTWARE IS DISTRIBUTED "AS IS," AND ALL WARRANTIES ARE DISCLAIMED,
+   9:Modules/Boot/src/crt1.c ****  * INCLUDING MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+  10:Modules/Boot/src/crt1.c ****  *
+  11:Modules/Boot/src/crt1.c ****  *****************************************************************************/
+  12:Modules/Boot/src/crt1.c **** /**
+  13:Modules/Boot/src/crt1.c ****  * @file    crt1.c
+  14:Modules/Boot/src/crt1.c ****  * @brief   Boot module source file.
+  15:Modules/Boot/src/crt1.c ****  *
+  16:Modules/Boot/src/crt1.c ****  * @addtogroup BOOT
+  17:Modules/Boot/src/crt1.c ****  * @{
+  18:Modules/Boot/src/crt1.c ****  */
+  19:Modules/Boot/src/crt1.c **** 
+  20:Modules/Boot/src/crt1.c **** #include <stdbool.h>
+  21:Modules/Boot/src/crt1.c **** 
+  22:Modules/Boot/src/crt1.c **** #include "cmparams.h"
+  23:Modules/Boot/src/crt1.c **** 
+  24:Modules/Boot/src/crt1.c **** /*===========================================================================*/
+  25:Modules/Boot/src/crt1.c **** /* Module local definitions.                                                 */
+  26:Modules/Boot/src/crt1.c **** /*===========================================================================*/
+  27:Modules/Boot/src/crt1.c **** 
+  28:Modules/Boot/src/crt1.c **** /*===========================================================================*/
+  29:Modules/Boot/src/crt1.c **** /* Module exported variables.                                                */
+  30:Modules/Boot/src/crt1.c **** /*===========================================================================*/
+  31:Modules/Boot/src/crt1.c **** 
+  32:Modules/Boot/src/crt1.c **** /*===========================================================================*/
+  33:Modules/Boot/src/crt1.c **** /* Module local types.                                                       */
+  34:Modules/Boot/src/crt1.c **** /*===========================================================================*/
+  35:Modules/Boot/src/crt1.c **** 
+  36:Modules/Boot/src/crt1.c **** /*===========================================================================*/
+  37:Modules/Boot/src/crt1.c **** /* Module local variables.                                                   */
+  38:Modules/Boot/src/crt1.c **** /*===========================================================================*/
+  39:Modules/Boot/src/crt1.c **** 
+  40:Modules/Boot/src/crt1.c **** /*===========================================================================*/
+  41:Modules/Boot/src/crt1.c **** /* Module local functions.                                                   */
+  42:Modules/Boot/src/crt1.c **** /*===========================================================================*/
+  43:Modules/Boot/src/crt1.c **** 
+  44:Modules/Boot/src/crt1.c **** /*===========================================================================*/
+  45:Modules/Boot/src/crt1.c **** /* Local function prototypes                                                 */
+  46:Modules/Boot/src/crt1.c **** /*===========================================================================*/
+  47:Modules/Boot/src/crt1.c **** 
+  48:Modules/Boot/src/crt1.c **** #if !defined(__DOXYGEN__)
+  49:Modules/Boot/src/crt1.c **** __attribute__((weak))
+  50:Modules/Boot/src/crt1.c **** #endif
+  51:Modules/Boot/src/crt1.c **** void __core_init(void);
+  52:Modules/Boot/src/crt1.c **** 
+  53:Modules/Boot/src/crt1.c **** #if !defined(__DOXYGEN__)
+  54:Modules/Boot/src/crt1.c **** __attribute__((weak))
+  55:Modules/Boot/src/crt1.c **** #endif
+  56:Modules/Boot/src/crt1.c **** void __early_init(void);
+  57:Modules/Boot/src/crt1.c **** 
+  58:Modules/Boot/src/crt1.c **** #if !defined(__DOXYGEN__)
+  59:Modules/Boot/src/crt1.c **** __attribute__((weak))
+  60:Modules/Boot/src/crt1.c **** #endif
+  61:Modules/Boot/src/crt1.c **** void __late_init(void);
+  62:Modules/Boot/src/crt1.c **** 
+  63:Modules/Boot/src/crt1.c **** #if !defined(__DOXYGEN__)
+  64:Modules/Boot/src/crt1.c **** __attribute__((noreturn, weak))
+  65:Modules/Boot/src/crt1.c **** #endif
+  66:Modules/Boot/src/crt1.c **** void __default_exit(void);
+  67:Modules/Boot/src/crt1.c **** 
+  68:Modules/Boot/src/crt1.c **** /*===========================================================================*/
+  69:Modules/Boot/src/crt1.c **** /* Module exported functions.                                                */
+  70:Modules/Boot/src/crt1.c **** /*===========================================================================*/
+  71:Modules/Boot/src/crt1.c **** 
+  72:Modules/Boot/src/crt1.c **** /**
+  73:Modules/Boot/src/crt1.c ****  * @brief   Architecture-dependent core initialization.
+  74:Modules/Boot/src/crt1.c ****  * @details This hook is invoked immediately after the stack initialization
+  75:Modules/Boot/src/crt1.c ****  *          and before the DATA and BSS segments initialization.
+  76:Modules/Boot/src/crt1.c ****  * @note    This function is a weak symbol.
+  77:Modules/Boot/src/crt1.c ****  */
+  78:Modules/Boot/src/crt1.c **** #if !defined(__DOXYGEN__)
+  79:Modules/Boot/src/crt1.c **** __attribute__((weak))
+  80:Modules/Boot/src/crt1.c **** #endif
+  81:Modules/Boot/src/crt1.c **** void __core_init(void) {
+  29              		.loc 1 81 24
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34              	.LBB28:
+  35              	.LBB29:
+  36              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\platform\\cmsis\\core\\inclu
+   1:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** /******************************************************************************
+   2:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  * @file     cachel1_armv7.h
+   3:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  * @brief    CMSIS Level 1 Cache API for Armv7-M and later
+   4:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  * @version  V1.0.1
+   5:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  * @date     19. April 2021
+   6:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  ******************************************************************************/
+   7:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** /*
+   8:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  * Copyright (c) 2020-2021 Arm Limited. All rights reserved.
+   9:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  *
+  10:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  * SPDX-License-Identifier: Apache-2.0
+  11:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  *
+  12:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+  13:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  * not use this file except in compliance with the License.
+  14:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  * You may obtain a copy of the License at
+  15:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  *
+  16:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  * www.apache.org/licenses/LICENSE-2.0
+  17:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  *
+  18:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  * Unless required by applicable law or agreed to in writing, software
+  19:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  20:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  21:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  * See the License for the specific language governing permissions and
+  22:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  * limitations under the License.
+  23:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  */
+  24:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** 
+  25:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** #if   defined ( __ICCARM__ )
+  26:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****   #pragma system_include         /* treat file as system include file for MISRA check */
+  27:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** #elif defined (__clang__)
+  28:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****   #pragma clang system_header    /* treat file as system include file */
+  29:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** #endif
+  30:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** 
+  31:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** #ifndef ARM_CACHEL1_ARMV7_H
+  32:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** #define ARM_CACHEL1_ARMV7_H
+  33:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** 
+  34:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** /**
+  35:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****   \ingroup  CMSIS_Core_FunctionInterface
+  36:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****   \defgroup CMSIS_Core_CacheFunctions Cache Functions
+  37:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****   \brief    Functions that configure Instruction and Data cache.
+  38:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****   @{
+  39:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****  */
+  40:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** 
+  41:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** /* Cache Size ID Register Macros */
+  42:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** #define CCSIDR_WAYS(x)         (((x) & SCB_CCSIDR_ASSOCIATIVITY_Msk) >> SCB_CCSIDR_ASSOCIATIVITY_Po
+  43:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** #define CCSIDR_SETS(x)         (((x) & SCB_CCSIDR_NUMSETS_Msk      ) >> SCB_CCSIDR_NUMSETS_Pos     
+  44:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** 
+  45:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** #ifndef __SCB_DCACHE_LINE_SIZE
+  46:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** #define __SCB_DCACHE_LINE_SIZE  32U /*!< Cortex-M7 cache line size is fixed to 32 bytes (8 words). 
+  47:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** #endif
+  48:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** 
+  49:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** #ifndef __SCB_ICACHE_LINE_SIZE
+  50:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** #define __SCB_ICACHE_LINE_SIZE  32U /*!< Cortex-M7 cache line size is fixed to 32 bytes (8 words). 
+  51:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** #endif
+  52:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** 
+  53:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** /**
+  54:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****   \brief   Enable I-Cache
+  55:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****   \details Turns on I-Cache
+  56:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****   */
+  57:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** __STATIC_FORCEINLINE void SCB_EnableICache (void)
+  58:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** {
+  59:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****   #if defined (__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
+  60:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****     if (SCB->CCR & SCB_CCR_IC_Msk) return;  /* return if ICache is already enabled */
+  37              		.loc 2 60 12
+  38 0000 124B     		ldr	r3, .L5
+  39 0002 5B69     		ldr	r3, [r3, #20]
+  40              		.loc 2 60 18
+  41 0004 03F40033 		and	r3, r3, #131072
+  42              		.loc 2 60 8
+  43 0008 002B     		cmp	r3, #0
+  44 000a 1BD1     		bne	.L4
+  45              	.LBB30:
+  46              	.LBB31:
+  47              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\platform\\cmsis\\core\\inclu
+   1:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** /**************************************************************************//**
+   2:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * @file     cmsis_gcc.h
+   3:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * @brief    CMSIS compiler GCC header file
+   4:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * @version  V5.4.1
+   5:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * @date     27. May 2021
+   6:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  ******************************************************************************/
+   7:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** /*
+   8:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * Copyright (c) 2009-2021 Arm Limited. All rights reserved.
+   9:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  *
+  10:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * SPDX-License-Identifier: Apache-2.0
+  11:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  *
+  12:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+  13:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * not use this file except in compliance with the License.
+  14:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * You may obtain a copy of the License at
+  15:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  *
+  16:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * www.apache.org/licenses/LICENSE-2.0
+  17:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  *
+  18:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * Unless required by applicable law or agreed to in writing, software
+  19:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  20:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  21:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * See the License for the specific language governing permissions and
+  22:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * limitations under the License.
+  23:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  */
+  24:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+  25:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef __CMSIS_GCC_H
+  26:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __CMSIS_GCC_H
+  27:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+  28:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** /* ignore some GCC warnings */
+  29:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #pragma GCC diagnostic push
+  30:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wsign-conversion"
+  31:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wconversion"
+  32:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wunused-parameter"
+  33:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+  34:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** /* Fallback for __has_builtin */
+  35:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef __has_builtin
+  36:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __has_builtin(x) (0)
+  37:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+  38:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+  39:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** /* CMSIS compiler specific defines */
+  40:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __ASM
+  41:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __ASM                                  __asm
+  42:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+  43:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __INLINE
+  44:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __INLINE                               inline
+  45:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+  46:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __STATIC_INLINE
+  47:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __STATIC_INLINE                        static inline
+  48:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+  49:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __STATIC_FORCEINLINE
+  50:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __STATIC_FORCEINLINE                   __attribute__((always_inline)) static inline
+  51:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+  52:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __NO_RETURN
+  53:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __NO_RETURN                            __attribute__((__noreturn__))
+  54:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+  55:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __USED
+  56:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __USED                                 __attribute__((used))
+  57:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+  58:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __WEAK
+  59:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __WEAK                                 __attribute__((weak))
+  60:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+  61:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __PACKED
+  62:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __PACKED                               __attribute__((packed, aligned(1)))
+  63:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+  64:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __PACKED_STRUCT
+  65:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __PACKED_STRUCT                        struct __attribute__((packed, aligned(1)))
+  66:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+  67:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __PACKED_UNION
+  68:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __PACKED_UNION                         union __attribute__((packed, aligned(1)))
+  69:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+  70:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32        /* deprecated */
+  71:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic push
+  72:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  73:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  74:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   struct __attribute__((packed)) T_UINT32 { uint32_t v; };
+  75:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  76:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __UNALIGNED_UINT32(x)                  (((struct T_UINT32 *)(x))->v)
+  77:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+  78:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_WRITE
+  79:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic push
+  80:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  81:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  82:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_WRITE { uint16_t v; };
+  83:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  84:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __UNALIGNED_UINT16_WRITE(addr, val)    (void)((((struct T_UINT16_WRITE *)(void *)(addr))-
+  85:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+  86:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_READ
+  87:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic push
+  88:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  89:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  90:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_READ { uint16_t v; };
+  91:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  92:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __UNALIGNED_UINT16_READ(addr)          (((const struct T_UINT16_READ *)(const void *)(add
+  93:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+  94:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_WRITE
+  95:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic push
+  96:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  97:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  98:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_WRITE { uint32_t v; };
+  99:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic pop
+ 100:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __UNALIGNED_UINT32_WRITE(addr, val)    (void)((((struct T_UINT32_WRITE *)(void *)(addr))-
+ 101:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+ 102:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_READ
+ 103:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic push
+ 104:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+ 105:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+ 106:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_READ { uint32_t v; };
+ 107:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #pragma GCC diagnostic pop
+ 108:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __UNALIGNED_UINT32_READ(addr)          (((const struct T_UINT32_READ *)(const void *)(add
+ 109:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+ 110:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __ALIGNED
+ 111:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __ALIGNED(x)                           __attribute__((aligned(x)))
+ 112:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+ 113:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __RESTRICT
+ 114:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __RESTRICT                             __restrict
+ 115:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+ 116:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef   __COMPILER_BARRIER
+ 117:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   #define __COMPILER_BARRIER()                   __ASM volatile("":::"memory")
+ 118:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+ 119:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 120:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** /* #########################  Startup and Lowlevel Init  ######################## */
+ 121:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 122:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef __PROGRAM_START
+ 123:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 124:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** /**
+ 125:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   \brief   Initializes data and bss sections
+ 126:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   \details This default implementations initialized all data and additional bss
+ 127:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****            sections relying on .copy.table and .zero.table specified properly
+ 128:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****            in the used linker script.
+ 129:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 130:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  */
+ 131:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** __STATIC_FORCEINLINE __NO_RETURN void __cmsis_start(void)
+ 132:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** {
+ 133:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   extern void _start(void) __NO_RETURN;
+ 134:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 135:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   typedef struct {
+ 136:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****     uint32_t const* src;
+ 137:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****     uint32_t* dest;
+ 138:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****     uint32_t  wlen;
+ 139:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   } __copy_table_t;
+ 140:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 141:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   typedef struct {
+ 142:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****     uint32_t* dest;
+ 143:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****     uint32_t  wlen;
+ 144:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   } __zero_table_t;
+ 145:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 146:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   extern const __copy_table_t __copy_table_start__;
+ 147:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   extern const __copy_table_t __copy_table_end__;
+ 148:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   extern const __zero_table_t __zero_table_start__;
+ 149:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   extern const __zero_table_t __zero_table_end__;
+ 150:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 151:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   for (__copy_table_t const* pTable = &__copy_table_start__; pTable < &__copy_table_end__; ++pTable
+ 152:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****     for(uint32_t i=0u; i<pTable->wlen; ++i) {
+ 153:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****       pTable->dest[i] = pTable->src[i];
+ 154:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****     }
+ 155:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   }
+ 156:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 157:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   for (__zero_table_t const* pTable = &__zero_table_start__; pTable < &__zero_table_end__; ++pTable
+ 158:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****     for(uint32_t i=0u; i<pTable->wlen; ++i) {
+ 159:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****       pTable->dest[i] = 0u;
+ 160:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****     }
+ 161:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   }
+ 162:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 163:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   _start();
+ 164:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** }
+ 165:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 166:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __PROGRAM_START           __cmsis_start
+ 167:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+ 168:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 169:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef __INITIAL_SP
+ 170:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __INITIAL_SP              __StackTop
+ 171:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+ 172:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 173:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef __STACK_LIMIT
+ 174:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __STACK_LIMIT             __StackLimit
+ 175:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+ 176:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 177:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef __VECTOR_TABLE
+ 178:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __VECTOR_TABLE            __Vectors
+ 179:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+ 180:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 181:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef __VECTOR_TABLE_ATTRIBUTE
+ 182:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __VECTOR_TABLE_ATTRIBUTE  __attribute__((used, section(".vectors")))
+ 183:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+ 184:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 185:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+ 186:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef __STACK_SEAL
+ 187:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __STACK_SEAL              __StackSeal
+ 188:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+ 189:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 190:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef __TZ_STACK_SEAL_SIZE
+ 191:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __TZ_STACK_SEAL_SIZE      8U
+ 192:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+ 193:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 194:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #ifndef __TZ_STACK_SEAL_VALUE
+ 195:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __TZ_STACK_SEAL_VALUE     0xFEF5EDA5FEF5EDA5ULL
+ 196:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+ 197:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 198:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 199:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** __STATIC_FORCEINLINE void __TZ_set_STACKSEAL_S (uint32_t* stackTop) {
+ 200:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   *((uint64_t *)stackTop) = __TZ_STACK_SEAL_VALUE;
+ 201:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** }
+ 202:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+ 203:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 204:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 205:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** /* ##########################  Core Instruction Access  ######################### */
+ 206:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** /** \defgroup CMSIS_Core_InstructionInterface CMSIS Core Instruction Interface
+ 207:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   Access to dedicated instructions
+ 208:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   @{
+ 209:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** */
+ 210:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 211:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** /* Define macros for porting to both thumb1 and thumb2.
+ 212:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * For thumb1, use low register (r0-r7), specified by constraint "l"
+ 213:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  * Otherwise, use general registers, specified by constraint "r" */
+ 214:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #if defined (__thumb__) && !defined (__thumb2__)
+ 215:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __CMSIS_GCC_OUT_REG(r) "=l" (r)
+ 216:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __CMSIS_GCC_RW_REG(r) "+l" (r)
+ 217:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __CMSIS_GCC_USE_REG(r) "l" (r)
+ 218:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #else
+ 219:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __CMSIS_GCC_OUT_REG(r) "=r" (r)
+ 220:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __CMSIS_GCC_RW_REG(r) "+r" (r)
+ 221:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __CMSIS_GCC_USE_REG(r) "r" (r)
+ 222:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #endif
+ 223:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 224:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** /**
+ 225:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   \brief   No Operation
+ 226:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   \details No Operation does nothing. This instruction can be used for code alignment purposes.
+ 227:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  */
+ 228:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __NOP()                             __ASM volatile ("nop")
+ 229:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 230:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** /**
+ 231:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   \brief   Wait For Interrupt
+ 232:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   \details Wait For Interrupt is a hint instruction that suspends execution until one of a number o
+ 233:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  */
+ 234:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __WFI()                             __ASM volatile ("wfi":::"memory")
+ 235:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 236:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 237:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** /**
+ 238:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   \brief   Wait For Event
+ 239:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   \details Wait For Event is a hint instruction that permits the processor to enter
+ 240:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****            a low-power state until one of a number of events occurs.
+ 241:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  */
+ 242:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __WFE()                             __ASM volatile ("wfe":::"memory")
+ 243:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 244:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 245:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** /**
+ 246:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   \brief   Send Event
+ 247:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   \details Send Event is a hint instruction. It causes an event to be signaled to the CPU.
+ 248:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  */
+ 249:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** #define __SEV()                             __ASM volatile ("sev")
+ 250:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 251:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 252:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** /**
+ 253:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   \brief   Instruction Synchronization Barrier
+ 254:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   \details Instruction Synchronization Barrier flushes the pipeline in the processor,
+ 255:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****            so that all instructions following the ISB are fetched from cache or memory,
+ 256:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****            after the instruction has been completed.
+ 257:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  */
+ 258:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** __STATIC_FORCEINLINE void __ISB(void)
+ 259:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** {
+ 260:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   __ASM volatile ("isb 0xF":::"memory");
+ 261:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** }
+ 262:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 263:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 264:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** /**
+ 265:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   \brief   Data Synchronization Barrier
+ 266:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   \details Acts as a special kind of Data Memory Barrier.
+ 267:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****            It completes when all explicit memory accesses before this instruction complete.
+ 268:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****  */
+ 269:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** __STATIC_FORCEINLINE void __DSB(void)
+ 270:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** {
+ 271:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h ****   __ASM volatile ("dsb 0xF":::"memory");
+  48              		.loc 3 271 3
+  49              		.syntax unified
+  50              	@ 271 "d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.
+  51 000c BFF34F8F 		dsb 0xF
+  52              	@ 0 "" 2
+ 272:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** }
+  53              		.loc 3 272 1
+  54              		.thumb
+  55              		.syntax unified
+  56 0010 00BF     		nop
+  57              	.LBE31:
+  58              	.LBE30:
+  59              	.LBB32:
+  60              	.LBB33:
+ 260:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** }
+  61              		.loc 3 260 3
+  62              		.syntax unified
+  63              	@ 260 "d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.
+  64 0012 BFF36F8F 		isb 0xF
+  65              	@ 0 "" 2
+ 261:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+  66              		.loc 3 261 1
+  67              		.thumb
+  68              		.syntax unified
+  69 0016 00BF     		nop
+  70              	.LBE33:
+  71              	.LBE32:
+  61:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** 
+  62:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****     __DSB();
+  63:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****     __ISB();
+  64:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****     SCB->ICIALLU = 0UL;                     /* invalidate I-Cache */
+  72              		.loc 2 64 8
+  73 0018 0C4B     		ldr	r3, .L5
+  74              		.loc 2 64 18
+  75 001a 0022     		movs	r2, #0
+  76 001c C3F85022 		str	r2, [r3, #592]
+  77              	.LBB34:
+  78              	.LBB35:
+ 271:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** }
+  79              		.loc 3 271 3
+  80              		.syntax unified
+  81              	@ 271 "d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.
+  82 0020 BFF34F8F 		dsb 0xF
+  83              	@ 0 "" 2
+  84              		.loc 3 272 1
+  85              		.thumb
+  86              		.syntax unified
+  87 0024 00BF     		nop
+  88              	.LBE35:
+  89              	.LBE34:
+  90              	.LBB36:
+  91              	.LBB37:
+ 260:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** }
+  92              		.loc 3 260 3
+  93              		.syntax unified
+  94              	@ 260 "d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.
+  95 0026 BFF36F8F 		isb 0xF
+  96              	@ 0 "" 2
+ 261:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+  97              		.loc 3 261 1
+  98              		.thumb
+  99              		.syntax unified
+ 100 002a 00BF     		nop
+ 101              	.LBE37:
+ 102              	.LBE36:
+  65:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****     __DSB();
+  66:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****     __ISB();
+  67:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h ****     SCB->CCR |=  (uint32_t)SCB_CCR_IC_Msk;  /* enable I-Cache */
+ 103              		.loc 2 67 14
+ 104 002c 074B     		ldr	r3, .L5
+ 105 002e 5B69     		ldr	r3, [r3, #20]
+ 106 0030 064A     		ldr	r2, .L5
+ 107 0032 43F40033 		orr	r3, r3, #131072
+ 108 0036 5361     		str	r3, [r2, #20]
+ 109              	.LBB38:
+ 110              	.LBB39:
+ 271:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** }
+ 111              		.loc 3 271 3
+ 112              		.syntax unified
+ 113              	@ 271 "d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.
+ 114 0038 BFF34F8F 		dsb 0xF
+ 115              	@ 0 "" 2
+ 116              		.loc 3 272 1
+ 117              		.thumb
+ 118              		.syntax unified
+ 119 003c 00BF     		nop
+ 120              	.LBE39:
+ 121              	.LBE38:
+ 122              	.LBB40:
+ 123              	.LBB41:
+ 260:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** }
+ 124              		.loc 3 260 3
+ 125              		.syntax unified
+ 126              	@ 260 "d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.
+ 127 003e BFF36F8F 		isb 0xF
+ 128              	@ 0 "" 2
+ 261:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cmsis_gcc.h **** 
+ 129              		.loc 3 261 1
+ 130              		.thumb
+ 131              		.syntax unified
+ 132 0042 00E0     		b	.L3
+ 133              	.L4:
+ 134              	.LBE41:
+ 135              	.LBE40:
+  60:d:\project\9388\e1\2023_7_27\sr5e1_l9388_demo\modules\platform\cmsis\core\include\cachel1_armv7.h **** 
+ 136              		.loc 2 60 36
+ 137 0044 00BF     		nop
+ 138              	.L3:
+ 139              	.LBE29:
+ 140              	.LBE28:
+  82:Modules/Boot/src/crt1.c **** 
+  83:Modules/Boot/src/crt1.c ****     SCB_EnableICache();
+  84:Modules/Boot/src/crt1.c ****     //SCB_EnableDCache();
+  85:Modules/Boot/src/crt1.c **** }
+ 141              		.loc 1 85 1
+ 142 0046 00BF     		nop
+ 143 0048 7047     		bx	lr
+ 144              	.L6:
+ 145 004a 00BF     		.align	2
+ 146              	.L5:
+ 147 004c 00ED00E0 		.word	-536810240
+ 148              		.cfi_endproc
+ 149              	.LFE146:
+ 151              		.section	.text.__early_init,"ax",%progbits
+ 152              		.align	1
+ 153              		.p2align 4,,15
+ 154              		.weak	__early_init
+ 155              		.syntax unified
+ 156              		.thumb
+ 157              		.thumb_func
+ 159              	__early_init:
+ 160              	.LFB147:
+  86:Modules/Boot/src/crt1.c **** 
+  87:Modules/Boot/src/crt1.c **** /**
+  88:Modules/Boot/src/crt1.c ****  * @brief   Early initialization.
+  89:Modules/Boot/src/crt1.c ****  * @details This hook is invoked immediately after the stack and core
+  90:Modules/Boot/src/crt1.c ****  *          initialization and before the DATA and BSS segments
+  91:Modules/Boot/src/crt1.c ****  *          initialization.
+  92:Modules/Boot/src/crt1.c ****  * @note    This function is a weak symbol.
+  93:Modules/Boot/src/crt1.c ****  */
+  94:Modules/Boot/src/crt1.c **** #if !defined(__DOXYGEN__)
+  95:Modules/Boot/src/crt1.c **** __attribute__((weak))
+  96:Modules/Boot/src/crt1.c **** #endif
+  97:Modules/Boot/src/crt1.c **** void __early_init(void) {}
+ 161              		.loc 1 97 25
+ 162              		.cfi_startproc
+ 163              		@ args = 0, pretend = 0, frame = 0
+ 164              		@ frame_needed = 0, uses_anonymous_args = 0
+ 165              		@ link register save eliminated.
+ 166              		.loc 1 97 26
+ 167 0000 00BF     		nop
+ 168 0002 7047     		bx	lr
+ 169              		.cfi_endproc
+ 170              	.LFE147:
+ 172              		.section	.text.__late_init,"ax",%progbits
+ 173              		.align	1
+ 174              		.p2align 4,,15
+ 175              		.weak	__late_init
+ 176              		.syntax unified
+ 177              		.thumb
+ 178              		.thumb_func
+ 180              	__late_init:
+ 181              	.LFB148:
+  98:Modules/Boot/src/crt1.c **** 
+  99:Modules/Boot/src/crt1.c **** /**
+ 100:Modules/Boot/src/crt1.c ****  * @brief   Late initialization.
+ 101:Modules/Boot/src/crt1.c ****  * @details This hook is invoked after the DATA and BSS segments
+ 102:Modules/Boot/src/crt1.c ****  *          initialization and before any static constructor. The
+ 103:Modules/Boot/src/crt1.c ****  *          default behavior is to do nothing.
+ 104:Modules/Boot/src/crt1.c ****  * @note    This function is a weak symbol.
+ 105:Modules/Boot/src/crt1.c ****  */
+ 106:Modules/Boot/src/crt1.c **** #if !defined(__DOXYGEN__)
+ 107:Modules/Boot/src/crt1.c **** __attribute__((weak))
+ 108:Modules/Boot/src/crt1.c **** #endif
+ 109:Modules/Boot/src/crt1.c **** void __late_init(void) {}
+ 182              		.loc 1 109 24
+ 183              		.cfi_startproc
+ 184              		@ args = 0, pretend = 0, frame = 0
+ 185              		@ frame_needed = 0, uses_anonymous_args = 0
+ 186              		@ link register save eliminated.
+ 187              		.loc 1 109 25
+ 188 0000 00BF     		nop
+ 189 0002 7047     		bx	lr
+ 190              		.cfi_endproc
+ 191              	.LFE148:
+ 193              		.section	.text.__default_exit,"ax",%progbits
+ 194              		.align	1
+ 195              		.p2align 4,,15
+ 196              		.weak	__default_exit
+ 197              		.syntax unified
+ 198              		.thumb
+ 199              		.thumb_func
+ 201              	__default_exit:
+ 202              	.LFB149:
+ 110:Modules/Boot/src/crt1.c **** 
+ 111:Modules/Boot/src/crt1.c **** /**
+ 112:Modules/Boot/src/crt1.c ****  * @brief   Default @p main() function exit handler.
+ 113:Modules/Boot/src/crt1.c ****  * @details This handler is invoked or the @p main() function exit. The
+ 114:Modules/Boot/src/crt1.c ****  *          default behavior is to enter an infinite loop.
+ 115:Modules/Boot/src/crt1.c ****  * @note    This function is a weak symbol.
+ 116:Modules/Boot/src/crt1.c ****  */
+ 117:Modules/Boot/src/crt1.c **** #if !defined(__DOXYGEN__)
+ 118:Modules/Boot/src/crt1.c **** __attribute__((noreturn, weak))
+ 119:Modules/Boot/src/crt1.c **** #endif
+ 120:Modules/Boot/src/crt1.c **** void __default_exit(void) {
+ 203              		.loc 1 120 27
+ 204              		.cfi_startproc
+ 205              		@ args = 0, pretend = 0, frame = 0
+ 206              		@ frame_needed = 0, uses_anonymous_args = 0
+ 207              		@ link register save eliminated.
+ 208              	.L10:
+ 121:Modules/Boot/src/crt1.c **** 
+ 122:Modules/Boot/src/crt1.c ****     while (true) {
+ 209              		.loc 1 122 11 discriminator 1
+ 210 0000 FEE7     		b	.L10
+ 211              		.cfi_endproc
+ 212              	.LFE149:
+ 214 0002 00BF     		.text
+ 215              	.Letext0:
+ 216              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 217              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 218              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\platform\\cmsis\\core\\inclu
+DEFINED SYMBOLS
+                            *ABS*:00000000 crt1.c
+C:\Users\AAA\AppData\Local\Temp\ccxg00vL.s:19     .text.__core_init:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccxg00vL.s:26     .text.__core_init:00000000 __core_init
+C:\Users\AAA\AppData\Local\Temp\ccxg00vL.s:147    .text.__core_init:0000004c $d
+C:\Users\AAA\AppData\Local\Temp\ccxg00vL.s:152    .text.__early_init:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccxg00vL.s:159    .text.__early_init:00000000 __early_init
+C:\Users\AAA\AppData\Local\Temp\ccxg00vL.s:173    .text.__late_init:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccxg00vL.s:180    .text.__late_init:00000000 __late_init
+C:\Users\AAA\AppData\Local\Temp\ccxg00vL.s:194    .text.__default_exit:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccxg00vL.s:201    .text.__default_exit:00000000 __default_exit
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.cmparams.h.21.c335a75d583879ea176f80bfded8b61f
+                           .group:00000000 wm4.sr5e1xx.h.22.568547583bf3c00ded67adadc0110f08
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.cmsis_version.h.32.0f826810625204eca22a19868bdc7586
+                           .group:00000000 wm4.core_cm7.h.66.a4062db891274e2143912fc0bd7e55e3
+                           .group:00000000 wm4.cmsis_gcc.h.26.498d0ad17a45fc9ef20fdc01caf02259
+                           .group:00000000 wm4.core_cm7.h.305.f28cb27b64654b9b703ea60dbab0003d
+                           .group:00000000 wm4.mpu_armv7.h.32.83326921a797fa9d6f70449916b4b839
+                           .group:00000000 wm4.cachel1_armv7.h.32.abd77761a989e008b0c60891114a33c7
+                           .group:00000000 wm4.core_cm7.h.2376.07b7b0525701732543280b71e0cd2400
+                           .group:00000000 wm4.SR5E1_ADC.h.14.21608e6aff125ba995dd767d6d8dc311
+                           .group:00000000 wm4.SR5E1_CEM.h.14.01fe5742c8f1ae35b1f3af05932f702e
+                           .group:00000000 wm4.SR5E1_CMU.h.14.2617b38b159abe38028862394531e06d
+                           .group:00000000 wm4.SR5E1_COMP.h.14.4b6fdfe4f5f7fd9bedf3a99b98bdf4cd
+                           .group:00000000 wm4.SR5E1_CORDIC.h.14.354fbf7c9eaf6963d38eaa25cf28ffe8
+                           .group:00000000 wm4.SR5E1_CRC.h.14.270685b4f0bb89cdb48054af5fe3c4ef
+                           .group:00000000 wm4.SR5E1_DAC.h.14.8c26a0ff04b0cfeb55306cc3f22187b8
+                           .group:00000000 wm4.SR5E1_DBGMCU.h.14.427df893d53a8044654f017ba01c25ed
+                           .group:00000000 wm4.SR5E1_DMA.h.14.a7f9a92f844b40a86965798c2e64240b
+                           .group:00000000 wm4.SR5E1_DMAMUX.h.14.471b3b4dfd4d41515f1df49493698866
+                           .group:00000000 wm4.SR5E1_EXTI.h.14.a325ea3fe89cd84894660551c33241ea
+                           .group:00000000 wm4.SR5E1_FCCU.h.14.0ebf0f0f36e079d28613ad2c80e17e23
+                           .group:00000000 wm4.SR5E1_FDCAN.h.14.ac57101fad5dbc798bfb93f34c899de7
+                           .group:00000000 wm4.SR5E1_FLASH_REG_ITF.h.14.d23d1d44923f9b20b8c8fdb51d66aefd
+                           .group:00000000 wm4.SR5E1_GPIO.h.14.1c84071e130d7c64b62470ab0e18a1f1
+                           .group:00000000 wm4.SR5E1_HRTIM.h.24.03932387d2522e6bd5c772a4edaf2f5d
+                           .group:00000000 wm4.SR5E1_HSEM.h.14.cbe70eee519f01b16452c3f8c99d8df1
+                           .group:00000000 wm4.SR5E1_I2C.h.14.350ba3e0f4fd57828457efa80135c36c
+                           .group:00000000 wm4.SR5E1_IWDG.h.14.20b7c5f05cf7ae94464c360d7af3660d
+                           .group:00000000 wm4.SR5E1_NVM_CTRL.h.14.5f442617f0628d4f16258f211c614ef9
+                           .group:00000000 wm4.SR5E1_PLLDIG.h.14.bd87a8e6917eee17dae2f312c8e5fa53
+                           .group:00000000 wm4.SR5E1_PMC_DIG.h.14.6b7406ff48d7bcd1e53033a370604200
+                           .group:00000000 wm4.SR5E1_RCC.h.14.56734803c71534de286e793a53649740
+                           .group:00000000 wm4.SR5E1_RTC.h.14.47037cbc7d8175dbf2be1dc0bb955e3f
+                           .group:00000000 wm4.SR5E1_SD_ADC.h.14.552b97d0b8f3c1fd4df6d8964b2f1a80
+                           .group:00000000 wm4.SR5E1_SPI.h.14.42d52112e540f85ade4d9135f8b87d72
+                           .group:00000000 wm4.SR5E1_SSCM.h.14.8e6a2ad0ce5fca422fc3d69939b6125b
+                           .group:00000000 wm4.SR5E1_SYSCFG.h.14.02b969490118ce4069914b5e94f7ca65
+                           .group:00000000 wm4.SR5E1_TDM.h.14.a40ed7928cad243a57fd233fccf01ad2
+                           .group:00000000 wm4.SR5E1_TIM.h.14.05b8efc5395873619642d61a4b0b5a54
+                           .group:00000000 wm4.SR5E1_UART.h.14.eec3ab82b02b3bdb3de500483675b83f
+                           .group:00000000 wm4.SR5E1_WWDG.h.14.59b45efc70e442cc6ef03702aad4ad88
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.typedefs.h.36.07fe3956b4e751037cfee70edcd0b397
+                           .group:00000000 wm4.irq_numbers.h.38.b76ee9208c5ae3feb2392b512990cf71
+                           .group:00000000 wm4.regs.h.23.38915225b13378a72a9bf21e632c378b
+
+NO UNDEFINED SYMBOLS

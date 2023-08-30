@@ -1,0 +1,558 @@
+   1              	# 1 "Modules/Boot/src/GCC/crt0.S"
+   1              	/****************************************************************************
+   0              	
+   0              	
+   0              	
+   2              	 *
+   3              	 * Copyright (c) 2022 STMicroelectronics - All Rights Reserved
+   4              	 *
+   5              	 * License terms: STMicroelectronics Proprietary in accordance with licensing
+   6              	 * terms SLA0098 at www.st.com.
+   7              	 *
+   8              	 * THIS SOFTWARE IS DISTRIBUTED "AS IS," AND ALL WARRANTIES ARE DISCLAIMED,
+   9              	 * INCLUDING MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+  10              	 *
+  11              	 *****************************************************************************/
+  12              	/**
+  13              	 * @file    GCC/crt0.S
+  14              	 * @brief   Generic GCC Boot module source file.
+  15              	 *
+  16              	 * @addtogroup BOOT
+  17              	 * @{
+  18              	 */
+  19              	
+  20              	/*===========================================================================*/
+  21              	/* Module constants.                                                         */
+  22              	/*===========================================================================*/
+  23              	
+  24              	#if !defined(FALSE) || defined(__DOXYGEN__)
+  25              	#define FALSE                               0
+  26              	#endif
+  27              	
+  28              	#if !defined(TRUE) || defined(__DOXYGEN__)
+  29              	#define TRUE                                1
+  30              	#endif
+  31              	
+  32              	#define _FROM_ASM_
+  33              	#include "cmparams.h"
+   1              	/****************************************************************************
+   2              	 *
+   3              	 * Copyright (c) 2022 STMicroelectronics - All Rights Reserved
+   4              	 *
+   5              	 * License terms: STMicroelectronics Proprietary in accordance with licensing
+   6              	 * terms SLA0098 at www.st.com.
+   7              	 *
+   8              	 * THIS SOFTWARE IS DISTRIBUTED "AS IS," AND ALL WARRANTIES ARE DISCLAIMED,
+   9              	 * INCLUDING MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+  10              	 *
+  11              	 *****************************************************************************/
+  12              	/**
+  13              	 * @file    cmparams.h
+  14              	 * @brief   ARM Cortex-M7 parameters for SR5E1.
+  15              	 *
+  16              	 * @addtogroup BOOT
+  17              	 * @{
+  18              	 */
+  19              	
+  20              	#ifndef CMPARAMS_H
+  21              	#define CMPARAMS_H
+  22              	
+  23              	/**
+  24              	 * @brief   Cortex core model.
+  25              	 */
+  26              	#define CORTEX_MODEL            7
+  27              	
+  28              	/**
+  29              	 * @brief   Floating Point unit presence.
+  30              	 */
+  31              	#define CORTEX_HAS_FPU          1
+  32              	
+  33              	/**
+  34              	 * @brief   Number of bits in priority masks.
+  35              	 */
+  36              	#define CORTEX_PRIORITY_BITS    4
+  37              	
+  38              	/**
+  39              	 * @brief   Number of interrupt vectors.
+  40              	 * @note    This number does not include the 16 system vectors and must be
+  41              	 *          rounded to a multiple of 8.
+  42              	 */
+  43              	#define CORTEX_NUM_VECTORS      176
+  44              	
+  34              	#include "toolchain.h"
+   1              	/****************************************************************************
+   2              	 *
+   3              	 * Copyright (c) 2022 STMicroelectronics - All Rights Reserved
+   4              	 *
+   5              	 * License terms: STMicroelectronics Proprietary in accordance with licensing
+   6              	 * terms SLA0098 at www.st.com.
+   7              	 *
+   8              	 * THIS SOFTWARE IS DISTRIBUTED "AS IS," AND ALL WARRANTIES ARE DISCLAIMED,
+   9              	 * INCLUDING MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+  10              	 *
+  11              	 *****************************************************************************/
+  12              	/**
+  13              	 * @file    toolchain.h
+  14              	 * @brief   toolchain for ARM compilers.
+  15              	 *
+  16              	 * @addtogroup PLATFORM
+  17              	 * @addtogroup MCU
+  18              	 * @ingroup PLATFORM
+  19              	 * @{
+  20              	 */
+  21              	
+  22              	#ifndef _TOOLCHAIN_H_
+  23              	#define _TOOLCHAIN_H_
+  24              	
+  25              	/***************/
+  26              	/* Green Hills */
+  27              	/***************/
+  28              	#if defined(__ghs__)
+  29              	
+  30              	#define _ASM_THUMB_               .thumb2
+  31              	
+  32              	#define _ASM_THUMB_FUNCTION_
+  33              	
+  34              	/****************/
+  35              	/* HIGHTEC, GCC */
+  36              	/****************/
+  37              	#else
+  38              	
+  39              	#define _ASM_THUMB_               .thumb
+  40              	
+  41              	#define _ASM_THUMB_FUNCTION_      .thumb_func
+  42              	
+  35              	
+  36              	#define CONTROL_MODE_PRIVILEGED             0
+  37              	#define CONTROL_MODE_UNPRIVILEGED           1
+  38              	#define CONTROL_USE_MSP                     0
+  39              	#define CONTROL_USE_PSP                     2
+  40              	#define CONTROL_FPCA                        4
+  41              	
+  42              	#define FPCCR_ASPEN                         (1 << 31)
+  43              	#define FPCCR_LSPEN                         (1 << 30)
+  44              	
+  45              	#define SCB_VTOR                            0xE000ED08
+  46              	#define SCB_CPACR                           0xE000ED88
+  47              	#define SCB_FPCCR                           0xE000EF34
+  48              	#define SCB_FPDSCR                          0xE000EF3C
+  49              	
+  50              	/*===========================================================================*/
+  51              	/* Module pre-compile time settings.                                         */
+  52              	/*===========================================================================*/
+  53              	
+  54              	/**
+  55              	 * @brief   RAM initialization switch.
+  56              	 */
+  57              	#if !defined(CRT0_INIT_RAM) || defined(__DOXYGEN__)
+  58              	#define CRT0_INIT_RAM                       TRUE
+  59              	#endif
+  60              	
+  61              	/**
+  62              	 * @brief   ITCM initialization switch.
+  63              	 */
+  64              	#if !defined(CRT0_INIT_ITCM) || defined(__DOXYGEN__)
+  65              	#define CRT0_INIT_ITCM                      TRUE
+  66              	#endif
+  67              	
+  68              	/**
+  69              	 * @brief   DTCM initialization switch.
+  70              	 */
+  71              	#if !defined(CRT0_INIT_DTCM) || defined(__DOXYGEN__)
+  72              	#define CRT0_INIT_DTCM                      TRUE
+  73              	#endif
+  74              	
+  75              	/**
+  76              	 * @brief   Enforces initialization of MSP.
+  77              	 * @note    This is required if the boot process is not reliable for whatever
+  78              	 *          reason (bad ROMs, bad bootloaders, bad debuggers).
+  79              	 */
+  80              	#if !defined(CRT0_FORCE_MSP_INIT) || defined(__DOXYGEN__)
+  81              	#define CRT0_FORCE_MSP_INIT                 TRUE
+  82              	#endif
+  83              	
+  84              	/**
+  85              	 * @brief   VTOR special register initialization.
+  86              	 * @details VTOR is initialized to point to the vectors table.
+  87              	 * @note    This option can only be enabled on Cortex-M0+ cores.
+  88              	 */
+  89              	#if !defined(CRT0_VTOR_INIT) || defined(__DOXYGEN__)
+  90              	#define CRT0_VTOR_INIT                      TRUE
+  91              	#endif
+  92              	
+  93              	/**
+  94              	 * @brief   FPU initialization switch.
+  95              	 * @note    Its value depedens on compiling options.
+  96              	 */
+  97              	#if defined(USE_FPU) || defined(__DOXYGEN__)
+  98              	#define CRT0_INIT_FPU                       TRUE
+  99              	#else
+ 100              	#define CRT0_INIT_FPU                       FALSE
+ 101              	#endif
+ 102              	
+ 103              	/**
+ 104              	 * @brief   Control special register initialization value.
+ 105              	 * @details The system is setup to run in privileged mode using the PSP
+ 106              	 *          stack (dual stack mode).
+ 107              	 */
+ 108              	#if !defined(CRT0_CONTROL_INIT) || defined(__DOXYGEN__)
+ 109              	#define CRT0_CONTROL_INIT                   (CONTROL_USE_PSP |              \
+ 110              	                                             CONTROL_MODE_PRIVILEGED)
+ 111              	#endif
+ 112              	
+ 113              	/**
+ 114              	 * @brief   Core initialization switch.
+ 115              	 */
+ 116              	#if !defined(CRT0_INIT_CORE) || defined(__DOXYGEN__)
+ 117              	#define CRT0_INIT_CORE                      TRUE
+ 118              	#endif
+ 119              	
+ 120              	/**
+ 121              	 * @brief   Stack segments initialization value.
+ 122              	 */
+ 123              	#if !defined(CRT0_STACKS_FILL_PATTERN) || defined(__DOXYGEN__)
+ 124              	#define CRT0_STACKS_FILL_PATTERN            0x55555555
+ 125              	#endif
+ 126              	
+ 127              	/**
+ 128              	 * @brief   Stack segments initialization switch.
+ 129              	 */
+ 130              	#if !defined(CRT0_INIT_STACKS) || defined(__DOXYGEN__)
+ 131              	#define CRT0_INIT_STACKS                    FALSE
+ 132              	#endif
+ 133              	
+ 134              	/**
+ 135              	 * @brief   DATA segment initialization switch.
+ 136              	 */
+ 137              	#if !defined(CRT0_INIT_DATA) || defined(__DOXYGEN__)
+ 138              	#define CRT0_INIT_DATA                      TRUE
+ 139              	#endif
+ 140              	
+ 141              	/**
+ 142              	 * @brief   Constructors invocation switch.
+ 143              	 */
+ 144              	#if !defined(CRT0_CALL_CONSTRUCTORS) || defined(__DOXYGEN__)
+ 145              	#define CRT0_CALL_CONSTRUCTORS              TRUE
+ 146              	#endif
+ 147              	
+ 148              	/**
+ 149              	 * @brief   Destructors invocation switch.
+ 150              	 */
+ 151              	#if !defined(CRT0_CALL_DESTRUCTORS) || defined(__DOXYGEN__)
+ 152              	#define CRT0_CALL_DESTRUCTORS               TRUE
+ 153              	#endif
+ 154              	
+ 155              	/**
+ 156              	 * @brief   FPU FPCCR register initialization value.
+ 157              	 * @note    Only used if @p CRT0_INIT_FPU is equal to @p TRUE.
+ 158              	 */
+ 159              	#if !defined(CRT0_FPCCR_INIT) || defined(__DOXYGEN__)
+ 160              	#define CRT0_FPCCR_INIT                     (FPCCR_ASPEN | FPCCR_LSPEN)
+ 161              	#endif
+ 162              	
+ 163              	/**
+ 164              	 * @brief   CPACR register initialization value.
+ 165              	 * @note    Only used if @p CRT0_INIT_FPU is equal to @p TRUE.
+ 166              	 */
+ 167              	#if !defined(CRT0_CPACR_INIT) || defined(__DOXYGEN__)
+ 168              	#define CRT0_CPACR_INIT                     0x00F00000
+ 169              	#endif
+ 170              	
+ 171              	/*===========================================================================*/
+ 172              	/* Code section.                                                             */
+ 173              	/*===========================================================================*/
+ 174              	
+ 175              	#if !defined(__DOXYGEN__)
+ 176              	
+ 177              	                _ASM_THUMB_
+ 178              	                .text
+ 179              	
+ 180              	/*
+ 181              	 * CRT0 entry point.
+ 182              	 */
+ 183              	                .align  2
+ 184              	                _ASM_THUMB_FUNCTION_
+ 185              	                .global _crt0_entry
+ 186              	_crt0_entry:
+ 187              	
+ 188              	#if CRT0_INIT_RAM == TRUE
+ 189              	                /* Initialization value.*/
+ 190 0000 0020     	                movs    r0, #0
+ 191 0002 0021     	                movs    r1, #0
+ 192              	
+ 193              	                /* Initializing RAM. Note, it assumes that the size of RAM to
+ 194              	                   initialize (from __mem_start__ to __mem_end__) is a multiple
+ 195              	                   of 8, so the linker file must ensure this.*/
+ 196 0004 444A     	                ldr     r2, =__mem_start__
+ 197 0006 454B     	                ldr     r3, =__mem_end__
+ 198              	ramloop:
+ 199 0008 E2E80201 	                strd    r0, r1, [r2], #8
+ 200 000c 9A42     	                cmp     r2, r3
+ 201 000e FBDB     	                blt     ramloop
+ 202              	#endif
+ 203              	
+ 204              	#if CRT0_INIT_ITCM == TRUE
+ 205              	                /* Initializing core ITCM.*/
+ 206 0010 4349     	                ldr     r1, =__itcm_start__
+ 207 0012 444A     	                ldr     r2, =__itcm_end__
+ 208              	
+ 209 0014 0024     	                movs    r4, #0
+ 210 0016 0025     	                movs    r5, #0
+ 211              	itcmloop1:
+ 212 0018 E1E80245 	                strd    r4, r5, [r1], #8
+ 213 001c 9142     	                cmp     r1, r2
+ 214 001e FBDB     	                blt     itcmloop1
+ 215              	
+ 216              	                /* Copying any data linked into ITCM within core ITCM */
+ 217 0020 414A     	                ldr     r2, =__itcm_size__
+ 218              	                /* If __itcm_size__ == 0 => nothing to copy */
+ 219 0022 002A     	                cmp     r2, #0
+ 220 0024 08D0     	                beq     itcmdone
+ 221              	
+ 222 0026 4148     	                ldr     r0, =__itcm_load__
+ 223 0028 3D49     	                ldr     r1, =__itcm_start__
+ 224 002a 8B18     	                add     r3, r1, r2
+ 225              	
+ 226              	itcmloop2:
+ 227 002c F0E80245 	                ldrd    r4, r5, [r0], #8
+ 228 0030 E1E80245 	                strd    r4, r5, [r1], #8
+ 229 0034 9942     	                cmp     r1, r3
+ 230 0036 F9DB     	                blt     itcmloop2
+ 231              	itcmdone:
+ 232              	#endif
+ 233              	
+ 234              	#if CRT0_INIT_DTCM == TRUE
+ 235              	                /* Initialization value.*/
+ 236 0038 0020     	                movs    r0, #0
+ 237              	
+ 238              	                /* Initializing core DTCM.*/
+ 239 003a 3D49     	                ldr     r1, =__dtcm_start__
+ 240 003c 3D4A     	                ldr     r2, =__dtcm_end__
+ 241              	dtcmloop1:
+ 242 003e 0860     	                str     r0, [r1, #0]
+ 243 0040 4860     	                str     r0, [r1, #4]
+ 244 0042 8860     	                str     r0, [r1, #8]
+ 245 0044 C860     	                str     r0, [r1, #12]
+ 246 0046 0861     	                str     r0, [r1, #16]
+ 247 0048 4861     	                str     r0, [r1, #20]
+ 248 004a 8861     	                str     r0, [r1, #24]
+ 249 004c C861     	                str     r0, [r1, #28]
+ 250 004e 2031     	                add     r1, r1, #32
+ 251 0050 9142     	                cmp     r1, r2
+ 252 0052 F4DB     	                blt     dtcmloop1
+ 253              	
+ 254              	                /* Copying any data linked into DTCM within core DTCM */
+ 255              	                /* Copy __dtcm_size__ bytes from address __dtcm_load__ to
+ 256              	                   address __dtcm_start__. If __dtcm_size__ == 0 => copy
+ 257              	                   is skipped.*/
+ 258 0054 384A     	                ldr     r2, =__dtcm_size__
+ 259 0056 002A     	                cmp     r2, #0
+ 260 0058 08D0     	                beq     dtcmdone
+ 261              	
+ 262 005a 3848     	                ldr     r0, =__dtcm_load__
+ 263 005c 3449     	                ldr     r1, =__dtcm_start__
+ 264 005e 8B18     	                add     r3, r1, r2
+ 265              	
+ 266              	dtcmloop2:
+ 267 0060 0468     	                ldr     r4, [r0]
+ 268 0062 0C60     	                str     r4, [r1]
+ 269 0064 0430     	                add     r0, r0, #4
+ 270 0066 0431     	                add     r1, r1, #4
+ 271 0068 9942     	                cmp     r1, r3
+ 272 006a F9DB     	                blt     dtcmloop2
+ 273              	dtcmdone:
+ 274              	#endif
+ 275              	
+ 276              	                /* Interrupts are globally masked initially.*/
+ 277 006c 72B6     	                cpsid   i
+ 278              	
+ 279              	#if CRT0_FORCE_MSP_INIT == TRUE
+ 280              	                /* MSP stack pointers initialization.*/
+ 281 006e 3448     	                ldr     r0, =__main_stack_end__
+ 282 0070 80F30888 	                msr     MSP, r0
+ 283              	#endif
+ 284              	
+ 285              	                /* PSP stack pointers initialization.*/
+ 286 0074 3348     	                ldr     r0, =__process_stack_end__
+ 287 0076 80F30988 	                msr     PSP, r0
+ 288              	
+ 289              	#if CRT0_VTOR_INIT == TRUE
+ 290 007a 3348     	                ldr     r0, =_vectors
+ 291 007c 3349     	                ldr     r1, =SCB_VTOR
+ 292 007e 0860     	                str     r0, [r1]
+ 293              	#endif
+ 294              	
+ 295              	#if (CRT0_INIT_FPU == TRUE)
+ 296              	                /* FPU FPCCR initialization.*/
+ 297 0080 40F20000 	                movw    r0, #CRT0_FPCCR_INIT & 0xFFFF
+ 298 0084 CCF20000 	                movt    r0, #CRT0_FPCCR_INIT >> 16
+ 299 0088 4EF63471 	                movw    r1, #SCB_FPCCR & 0xFFFF
+ 300 008c CEF20001 	                movt    r1, #SCB_FPCCR >> 16
+ 301 0090 0860     	                str     r0, [r1]
+ 302 0092 BFF34F8F 	                dsb
+ 303 0096 BFF36F8F 	                isb
+ 304              	
+ 305              	                /* CPACR initialization.*/
+ 306 009a 40F20000 	                movw    r0, #CRT0_CPACR_INIT & 0xFFFF
+ 307 009e C0F2F000 	                movt    r0, #CRT0_CPACR_INIT >> 16
+ 308 00a2 4EF68851 	                movw    r1, #SCB_CPACR & 0xFFFF
+ 309 00a6 CEF20001 	                movt    r1, #SCB_CPACR >> 16
+ 310 00aa 0860     	                str     r0, [r1]
+ 311 00ac BFF34F8F 	                dsb
+ 312 00b0 BFF36F8F 	                isb
+ 313              	
+ 314              	                /* FPU FPSCR initially cleared.*/
+ 315 00b4 0020     	                mov     r0, #0
+ 316 00b6 E1EE100A 	                vmsr    FPSCR, r0
+ 317              	
+ 318              	                /* FPU FPDSCR initially cleared.*/
+ 319 00ba 4EF63C71 	                movw    r1, #SCB_FPDSCR & 0xFFFF
+ 320 00be CEF20001 	                movt    r1, #SCB_FPDSCR >> 16
+ 321 00c2 0860     	                str     r0, [r1]
+ 322              	
+ 323              	                /* Enforcing FPCA bit in the CONTROL register.*/
+ 324 00c4 0620     	                movs    r0, #CRT0_CONTROL_INIT | CONTROL_FPCA
+ 325              	
+ 326              	#else
+ 327              	                movs    r0, #CRT0_CONTROL_INIT
+ 328              	#endif
+ 329              	
+ 330              	                /* CONTROL register initialization as configured.*/
+ 331 00c6 80F31488 	                msr     CONTROL, r0
+ 332 00ca BFF36F8F 	                isb
+ 333              	
+ 334              	#if CRT0_INIT_CORE == TRUE
+ 335              	                /* Core initialization.*/
+ 336 00ce FFF7FEFF 	                bl      __core_init
+ 337              	#endif
+ 338              	
+ 339              	#if CRT0_INIT_STACKS == TRUE
+ 340              	                ldr     r0, =CRT0_STACKS_FILL_PATTERN
+ 341              	                ldr     r1, =CRT0_STACKS_FILL_PATTERN
+ 342              	                /* Main Stack initialization. Note, it assumes that the
+ 343              	                   stack size is a multiple of 8 so the linker file must
+ 344              	                   ensure this.*/
+ 345              	                ldr     r2, =__main_stack_base__
+ 346              	                ldr     r3, =__main_stack_end__
+ 347              	msloop:
+ 348              	                strd    r0, r1, [r2], #8
+ 349              	                cmp     r2, r3
+ 350              	                blt     msloop
+ 351              	
+ 352              	                /* Process Stack initialization. Note, it assumes that the
+ 353              	                   stack size is a multiple of 8 so the linker file must
+ 354              	                   ensure this.*/
+ 355              	                ldr     r2, =__process_stack_base__
+ 356              	                ldr     r3, =__process_stack_end__
+ 357              	psloop:
+ 358              	                strd    r0, r1, [r2], #8
+ 359              	                cmp     r2, r3
+ 360              	                blt     psloop
+ 361              	#endif
+ 362              	
+ 363              	                /* Early initialization..*/
+ 364 00d2 FFF7FEFF 	                bl      __early_init
+ 365              	
+ 366              	#if CRT0_INIT_DATA == TRUE
+ 367              	                /* Data initialization. Note, it assumes that the DATA size
+ 368              	                   is a multiple of 4 so the linker file must ensure this.*/
+ 369 00d6 1E49     	                ldr     r1, =__data_load__
+ 370 00d8 1E4A     	                ldr     r2, =__data_start__
+ 371 00da 1F4B     	                ldr     r3, =__data_end__
+ 372              	dloop:
+ 373 00dc 9A42     	                cmp     r2, r3
+ 374 00de 04DA     	                bge     enddloop
+ 375 00e0 0868     	                ldr     r0, [r1]
+ 376 00e2 1060     	                str     r0, [r2]
+ 377 00e4 0431     	                add     r1, r1, #4
+ 378 00e6 0432     	                add     r2, r2, #4
+ 379 00e8 F8E7     	                b       dloop
+ 380              	enddloop:
+ 381              	#endif
+ 382              	
+ 383              	                /* Late initialization..*/
+ 384 00ea FFF7FEFF 	                bl      __late_init
+ 385              	
+ 386              	#if CRT0_CALL_CONSTRUCTORS == TRUE
+ 387              	                /* Constructors invocation.*/
+ 388 00ee 1B4C     	                ldr     r4, =__init_array_start
+ 389 00f0 1B4D     	                ldr     r5, =__init_array_end
+ 390              	initloop:
+ 391 00f2 AC42     	                cmp     r4, r5
+ 392 00f4 03DA     	                bge     endinitloop
+ 393 00f6 2168     	                ldr     r1, [r4]
+ 394 00f8 8847     	                blx     r1
+ 395 00fa 0434     	                add     r4, r4, #4
+ 396 00fc F9E7     	                b       initloop
+ 397              	endinitloop:
+ 398              	#endif
+ 399              	
+ 400              	                /* Main program invocation, r0 contains the returned value.*/
+ 401 00fe FFF7FEFF 	                bl      main
+ 402              	
+ 403              	#if CRT0_CALL_DESTRUCTORS == TRUE
+ 404              	                /* Destructors invocation.*/
+ 405 0102 184C     	                ldr     r4, =__fini_array_start
+ 406 0104 184D     	                ldr     r5, =__fini_array_end
+ 407              	finiloop:
+ 408 0106 AC42     	                cmp     r4, r5
+ 409 0108 03DA     	                bge     endfiniloop
+ 410 010a 2168     	                ldr     r1, [r4]
+ 411 010c 8847     	                blx     r1
+ 412 010e 0434     	                add     r4, r4, #4
+ 413 0110 F9E7     	                b       finiloop
+ 414              	endfiniloop:
+ 415              	#endif
+ 416              	
+ 417              	                /* Branching to the defined exit handler.*/
+ 418 0112 1649     	                ldr     r1, =__default_exit
+ 419 0114 08470000 	                bx      r1
+ 419      00000000 
+ 419      00000000 
+ 419      00000000 
+ 419      00000000 
+DEFINED SYMBOLS
+Modules/Boot/src/GCC/crt0.S:183    .text:00000000 $t
+Modules/Boot/src/GCC/crt0.S:186    .text:00000000 _crt0_entry
+Modules/Boot/src/GCC/crt0.S:198    .text:00000008 ramloop
+Modules/Boot/src/GCC/crt0.S:211    .text:00000018 itcmloop1
+Modules/Boot/src/GCC/crt0.S:231    .text:00000038 itcmdone
+Modules/Boot/src/GCC/crt0.S:226    .text:0000002c itcmloop2
+Modules/Boot/src/GCC/crt0.S:241    .text:0000003e dtcmloop1
+Modules/Boot/src/GCC/crt0.S:273    .text:0000006c dtcmdone
+Modules/Boot/src/GCC/crt0.S:266    .text:00000060 dtcmloop2
+Modules/Boot/src/GCC/crt0.S:372    .text:000000dc dloop
+Modules/Boot/src/GCC/crt0.S:380    .text:000000ea enddloop
+Modules/Boot/src/GCC/crt0.S:390    .text:000000f2 initloop
+Modules/Boot/src/GCC/crt0.S:397    .text:000000fe endinitloop
+Modules/Boot/src/GCC/crt0.S:407    .text:00000106 finiloop
+Modules/Boot/src/GCC/crt0.S:414    .text:00000112 endfiniloop
+Modules/Boot/src/GCC/crt0.S:419    .text:00000116 $d
+Modules/Boot/src/GCC/crt0.S:419    .text:00000118 $d
+
+UNDEFINED SYMBOLS
+__mem_start__
+__mem_end__
+__itcm_start__
+__itcm_end__
+__itcm_size__
+__itcm_load__
+__dtcm_start__
+__dtcm_end__
+__dtcm_size__
+__dtcm_load__
+__main_stack_end__
+__process_stack_end__
+_vectors
+__core_init
+__early_init
+__data_load__
+__data_start__
+__data_end__
+__late_init
+__init_array_start
+__init_array_end
+main
+__fini_array_start
+__fini_array_end
+__default_exit

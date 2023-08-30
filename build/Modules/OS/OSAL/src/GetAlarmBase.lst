@@ -1,0 +1,338 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"GetAlarmBase.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.GetAlarmBase,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	GetAlarmBase
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	GetAlarmBase:
+  27              	.LFB0:
+  28              		.file 1 "Modules/OS/OSAL/src/GetAlarmBase.c"
+   1:Modules/OS/OSAL/src/GetAlarmBase.c **** /* Copyright 2008, 2009 Mariano Cerdeiro
+   2:Modules/OS/OSAL/src/GetAlarmBase.c ****  * Copyright 2014, ACSE & CADIEEL
+   3:Modules/OS/OSAL/src/GetAlarmBase.c ****  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+   4:Modules/OS/OSAL/src/GetAlarmBase.c ****  *      CADIEEL: http://www.cadieel.org.ar
+   5:Modules/OS/OSAL/src/GetAlarmBase.c ****  *
+   6:Modules/OS/OSAL/src/GetAlarmBase.c ****  * This file is part of CIAA Firmware.
+   7:Modules/OS/OSAL/src/GetAlarmBase.c ****  *
+   8:Modules/OS/OSAL/src/GetAlarmBase.c ****  * Redistribution and use in source and binary forms, with or without
+   9:Modules/OS/OSAL/src/GetAlarmBase.c ****  * modification, are permitted provided that the following conditions are met:
+  10:Modules/OS/OSAL/src/GetAlarmBase.c ****  *
+  11:Modules/OS/OSAL/src/GetAlarmBase.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  12:Modules/OS/OSAL/src/GetAlarmBase.c ****  *    this list of conditions and the following disclaimer.
+  13:Modules/OS/OSAL/src/GetAlarmBase.c ****  *
+  14:Modules/OS/OSAL/src/GetAlarmBase.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  15:Modules/OS/OSAL/src/GetAlarmBase.c ****  *    this list of conditions and the following disclaimer in the documentation
+  16:Modules/OS/OSAL/src/GetAlarmBase.c ****  *    and/or other materials provided with the distribution.
+  17:Modules/OS/OSAL/src/GetAlarmBase.c ****  *
+  18:Modules/OS/OSAL/src/GetAlarmBase.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  19:Modules/OS/OSAL/src/GetAlarmBase.c ****  *    contributors may be used to endorse or promote products derived from this
+  20:Modules/OS/OSAL/src/GetAlarmBase.c ****  *    software without specific prior written permission.
+  21:Modules/OS/OSAL/src/GetAlarmBase.c ****  *
+  22:Modules/OS/OSAL/src/GetAlarmBase.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Modules/OS/OSAL/src/GetAlarmBase.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Modules/OS/OSAL/src/GetAlarmBase.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  25:Modules/OS/OSAL/src/GetAlarmBase.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  26:Modules/OS/OSAL/src/GetAlarmBase.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  27:Modules/OS/OSAL/src/GetAlarmBase.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  28:Modules/OS/OSAL/src/GetAlarmBase.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  29:Modules/OS/OSAL/src/GetAlarmBase.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  30:Modules/OS/OSAL/src/GetAlarmBase.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  31:Modules/OS/OSAL/src/GetAlarmBase.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  32:Modules/OS/OSAL/src/GetAlarmBase.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  33:Modules/OS/OSAL/src/GetAlarmBase.c ****  *
+  34:Modules/OS/OSAL/src/GetAlarmBase.c ****  */
+  35:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+  36:Modules/OS/OSAL/src/GetAlarmBase.c **** /** \brief FreeOSEK Os ActivateTask Implementation File
+  37:Modules/OS/OSAL/src/GetAlarmBase.c ****  **
+  38:Modules/OS/OSAL/src/GetAlarmBase.c ****  ** This file implements the ActiveTask API
+  39:Modules/OS/OSAL/src/GetAlarmBase.c ****  **
+  40:Modules/OS/OSAL/src/GetAlarmBase.c ****  ** \file GetAlarmBase.c
+  41:Modules/OS/OSAL/src/GetAlarmBase.c ****  **
+  42:Modules/OS/OSAL/src/GetAlarmBase.c ****  **/
+  43:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+  44:Modules/OS/OSAL/src/GetAlarmBase.c **** /** \addtogroup FreeOSEK
+  45:Modules/OS/OSAL/src/GetAlarmBase.c ****  ** @{ */
+  46:Modules/OS/OSAL/src/GetAlarmBase.c **** /** \addtogroup FreeOSEK_Os
+  47:Modules/OS/OSAL/src/GetAlarmBase.c ****  ** @{ */
+  48:Modules/OS/OSAL/src/GetAlarmBase.c **** /** \addtogroup FreeOSEK_Os_Global
+  49:Modules/OS/OSAL/src/GetAlarmBase.c ****  ** @{ */
+  50:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+  51:Modules/OS/OSAL/src/GetAlarmBase.c **** /*
+  52:Modules/OS/OSAL/src/GetAlarmBase.c ****  * Initials     Name
+  53:Modules/OS/OSAL/src/GetAlarmBase.c ****  * ---------------------------
+  54:Modules/OS/OSAL/src/GetAlarmBase.c ****  * MaCe         Mariano Cerdeiro
+  55:Modules/OS/OSAL/src/GetAlarmBase.c ****  * KLi          Kang Li
+  56:Modules/OS/OSAL/src/GetAlarmBase.c ****  */
+  57:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+  58:Modules/OS/OSAL/src/GetAlarmBase.c **** /*
+  59:Modules/OS/OSAL/src/GetAlarmBase.c ****  * modification history (new versions first)
+  60:Modules/OS/OSAL/src/GetAlarmBase.c ****  * -----------------------------------------------------------
+  61:Modules/OS/OSAL/src/GetAlarmBase.c ****  * 20090420 v0.1.4 MaCe correct AlarmBaseType members to lower cases
+  62:Modules/OS/OSAL/src/GetAlarmBase.c ****  * 20090417 v0.1.3 MaCe update license
+  63:Modules/OS/OSAL/src/GetAlarmBase.c ****  * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
+  64:Modules/OS/OSAL/src/GetAlarmBase.c ****  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+  65:Modules/OS/OSAL/src/GetAlarmBase.c ****  * 20080713 v0.1.0 MaCe initial version
+  66:Modules/OS/OSAL/src/GetAlarmBase.c ****  */
+  67:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+  68:Modules/OS/OSAL/src/GetAlarmBase.c **** /*==================[inclusions]=============================================*/
+  69:Modules/OS/OSAL/src/GetAlarmBase.c **** #include "Os_Internal.h"
+  70:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+  71:Modules/OS/OSAL/src/GetAlarmBase.c **** /*==================[macros and definitions]=================================*/
+  72:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+  73:Modules/OS/OSAL/src/GetAlarmBase.c **** /*==================[internal data declaration]==============================*/
+  74:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+  75:Modules/OS/OSAL/src/GetAlarmBase.c **** /*==================[internal functions declaration]=========================*/
+  76:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+  77:Modules/OS/OSAL/src/GetAlarmBase.c **** /*==================[internal data definition]===============================*/
+  78:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+  79:Modules/OS/OSAL/src/GetAlarmBase.c **** /*==================[external data definition]===============================*/
+  80:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+  81:Modules/OS/OSAL/src/GetAlarmBase.c **** /*==================[internal functions definition]==========================*/
+  82:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+  83:Modules/OS/OSAL/src/GetAlarmBase.c **** /*==================[external functions definition]==========================*/
+  84:Modules/OS/OSAL/src/GetAlarmBase.c **** StatusType GetAlarmBase
+  85:Modules/OS/OSAL/src/GetAlarmBase.c **** (
+  86:Modules/OS/OSAL/src/GetAlarmBase.c **** 	AlarmType AlarmID,
+  87:Modules/OS/OSAL/src/GetAlarmBase.c **** 	AlarmBaseRefType Info
+  88:Modules/OS/OSAL/src/GetAlarmBase.c **** )
+  89:Modules/OS/OSAL/src/GetAlarmBase.c **** {
+  29              		.loc 1 89 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 16
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 00B5     		push	{lr}
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 14, -4
+  36 0002 85B0     		sub	sp, sp, #20
+  37              		.cfi_def_cfa_offset 24
+  38 0004 0346     		mov	r3, r0
+  39 0006 0091     		str	r1, [sp]
+  40 0008 8DF80730 		strb	r3, [sp, #7]
+  90:Modules/OS/OSAL/src/GetAlarmBase.c **** 	/* \req OSEK_SYS_3.19 The system service StatusType
+  91:Modules/OS/OSAL/src/GetAlarmBase.c **** 	 ** GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
+  92:Modules/OS/OSAL/src/GetAlarmBase.c **** 	 ** shall be defined. */
+  93:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+  94:Modules/OS/OSAL/src/GetAlarmBase.c **** 	/* \req OSEK_SYS_3.19.2 Possible return values in Standard mode is E_OK */
+  95:Modules/OS/OSAL/src/GetAlarmBase.c **** 	StatusType ret = E_OK;
+  41              		.loc 1 95 13
+  42 000c 0023     		movs	r3, #0
+  43 000e 8DF80F30 		strb	r3, [sp, #15]
+  96:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+  97:Modules/OS/OSAL/src/GetAlarmBase.c **** 	CounterType counter;
+  98:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+  99:Modules/OS/OSAL/src/GetAlarmBase.c **** #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+ 100:Modules/OS/OSAL/src/GetAlarmBase.c **** 	/* check that the AlarmID is in range */
+ 101:Modules/OS/OSAL/src/GetAlarmBase.c **** 	if(AlarmID >= ALARMS_COUNT)
+  44              		.loc 1 101 4
+  45 0012 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+  46 0016 012B     		cmp	r3, #1
+  47 0018 03D9     		bls	.L2
+ 102:Modules/OS/OSAL/src/GetAlarmBase.c **** 	{
+ 103:Modules/OS/OSAL/src/GetAlarmBase.c **** 		/* \req OSEK_SYS_3.19.: Extra possible return values in Extended mode
+ 104:Modules/OS/OSAL/src/GetAlarmBase.c **** 		 ** is E_OS_ID */
+ 105:Modules/OS/OSAL/src/GetAlarmBase.c **** 		ret = E_OS_ID;
+  48              		.loc 1 105 7
+  49 001a 0323     		movs	r3, #3
+  50 001c 8DF80F30 		strb	r3, [sp, #15]
+  51 0020 2EE0     		b	.L3
+  52              	.L2:
+ 106:Modules/OS/OSAL/src/GetAlarmBase.c **** 	}
+ 107:Modules/OS/OSAL/src/GetAlarmBase.c **** 	else
+ 108:Modules/OS/OSAL/src/GetAlarmBase.c **** #endif
+ 109:Modules/OS/OSAL/src/GetAlarmBase.c **** 	{
+ 110:Modules/OS/OSAL/src/GetAlarmBase.c **** 		/* get counter of this alarm */
+ 111:Modules/OS/OSAL/src/GetAlarmBase.c **** 		counter = AlarmsConst[AlarmID].Counter;
+  53              		.loc 1 111 33
+  54 0022 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+  55              		.loc 1 111 11
+  56 0026 2849     		ldr	r1, .L6
+  57 0028 1346     		mov	r3, r2
+  58 002a 9B00     		lsls	r3, r3, #2
+  59 002c 1344     		add	r3, r3, r2
+  60 002e 9B00     		lsls	r3, r3, #2
+  61 0030 0B44     		add	r3, r3, r1
+  62 0032 1B78     		ldrb	r3, [r3]
+  63 0034 8DF80E30 		strb	r3, [sp, #14]
+ 112:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+ 113:Modules/OS/OSAL/src/GetAlarmBase.c **** 		/* \req OSEK_SYS_3.19.1 The system service GetAlarmBase reads the alarm base
+ 114:Modules/OS/OSAL/src/GetAlarmBase.c **** 		 ** characteristics. The return value Info is a structure in which the
+ 115:Modules/OS/OSAL/src/GetAlarmBase.c **** 		 ** information of data type AlarmBaseType is stored */
+ 116:Modules/OS/OSAL/src/GetAlarmBase.c **** 		Info->maxallowedvalue = CountersConst[counter].MaxAllowedValue;
+  64              		.loc 1 116 49
+  65 0038 9DF80E20 		ldrb	r2, [sp, #14]	@ zero_extendqisi2
+  66 003c 2349     		ldr	r1, .L6+4
+  67 003e 1346     		mov	r3, r2
+  68 0040 9B00     		lsls	r3, r3, #2
+  69 0042 1344     		add	r3, r3, r2
+  70 0044 9B00     		lsls	r3, r3, #2
+  71 0046 0B44     		add	r3, r3, r1
+  72 0048 0833     		adds	r3, r3, #8
+  73 004a 1A68     		ldr	r2, [r3]
+  74              		.loc 1 116 25
+  75 004c 009B     		ldr	r3, [sp]
+  76 004e 1A60     		str	r2, [r3]
+ 117:Modules/OS/OSAL/src/GetAlarmBase.c **** 		Info->ticksperbase = CountersConst[counter].TicksPerBase;
+  77              		.loc 1 117 46
+  78 0050 9DF80E20 		ldrb	r2, [sp, #14]	@ zero_extendqisi2
+  79 0054 1D49     		ldr	r1, .L6+4
+  80 0056 1346     		mov	r3, r2
+  81 0058 9B00     		lsls	r3, r3, #2
+  82 005a 1344     		add	r3, r3, r2
+  83 005c 9B00     		lsls	r3, r3, #2
+  84 005e 0B44     		add	r3, r3, r1
+  85 0060 1033     		adds	r3, r3, #16
+  86 0062 1A68     		ldr	r2, [r3]
+  87              		.loc 1 117 22
+  88 0064 009B     		ldr	r3, [sp]
+  89 0066 5A60     		str	r2, [r3, #4]
+ 118:Modules/OS/OSAL/src/GetAlarmBase.c **** 		Info->mincycle = CountersConst[counter].MinCycle;
+  90              		.loc 1 118 42
+  91 0068 9DF80E20 		ldrb	r2, [sp, #14]	@ zero_extendqisi2
+  92 006c 1749     		ldr	r1, .L6+4
+  93 006e 1346     		mov	r3, r2
+  94 0070 9B00     		lsls	r3, r3, #2
+  95 0072 1344     		add	r3, r3, r2
+  96 0074 9B00     		lsls	r3, r3, #2
+  97 0076 0B44     		add	r3, r3, r1
+  98 0078 0C33     		adds	r3, r3, #12
+  99 007a 1A68     		ldr	r2, [r3]
+ 100              		.loc 1 118 18
+ 101 007c 009B     		ldr	r3, [sp]
+ 102 007e 9A60     		str	r2, [r3, #8]
+ 103              	.L3:
+ 119:Modules/OS/OSAL/src/GetAlarmBase.c **** 	}
+ 120:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+ 121:Modules/OS/OSAL/src/GetAlarmBase.c **** #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
+ 122:Modules/OS/OSAL/src/GetAlarmBase.c ****       (HOOK_ERRORHOOK == OSEK_ENABLE) )
+ 123:Modules/OS/OSAL/src/GetAlarmBase.c **** 	/* \req OSEK_ERR_1.3-12/xx The ErrorHook hook routine shall be called if a
+ 124:Modules/OS/OSAL/src/GetAlarmBase.c **** 	 ** system service returns a StatusType value not equal to E_OK.*/
+ 125:Modules/OS/OSAL/src/GetAlarmBase.c **** 	/* \req OSEK_ERR_1.3.1-12/xx The hook routine ErrorHook is not called if a
+ 126:Modules/OS/OSAL/src/GetAlarmBase.c **** 	 ** system service is called from the ErrorHook itself. */
+ 127:Modules/OS/OSAL/src/GetAlarmBase.c **** 	if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
+ 104              		.loc 1 127 5
+ 105 0080 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 106 0084 002B     		cmp	r3, #0
+ 107 0086 19D0     		beq	.L4
+ 108              		.loc 1 127 44 discriminator 1
+ 109 0088 114B     		ldr	r3, .L6+8
+ 110 008a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 111              		.loc 1 127 23 discriminator 1
+ 112 008c 012B     		cmp	r3, #1
+ 113 008e 15D0     		beq	.L4
+ 128:Modules/OS/OSAL/src/GetAlarmBase.c **** 	{
+ 129:Modules/OS/OSAL/src/GetAlarmBase.c **** 		SetError_Api(OSServiceId_GetAlarmBase);
+ 114              		.loc 1 129 3
+ 115 0090 104B     		ldr	r3, .L6+12
+ 116 0092 1322     		movs	r2, #19
+ 117 0094 1A60     		str	r2, [r3]
+ 130:Modules/OS/OSAL/src/GetAlarmBase.c **** 		SetError_Param1(AlarmID);
+ 118              		.loc 1 130 3
+ 119 0096 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 120 009a 0F4A     		ldr	r2, .L6+16
+ 121 009c 1360     		str	r3, [r2]
+ 131:Modules/OS/OSAL/src/GetAlarmBase.c **** 		SetError_Param2((size_t)Info);
+ 122              		.loc 1 131 3
+ 123 009e 009B     		ldr	r3, [sp]
+ 124 00a0 0E4A     		ldr	r2, .L6+20
+ 125 00a2 1360     		str	r3, [r2]
+ 132:Modules/OS/OSAL/src/GetAlarmBase.c **** 		SetError_Ret(ret);
+ 126              		.loc 1 132 3
+ 127 00a4 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 128 00a8 0D4A     		ldr	r2, .L6+24
+ 129 00aa 1360     		str	r3, [r2]
+ 133:Modules/OS/OSAL/src/GetAlarmBase.c **** 		SetError_Msg("GetAlarmBase returns != than E_OK");
+ 134:Modules/OS/OSAL/src/GetAlarmBase.c **** 		SetError_ErrorHook();
+ 130              		.loc 1 134 3
+ 131 00ac 084B     		ldr	r3, .L6+8
+ 132 00ae 0122     		movs	r2, #1
+ 133 00b0 1A70     		strb	r2, [r3]
+ 134 00b2 FFF7FEFF 		bl	ErrorHook
+ 135 00b6 064B     		ldr	r3, .L6+8
+ 136 00b8 0022     		movs	r2, #0
+ 137 00ba 1A70     		strb	r2, [r3]
+ 138              	.L4:
+ 135:Modules/OS/OSAL/src/GetAlarmBase.c **** 	}
+ 136:Modules/OS/OSAL/src/GetAlarmBase.c **** #endif
+ 137:Modules/OS/OSAL/src/GetAlarmBase.c **** 
+ 138:Modules/OS/OSAL/src/GetAlarmBase.c **** 	return ret;
+ 139              		.loc 1 138 9
+ 140 00bc 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 139:Modules/OS/OSAL/src/GetAlarmBase.c **** }
+ 141              		.loc 1 139 1
+ 142 00c0 1846     		mov	r0, r3
+ 143 00c2 05B0     		add	sp, sp, #20
+ 144              		.cfi_def_cfa_offset 4
+ 145              		@ sp needed
+ 146 00c4 5DF804FB 		ldr	pc, [sp], #4
+ 147              	.L7:
+ 148              		.align	2
+ 149              	.L6:
+ 150 00c8 00000000 		.word	AlarmsConst
+ 151 00cc 00000000 		.word	CountersConst
+ 152 00d0 00000000 		.word	ErrorHookRunning
+ 153 00d4 00000000 		.word	Osek_ErrorApi
+ 154 00d8 00000000 		.word	Osek_ErrorParam1
+ 155 00dc 00000000 		.word	Osek_ErrorParam2
+ 156 00e0 00000000 		.word	Osek_ErrorRet
+ 157              		.cfi_endproc
+ 158              	.LFE0:
+ 160              		.text
+ 161              	.Letext0:
+ 162              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 163              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 164              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Types.h"
+ 165              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Cfg.h"
+ 166              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+ 167              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 168              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+DEFINED SYMBOLS
+                            *ABS*:00000000 GetAlarmBase.c
+C:\Users\AAA\AppData\Local\Temp\ccqV5kJk.s:19     .text.GetAlarmBase:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccqV5kJk.s:26     .text.GetAlarmBase:00000000 GetAlarmBase
+C:\Users\AAA\AppData\Local\Temp\ccqV5kJk.s:150    .text.GetAlarmBase:000000c8 $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+UNDEFINED SYMBOLS
+ErrorHook
+AlarmsConst
+CountersConst
+ErrorHookRunning
+Osek_ErrorApi
+Osek_ErrorParam1
+Osek_ErrorParam2
+Osek_ErrorRet

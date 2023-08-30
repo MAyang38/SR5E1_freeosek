@@ -1,0 +1,137 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"spi_instances.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	DRV_SPI1
+  19              		.section	.bss.DRV_SPI1,"aw",%nobits
+  20              		.align	2
+  23              	DRV_SPI1:
+  24 0000 00000000 		.space	76
+  24      00000000 
+  24      00000000 
+  24      00000000 
+  24      00000000 
+  25              		.global	DRV_SPI2
+  26              		.section	.bss.DRV_SPI2,"aw",%nobits
+  27              		.align	2
+  30              	DRV_SPI2:
+  31 0000 00000000 		.space	76
+  31      00000000 
+  31      00000000 
+  31      00000000 
+  31      00000000 
+  32              		.global	DRV_SPI3
+  33              		.section	.bss.DRV_SPI3,"aw",%nobits
+  34              		.align	2
+  37              	DRV_SPI3:
+  38 0000 00000000 		.space	76
+  38      00000000 
+  38      00000000 
+  38      00000000 
+  38      00000000 
+  39              		.global	DRV_SPI4
+  40              		.section	.bss.DRV_SPI4,"aw",%nobits
+  41              		.align	2
+  44              	DRV_SPI4:
+  45 0000 00000000 		.space	76
+  45      00000000 
+  45      00000000 
+  45      00000000 
+  45      00000000 
+  46              		.text
+  47              	.Letext0:
+  48              		.file 1 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+  49              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+  50              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\platform\\cmsis\\core\\inclu
+  51              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\platform\\mcu\\include\\sr5e
+  52              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\platform\\mcu\\include\\sr5e
+  53              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\platform\\mcu\\include\\sr5e
+  54              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\drivers\\system\\gpio\\inclu
+  55              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\drivers\\comms\\spi\\include
+  56              		.file 9 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\drivers\\comms\\spi\\include
+  57              		.file 10 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\drivers\\comms\\spi\\includ
+  58              		.file 11 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\drivers\\system\\dma\\inclu
+  59              		.file 12 "Modules/Drivers/Comms/SPI/src/sr5e1/spi_instances.c"
+DEFINED SYMBOLS
+                            *ABS*:00000000 spi_instances.c
+C:\Users\AAA\AppData\Local\Temp\ccyAxtyM.s:23     .bss.DRV_SPI1:00000000 DRV_SPI1
+C:\Users\AAA\AppData\Local\Temp\ccyAxtyM.s:20     .bss.DRV_SPI1:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccyAxtyM.s:30     .bss.DRV_SPI2:00000000 DRV_SPI2
+C:\Users\AAA\AppData\Local\Temp\ccyAxtyM.s:27     .bss.DRV_SPI2:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccyAxtyM.s:37     .bss.DRV_SPI3:00000000 DRV_SPI3
+C:\Users\AAA\AppData\Local\Temp\ccyAxtyM.s:34     .bss.DRV_SPI3:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccyAxtyM.s:44     .bss.DRV_SPI4:00000000 DRV_SPI4
+C:\Users\AAA\AppData\Local\Temp\ccyAxtyM.s:41     .bss.DRV_SPI4:00000000 $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.sr5e1xx.h.22.568547583bf3c00ded67adadc0110f08
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.cmsis_version.h.32.0f826810625204eca22a19868bdc7586
+                           .group:00000000 wm4.core_cm7.h.66.a4062db891274e2143912fc0bd7e55e3
+                           .group:00000000 wm4.cmsis_gcc.h.26.498d0ad17a45fc9ef20fdc01caf02259
+                           .group:00000000 wm4.core_cm7.h.305.f28cb27b64654b9b703ea60dbab0003d
+                           .group:00000000 wm4.mpu_armv7.h.32.83326921a797fa9d6f70449916b4b839
+                           .group:00000000 wm4.cachel1_armv7.h.32.abd77761a989e008b0c60891114a33c7
+                           .group:00000000 wm4.core_cm7.h.2376.07b7b0525701732543280b71e0cd2400
+                           .group:00000000 wm4.SR5E1_ADC.h.14.21608e6aff125ba995dd767d6d8dc311
+                           .group:00000000 wm4.SR5E1_CEM.h.14.01fe5742c8f1ae35b1f3af05932f702e
+                           .group:00000000 wm4.SR5E1_CMU.h.14.2617b38b159abe38028862394531e06d
+                           .group:00000000 wm4.SR5E1_COMP.h.14.4b6fdfe4f5f7fd9bedf3a99b98bdf4cd
+                           .group:00000000 wm4.SR5E1_CORDIC.h.14.354fbf7c9eaf6963d38eaa25cf28ffe8
+                           .group:00000000 wm4.SR5E1_CRC.h.14.270685b4f0bb89cdb48054af5fe3c4ef
+                           .group:00000000 wm4.SR5E1_DAC.h.14.8c26a0ff04b0cfeb55306cc3f22187b8
+                           .group:00000000 wm4.SR5E1_DBGMCU.h.14.427df893d53a8044654f017ba01c25ed
+                           .group:00000000 wm4.SR5E1_DMA.h.14.a7f9a92f844b40a86965798c2e64240b
+                           .group:00000000 wm4.SR5E1_DMAMUX.h.14.471b3b4dfd4d41515f1df49493698866
+                           .group:00000000 wm4.SR5E1_EXTI.h.14.a325ea3fe89cd84894660551c33241ea
+                           .group:00000000 wm4.SR5E1_FCCU.h.14.0ebf0f0f36e079d28613ad2c80e17e23
+                           .group:00000000 wm4.SR5E1_FDCAN.h.14.ac57101fad5dbc798bfb93f34c899de7
+                           .group:00000000 wm4.SR5E1_FLASH_REG_ITF.h.14.d23d1d44923f9b20b8c8fdb51d66aefd
+                           .group:00000000 wm4.SR5E1_GPIO.h.14.1c84071e130d7c64b62470ab0e18a1f1
+                           .group:00000000 wm4.SR5E1_HRTIM.h.24.03932387d2522e6bd5c772a4edaf2f5d
+                           .group:00000000 wm4.SR5E1_HSEM.h.14.cbe70eee519f01b16452c3f8c99d8df1
+                           .group:00000000 wm4.SR5E1_I2C.h.14.350ba3e0f4fd57828457efa80135c36c
+                           .group:00000000 wm4.SR5E1_IWDG.h.14.20b7c5f05cf7ae94464c360d7af3660d
+                           .group:00000000 wm4.SR5E1_NVM_CTRL.h.14.5f442617f0628d4f16258f211c614ef9
+                           .group:00000000 wm4.SR5E1_PLLDIG.h.14.bd87a8e6917eee17dae2f312c8e5fa53
+                           .group:00000000 wm4.SR5E1_PMC_DIG.h.14.6b7406ff48d7bcd1e53033a370604200
+                           .group:00000000 wm4.SR5E1_RCC.h.14.56734803c71534de286e793a53649740
+                           .group:00000000 wm4.SR5E1_RTC.h.14.47037cbc7d8175dbf2be1dc0bb955e3f
+                           .group:00000000 wm4.SR5E1_SD_ADC.h.14.552b97d0b8f3c1fd4df6d8964b2f1a80
+                           .group:00000000 wm4.SR5E1_SPI.h.14.42d52112e540f85ade4d9135f8b87d72
+                           .group:00000000 wm4.SR5E1_SSCM.h.14.8e6a2ad0ce5fca422fc3d69939b6125b
+                           .group:00000000 wm4.SR5E1_SYSCFG.h.14.02b969490118ce4069914b5e94f7ca65
+                           .group:00000000 wm4.SR5E1_TDM.h.14.a40ed7928cad243a57fd233fccf01ad2
+                           .group:00000000 wm4.SR5E1_TIM.h.14.05b8efc5395873619642d61a4b0b5a54
+                           .group:00000000 wm4.SR5E1_UART.h.14.eec3ab82b02b3bdb3de500483675b83f
+                           .group:00000000 wm4.SR5E1_WWDG.h.14.59b45efc70e442cc6ef03702aad4ad88
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.typedefs.h.36.07fe3956b4e751037cfee70edcd0b397
+                           .group:00000000 wm4.irq_numbers.h.38.b76ee9208c5ae3feb2392b512990cf71
+                           .group:00000000 wm4.regs.h.23.38915225b13378a72a9bf21e632c378b
+                           .group:00000000 wm4.gpio.h.38.4f37c988f6412e2fcf390b4a4a9849b1
+                           .group:00000000 wm4.dmamux.h.25.337aea179f6dbcc87c52aae26d38f76e
+                           .group:00000000 wm4.clock_cfg.h.23.3c8ba5c0347398a4587362787f86fe62
+                           .group:00000000 wm4.clock.h.37.c942461032b5a15e2a4133c6666f70ce
+                           .group:00000000 wm4.irq.h.37.78714f25754c8b09d1428599101f6cc7
+                           .group:00000000 wm4.dma.h.40.f77dd217a06ceba13a3cfdd4102a73c1
+
+NO UNDEFINED SYMBOLS

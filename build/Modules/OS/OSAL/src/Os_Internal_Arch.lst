@@ -1,0 +1,568 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"Os_Internal_Arch.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	Osek_NewTaskPtr_Arch
+  19              		.section	.bss.Osek_NewTaskPtr_Arch,"aw",%nobits
+  20              		.align	2
+  23              	Osek_NewTaskPtr_Arch:
+  24 0000 00000000 		.space	4
+  25              		.global	Osek_OldTaskPtr_Arch
+  26              		.section	.bss.Osek_OldTaskPtr_Arch,"aw",%nobits
+  27              		.align	2
+  30              	Osek_OldTaskPtr_Arch:
+  31 0000 00000000 		.space	4
+  32              		.global	TerminatingTask
+  33              		.section	.data.TerminatingTask,"aw"
+  36              	TerminatingTask:
+  37 0000 FF       		.byte	-1
+  38              		.global	WaitingTask
+  39              		.section	.data.WaitingTask,"aw"
+  42              	WaitingTask:
+  43 0000 FF       		.byte	-1
+  44              		.section	.text.ReturnHook_Arch,"ax",%progbits
+  45              		.align	1
+  46              		.p2align 4,,15
+  47              		.global	ReturnHook_Arch
+  48              		.syntax unified
+  49              		.thumb
+  50              		.thumb_func
+  52              	ReturnHook_Arch:
+  53              	.LFB0:
+  54              		.file 1 "Modules/OS/OSAL/src/Os_Internal_Arch.c"
+   1:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /* Copyright 2014, Pablo Ridolfi (UTN-FRBA)
+   2:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  *
+   3:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * This file is part of CIAA Firmware.
+   4:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  *
+   5:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * Redistribution and use in source and binary forms, with or without
+   6:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * modification, are permitted provided that the following conditions are met:
+   7:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  *
+   8:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+   9:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  *    this list of conditions and the following disclaimer.
+  10:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  *
+  11:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  12:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  *    this list of conditions and the following disclaimer in the documentation
+  13:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  *    and/or other materials provided with the distribution.
+  14:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  *
+  15:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  16:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  *    contributors may be used to endorse or promote products derived from this
+  17:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  *    software without specific prior written permission.
+  18:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  *
+  19:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  20:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  21:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  22:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  23:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  24:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  25:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  26:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  27:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  28:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  29:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  30:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  *
+  31:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  */
+  32:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  33:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /** \brief FreeOSEK Os Internal Arch Implementation File
+  34:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  **
+  35:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  ** \file cortexM4/Os_Internal_Arch.c
+  36:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  ** \arch cortexM4
+  37:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  **/
+  38:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  39:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /** \addtogroup FreeOSEK
+  40:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  ** @{ */
+  41:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /** \addtogroup FreeOSEK_Os
+  42:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  ** @{ */
+  43:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /** \addtogroup FreeOSEK_Os_Internal
+  44:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  ** @{ */
+  45:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  46:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /*
+  47:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * Initials     Name
+  48:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * ---------------------------
+  49:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * PR		Pablo Ridolfi
+  50:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  */
+  51:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  52:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /*
+  53:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * modification history (new versions first)
+  54:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * -----------------------------------------------------------
+  55:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  * 20140608 v0.1.0 PR	First version for Cortex-M processors.
+  56:Modules/OS/OSAL/src/Os_Internal_Arch.c ****  */
+  57:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  58:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /*==================[inclusions]=============================================*/
+  59:Modules/OS/OSAL/src/Os_Internal_Arch.c **** #include "Os_Internal.h"
+  60:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  61:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /*==================[macros and definitions]=================================*/
+  62:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  63:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /*==================[internal data declaration]==============================*/
+  64:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  65:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /*==================[internal functions declaration]=========================*/
+  66:Modules/OS/OSAL/src/Os_Internal_Arch.c **** void* Osek_NewTaskPtr_Arch;
+  67:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  68:Modules/OS/OSAL/src/Os_Internal_Arch.c **** void* Osek_OldTaskPtr_Arch;
+  69:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  70:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /*==================[internal data definition]===============================*/
+  71:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  72:Modules/OS/OSAL/src/Os_Internal_Arch.c **** TaskType TerminatingTask = INVALID_TASK;
+  73:Modules/OS/OSAL/src/Os_Internal_Arch.c **** TaskType WaitingTask = INVALID_TASK;
+  74:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  75:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /*==================[external data definition]===============================*/
+  76:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  77:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /*==================[internal functions definition]==========================*/
+  78:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  79:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /*==================[external functions definition]==========================*/
+  80:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  81:Modules/OS/OSAL/src/Os_Internal_Arch.c **** void ReturnHook_Arch(void)
+  82:Modules/OS/OSAL/src/Os_Internal_Arch.c **** {
+  55              		.loc 1 82 1
+  56              		.cfi_startproc
+  57              		@ args = 0, pretend = 0, frame = 0
+  58              		@ frame_needed = 0, uses_anonymous_args = 0
+  59              		@ link register save eliminated.
+  60              	.L2:
+  83:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* Tasks shouldn't return here... */
+  84:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	while(1) osekpause();
+  61              		.loc 1 84 11 discriminator 1
+  62              		.syntax unified
+  63              	@ 84 "Modules/OS/OSAL/src/Os_Internal_Arch.c" 1
+  64 0000 30BF     		wfi
+  65              	@ 0 "" 2
+  66              		.thumb
+  67              		.syntax unified
+  68 0002 FDE7     		b	.L2
+  69              		.cfi_endproc
+  70              	.LFE0:
+  72              		.section	.text.CheckTerminatingTask_Arch,"ax",%progbits
+  73              		.align	1
+  74              		.p2align 4,,15
+  75              		.global	CheckTerminatingTask_Arch
+  76              		.syntax unified
+  77              		.thumb
+  78              		.thumb_func
+  80              	CheckTerminatingTask_Arch:
+  81              	.LFB1:
+  85:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  86:Modules/OS/OSAL/src/Os_Internal_Arch.c **** }
+  87:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+  88:Modules/OS/OSAL/src/Os_Internal_Arch.c **** void CheckTerminatingTask_Arch(void)
+  89:Modules/OS/OSAL/src/Os_Internal_Arch.c **** {
+  82              		.loc 1 89 1
+  83              		.cfi_startproc
+  84              		@ args = 0, pretend = 0, frame = 0
+  85              		@ frame_needed = 0, uses_anonymous_args = 0
+  86 0000 08B5     		push	{r3, lr}
+  87              		.cfi_def_cfa_offset 8
+  88              		.cfi_offset 3, -8
+  89              		.cfi_offset 14, -4
+  90:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	if(TerminatingTask != INVALID_TASK)
+  90              		.loc 1 90 21
+  91 0002 074B     		ldr	r3, .L5
+  92 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  93              		.loc 1 90 4
+  94 0006 FF2B     		cmp	r3, #255
+  95 0008 04D0     		beq	.L4
+  91:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	{
+  92:Modules/OS/OSAL/src/Os_Internal_Arch.c **** //		int i;
+  93:Modules/OS/OSAL/src/Os_Internal_Arch.c **** //		for(i=0; i<TasksConst[TerminatingTask].StackSize/4; i++)
+  94:Modules/OS/OSAL/src/Os_Internal_Arch.c **** //			((uint32 *)TasksConst[TerminatingTask].StackPtr)[i] = 0;
+  95:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 		InitStack_Arch(TerminatingTask);
+  96              		.loc 1 95 3
+  97 000a 054B     		ldr	r3, .L5
+  98 000c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  99 000e 1846     		mov	r0, r3
+ 100 0010 FFF7FEFF 		bl	InitStack_Arch
+ 101              	.L4:
+  96:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	}
+  97:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	TerminatingTask = INVALID_TASK;
+ 102              		.loc 1 97 18
+ 103 0014 024B     		ldr	r3, .L5
+ 104 0016 FF22     		movs	r2, #255
+ 105 0018 1A70     		strb	r2, [r3]
+  98:Modules/OS/OSAL/src/Os_Internal_Arch.c **** }
+ 106              		.loc 1 98 1
+ 107 001a 00BF     		nop
+ 108 001c 08BD     		pop	{r3, pc}
+ 109              	.L6:
+ 110 001e 00BF     		.align	2
+ 111              	.L5:
+ 112 0020 00000000 		.word	TerminatingTask
+ 113              		.cfi_endproc
+ 114              	.LFE1:
+ 116              		.section	.text.InitStack_Arch,"ax",%progbits
+ 117              		.align	1
+ 118              		.p2align 4,,15
+ 119              		.global	InitStack_Arch
+ 120              		.syntax unified
+ 121              		.thumb
+ 122              		.thumb_func
+ 124              	InitStack_Arch:
+ 125              	.LFB2:
+  99:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 100:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /* Task Stack Initialization */
+ 101:Modules/OS/OSAL/src/Os_Internal_Arch.c **** void InitStack_Arch(uint8 TaskID)
+ 102:Modules/OS/OSAL/src/Os_Internal_Arch.c **** {
+ 126              		.loc 1 102 1
+ 127              		.cfi_startproc
+ 128              		@ args = 0, pretend = 0, frame = 16
+ 129              		@ frame_needed = 0, uses_anonymous_args = 0
+ 130              		@ link register save eliminated.
+ 131 0000 84B0     		sub	sp, sp, #16
+ 132              		.cfi_def_cfa_offset 16
+ 133 0002 0346     		mov	r3, r0
+ 134 0004 8DF80730 		strb	r3, [sp, #7]
+ 103:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 104:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	uint32 * taskStack = (uint32 *)TasksConst[TaskID].StackPtr;
+ 135              		.loc 1 104 51
+ 136 0008 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 137              		.loc 1 104 11
+ 138 000c 2A49     		ldr	r1, .L8
+ 139 000e 1346     		mov	r3, r2
+ 140 0010 DB00     		lsls	r3, r3, #3
+ 141 0012 9B1A     		subs	r3, r3, r2
+ 142 0014 9B00     		lsls	r3, r3, #2
+ 143 0016 0B44     		add	r3, r3, r1
+ 144 0018 0833     		adds	r3, r3, #8
+ 145 001a 1B68     		ldr	r3, [r3]
+ 146 001c 0393     		str	r3, [sp, #12]
+ 105:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	int taskStackSizeWords = TasksConst[TaskID].StackSize/4;
+ 147              		.loc 1 105 45
+ 148 001e 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 149 0022 2549     		ldr	r1, .L8
+ 150 0024 1346     		mov	r3, r2
+ 151 0026 DB00     		lsls	r3, r3, #3
+ 152 0028 9B1A     		subs	r3, r3, r2
+ 153 002a 9B00     		lsls	r3, r3, #2
+ 154 002c 0B44     		add	r3, r3, r1
+ 155 002e 0C33     		adds	r3, r3, #12
+ 156 0030 1B88     		ldrh	r3, [r3]
+ 157              		.loc 1 105 55
+ 158 0032 9B08     		lsrs	r3, r3, #2
+ 159 0034 9BB2     		uxth	r3, r3
+ 160              		.loc 1 105 6
+ 161 0036 0293     		str	r3, [sp, #8]
+ 106:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 107:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	taskStack[taskStackSizeWords-1] = 1<<24; /* xPSR.T = 1 */
+ 162              		.loc 1 107 11
+ 163 0038 029A     		ldr	r2, [sp, #8]
+ 164 003a 6FF04043 		mvn	r3, #-1073741824
+ 165 003e 1344     		add	r3, r3, r2
+ 166 0040 9B00     		lsls	r3, r3, #2
+ 167 0042 039A     		ldr	r2, [sp, #12]
+ 168 0044 1344     		add	r3, r3, r2
+ 169              		.loc 1 107 34
+ 170 0046 4FF08072 		mov	r2, #16777216
+ 171 004a 1A60     		str	r2, [r3]
+ 108:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	taskStack[taskStackSizeWords-2] = (uint32) TasksConst[TaskID].EntryPoint; /*PC*/
+ 172              		.loc 1 108 63
+ 173 004c 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 174 0050 1949     		ldr	r1, .L8
+ 175 0052 1346     		mov	r3, r2
+ 176 0054 DB00     		lsls	r3, r3, #3
+ 177 0056 9B1A     		subs	r3, r3, r2
+ 178 0058 9B00     		lsls	r3, r3, #2
+ 179 005a 0B44     		add	r3, r3, r1
+ 180 005c 1968     		ldr	r1, [r3]
+ 181              		.loc 1 108 11
+ 182 005e 029A     		ldr	r2, [sp, #8]
+ 183 0060 164B     		ldr	r3, .L8+4
+ 184 0062 1344     		add	r3, r3, r2
+ 185 0064 9B00     		lsls	r3, r3, #2
+ 186 0066 039A     		ldr	r2, [sp, #12]
+ 187 0068 1344     		add	r3, r3, r2
+ 188              		.loc 1 108 36
+ 189 006a 0A46     		mov	r2, r1
+ 190              		.loc 1 108 34
+ 191 006c 1A60     		str	r2, [r3]
+ 109:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	taskStack[taskStackSizeWords-3] = (uint32) ReturnHook_Arch; /* stacked LR */
+ 192              		.loc 1 109 11
+ 193 006e 029A     		ldr	r2, [sp, #8]
+ 194 0070 134B     		ldr	r3, .L8+8
+ 195 0072 1344     		add	r3, r3, r2
+ 196 0074 9B00     		lsls	r3, r3, #2
+ 197 0076 039A     		ldr	r2, [sp, #12]
+ 198 0078 1344     		add	r3, r3, r2
+ 199              		.loc 1 109 36
+ 200 007a 124A     		ldr	r2, .L8+12
+ 201              		.loc 1 109 34
+ 202 007c 1A60     		str	r2, [r3]
+ 110:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	taskStack[taskStackSizeWords-9] = 0xFFFFFFFD; /* current LR, return using PSP */
+ 203              		.loc 1 110 11
+ 204 007e 029A     		ldr	r2, [sp, #8]
+ 205 0080 114B     		ldr	r3, .L8+16
+ 206 0082 1344     		add	r3, r3, r2
+ 207 0084 9B00     		lsls	r3, r3, #2
+ 208 0086 039A     		ldr	r2, [sp, #12]
+ 209 0088 1344     		add	r3, r3, r2
+ 210              		.loc 1 110 34
+ 211 008a 6FF00202 		mvn	r2, #2
+ 212 008e 1A60     		str	r2, [r3]
+ 111:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 112:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	*(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 17]);
+ 213              		.loc 1 112 49
+ 214 0090 029A     		ldr	r2, [sp, #8]
+ 215 0092 0E4B     		ldr	r3, .L8+20
+ 216 0094 1344     		add	r3, r3, r2
+ 217 0096 9900     		lsls	r1, r3, #2
+ 218              		.loc 1 112 22
+ 219 0098 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 220 009c 0648     		ldr	r0, .L8
+ 221 009e 1346     		mov	r3, r2
+ 222 00a0 DB00     		lsls	r3, r3, #3
+ 223 00a2 9B1A     		subs	r3, r3, r2
+ 224 00a4 9B00     		lsls	r3, r3, #2
+ 225 00a6 0344     		add	r3, r3, r0
+ 226 00a8 0433     		adds	r3, r3, #4
+ 227 00aa 1B68     		ldr	r3, [r3]
+ 228              		.loc 1 112 38
+ 229 00ac 039A     		ldr	r2, [sp, #12]
+ 230 00ae 0A44     		add	r2, r2, r1
+ 231              		.loc 1 112 36
+ 232 00b0 1A60     		str	r2, [r3]
+ 113:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 114:Modules/OS/OSAL/src/Os_Internal_Arch.c **** }
+ 233              		.loc 1 114 1
+ 234 00b2 00BF     		nop
+ 235 00b4 04B0     		add	sp, sp, #16
+ 236              		.cfi_def_cfa_offset 0
+ 237              		@ sp needed
+ 238 00b6 7047     		bx	lr
+ 239              	.L9:
+ 240              		.align	2
+ 241              	.L8:
+ 242 00b8 00000000 		.word	TasksConst
+ 243 00bc FEFFFF3F 		.word	1073741822
+ 244 00c0 FDFFFF3F 		.word	1073741821
+ 245 00c4 00000000 		.word	ReturnHook_Arch
+ 246 00c8 F7FFFF3F 		.word	1073741815
+ 247 00cc EFFFFF3F 		.word	1073741807
+ 248              		.cfi_endproc
+ 249              	.LFE2:
+ 251              		.section	.text.SysTick_Handler,"ax",%progbits
+ 252              		.align	1
+ 253              		.p2align 4,,15
+ 254              		.global	SysTick_Handler
+ 255              		.syntax unified
+ 256              		.thumb
+ 257              		.thumb_func
+ 259              	SysTick_Handler:
+ 260              	.LFB3:
+ 115:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 116:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /* Periodic Interrupt Timer, included in all Cortex-M4 processors */
+ 117:Modules/OS/OSAL/src/Os_Internal_Arch.c **** void SysTick_Handler(void)
+ 118:Modules/OS/OSAL/src/Os_Internal_Arch.c **** {
+ 261              		.loc 1 118 1
+ 262              		.cfi_startproc
+ 263              		@ args = 0, pretend = 0, frame = 8
+ 264              		@ frame_needed = 0, uses_anonymous_args = 0
+ 265 0000 00B5     		push	{lr}
+ 266              		.cfi_def_cfa_offset 4
+ 267              		.cfi_offset 14, -4
+ 268 0002 83B0     		sub	sp, sp, #12
+ 269              		.cfi_def_cfa_offset 16
+ 119:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* store the calling context in a variable */
+ 120:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	ContextType actualContext = GetCallingContext();
+ 270              		.loc 1 120 14
+ 271 0004 234B     		ldr	r3, .L14
+ 272 0006 1B78     		ldrb	r3, [r3]
+ 273 0008 8DF80730 		strb	r3, [sp, #7]
+ 121:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* set isr 2 context */
+ 122:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	SetActualContext(CONTEXT_ISR2);
+ 274              		.loc 1 122 2
+ 275 000c 214B     		ldr	r3, .L14
+ 276 000e 0322     		movs	r2, #3
+ 277 0010 1A70     		strb	r2, [r3]
+ 123:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 124:Modules/OS/OSAL/src/Os_Internal_Arch.c **** #if (ALARMS_COUNT != 0)
+ 125:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* counter increment */
+ 126:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	static CounterIncrementType CounterIncrement = 1;
+ 127:Modules/OS/OSAL/src/Os_Internal_Arch.c ****    (void)CounterIncrement; /* TODO remove me */
+ 128:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 129:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* increment the disable interrupt conter to avoid enable the interrupts */
+ 130:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	IntSecure_Start();
+ 278              		.loc 1 130 2
+ 279 0012 214B     		ldr	r3, .L14+4
+ 280 0014 93F90030 		ldrsb	r3, [r3]
+ 281 0018 DBB2     		uxtb	r3, r3
+ 282 001a 0133     		adds	r3, r3, #1
+ 283 001c DBB2     		uxtb	r3, r3
+ 284 001e 5AB2     		sxtb	r2, r3
+ 285 0020 1D4B     		ldr	r3, .L14+4
+ 286 0022 1A70     		strb	r2, [r3]
+ 287              		.syntax unified
+ 288              	@ 130 "Modules/OS/OSAL/src/Os_Internal_Arch.c" 1
+ 289 0024 72B6     		cpsid i
+ 290              	@ 0 "" 2
+ 131:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 132:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* call counter interrupt handler */
+ 133:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */); /* TODO FIXME */
+ 291              		.loc 1 133 21
+ 292              		.thumb
+ 293              		.syntax unified
+ 294 0026 0121     		movs	r1, #1
+ 295 0028 0020     		movs	r0, #0
+ 296 002a FFF7FEFF 		bl	IncrementCounter
+ 297 002e 0346     		mov	r3, r0
+ 298              		.loc 1 133 19
+ 299 0030 1A4A     		ldr	r2, .L14+8
+ 300 0032 1360     		str	r3, [r2]
+ 134:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 135:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* set the disable interrupt counter back */
+ 136:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	IntSecure_End();
+ 301              		.loc 1 136 2
+ 302 0034 184B     		ldr	r3, .L14+4
+ 303 0036 93F90030 		ldrsb	r3, [r3]
+ 304 003a DBB2     		uxtb	r3, r3
+ 305 003c 013B     		subs	r3, r3, #1
+ 306 003e DBB2     		uxtb	r3, r3
+ 307 0040 5AB2     		sxtb	r2, r3
+ 308 0042 154B     		ldr	r3, .L14+4
+ 309 0044 1A70     		strb	r2, [r3]
+ 310 0046 144B     		ldr	r3, .L14+4
+ 311 0048 93F90030 		ldrsb	r3, [r3]
+ 312 004c 002B     		cmp	r3, #0
+ 313 004e 03DC     		bgt	.L11
+ 314              		.loc 1 136 2 is_stmt 0 discriminator 1
+ 315 0050 114B     		ldr	r3, .L14+4
+ 316 0052 0022     		movs	r2, #0
+ 317 0054 1A70     		strb	r2, [r3]
+ 318              		.syntax unified
+ 319              	@ 136 "Modules/OS/OSAL/src/Os_Internal_Arch.c" 1
+ 320 0056 62B6     		cpsie i
+ 321              	@ 0 "" 2
+ 322              		.thumb
+ 323              		.syntax unified
+ 324              	.L11:
+ 137:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 138:Modules/OS/OSAL/src/Os_Internal_Arch.c **** #endif /* #if (ALARMS_COUNT != 0) */
+ 139:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 140:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* reset context */
+ 141:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	SetActualContext(actualContext);
+ 325              		.loc 1 141 2 is_stmt 1
+ 326 0058 0E4A     		ldr	r2, .L14
+ 327 005a 9DF80730 		ldrb	r3, [sp, #7]
+ 328 005e 1370     		strb	r3, [r2]
+ 142:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 143:Modules/OS/OSAL/src/Os_Internal_Arch.c **** #if (NON_PREEMPTIVE == OSEK_DISABLE)
+ 144:Modules/OS/OSAL/src/Os_Internal_Arch.c ****    /* check if the actual task is preemptive */
+ 145:Modules/OS/OSAL/src/Os_Internal_Arch.c ****    if ( ( CONTEXT_TASK == actualContext ) &&
+ 329              		.loc 1 145 7
+ 330 0060 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 331 0064 012B     		cmp	r3, #1
+ 332 0066 11D1     		bne	.L13
+ 146:Modules/OS/OSAL/src/Os_Internal_Arch.c ****         ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
+ 333              		.loc 1 146 50 discriminator 1
+ 334 0068 0D4B     		ldr	r3, .L14+12
+ 335 006a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 336 006c 1946     		mov	r1, r3
+ 337 006e 0D4A     		ldr	r2, .L14+16
+ 338 0070 0B46     		mov	r3, r1
+ 339 0072 DB00     		lsls	r3, r3, #3
+ 340 0074 5B1A     		subs	r3, r3, r1
+ 341 0076 9B00     		lsls	r3, r3, #2
+ 342 0078 1344     		add	r3, r3, r2
+ 343 007a 1033     		adds	r3, r3, #16
+ 344 007c 1B78     		ldrb	r3, [r3]
+ 345 007e C3F34003 		ubfx	r3, r3, #1, #1
+ 346 0082 DBB2     		uxtb	r3, r3
+ 145:Modules/OS/OSAL/src/Os_Internal_Arch.c ****         ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
+ 347              		.loc 1 145 43 discriminator 1
+ 348 0084 002B     		cmp	r3, #0
+ 349 0086 01D0     		beq	.L13
+ 147:Modules/OS/OSAL/src/Os_Internal_Arch.c ****    {
+ 148:Modules/OS/OSAL/src/Os_Internal_Arch.c ****       /* this shall force a call to the scheduler */
+ 149:Modules/OS/OSAL/src/Os_Internal_Arch.c ****       PostIsr2_Arch(isr);
+ 350              		.loc 1 149 7
+ 351 0088 FFF7FEFF 		bl	Schedule
+ 352              	.L13:
+ 150:Modules/OS/OSAL/src/Os_Internal_Arch.c ****    }
+ 151:Modules/OS/OSAL/src/Os_Internal_Arch.c **** #endif /* #if (NON_PREEMPTIVE == OSEK_ENABLE) */
+ 152:Modules/OS/OSAL/src/Os_Internal_Arch.c **** }
+ 353              		.loc 1 152 1
+ 354 008c 00BF     		nop
+ 355 008e 03B0     		add	sp, sp, #12
+ 356              		.cfi_def_cfa_offset 4
+ 357              		@ sp needed
+ 358 0090 5DF804FB 		ldr	pc, [sp], #4
+ 359              	.L15:
+ 360              		.align	2
+ 361              	.L14:
+ 362 0094 00000000 		.word	ActualContext
+ 363 0098 00000000 		.word	SuspendAllInterrupts_Counter
+ 364 009c 00000000 		.word	CounterIncrement.0
+ 365 00a0 00000000 		.word	RunningTask
+ 366 00a4 00000000 		.word	TasksConst
+ 367              		.cfi_endproc
+ 368              	.LFE3:
+ 370              		.section	.data.CounterIncrement.0,"aw"
+ 371              		.align	2
+ 374              	CounterIncrement.0:
+ 375 0000 01000000 		.word	1
+ 376              		.text
+ 377              	.Letext0:
+ 378              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 379              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 380              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 381              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Types.h"
+ 382              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 383              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+ 384              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 385              		.file 9 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 386              		.file 10 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os_inter
+DEFINED SYMBOLS
+                            *ABS*:00000000 Os_Internal_Arch.c
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:23     .bss.Osek_NewTaskPtr_Arch:00000000 Osek_NewTaskPtr_Arch
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:20     .bss.Osek_NewTaskPtr_Arch:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:30     .bss.Osek_OldTaskPtr_Arch:00000000 Osek_OldTaskPtr_Arch
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:27     .bss.Osek_OldTaskPtr_Arch:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:36     .data.TerminatingTask:00000000 TerminatingTask
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:42     .data.WaitingTask:00000000 WaitingTask
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:45     .text.ReturnHook_Arch:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:52     .text.ReturnHook_Arch:00000000 ReturnHook_Arch
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:73     .text.CheckTerminatingTask_Arch:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:80     .text.CheckTerminatingTask_Arch:00000000 CheckTerminatingTask_Arch
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:124    .text.InitStack_Arch:00000000 InitStack_Arch
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:112    .text.CheckTerminatingTask_Arch:00000020 $d
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:117    .text.InitStack_Arch:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:242    .text.InitStack_Arch:000000b8 $d
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:252    .text.SysTick_Handler:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:259    .text.SysTick_Handler:00000000 SysTick_Handler
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:362    .text.SysTick_Handler:00000094 $d
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:374    .data.CounterIncrement.0:00000000 CounterIncrement.0
+C:\Users\AAA\AppData\Local\Temp\cc4ny3kL.s:371    .data.CounterIncrement.0:00000000 $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+UNDEFINED SYMBOLS
+TasksConst
+IncrementCounter
+Schedule
+ActualContext
+SuspendAllInterrupts_Counter
+RunningTask

@@ -1,0 +1,350 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"gpio_dev.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.gpio_dev_init,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	gpio_dev_init
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	gpio_dev_init:
+  27              	.LFB169:
+  28              		.file 1 "Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c"
+   1:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /****************************************************************************
+   2:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *
+   3:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * Copyright (c) 2022 STMicroelectronics - All Rights Reserved
+   4:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *
+   5:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * License terms: STMicroelectronics Proprietary in accordance with licensing
+   6:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * terms SLA0098 at www.st.com.
+   7:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *
+   8:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * THIS SOFTWARE IS DISTRIBUTED "AS IS," AND ALL WARRANTIES ARE DISCLAIMED,
+   9:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * INCLUDING MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+  10:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *
+  11:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *****************************************************************************/
+  12:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /**
+  13:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * @file    gpio_dev.c
+  14:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * @brief   GPIO device specific source file.
+  15:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *
+  16:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * @addtogroup DRIVERS
+  17:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * @addtogroup SYSTEM
+  18:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * @ingroup DRIVERS
+  19:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * @addtogroup GPIO
+  20:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * @ingroup SYSTEM
+  21:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * @{
+  22:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  */
+  23:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** 
+  24:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** #include <gpio.h>
+  25:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** 
+  26:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /*===========================================================================*/
+  27:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /* Module local definitions.                                                 */
+  28:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /*===========================================================================*/
+  29:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** 
+  30:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /*===========================================================================*/
+  31:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /* Module exported variables.                                                */
+  32:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /*===========================================================================*/
+  33:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** 
+  34:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /*===========================================================================*/
+  35:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /* Module local types.                                                       */
+  36:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /*===========================================================================*/
+  37:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** 
+  38:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /*===========================================================================*/
+  39:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /* Module local variables.                                                   */
+  40:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /*===========================================================================*/
+  41:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** 
+  42:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /*===========================================================================*/
+  43:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /* Module local functions.                                                   */
+  44:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /*===========================================================================*/
+  45:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** 
+  46:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /*===========================================================================*/
+  47:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /* Module exported functions.                                                */
+  48:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /*===========================================================================*/
+  49:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** 
+  50:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /**
+  51:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * @brief   Enables GPIO port clocks.
+  52:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *
+  53:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * @notapi
+  54:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  */
+  55:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** void gpio_dev_init(void) {
+  29              		.loc 1 55 26
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 8
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34 0000 82B0     		sub	sp, sp, #8
+  35              		.cfi_def_cfa_offset 8
+  56:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** 
+  57:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** 
+  58:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****     const uint32_t enr = (0UL                |
+  36              		.loc 1 58 20
+  37 0002 40F2FF13 		movw	r3, #511
+  38 0006 0193     		str	r3, [sp, #4]
+  59:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****                           RCC_AHB2LENR_GPIOA |
+  60:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****                           RCC_AHB2LENR_GPIOB |
+  61:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****                           RCC_AHB2LENR_GPIOC |
+  62:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****                           RCC_AHB2LENR_GPIOD |
+  63:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****                           RCC_AHB2LENR_GPIOE |
+  64:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****                           RCC_AHB2LENR_GPIOF |
+  65:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****                           RCC_AHB2LENR_GPIOG |
+  66:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****                           RCC_AHB2LENR_GPIOH |
+  67:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****                           RCC_AHB2LENR_GPIOI);
+  68:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** 
+  69:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****     /* Enabling GPIO RCC clocks, reading back for synchronization.*/
+  70:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****     RCC->AHB2LENR |= enr;
+  39              		.loc 1 70 19
+  40 0008 4FF08843 		mov	r3, #1140850688
+  41 000c 9A6F     		ldr	r2, [r3, #120]
+  42 000e 4FF08841 		mov	r1, #1140850688
+  43 0012 019B     		ldr	r3, [sp, #4]
+  44 0014 1343     		orrs	r3, r3, r2
+  45 0016 8B67     		str	r3, [r1, #120]
+  71:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****     (void)RCC->AHB2LENR;
+  46              		.loc 1 71 14
+  47 0018 4FF08843 		mov	r3, #1140850688
+  48              		.loc 1 71 5
+  49 001c 9B6F     		ldr	r3, [r3, #120]
+  72:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** }
+  50              		.loc 1 72 1
+  51 001e 00BF     		nop
+  52 0020 02B0     		add	sp, sp, #8
+  53              		.cfi_def_cfa_offset 0
+  54              		@ sp needed
+  55 0022 7047     		bx	lr
+  56              		.cfi_endproc
+  57              	.LFE169:
+  59              		.section	.text.gpio_dev_get_port_reg_ptr,"ax",%progbits
+  60              		.align	1
+  61              		.p2align 4,,15
+  62              		.global	gpio_dev_get_port_reg_ptr
+  63              		.syntax unified
+  64              		.thumb
+  65              		.thumb_func
+  67              	gpio_dev_get_port_reg_ptr:
+  68              	.LFB170:
+  73:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** 
+  74:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** /**
+  75:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * @brief   Returns pointer to Port registers.
+  76:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *
+  77:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * @param[in] port      port number; it can be one of the following values:
+  78:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *            @arg @ref GPIO_PORT_A
+  79:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *            @arg @ref GPIO_PORT_B
+  80:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *            @arg @ref GPIO_PORT_C
+  81:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *            @arg @ref GPIO_PORT_D
+  82:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *            @arg @ref GPIO_PORT_E
+  83:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *            @arg @ref GPIO_PORT_F
+  84:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *            @arg @ref GPIO_PORT_G
+  85:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *            @arg @ref GPIO_PORT_H
+  86:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *            @arg @ref GPIO_PORT_I
+  87:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * @return              pointer to port registers
+  88:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  *
+  89:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  * @notapi
+  90:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****  */
+  91:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** GPIO_TypeDef *gpio_dev_get_port_reg_ptr(gpio_port_t port) {
+  69              		.loc 1 91 59
+  70              		.cfi_startproc
+  71              		@ args = 0, pretend = 0, frame = 8
+  72              		@ frame_needed = 0, uses_anonymous_args = 0
+  73              		@ link register save eliminated.
+  74 0000 82B0     		sub	sp, sp, #8
+  75              		.cfi_def_cfa_offset 8
+  76 0002 0346     		mov	r3, r0
+  77 0004 8DF80730 		strb	r3, [sp, #7]
+  92:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** 
+  93:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****     switch(port) {
+  78              		.loc 1 93 5
+  79 0008 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+  80 000c 082B     		cmp	r3, #8
+  81 000e 28D8     		bhi	.L3
+  82 0010 01A2     		adr	r2, .L5
+  83 0012 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+  84 0016 00BF     		.p2align 2
+  85              	.L5:
+  86 0018 3D000000 		.word	.L13+1
+  87 001c 43000000 		.word	.L12+1
+  88 0020 47000000 		.word	.L11+1
+  89 0024 4B000000 		.word	.L10+1
+  90 0028 4F000000 		.word	.L9+1
+  91 002c 53000000 		.word	.L8+1
+  92 0030 57000000 		.word	.L7+1
+  93 0034 5B000000 		.word	.L6+1
+  94 0038 5F000000 		.word	.L4+1
+  95              		.p2align 1
+  96              	.L13:
+  94:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_A:
+  95:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****             return (GPIOA);
+  97              		.loc 1 95 20
+  98 003c 4FF09043 		mov	r3, #1207959552
+  99 0040 10E0     		b	.L14
+ 100              	.L12:
+  96:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_B:
+  97:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****             return (GPIOB);
+ 101              		.loc 1 97 20
+ 102 0042 0A4B     		ldr	r3, .L15
+ 103 0044 0EE0     		b	.L14
+ 104              	.L11:
+  98:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_C:
+  99:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****             return (GPIOC);
+ 105              		.loc 1 99 20
+ 106 0046 0A4B     		ldr	r3, .L15+4
+ 107 0048 0CE0     		b	.L14
+ 108              	.L10:
+ 100:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_D:
+ 101:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****             return (GPIOD);
+ 109              		.loc 1 101 20
+ 110 004a 0A4B     		ldr	r3, .L15+8
+ 111 004c 0AE0     		b	.L14
+ 112              	.L9:
+ 102:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_E:
+ 103:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****             return (GPIOE);
+ 113              		.loc 1 103 20
+ 114 004e 0A4B     		ldr	r3, .L15+12
+ 115 0050 08E0     		b	.L14
+ 116              	.L8:
+ 104:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_F:
+ 105:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****             return (GPIOF);
+ 117              		.loc 1 105 20
+ 118 0052 0A4B     		ldr	r3, .L15+16
+ 119 0054 06E0     		b	.L14
+ 120              	.L7:
+ 106:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_G:
+ 107:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****             return (GPIOG);
+ 121              		.loc 1 107 20
+ 122 0056 0A4B     		ldr	r3, .L15+20
+ 123 0058 04E0     		b	.L14
+ 124              	.L6:
+ 108:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_H:
+ 109:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****             return (GPIOH);
+ 125              		.loc 1 109 20
+ 126 005a 0A4B     		ldr	r3, .L15+24
+ 127 005c 02E0     		b	.L14
+ 128              	.L4:
+ 110:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_I:
+ 111:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****             return (GPIOI);
+ 129              		.loc 1 111 20
+ 130 005e 0A4B     		ldr	r3, .L15+28
+ 131 0060 00E0     		b	.L14
+ 132              	.L3:
+ 112:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_J:
+ 113:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_K:
+ 114:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_L:
+ 115:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_M:
+ 116:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_N:
+ 117:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_Q:
+ 118:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_R:
+ 119:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_S:
+ 120:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_T:
+ 121:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_V:
+ 122:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_W:
+ 123:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_X:
+ 124:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         case GPIO_PORT_Y:
+ 125:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****         default:
+ 126:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****             return (NULL);
+ 133              		.loc 1 126 20
+ 134 0062 0023     		movs	r3, #0
+ 135              	.L14:
+ 127:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c ****     }
+ 128:Modules/Drivers/System/GPIO/src/sr5e1/gpio_dev.c **** }
+ 136              		.loc 1 128 1
+ 137 0064 1846     		mov	r0, r3
+ 138 0066 02B0     		add	sp, sp, #8
+ 139              		.cfi_def_cfa_offset 0
+ 140              		@ sp needed
+ 141 0068 7047     		bx	lr
+ 142              	.L16:
+ 143 006a 00BF     		.align	2
+ 144              	.L15:
+ 145 006c 00040048 		.word	1207960576
+ 146 0070 00080048 		.word	1207961600
+ 147 0074 000C0048 		.word	1207962624
+ 148 0078 00100048 		.word	1207963648
+ 149 007c 00140048 		.word	1207964672
+ 150 0080 00180048 		.word	1207965696
+ 151 0084 001C0048 		.word	1207966720
+ 152 0088 00200048 		.word	1207967744
+ 153              		.cfi_endproc
+ 154              	.LFE170:
+ 156              		.text
+ 157              	.Letext0:
+ 158              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 159              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 160              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\platform\\mcu\\include\\sr5e
+ 161              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\platform\\mcu\\include\\sr5e
+ 162              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\drivers\\system\\gpio\\inclu
+DEFINED SYMBOLS
+                            *ABS*:00000000 gpio_dev.c
+C:\Users\AAA\AppData\Local\Temp\ccJylgji.s:19     .text.gpio_dev_init:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccJylgji.s:26     .text.gpio_dev_init:00000000 gpio_dev_init
+C:\Users\AAA\AppData\Local\Temp\ccJylgji.s:60     .text.gpio_dev_get_port_reg_ptr:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccJylgji.s:67     .text.gpio_dev_get_port_reg_ptr:00000000 gpio_dev_get_port_reg_ptr
+C:\Users\AAA\AppData\Local\Temp\ccJylgji.s:86     .text.gpio_dev_get_port_reg_ptr:00000018 $d
+C:\Users\AAA\AppData\Local\Temp\ccJylgji.s:95     .text.gpio_dev_get_port_reg_ptr:0000003c $t
+C:\Users\AAA\AppData\Local\Temp\ccJylgji.s:145    .text.gpio_dev_get_port_reg_ptr:0000006c $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.sr5e1xx.h.22.568547583bf3c00ded67adadc0110f08
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.cmsis_version.h.32.0f826810625204eca22a19868bdc7586
+                           .group:00000000 wm4.core_cm7.h.66.a4062db891274e2143912fc0bd7e55e3
+                           .group:00000000 wm4.cmsis_gcc.h.26.498d0ad17a45fc9ef20fdc01caf02259
+                           .group:00000000 wm4.core_cm7.h.305.f28cb27b64654b9b703ea60dbab0003d
+                           .group:00000000 wm4.mpu_armv7.h.32.83326921a797fa9d6f70449916b4b839
+                           .group:00000000 wm4.cachel1_armv7.h.32.abd77761a989e008b0c60891114a33c7
+                           .group:00000000 wm4.core_cm7.h.2376.07b7b0525701732543280b71e0cd2400
+                           .group:00000000 wm4.SR5E1_ADC.h.14.21608e6aff125ba995dd767d6d8dc311
+                           .group:00000000 wm4.SR5E1_CEM.h.14.01fe5742c8f1ae35b1f3af05932f702e
+                           .group:00000000 wm4.SR5E1_CMU.h.14.2617b38b159abe38028862394531e06d
+                           .group:00000000 wm4.SR5E1_COMP.h.14.4b6fdfe4f5f7fd9bedf3a99b98bdf4cd
+                           .group:00000000 wm4.SR5E1_CORDIC.h.14.354fbf7c9eaf6963d38eaa25cf28ffe8
+                           .group:00000000 wm4.SR5E1_CRC.h.14.270685b4f0bb89cdb48054af5fe3c4ef
+                           .group:00000000 wm4.SR5E1_DAC.h.14.8c26a0ff04b0cfeb55306cc3f22187b8
+                           .group:00000000 wm4.SR5E1_DBGMCU.h.14.427df893d53a8044654f017ba01c25ed
+                           .group:00000000 wm4.SR5E1_DMA.h.14.a7f9a92f844b40a86965798c2e64240b
+                           .group:00000000 wm4.SR5E1_DMAMUX.h.14.471b3b4dfd4d41515f1df49493698866
+                           .group:00000000 wm4.SR5E1_EXTI.h.14.a325ea3fe89cd84894660551c33241ea
+                           .group:00000000 wm4.SR5E1_FCCU.h.14.0ebf0f0f36e079d28613ad2c80e17e23
+                           .group:00000000 wm4.SR5E1_FDCAN.h.14.ac57101fad5dbc798bfb93f34c899de7
+                           .group:00000000 wm4.SR5E1_FLASH_REG_ITF.h.14.d23d1d44923f9b20b8c8fdb51d66aefd
+                           .group:00000000 wm4.SR5E1_GPIO.h.14.1c84071e130d7c64b62470ab0e18a1f1
+                           .group:00000000 wm4.SR5E1_HRTIM.h.24.03932387d2522e6bd5c772a4edaf2f5d
+                           .group:00000000 wm4.SR5E1_HSEM.h.14.cbe70eee519f01b16452c3f8c99d8df1
+                           .group:00000000 wm4.SR5E1_I2C.h.14.350ba3e0f4fd57828457efa80135c36c
+                           .group:00000000 wm4.SR5E1_IWDG.h.14.20b7c5f05cf7ae94464c360d7af3660d
+                           .group:00000000 wm4.SR5E1_NVM_CTRL.h.14.5f442617f0628d4f16258f211c614ef9
+                           .group:00000000 wm4.SR5E1_PLLDIG.h.14.bd87a8e6917eee17dae2f312c8e5fa53
+                           .group:00000000 wm4.SR5E1_PMC_DIG.h.14.6b7406ff48d7bcd1e53033a370604200
+                           .group:00000000 wm4.SR5E1_RCC.h.14.56734803c71534de286e793a53649740
+                           .group:00000000 wm4.SR5E1_RTC.h.14.47037cbc7d8175dbf2be1dc0bb955e3f
+                           .group:00000000 wm4.SR5E1_SD_ADC.h.14.552b97d0b8f3c1fd4df6d8964b2f1a80
+                           .group:00000000 wm4.SR5E1_SPI.h.14.42d52112e540f85ade4d9135f8b87d72
+                           .group:00000000 wm4.SR5E1_SSCM.h.14.8e6a2ad0ce5fca422fc3d69939b6125b
+                           .group:00000000 wm4.SR5E1_SYSCFG.h.14.02b969490118ce4069914b5e94f7ca65
+                           .group:00000000 wm4.SR5E1_TDM.h.14.a40ed7928cad243a57fd233fccf01ad2
+                           .group:00000000 wm4.SR5E1_TIM.h.14.05b8efc5395873619642d61a4b0b5a54
+                           .group:00000000 wm4.SR5E1_UART.h.14.eec3ab82b02b3bdb3de500483675b83f
+                           .group:00000000 wm4.SR5E1_WWDG.h.14.59b45efc70e442cc6ef03702aad4ad88
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.typedefs.h.36.07fe3956b4e751037cfee70edcd0b397
+                           .group:00000000 wm4.irq_numbers.h.38.b76ee9208c5ae3feb2392b512990cf71
+                           .group:00000000 wm4.regs.h.23.38915225b13378a72a9bf21e632c378b
+                           .group:00000000 wm4.gpio.h.38.4f37c988f6412e2fcf390b4a4a9849b1
+
+NO UNDEFINED SYMBOLS

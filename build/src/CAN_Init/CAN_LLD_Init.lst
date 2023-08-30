@@ -1,0 +1,438 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"CAN_LLD_Init.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	rx_frame
+  19              		.section	.bss.rx_frame,"aw",%nobits
+  20              		.align	2
+  23              	rx_frame:
+  24 0000 00000000 		.space	8
+  24      00000000 
+  25              		.section	.text.canrx_receive_cb,"ax",%progbits
+  26              		.align	1
+  27              		.p2align 4,,15
+  28              		.syntax unified
+  29              		.thumb
+  30              		.thumb_func
+  32              	canrx_receive_cb:
+  33              	.LFB433:
+  34              		.file 1 "src/CAN_Init/CAN_LLD_Init.c"
+   1:src/CAN_Init/CAN_LLD_Init.c **** #include "CAN_LLD_Init.h"
+   2:src/CAN_Init/CAN_LLD_Init.c **** 
+   3:src/CAN_Init/CAN_LLD_Init.c **** /* This callback is invoked when a frame is received.*/
+   4:src/CAN_Init/CAN_LLD_Init.c **** uint32_t rx_frame[2];
+   5:src/CAN_Init/CAN_LLD_Init.c **** static void canrx_receive_cb(can_driver_t *cdp, can_frame_t frame, can_evt_t event) {
+  35              		.loc 1 5 85
+  36              		.cfi_startproc
+  37              		@ args = 84, pretend = 8, frame = 8
+  38              		@ frame_needed = 0, uses_anonymous_args = 0
+  39              		@ link register save eliminated.
+  40 0000 82B0     		sub	sp, sp, #8
+  41              		.cfi_def_cfa_offset 8
+  42 0002 82B0     		sub	sp, sp, #8
+  43              		.cfi_def_cfa_offset 16
+  44 0004 0190     		str	r0, [sp, #4]
+  45 0006 02A9     		add	r1, sp, #8
+  46 0008 81E80C00 		stm	r1, {r2, r3}
+   6:src/CAN_Init/CAN_LLD_Init.c **** 
+   7:src/CAN_Init/CAN_LLD_Init.c ****     (void)cdp;
+   8:src/CAN_Init/CAN_LLD_Init.c ****     (void)frame;
+   9:src/CAN_Init/CAN_LLD_Init.c ****     (void)event;
+  10:src/CAN_Init/CAN_LLD_Init.c **** 
+  11:src/CAN_Init/CAN_LLD_Init.c ****     static uint8_t i = 0U;
+  12:src/CAN_Init/CAN_LLD_Init.c ****     /* Verify the received frame is equal to trasmitted frame.*/
+  13:src/CAN_Init/CAN_LLD_Init.c ****     if ((event == CAN_CB_RX)                  &&
+  47              		.loc 1 13 8
+  48 000c 9DF85830 		ldrb	r3, [sp, #88]	@ zero_extendqisi2
+  49 0010 002B     		cmp	r3, #0
+  50 0012 14D1     		bne	.L2
+  14:src/CAN_Init/CAN_LLD_Init.c ****         (frame.TYPE == CAN_ID_STD)            &&
+  51              		.loc 1 14 15 discriminator 1
+  52 0014 9DF80C30 		ldrb	r3, [sp, #12]	@ zero_extendqisi2
+  13:src/CAN_Init/CAN_LLD_Init.c ****         (frame.TYPE == CAN_ID_STD)            &&
+  53              		.loc 1 13 47 discriminator 1
+  54 0018 002B     		cmp	r3, #0
+  55 001a 10D1     		bne	.L2
+  15:src/CAN_Init/CAN_LLD_Init.c ****         (frame.ID == CAN_DEFAULT_FILTER_ID)   ) {
+  56              		.loc 1 15 15
+  57 001c 049B     		ldr	r3, [sp, #16]
+  14:src/CAN_Init/CAN_LLD_Init.c ****         (frame.TYPE == CAN_ID_STD)            &&
+  58              		.loc 1 14 47
+  59 001e B3F5FE6F 		cmp	r3, #2032
+  60 0022 0CD1     		bne	.L2
+  16:src/CAN_Init/CAN_LLD_Init.c ****     	rx_frame[0] = frame.data32[0];
+  61              		.loc 1 16 32
+  62 0024 069B     		ldr	r3, [sp, #24]
+  63              		.loc 1 16 18
+  64 0026 084A     		ldr	r2, .L4
+  65 0028 1360     		str	r3, [r2]
+  17:src/CAN_Init/CAN_LLD_Init.c ****     	rx_frame[1] = frame.data32[1];
+  66              		.loc 1 17 32
+  67 002a 079B     		ldr	r3, [sp, #28]
+  68              		.loc 1 17 18
+  69 002c 064A     		ldr	r2, .L4
+  70 002e 5360     		str	r3, [r2, #4]
+  18:src/CAN_Init/CAN_LLD_Init.c ****         i++;
+  71              		.loc 1 18 10
+  72 0030 064B     		ldr	r3, .L4+4
+  73 0032 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  74 0034 0133     		adds	r3, r3, #1
+  75 0036 DAB2     		uxtb	r2, r3
+  76 0038 044B     		ldr	r3, .L4+4
+  77 003a 1A70     		strb	r2, [r3]
+  19:src/CAN_Init/CAN_LLD_Init.c ****     } else {
+  20:src/CAN_Init/CAN_LLD_Init.c ****         while(1);
+  21:src/CAN_Init/CAN_LLD_Init.c ****     }
+  22:src/CAN_Init/CAN_LLD_Init.c **** }
+  78              		.loc 1 22 1
+  79 003c 00E0     		b	.L3
+  80              	.L2:
+  20:src/CAN_Init/CAN_LLD_Init.c ****     }
+  81              		.loc 1 20 14 discriminator 1
+  82 003e FEE7     		b	.L2
+  83              	.L3:
+  84              		.loc 1 22 1
+  85 0040 02B0     		add	sp, sp, #8
+  86              		.cfi_def_cfa_offset 8
+  87              		@ sp needed
+  88 0042 02B0     		add	sp, sp, #8
+  89              		.cfi_def_cfa_offset 0
+  90 0044 7047     		bx	lr
+  91              	.L5:
+  92 0046 00BF     		.align	2
+  93              	.L4:
+  94 0048 00000000 		.word	rx_frame
+  95 004c 00000000 		.word	i.0
+  96              		.cfi_endproc
+  97              	.LFE433:
+  99              		.section	.text.canrx_error_cb,"ax",%progbits
+ 100              		.align	1
+ 101              		.p2align 4,,15
+ 102              		.syntax unified
+ 103              		.thumb
+ 104              		.thumb_func
+ 106              	canrx_error_cb:
+ 107              	.LFB434:
+  23:src/CAN_Init/CAN_LLD_Init.c **** 
+  24:src/CAN_Init/CAN_LLD_Init.c **** /* This callback is invoked when an error occurs during reception.*/
+  25:src/CAN_Init/CAN_LLD_Init.c **** static void canrx_error_cb(can_driver_t *cdp, uint32_t psr) {
+ 108              		.loc 1 25 61
+ 109              		.cfi_startproc
+ 110              		@ args = 0, pretend = 0, frame = 8
+ 111              		@ frame_needed = 0, uses_anonymous_args = 0
+ 112              		@ link register save eliminated.
+ 113 0000 82B0     		sub	sp, sp, #8
+ 114              		.cfi_def_cfa_offset 8
+ 115 0002 0190     		str	r0, [sp, #4]
+ 116 0004 0091     		str	r1, [sp]
+  26:src/CAN_Init/CAN_LLD_Init.c **** 
+  27:src/CAN_Init/CAN_LLD_Init.c ****     (void)cdp;
+  28:src/CAN_Init/CAN_LLD_Init.c ****     (void)psr;
+  29:src/CAN_Init/CAN_LLD_Init.c ****     // while(1);
+  30:src/CAN_Init/CAN_LLD_Init.c **** }
+ 117              		.loc 1 30 1
+ 118 0006 00BF     		nop
+ 119 0008 02B0     		add	sp, sp, #8
+ 120              		.cfi_def_cfa_offset 0
+ 121              		@ sp needed
+ 122 000a 7047     		bx	lr
+ 123              		.cfi_endproc
+ 124              	.LFE434:
+ 126              		.section	.text.cantx_error_cb,"ax",%progbits
+ 127              		.align	1
+ 128              		.p2align 4,,15
+ 129              		.syntax unified
+ 130              		.thumb
+ 131              		.thumb_func
+ 133              	cantx_error_cb:
+ 134              	.LFB435:
+  31:src/CAN_Init/CAN_LLD_Init.c **** 
+  32:src/CAN_Init/CAN_LLD_Init.c **** /* This callback is invoked when an error occurs during transmission.*/
+  33:src/CAN_Init/CAN_LLD_Init.c **** static void cantx_error_cb(can_driver_t *cdp, uint32_t psr) {
+ 135              		.loc 1 33 61
+ 136              		.cfi_startproc
+ 137              		@ args = 0, pretend = 0, frame = 8
+ 138              		@ frame_needed = 0, uses_anonymous_args = 0
+ 139              		@ link register save eliminated.
+ 140 0000 82B0     		sub	sp, sp, #8
+ 141              		.cfi_def_cfa_offset 8
+ 142 0002 0190     		str	r0, [sp, #4]
+ 143 0004 0091     		str	r1, [sp]
+  34:src/CAN_Init/CAN_LLD_Init.c **** 
+  35:src/CAN_Init/CAN_LLD_Init.c ****     (void)cdp;
+  36:src/CAN_Init/CAN_LLD_Init.c ****     (void)psr;
+  37:src/CAN_Init/CAN_LLD_Init.c ****     // while(1);
+  38:src/CAN_Init/CAN_LLD_Init.c **** }
+ 144              		.loc 1 38 1
+ 145 0006 00BF     		nop
+ 146 0008 02B0     		add	sp, sp, #8
+ 147              		.cfi_def_cfa_offset 0
+ 148              		@ sp needed
+ 149 000a 7047     		bx	lr
+ 150              		.cfi_endproc
+ 151              	.LFE435:
+ 153              		.section	.text.CAN_LLD_Init,"ax",%progbits
+ 154              		.align	1
+ 155              		.p2align 4,,15
+ 156              		.global	CAN_LLD_Init
+ 157              		.syntax unified
+ 158              		.thumb
+ 159              		.thumb_func
+ 161              	CAN_LLD_Init:
+ 162              	.LFB436:
+  39:src/CAN_Init/CAN_LLD_Init.c **** 
+  40:src/CAN_Init/CAN_LLD_Init.c **** void CAN_LLD_Init(void)
+  41:src/CAN_Init/CAN_LLD_Init.c **** {
+ 163              		.loc 1 41 1
+ 164              		.cfi_startproc
+ 165              		@ args = 0, pretend = 0, frame = 0
+ 166              		@ frame_needed = 0, uses_anonymous_args = 0
+ 167 0000 00B5     		push	{lr}
+ 168              		.cfi_def_cfa_offset 4
+ 169              		.cfi_offset 14, -4
+ 170 0002 83B0     		sub	sp, sp, #12
+ 171              		.cfi_def_cfa_offset 16
+  42:src/CAN_Init/CAN_LLD_Init.c ****     	/*===========================================================================*/
+  43:src/CAN_Init/CAN_LLD_Init.c **** 	/* CAN-related.                                                              */
+  44:src/CAN_Init/CAN_LLD_Init.c **** 	/*===========================================================================*/
+  45:src/CAN_Init/CAN_LLD_Init.c **** 
+  46:src/CAN_Init/CAN_LLD_Init.c ****     /* Initialize CAN RX/TX driver instances.*/
+  47:src/CAN_Init/CAN_LLD_Init.c ****     can_init(&CANTXD);
+ 172              		.loc 1 47 5
+ 173 0004 2548     		ldr	r0, .L9
+ 174 0006 FFF7FEFF 		bl	can_init
+  48:src/CAN_Init/CAN_LLD_Init.c **** 
+  49:src/CAN_Init/CAN_LLD_Init.c ****     /* Configure CAN RX/TX.*/
+  50:src/CAN_Init/CAN_LLD_Init.c ****     (void)can_set_irq_line(&CANTXD, CAN_IRQ_LINE0);
+ 175              		.loc 1 50 11
+ 176 000a 0021     		movs	r1, #0
+ 177 000c 2348     		ldr	r0, .L9
+ 178 000e FFF7FEFF 		bl	can_set_irq_line
+  51:src/CAN_Init/CAN_LLD_Init.c **** 
+  52:src/CAN_Init/CAN_LLD_Init.c ****     (void)can_set_irq_mask(&CANTXD, CAN_IRQ_ALL_ENABLED);
+ 179              		.loc 1 52 11
+ 180 0012 2349     		ldr	r1, .L9+4
+ 181 0014 2148     		ldr	r0, .L9
+ 182 0016 FFF7FEFF 		bl	can_set_irq_mask
+  53:src/CAN_Init/CAN_LLD_Init.c **** 
+  54:src/CAN_Init/CAN_LLD_Init.c ****     (void)can_set_loopback(&CANTXD, CAN_NO_LOOPBACK);
+ 183              		.loc 1 54 11
+ 184 001a 0021     		movs	r1, #0
+ 185 001c 1F48     		ldr	r0, .L9
+ 186 001e FFF7FEFF 		bl	can_set_loopback
+  55:src/CAN_Init/CAN_LLD_Init.c **** 
+  56:src/CAN_Init/CAN_LLD_Init.c ****     (void)can_set_fd_mode(&CANTXD, false);
+ 187              		.loc 1 56 11
+ 188 0022 0021     		movs	r1, #0
+ 189 0024 1D48     		ldr	r0, .L9
+ 190 0026 FFF7FEFF 		bl	can_set_fd_mode
+  57:src/CAN_Init/CAN_LLD_Init.c **** 
+  58:src/CAN_Init/CAN_LLD_Init.c ****     (void)can_set_baudrate(&CANTXD, CAN_BAUDRATE_1MBIT);
+ 191              		.loc 1 58 11
+ 192 002a 1E49     		ldr	r1, .L9+8
+ 193 002c 1B48     		ldr	r0, .L9
+ 194 002e FFF7FEFF 		bl	can_set_baudrate
+  59:src/CAN_Init/CAN_LLD_Init.c **** 
+  60:src/CAN_Init/CAN_LLD_Init.c ****     (void)can_set_dmu_mode(&CANTXD, false);
+ 195              		.loc 1 60 11
+ 196 0032 0021     		movs	r1, #0
+ 197 0034 1948     		ldr	r0, .L9
+ 198 0036 FFF7FEFF 		bl	can_set_dmu_mode
+  61:src/CAN_Init/CAN_LLD_Init.c **** 
+  62:src/CAN_Init/CAN_LLD_Init.c ****     (void)can_set_filter(&CANTXD, CAN_DEFAULT_FILTER_ID, 0U,
+ 199              		.loc 1 62 11
+ 200 003a 0723     		movs	r3, #7
+ 201 003c 0193     		str	r3, [sp, #4]
+ 202 003e 0223     		movs	r3, #2
+ 203 0040 0093     		str	r3, [sp]
+ 204 0042 0023     		movs	r3, #0
+ 205 0044 0022     		movs	r2, #0
+ 206 0046 4FF4FE61 		mov	r1, #2032
+ 207 004a 1448     		ldr	r0, .L9
+ 208 004c FFF7FEFF 		bl	can_set_filter
+  63:src/CAN_Init/CAN_LLD_Init.c ****                          CAN_STD_FILTER_TYPE, CAN_FILTER_CLASSIC,
+  64:src/CAN_Init/CAN_LLD_Init.c ****                          CAN_FEC_RX_BUF);
+  65:src/CAN_Init/CAN_LLD_Init.c **** 
+  66:src/CAN_Init/CAN_LLD_Init.c ****     can_set_buffers(&CANTXD, CAN_DEFAULT_RX_BUFF_NUM, CAN_DEFAULT_TX_BUFF_NUM,
+ 209              		.loc 1 66 5
+ 210 0050 0423     		movs	r3, #4
+ 211 0052 0193     		str	r3, [sp, #4]
+ 212 0054 0423     		movs	r3, #4
+ 213 0056 0093     		str	r3, [sp]
+ 214 0058 0423     		movs	r3, #4
+ 215 005a 0422     		movs	r2, #4
+ 216 005c 0421     		movs	r1, #4
+ 217 005e 0F48     		ldr	r0, .L9
+ 218 0060 FFF7FEFF 		bl	can_set_buffers
+  67:src/CAN_Init/CAN_LLD_Init.c ****                     CAN_DEFAULT_RX_FIFO0_NUM, CAN_DEFAULT_RX_FIFO1_NUM,
+  68:src/CAN_Init/CAN_LLD_Init.c ****                     CAN_DEFAULT_TX_FIFOQ_NUM);
+  69:src/CAN_Init/CAN_LLD_Init.c **** 
+  70:src/CAN_Init/CAN_LLD_Init.c ****     (void)can_set_rx_polling_mode(&CANTXD, false);
+ 219              		.loc 1 70 11
+ 220 0064 0021     		movs	r1, #0
+ 221 0066 0D48     		ldr	r0, .L9
+ 222 0068 FFF7FEFF 		bl	can_set_rx_polling_mode
+  71:src/CAN_Init/CAN_LLD_Init.c ****     (void)can_set_tx_mode(&CANTXD, CAN_TX_MODE_DEDICATED_BUFF);
+ 223              		.loc 1 71 11
+ 224 006c 0021     		movs	r1, #0
+ 225 006e 0B48     		ldr	r0, .L9
+ 226 0070 FFF7FEFF 		bl	can_set_tx_mode
+  72:src/CAN_Init/CAN_LLD_Init.c **** 
+  73:src/CAN_Init/CAN_LLD_Init.c ****     (void)can_set_cb(&CANTXD, canrx_receive_cb);
+ 227              		.loc 1 73 11
+ 228 0074 0C49     		ldr	r1, .L9+12
+ 229 0076 0948     		ldr	r0, .L9
+ 230 0078 FFF7FEFF 		bl	can_set_cb
+  74:src/CAN_Init/CAN_LLD_Init.c ****     (void)can_set_err_cb(&CANTXD, canrx_error_cb);
+ 231              		.loc 1 74 11
+ 232 007c 0B49     		ldr	r1, .L9+16
+ 233 007e 0748     		ldr	r0, .L9
+ 234 0080 FFF7FEFF 		bl	can_set_err_cb
+  75:src/CAN_Init/CAN_LLD_Init.c ****     (void)can_set_err_cb(&CANTXD, cantx_error_cb);
+ 235              		.loc 1 75 11
+ 236 0084 0A49     		ldr	r1, .L9+20
+ 237 0086 0548     		ldr	r0, .L9
+ 238 0088 FFF7FEFF 		bl	can_set_err_cb
+  76:src/CAN_Init/CAN_LLD_Init.c **** 
+  77:src/CAN_Init/CAN_LLD_Init.c ****     /* Apply CAN RX/TX configurations.*/
+  78:src/CAN_Init/CAN_LLD_Init.c ****     can_start(&CANTXD);
+ 239              		.loc 1 78 5
+ 240 008c 0348     		ldr	r0, .L9
+ 241 008e FFF7FEFF 		bl	can_start
+  79:src/CAN_Init/CAN_LLD_Init.c **** 
+  80:src/CAN_Init/CAN_LLD_Init.c **** }...
+ 242              		.loc 1 80 1
+ 243 0092 00BF     		nop
+ 244 0094 03B0     		add	sp, sp, #12
+ 245              		.cfi_def_cfa_offset 4
+ 246              		@ sp needed
+ 247 0096 5DF804FB 		ldr	pc, [sp], #4
+ 248              	.L10:
+ 249 009a 00BF     		.align	2
+ 250              	.L9:
+ 251 009c 00000000 		.word	DRV_CAN1
+ 252 00a0 EE0A0002 		.word	33557230
+ 253 00a4 40420F00 		.word	1000000
+ 254 00a8 00000000 		.word	canrx_receive_cb
+ 255 00ac 00000000 		.word	canrx_error_cb
+ 256 00b0 00000000 		.word	cantx_error_cb
+ 257              		.cfi_endproc
+ 258              	.LFE436:
+ 260              		.section	.bss.i.0,"aw",%nobits
+ 263              	i.0:
+ 264 0000 00       		.space	1
+ 265              		.text
+ 266              	.Letext0:
+ 267              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 268              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 269              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\drivers\\comms\\can\\include
+ 270              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\drivers\\comms\\can\\include
+DEFINED SYMBOLS
+                            *ABS*:00000000 CAN_LLD_Init.c
+C:\Users\AAA\AppData\Local\Temp\ccLdnipd.s:23     .bss.rx_frame:00000000 rx_frame
+C:\Users\AAA\AppData\Local\Temp\ccLdnipd.s:20     .bss.rx_frame:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccLdnipd.s:26     .text.canrx_receive_cb:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccLdnipd.s:32     .text.canrx_receive_cb:00000000 canrx_receive_cb
+C:\Users\AAA\AppData\Local\Temp\ccLdnipd.s:94     .text.canrx_receive_cb:00000048 $d
+C:\Users\AAA\AppData\Local\Temp\ccLdnipd.s:263    .bss.i.0:00000000 i.0
+C:\Users\AAA\AppData\Local\Temp\ccLdnipd.s:100    .text.canrx_error_cb:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccLdnipd.s:106    .text.canrx_error_cb:00000000 canrx_error_cb
+C:\Users\AAA\AppData\Local\Temp\ccLdnipd.s:127    .text.cantx_error_cb:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccLdnipd.s:133    .text.cantx_error_cb:00000000 cantx_error_cb
+C:\Users\AAA\AppData\Local\Temp\ccLdnipd.s:154    .text.CAN_LLD_Init:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccLdnipd.s:161    .text.CAN_LLD_Init:00000000 CAN_LLD_Init
+C:\Users\AAA\AppData\Local\Temp\ccLdnipd.s:251    .text.CAN_LLD_Init:0000009c $d
+C:\Users\AAA\AppData\Local\Temp\ccLdnipd.s:264    .bss.i.0:00000000 $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.typedefs.h.36.07fe3956b4e751037cfee70edcd0b397
+                           .group:00000000 wm4.clock_cfg.h.23.3c8ba5c0347398a4587362787f86fe62
+                           .group:00000000 wm4.sr5e1xx.h.22.568547583bf3c00ded67adadc0110f08
+                           .group:00000000 wm4.cmsis_version.h.32.0f826810625204eca22a19868bdc7586
+                           .group:00000000 wm4.core_cm7.h.66.a4062db891274e2143912fc0bd7e55e3
+                           .group:00000000 wm4.cmsis_gcc.h.26.498d0ad17a45fc9ef20fdc01caf02259
+                           .group:00000000 wm4.core_cm7.h.305.f28cb27b64654b9b703ea60dbab0003d
+                           .group:00000000 wm4.mpu_armv7.h.32.83326921a797fa9d6f70449916b4b839
+                           .group:00000000 wm4.cachel1_armv7.h.32.abd77761a989e008b0c60891114a33c7
+                           .group:00000000 wm4.core_cm7.h.2376.07b7b0525701732543280b71e0cd2400
+                           .group:00000000 wm4.SR5E1_ADC.h.14.21608e6aff125ba995dd767d6d8dc311
+                           .group:00000000 wm4.SR5E1_CEM.h.14.01fe5742c8f1ae35b1f3af05932f702e
+                           .group:00000000 wm4.SR5E1_CMU.h.14.2617b38b159abe38028862394531e06d
+                           .group:00000000 wm4.SR5E1_COMP.h.14.4b6fdfe4f5f7fd9bedf3a99b98bdf4cd
+                           .group:00000000 wm4.SR5E1_CORDIC.h.14.354fbf7c9eaf6963d38eaa25cf28ffe8
+                           .group:00000000 wm4.SR5E1_CRC.h.14.270685b4f0bb89cdb48054af5fe3c4ef
+                           .group:00000000 wm4.SR5E1_DAC.h.14.8c26a0ff04b0cfeb55306cc3f22187b8
+                           .group:00000000 wm4.SR5E1_DBGMCU.h.14.427df893d53a8044654f017ba01c25ed
+                           .group:00000000 wm4.SR5E1_DMA.h.14.a7f9a92f844b40a86965798c2e64240b
+                           .group:00000000 wm4.SR5E1_DMAMUX.h.14.471b3b4dfd4d41515f1df49493698866
+                           .group:00000000 wm4.SR5E1_EXTI.h.14.a325ea3fe89cd84894660551c33241ea
+                           .group:00000000 wm4.SR5E1_FCCU.h.14.0ebf0f0f36e079d28613ad2c80e17e23
+                           .group:00000000 wm4.SR5E1_FDCAN.h.14.ac57101fad5dbc798bfb93f34c899de7
+                           .group:00000000 wm4.SR5E1_FLASH_REG_ITF.h.14.d23d1d44923f9b20b8c8fdb51d66aefd
+                           .group:00000000 wm4.SR5E1_GPIO.h.14.1c84071e130d7c64b62470ab0e18a1f1
+                           .group:00000000 wm4.SR5E1_HRTIM.h.24.03932387d2522e6bd5c772a4edaf2f5d
+                           .group:00000000 wm4.SR5E1_HSEM.h.14.cbe70eee519f01b16452c3f8c99d8df1
+                           .group:00000000 wm4.SR5E1_I2C.h.14.350ba3e0f4fd57828457efa80135c36c
+                           .group:00000000 wm4.SR5E1_IWDG.h.14.20b7c5f05cf7ae94464c360d7af3660d
+                           .group:00000000 wm4.SR5E1_NVM_CTRL.h.14.5f442617f0628d4f16258f211c614ef9
+                           .group:00000000 wm4.SR5E1_PLLDIG.h.14.bd87a8e6917eee17dae2f312c8e5fa53
+                           .group:00000000 wm4.SR5E1_PMC_DIG.h.14.6b7406ff48d7bcd1e53033a370604200
+                           .group:00000000 wm4.SR5E1_RCC.h.14.56734803c71534de286e793a53649740
+                           .group:00000000 wm4.SR5E1_RTC.h.14.47037cbc7d8175dbf2be1dc0bb955e3f
+                           .group:00000000 wm4.SR5E1_SD_ADC.h.14.552b97d0b8f3c1fd4df6d8964b2f1a80
+                           .group:00000000 wm4.SR5E1_SPI.h.14.42d52112e540f85ade4d9135f8b87d72
+                           .group:00000000 wm4.SR5E1_SSCM.h.14.8e6a2ad0ce5fca422fc3d69939b6125b
+                           .group:00000000 wm4.SR5E1_SYSCFG.h.14.02b969490118ce4069914b5e94f7ca65
+                           .group:00000000 wm4.SR5E1_TDM.h.14.a40ed7928cad243a57fd233fccf01ad2
+                           .group:00000000 wm4.SR5E1_TIM.h.14.05b8efc5395873619642d61a4b0b5a54
+                           .group:00000000 wm4.SR5E1_UART.h.14.eec3ab82b02b3bdb3de500483675b83f
+                           .group:00000000 wm4.SR5E1_WWDG.h.14.59b45efc70e442cc6ef03702aad4ad88
+                           .group:00000000 wm4.irq_numbers.h.38.b76ee9208c5ae3feb2392b512990cf71
+                           .group:00000000 wm4.regs.h.23.38915225b13378a72a9bf21e632c378b
+                           .group:00000000 wm4.clock.h.37.c942461032b5a15e2a4133c6666f70ce
+                           .group:00000000 wm4.gpio.h.25.d41a0c19fda8c2de42e666afb48ec15a
+                           .group:00000000 wm4.irq.h.37.78714f25754c8b09d1428599101f6cc7
+                           .group:00000000 wm4.osal_cfg.h.23.b97ea04faf646103324df3ecc2655260
+                           .group:00000000 wm4.osal.h.38.40390df6c87bbed5f1c054e622a926ee
+                           .group:00000000 wm4.test_env.h.57.690797a2e7b6aa0f01d5a7ba687211c6
+                           .group:00000000 wm4.evbe7000p.h.25.2f49fb17c3dd8379489c2784aa8b2c97
+                           .group:00000000 wm4.test_env.h.92.68c13ade9b3e38ad2c77de7ebbfe3e53
+                           .group:00000000 wm4.can.h.25.2f02a95ac09e0e0fb0dca9690b304cda
+                           .group:00000000 wm4.CAN_LLD_Init.h.8.0ca532a55169d521cd2cb8a008b810d0
+
+UNDEFINED SYMBOLS
+can_init
+can_set_irq_line
+can_set_irq_mask
+can_set_loopback
+can_set_fd_mode
+can_set_baudrate
+can_set_dmu_mode
+can_set_filter
+can_set_buffers
+can_set_rx_polling_mode
+can_set_tx_mode
+can_set_cb
+can_set_err_cb
+can_start
+DRV_CAN1

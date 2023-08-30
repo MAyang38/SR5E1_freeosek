@@ -1,0 +1,299 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"CancelAlarm.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.CancelAlarm,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	CancelAlarm
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	CancelAlarm:
+  27              	.LFB0:
+  28              		.file 1 "Modules/OS/OSAL/src/CancelAlarm.c"
+   1:Modules/OS/OSAL/src/CancelAlarm.c **** /* Copyright 2008, 2009 Mariano Cerdeiro
+   2:Modules/OS/OSAL/src/CancelAlarm.c ****  * Copyright 2014, ACSE & CADIEEL
+   3:Modules/OS/OSAL/src/CancelAlarm.c ****  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+   4:Modules/OS/OSAL/src/CancelAlarm.c ****  *      CADIEEL: http://www.cadieel.org.ar
+   5:Modules/OS/OSAL/src/CancelAlarm.c ****  *
+   6:Modules/OS/OSAL/src/CancelAlarm.c ****  * This file is part of CIAA Firmware.
+   7:Modules/OS/OSAL/src/CancelAlarm.c ****  *
+   8:Modules/OS/OSAL/src/CancelAlarm.c ****  * Redistribution and use in source and binary forms, with or without
+   9:Modules/OS/OSAL/src/CancelAlarm.c ****  * modification, are permitted provided that the following conditions are met:
+  10:Modules/OS/OSAL/src/CancelAlarm.c ****  *
+  11:Modules/OS/OSAL/src/CancelAlarm.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  12:Modules/OS/OSAL/src/CancelAlarm.c ****  *    this list of conditions and the following disclaimer.
+  13:Modules/OS/OSAL/src/CancelAlarm.c ****  *
+  14:Modules/OS/OSAL/src/CancelAlarm.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  15:Modules/OS/OSAL/src/CancelAlarm.c ****  *    this list of conditions and the following disclaimer in the documentation
+  16:Modules/OS/OSAL/src/CancelAlarm.c ****  *    and/or other materials provided with the distribution.
+  17:Modules/OS/OSAL/src/CancelAlarm.c ****  *
+  18:Modules/OS/OSAL/src/CancelAlarm.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  19:Modules/OS/OSAL/src/CancelAlarm.c ****  *    contributors may be used to endorse or promote products derived from this
+  20:Modules/OS/OSAL/src/CancelAlarm.c ****  *    software without specific prior written permission.
+  21:Modules/OS/OSAL/src/CancelAlarm.c ****  *
+  22:Modules/OS/OSAL/src/CancelAlarm.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Modules/OS/OSAL/src/CancelAlarm.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Modules/OS/OSAL/src/CancelAlarm.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  25:Modules/OS/OSAL/src/CancelAlarm.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  26:Modules/OS/OSAL/src/CancelAlarm.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  27:Modules/OS/OSAL/src/CancelAlarm.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  28:Modules/OS/OSAL/src/CancelAlarm.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  29:Modules/OS/OSAL/src/CancelAlarm.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  30:Modules/OS/OSAL/src/CancelAlarm.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  31:Modules/OS/OSAL/src/CancelAlarm.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  32:Modules/OS/OSAL/src/CancelAlarm.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  33:Modules/OS/OSAL/src/CancelAlarm.c ****  *
+  34:Modules/OS/OSAL/src/CancelAlarm.c ****  */
+  35:Modules/OS/OSAL/src/CancelAlarm.c **** 
+  36:Modules/OS/OSAL/src/CancelAlarm.c **** /** \brief FreeOSEK Os CancelAlarm Implementation File
+  37:Modules/OS/OSAL/src/CancelAlarm.c ****  **
+  38:Modules/OS/OSAL/src/CancelAlarm.c ****  ** This file implements the CancelAlarm API
+  39:Modules/OS/OSAL/src/CancelAlarm.c ****  **
+  40:Modules/OS/OSAL/src/CancelAlarm.c ****  ** \file CancelAlarm.c
+  41:Modules/OS/OSAL/src/CancelAlarm.c ****  **
+  42:Modules/OS/OSAL/src/CancelAlarm.c ****  **/
+  43:Modules/OS/OSAL/src/CancelAlarm.c **** 
+  44:Modules/OS/OSAL/src/CancelAlarm.c **** /** \addtogroup FreeOSEK
+  45:Modules/OS/OSAL/src/CancelAlarm.c ****  ** @{ */
+  46:Modules/OS/OSAL/src/CancelAlarm.c **** /** \addtogroup FreeOSEK_Os
+  47:Modules/OS/OSAL/src/CancelAlarm.c ****  ** @{ */
+  48:Modules/OS/OSAL/src/CancelAlarm.c **** /** \addtogroup FreeOSEK_Os_Global
+  49:Modules/OS/OSAL/src/CancelAlarm.c ****  ** @{ */
+  50:Modules/OS/OSAL/src/CancelAlarm.c **** 
+  51:Modules/OS/OSAL/src/CancelAlarm.c **** /*
+  52:Modules/OS/OSAL/src/CancelAlarm.c ****  * Initials     Name
+  53:Modules/OS/OSAL/src/CancelAlarm.c ****  * ---------------------------
+  54:Modules/OS/OSAL/src/CancelAlarm.c ****  * MaCe         Mariano Cerdeiro
+  55:Modules/OS/OSAL/src/CancelAlarm.c ****  * KLi          Kang Li
+  56:Modules/OS/OSAL/src/CancelAlarm.c ****  */
+  57:Modules/OS/OSAL/src/CancelAlarm.c **** 
+  58:Modules/OS/OSAL/src/CancelAlarm.c **** /*
+  59:Modules/OS/OSAL/src/CancelAlarm.c ****  * modification history (new versions first)
+  60:Modules/OS/OSAL/src/CancelAlarm.c ****  * -----------------------------------------------------------
+  61:Modules/OS/OSAL/src/CancelAlarm.c ****  * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
+  62:Modules/OS/OSAL/src/CancelAlarm.c ****  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+  63:Modules/OS/OSAL/src/CancelAlarm.c ****  * 20080713 v0.1.0 MaCe initial version
+  64:Modules/OS/OSAL/src/CancelAlarm.c ****  */
+  65:Modules/OS/OSAL/src/CancelAlarm.c **** 
+  66:Modules/OS/OSAL/src/CancelAlarm.c **** /*==================[inclusions]=============================================*/
+  67:Modules/OS/OSAL/src/CancelAlarm.c **** #include "Os_Internal.h"
+  68:Modules/OS/OSAL/src/CancelAlarm.c **** 
+  69:Modules/OS/OSAL/src/CancelAlarm.c **** /*==================[macros and definitions]=================================*/
+  70:Modules/OS/OSAL/src/CancelAlarm.c **** 
+  71:Modules/OS/OSAL/src/CancelAlarm.c **** /*==================[internal data declaration]==============================*/
+  72:Modules/OS/OSAL/src/CancelAlarm.c **** 
+  73:Modules/OS/OSAL/src/CancelAlarm.c **** /*==================[internal functions declaration]=========================*/
+  74:Modules/OS/OSAL/src/CancelAlarm.c **** 
+  75:Modules/OS/OSAL/src/CancelAlarm.c **** /*==================[internal data definition]===============================*/
+  76:Modules/OS/OSAL/src/CancelAlarm.c **** 
+  77:Modules/OS/OSAL/src/CancelAlarm.c **** /*==================[external data definition]===============================*/
+  78:Modules/OS/OSAL/src/CancelAlarm.c **** 
+  79:Modules/OS/OSAL/src/CancelAlarm.c **** /*==================[internal functions definition]==========================*/
+  80:Modules/OS/OSAL/src/CancelAlarm.c **** 
+  81:Modules/OS/OSAL/src/CancelAlarm.c **** /*==================[external functions definition]==========================*/
+  82:Modules/OS/OSAL/src/CancelAlarm.c **** StatusType CancelAlarm
+  83:Modules/OS/OSAL/src/CancelAlarm.c **** (
+  84:Modules/OS/OSAL/src/CancelAlarm.c **** 	AlarmType AlarmID
+  85:Modules/OS/OSAL/src/CancelAlarm.c **** )
+  86:Modules/OS/OSAL/src/CancelAlarm.c **** {
+  29              		.loc 1 86 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 16
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 00B5     		push	{lr}
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 14, -4
+  36 0002 85B0     		sub	sp, sp, #20
+  37              		.cfi_def_cfa_offset 24
+  38 0004 0346     		mov	r3, r0
+  39 0006 8DF80730 		strb	r3, [sp, #7]
+  87:Modules/OS/OSAL/src/CancelAlarm.c **** 	/* \req OSEK_SYS_3.23 The system service StatusType
+  88:Modules/OS/OSAL/src/CancelAlarm.c **** 	 ** CancelAlarm ( AlarmType AlarmID ) shall be defined */
+  89:Modules/OS/OSAL/src/CancelAlarm.c **** 
+  90:Modules/OS/OSAL/src/CancelAlarm.c **** 	/* \req OSEK_SYS_3.23.2-1/2 Possible return values in Standard mode are
+  91:Modules/OS/OSAL/src/CancelAlarm.c **** 	 ** E_OK, E_OS_NOFUNC */
+  92:Modules/OS/OSAL/src/CancelAlarm.c **** 	StatusType ret = E_OK;
+  40              		.loc 1 92 13
+  41 000a 0023     		movs	r3, #0
+  42 000c 8DF80F30 		strb	r3, [sp, #15]
+  93:Modules/OS/OSAL/src/CancelAlarm.c **** 
+  94:Modules/OS/OSAL/src/CancelAlarm.c **** #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+  95:Modules/OS/OSAL/src/CancelAlarm.c **** 	/* check if alarm id is in the valid range */
+  96:Modules/OS/OSAL/src/CancelAlarm.c **** 	if(AlarmID >= ALARMS_COUNT)
+  43              		.loc 1 96 4
+  44 0010 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+  45 0014 012B     		cmp	r3, #1
+  46 0016 03D9     		bls	.L2
+  97:Modules/OS/OSAL/src/CancelAlarm.c **** 	{
+  98:Modules/OS/OSAL/src/CancelAlarm.c **** 		/* \req SEK_SYS_3.23.3: Extra possible return values in Extended mode ar
+  99:Modules/OS/OSAL/src/CancelAlarm.c **** 		 **  E_OS_ID */
+ 100:Modules/OS/OSAL/src/CancelAlarm.c **** 		ret = E_OS_ID;
+  47              		.loc 1 100 7
+  48 0018 0323     		movs	r3, #3
+  49 001a 8DF80F30 		strb	r3, [sp, #15]
+  50 001e 18E0     		b	.L3
+  51              	.L2:
+ 101:Modules/OS/OSAL/src/CancelAlarm.c **** 	}
+ 102:Modules/OS/OSAL/src/CancelAlarm.c **** 	else
+ 103:Modules/OS/OSAL/src/CancelAlarm.c **** #endif
+ 104:Modules/OS/OSAL/src/CancelAlarm.c **** 	if(AlarmsVar[AlarmID].AlarmState == 0)
+  52              		.loc 1 104 23
+  53 0020 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+  54 0024 1B49     		ldr	r1, .L7
+  55 0026 1346     		mov	r3, r2
+  56 0028 5B00     		lsls	r3, r3, #1
+  57 002a 1344     		add	r3, r3, r2
+  58 002c 9B00     		lsls	r3, r3, #2
+  59 002e 0B44     		add	r3, r3, r1
+  60 0030 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  61              		.loc 1 104 4
+  62 0032 002B     		cmp	r3, #0
+  63 0034 03D1     		bne	.L4
+ 105:Modules/OS/OSAL/src/CancelAlarm.c **** 	{
+ 106:Modules/OS/OSAL/src/CancelAlarm.c **** 		/* \req OSEK_SYS_3.23.2-2/2 Possible return values in Standard mode are
+ 107:Modules/OS/OSAL/src/CancelAlarm.c **** 		 ** E_OK, E_OS_NOFUNC */
+ 108:Modules/OS/OSAL/src/CancelAlarm.c **** 		ret = E_OS_NOFUNC;
+  64              		.loc 1 108 7
+  65 0036 0523     		movs	r3, #5
+  66 0038 8DF80F30 		strb	r3, [sp, #15]
+  67 003c 09E0     		b	.L3
+  68              	.L4:
+ 109:Modules/OS/OSAL/src/CancelAlarm.c **** 	}
+ 110:Modules/OS/OSAL/src/CancelAlarm.c **** 	else
+ 111:Modules/OS/OSAL/src/CancelAlarm.c **** 	{
+ 112:Modules/OS/OSAL/src/CancelAlarm.c **** 		/* \req OSEK_SYS_3.23.1 The system service shall cancel the alarm AlarmID */
+ 113:Modules/OS/OSAL/src/CancelAlarm.c **** 		AlarmsVar[AlarmID].AlarmState = 0;
+  69              		.loc 1 113 21
+  70 003e 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+  71              		.loc 1 113 33
+  72 0042 1449     		ldr	r1, .L7
+  73 0044 1346     		mov	r3, r2
+  74 0046 5B00     		lsls	r3, r3, #1
+  75 0048 1344     		add	r3, r3, r2
+  76 004a 9B00     		lsls	r3, r3, #2
+  77 004c 0B44     		add	r3, r3, r1
+  78 004e 0022     		movs	r2, #0
+  79 0050 1A70     		strb	r2, [r3]
+  80              	.L3:
+ 114:Modules/OS/OSAL/src/CancelAlarm.c **** 	}
+ 115:Modules/OS/OSAL/src/CancelAlarm.c **** 
+ 116:Modules/OS/OSAL/src/CancelAlarm.c **** #if (HOOK_ERRORHOOK == OSEK_ENABLE)
+ 117:Modules/OS/OSAL/src/CancelAlarm.c **** 	/* \req OSEK_ERR_1.3-15/xx The ErrorHook hook routine shall be called if a
+ 118:Modules/OS/OSAL/src/CancelAlarm.c **** 	 ** system service returns a StatusType value not equal to E_OK.*/
+ 119:Modules/OS/OSAL/src/CancelAlarm.c **** 	/* \req OSEK_ERR_1.3.1-15/xx The hook routine ErrorHook is not called if a
+ 120:Modules/OS/OSAL/src/CancelAlarm.c **** 	 ** system service is called from the ErrorHook itself. */
+ 121:Modules/OS/OSAL/src/CancelAlarm.c ****    if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
+  81              		.loc 1 121 7
+  82 0052 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+  83 0056 002B     		cmp	r3, #0
+  84 0058 16D0     		beq	.L5
+  85              		.loc 1 121 46 discriminator 1
+  86 005a 0F4B     		ldr	r3, .L7+4
+  87 005c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  88              		.loc 1 121 25 discriminator 1
+  89 005e 012B     		cmp	r3, #1
+  90 0060 12D0     		beq	.L5
+ 122:Modules/OS/OSAL/src/CancelAlarm.c **** 	{
+ 123:Modules/OS/OSAL/src/CancelAlarm.c **** 		SetError_Api(OSServiceId_CancelAlarm);
+  91              		.loc 1 123 3
+  92 0062 0E4B     		ldr	r3, .L7+8
+  93 0064 1722     		movs	r2, #23
+  94 0066 1A60     		str	r2, [r3]
+ 124:Modules/OS/OSAL/src/CancelAlarm.c **** 		SetError_Param1(AlarmID);
+  95              		.loc 1 124 3
+  96 0068 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+  97 006c 0C4A     		ldr	r2, .L7+12
+  98 006e 1360     		str	r3, [r2]
+ 125:Modules/OS/OSAL/src/CancelAlarm.c **** 		SetError_Ret(ret);
+  99              		.loc 1 125 3
+ 100 0070 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 101 0074 0B4A     		ldr	r2, .L7+16
+ 102 0076 1360     		str	r3, [r2]
+ 126:Modules/OS/OSAL/src/CancelAlarm.c **** 		SetError_Msg("CancelAlarm returns != than E_OK");
+ 127:Modules/OS/OSAL/src/CancelAlarm.c **** 		SetError_ErrorHook();
+ 103              		.loc 1 127 3
+ 104 0078 074B     		ldr	r3, .L7+4
+ 105 007a 0122     		movs	r2, #1
+ 106 007c 1A70     		strb	r2, [r3]
+ 107 007e FFF7FEFF 		bl	ErrorHook
+ 108 0082 054B     		ldr	r3, .L7+4
+ 109 0084 0022     		movs	r2, #0
+ 110 0086 1A70     		strb	r2, [r3]
+ 111              	.L5:
+ 128:Modules/OS/OSAL/src/CancelAlarm.c **** 	}
+ 129:Modules/OS/OSAL/src/CancelAlarm.c **** #endif
+ 130:Modules/OS/OSAL/src/CancelAlarm.c **** 
+ 131:Modules/OS/OSAL/src/CancelAlarm.c **** 	return ret;
+ 112              		.loc 1 131 9
+ 113 0088 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 132:Modules/OS/OSAL/src/CancelAlarm.c **** }
+ 114              		.loc 1 132 1
+ 115 008c 1846     		mov	r0, r3
+ 116 008e 05B0     		add	sp, sp, #20
+ 117              		.cfi_def_cfa_offset 4
+ 118              		@ sp needed
+ 119 0090 5DF804FB 		ldr	pc, [sp], #4
+ 120              	.L8:
+ 121              		.align	2
+ 122              	.L7:
+ 123 0094 00000000 		.word	AlarmsVar
+ 124 0098 00000000 		.word	ErrorHookRunning
+ 125 009c 00000000 		.word	Osek_ErrorApi
+ 126 00a0 00000000 		.word	Osek_ErrorParam1
+ 127 00a4 00000000 		.word	Osek_ErrorRet
+ 128              		.cfi_endproc
+ 129              	.LFE0:
+ 131              		.text
+ 132              	.Letext0:
+ 133              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 134              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 135              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Types.h"
+ 136              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Cfg.h"
+ 137              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+ 138              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+DEFINED SYMBOLS
+                            *ABS*:00000000 CancelAlarm.c
+C:\Users\AAA\AppData\Local\Temp\cc7FMuP7.s:19     .text.CancelAlarm:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cc7FMuP7.s:26     .text.CancelAlarm:00000000 CancelAlarm
+C:\Users\AAA\AppData\Local\Temp\cc7FMuP7.s:123    .text.CancelAlarm:00000094 $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+UNDEFINED SYMBOLS
+ErrorHook
+AlarmsVar
+ErrorHookRunning
+Osek_ErrorApi
+Osek_ErrorParam1
+Osek_ErrorRet

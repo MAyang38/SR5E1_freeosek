@@ -1,0 +1,581 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"ActivateTask.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.ActivateTask,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	ActivateTask
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	ActivateTask:
+  27              	.LFB0:
+  28              		.file 1 "Modules/OS/OSAL/src/ActivateTask.c"
+   1:Modules/OS/OSAL/src/ActivateTask.c **** /* Copyright 2008, 2009 Mariano Cerdeiro
+   2:Modules/OS/OSAL/src/ActivateTask.c ****  * Copyright 2014, ACSE & CADIEEL
+   3:Modules/OS/OSAL/src/ActivateTask.c ****  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+   4:Modules/OS/OSAL/src/ActivateTask.c ****  *      CADIEEL: http://www.cadieel.org.ar
+   5:Modules/OS/OSAL/src/ActivateTask.c ****  *
+   6:Modules/OS/OSAL/src/ActivateTask.c ****  * This file is part of CIAA Firmware.
+   7:Modules/OS/OSAL/src/ActivateTask.c ****  *
+   8:Modules/OS/OSAL/src/ActivateTask.c ****  * Redistribution and use in source and binary forms, with or without
+   9:Modules/OS/OSAL/src/ActivateTask.c ****  * modification, are permitted provided that the following conditions are met:
+  10:Modules/OS/OSAL/src/ActivateTask.c ****  *
+  11:Modules/OS/OSAL/src/ActivateTask.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  12:Modules/OS/OSAL/src/ActivateTask.c ****  *    this list of conditions and the following disclaimer.
+  13:Modules/OS/OSAL/src/ActivateTask.c ****  *
+  14:Modules/OS/OSAL/src/ActivateTask.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  15:Modules/OS/OSAL/src/ActivateTask.c ****  *    this list of conditions and the following disclaimer in the documentation
+  16:Modules/OS/OSAL/src/ActivateTask.c ****  *    and/or other materials provided with the distribution.
+  17:Modules/OS/OSAL/src/ActivateTask.c ****  *
+  18:Modules/OS/OSAL/src/ActivateTask.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  19:Modules/OS/OSAL/src/ActivateTask.c ****  *    contributors may be used to endorse or promote products derived from this
+  20:Modules/OS/OSAL/src/ActivateTask.c ****  *    software without specific prior written permission.
+  21:Modules/OS/OSAL/src/ActivateTask.c ****  *
+  22:Modules/OS/OSAL/src/ActivateTask.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Modules/OS/OSAL/src/ActivateTask.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Modules/OS/OSAL/src/ActivateTask.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  25:Modules/OS/OSAL/src/ActivateTask.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  26:Modules/OS/OSAL/src/ActivateTask.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  27:Modules/OS/OSAL/src/ActivateTask.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  28:Modules/OS/OSAL/src/ActivateTask.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  29:Modules/OS/OSAL/src/ActivateTask.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  30:Modules/OS/OSAL/src/ActivateTask.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  31:Modules/OS/OSAL/src/ActivateTask.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  32:Modules/OS/OSAL/src/ActivateTask.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  33:Modules/OS/OSAL/src/ActivateTask.c ****  *
+  34:Modules/OS/OSAL/src/ActivateTask.c ****  */
+  35:Modules/OS/OSAL/src/ActivateTask.c **** 
+  36:Modules/OS/OSAL/src/ActivateTask.c **** /** \brief FreeOSEK Os ActivateTask Implementation File
+  37:Modules/OS/OSAL/src/ActivateTask.c ****  **
+  38:Modules/OS/OSAL/src/ActivateTask.c ****  ** This file implements the ActiveTask API
+  39:Modules/OS/OSAL/src/ActivateTask.c ****  **
+  40:Modules/OS/OSAL/src/ActivateTask.c ****  ** \file ActivateTask.c
+  41:Modules/OS/OSAL/src/ActivateTask.c ****  **
+  42:Modules/OS/OSAL/src/ActivateTask.c ****  **/
+  43:Modules/OS/OSAL/src/ActivateTask.c **** 
+  44:Modules/OS/OSAL/src/ActivateTask.c **** /** \addtogroup FreeOSEK
+  45:Modules/OS/OSAL/src/ActivateTask.c ****  ** @{ */
+  46:Modules/OS/OSAL/src/ActivateTask.c **** /** \addtogroup FreeOSEK_Os
+  47:Modules/OS/OSAL/src/ActivateTask.c ****  ** @{ */
+  48:Modules/OS/OSAL/src/ActivateTask.c **** /** \addtogroup FreeOSEK_Os_Global
+  49:Modules/OS/OSAL/src/ActivateTask.c ****  ** @{ */
+  50:Modules/OS/OSAL/src/ActivateTask.c **** 
+  51:Modules/OS/OSAL/src/ActivateTask.c **** /*
+  52:Modules/OS/OSAL/src/ActivateTask.c ****  * Initials     Name
+  53:Modules/OS/OSAL/src/ActivateTask.c ****  * ---------------------------
+  54:Modules/OS/OSAL/src/ActivateTask.c ****  * MaCe         Mariano Cerdeiro
+  55:Modules/OS/OSAL/src/ActivateTask.c ****  * KLi          Kang Li
+  56:Modules/OS/OSAL/src/ActivateTask.c ****  */
+  57:Modules/OS/OSAL/src/ActivateTask.c **** 
+  58:Modules/OS/OSAL/src/ActivateTask.c **** /*
+  59:Modules/OS/OSAL/src/ActivateTask.c ****  * modification history (new versions first)
+  60:Modules/OS/OSAL/src/ActivateTask.c ****  * -----------------------------------------------------------
+  61:Modules/OS/OSAL/src/ActivateTask.c ****  * 20090330 v0.1.4 MaCe add support to NON_PREEMPTIVE systems
+  62:Modules/OS/OSAL/src/ActivateTask.c ****  * 20090330 v0.1.3 MaCe separate ifs that may be interpreted in a wrong order
+  63:Modules/OS/OSAL/src/ActivateTask.c ****  * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
+  64:Modules/OS/OSAL/src/ActivateTask.c ****  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+  65:Modules/OS/OSAL/src/ActivateTask.c ****  * 20080713 v0.1.0 MaCe initial version
+  66:Modules/OS/OSAL/src/ActivateTask.c ****  */
+  67:Modules/OS/OSAL/src/ActivateTask.c **** 
+  68:Modules/OS/OSAL/src/ActivateTask.c **** /*==================[inclusions]=============================================*/
+  69:Modules/OS/OSAL/src/ActivateTask.c **** #include "Os_Internal.h"
+  70:Modules/OS/OSAL/src/ActivateTask.c **** 
+  71:Modules/OS/OSAL/src/ActivateTask.c **** /*==================[macros and definitions]=================================*/
+  72:Modules/OS/OSAL/src/ActivateTask.c **** 
+  73:Modules/OS/OSAL/src/ActivateTask.c **** /*==================[internal data declaration]==============================*/
+  74:Modules/OS/OSAL/src/ActivateTask.c **** 
+  75:Modules/OS/OSAL/src/ActivateTask.c **** /*==================[internal functions declaration]=========================*/
+  76:Modules/OS/OSAL/src/ActivateTask.c **** 
+  77:Modules/OS/OSAL/src/ActivateTask.c **** /*==================[internal data definition]===============================*/
+  78:Modules/OS/OSAL/src/ActivateTask.c **** 
+  79:Modules/OS/OSAL/src/ActivateTask.c **** /*==================[external data definition]===============================*/
+  80:Modules/OS/OSAL/src/ActivateTask.c **** 
+  81:Modules/OS/OSAL/src/ActivateTask.c **** /*==================[internal functions definition]==========================*/
+  82:Modules/OS/OSAL/src/ActivateTask.c **** 
+  83:Modules/OS/OSAL/src/ActivateTask.c **** /*==================[external functions definition]==========================*/
+  84:Modules/OS/OSAL/src/ActivateTask.c ****    StatusType ActivateTask
+  85:Modules/OS/OSAL/src/ActivateTask.c **** (
+  86:Modules/OS/OSAL/src/ActivateTask.c ****  TaskType TaskID
+  87:Modules/OS/OSAL/src/ActivateTask.c ****  )
+  88:Modules/OS/OSAL/src/ActivateTask.c **** {
+  29              		.loc 1 88 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 16
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 00B5     		push	{lr}
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 14, -4
+  36 0002 85B0     		sub	sp, sp, #20
+  37              		.cfi_def_cfa_offset 24
+  38 0004 0346     		mov	r3, r0
+  39 0006 8DF80730 		strb	r3, [sp, #7]
+  89:Modules/OS/OSAL/src/ActivateTask.c ****    /* \req OSEK_SYS_3.1 The system service StatusType
+  90:Modules/OS/OSAL/src/ActivateTask.c ****     * ActivateTask ( TaskType TaskID ) shall be defined. */
+  91:Modules/OS/OSAL/src/ActivateTask.c **** 
+  92:Modules/OS/OSAL/src/ActivateTask.c ****    /* \req OSEK_SYS_3.1.3 The service may be called from interrupt category 2
+  93:Modules/OS/OSAL/src/ActivateTask.c ****     * level and from task level. */
+  94:Modules/OS/OSAL/src/ActivateTask.c ****    /* nothing to do for this req. */
+  95:Modules/OS/OSAL/src/ActivateTask.c **** 
+  96:Modules/OS/OSAL/src/ActivateTask.c ****    /* \req OSEK_SYS_3.1.7-1/3 Possible return values in Standard mode are E_OK or E_OS_LIMIT */
+  97:Modules/OS/OSAL/src/ActivateTask.c ****    StatusType ret = E_OK;
+  40              		.loc 1 97 15
+  41 000a 0023     		movs	r3, #0
+  42 000c 8DF80F30 		strb	r3, [sp, #15]
+  98:Modules/OS/OSAL/src/ActivateTask.c **** 
+  99:Modules/OS/OSAL/src/ActivateTask.c **** #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+ 100:Modules/OS/OSAL/src/ActivateTask.c ****    /* check if the task id is valid */
+ 101:Modules/OS/OSAL/src/ActivateTask.c ****    if ( TaskID >= TASKS_COUNT )
+  43              		.loc 1 101 7
+  44 0010 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+  45 0014 032B     		cmp	r3, #3
+  46 0016 03D9     		bls	.L2
+ 102:Modules/OS/OSAL/src/ActivateTask.c ****    {
+ 103:Modules/OS/OSAL/src/ActivateTask.c ****       /* if an invalid task id return E_OS_ID */
+ 104:Modules/OS/OSAL/src/ActivateTask.c ****       /* \req OSEK_SYS_3.1.5-1/3 If other than E_OK is returned the activation
+ 105:Modules/OS/OSAL/src/ActivateTask.c ****        * is ignored */
+ 106:Modules/OS/OSAL/src/ActivateTask.c ****       /* \req OSEK_SYS_3.1.8 Added possible return values in Extended mode is
+ 107:Modules/OS/OSAL/src/ActivateTask.c ****        * E_OS_ID */
+ 108:Modules/OS/OSAL/src/ActivateTask.c ****       ret = E_OS_ID;
+  47              		.loc 1 108 11
+  48 0018 0323     		movs	r3, #3
+  49 001a 8DF80F30 		strb	r3, [sp, #15]
+  50 001e C3E0     		b	.L3
+  51              	.L2:
+ 109:Modules/OS/OSAL/src/ActivateTask.c ****    }
+ 110:Modules/OS/OSAL/src/ActivateTask.c ****    else
+ 111:Modules/OS/OSAL/src/ActivateTask.c **** #endif
+ 112:Modules/OS/OSAL/src/ActivateTask.c ****    {
+ 113:Modules/OS/OSAL/src/ActivateTask.c ****       IntSecure_Start();
+  52              		.loc 1 113 7
+  53 0020 724B     		ldr	r3, .L11
+  54 0022 93F90030 		ldrsb	r3, [r3]
+  55 0026 DBB2     		uxtb	r3, r3
+  56 0028 0133     		adds	r3, r3, #1
+  57 002a DBB2     		uxtb	r3, r3
+  58 002c 5AB2     		sxtb	r2, r3
+  59 002e 6F4B     		ldr	r3, .L11
+  60 0030 1A70     		strb	r2, [r3]
+  61              		.syntax unified
+  62              	@ 113 "Modules/OS/OSAL/src/ActivateTask.c" 1
+  63 0032 72B6     		cpsid i
+  64              	@ 0 "" 2
+ 114:Modules/OS/OSAL/src/ActivateTask.c **** 
+ 115:Modules/OS/OSAL/src/ActivateTask.c ****       /* check if the task is susspended */
+ 116:Modules/OS/OSAL/src/ActivateTask.c ****       /* \req OSEK_SYS_3.1.1-1/2 The task TaskID shall be transferred from the
+ 117:Modules/OS/OSAL/src/ActivateTask.c ****        * suspended state into the ready state. */
+ 118:Modules/OS/OSAL/src/ActivateTask.c ****       if ( TasksVar[TaskID].Flags.State == TASK_ST_SUSPENDED )
+  65              		.loc 1 118 34
+  66              		.thumb
+  67              		.syntax unified
+  68 0034 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+  69 0038 6D49     		ldr	r1, .L11+4
+  70 003a 1346     		mov	r3, r2
+  71 003c 9B00     		lsls	r3, r3, #2
+  72 003e 1344     		add	r3, r3, r2
+  73 0040 9B00     		lsls	r3, r3, #2
+  74 0042 0B44     		add	r3, r3, r1
+  75 0044 1B79     		ldrb	r3, [r3, #4]
+  76 0046 C3F38103 		ubfx	r3, r3, #2, #2
+  77 004a DBB2     		uxtb	r3, r3
+  78              		.loc 1 118 10
+  79 004c 002B     		cmp	r3, #0
+  80 004e 32D1     		bne	.L4
+ 119:Modules/OS/OSAL/src/ActivateTask.c ****       {
+ 120:Modules/OS/OSAL/src/ActivateTask.c ****          /* increment activation counter */
+ 121:Modules/OS/OSAL/src/ActivateTask.c ****          TasksVar[TaskID].Activations++;
+  81              		.loc 1 121 26
+  82 0050 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+  83 0054 6649     		ldr	r1, .L11+4
+  84 0056 1346     		mov	r3, r2
+  85 0058 9B00     		lsls	r3, r3, #2
+  86 005a 1344     		add	r3, r3, r2
+  87 005c 9B00     		lsls	r3, r3, #2
+  88 005e 0B44     		add	r3, r3, r1
+  89 0060 0133     		adds	r3, r3, #1
+  90 0062 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  91              		.loc 1 121 38
+  92 0064 0133     		adds	r3, r3, #1
+  93 0066 D8B2     		uxtb	r0, r3
+  94 0068 6149     		ldr	r1, .L11+4
+  95 006a 1346     		mov	r3, r2
+  96 006c 9B00     		lsls	r3, r3, #2
+  97 006e 1344     		add	r3, r3, r2
+  98 0070 9B00     		lsls	r3, r3, #2
+  99 0072 0B44     		add	r3, r3, r1
+ 100 0074 0133     		adds	r3, r3, #1
+ 101 0076 0246     		mov	r2, r0
+ 102 0078 1A70     		strb	r2, [r3]
+ 122:Modules/OS/OSAL/src/ActivateTask.c ****          /* if the task was suspended set it to ready */
+ 123:Modules/OS/OSAL/src/ActivateTask.c ****          /* OSEK_SYS_3.1.1-2/2 The task TaskID shall be transferred from the
+ 124:Modules/OS/OSAL/src/ActivateTask.c ****           * suspended state into the ready state.*/
+ 125:Modules/OS/OSAL/src/ActivateTask.c ****          TasksVar[TaskID].Flags.State = TASK_ST_READY;
+ 103              		.loc 1 125 32
+ 104 007a 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 105              		.loc 1 125 39
+ 106 007e 5C49     		ldr	r1, .L11+4
+ 107 0080 1346     		mov	r3, r2
+ 108 0082 9B00     		lsls	r3, r3, #2
+ 109 0084 1344     		add	r3, r3, r2
+ 110 0086 9B00     		lsls	r3, r3, #2
+ 111 0088 CA18     		adds	r2, r1, r3
+ 112 008a 1379     		ldrb	r3, [r2, #4]
+ 113 008c 0121     		movs	r1, #1
+ 114 008e 61F38303 		bfi	r3, r1, #2, #2
+ 115 0092 1371     		strb	r3, [r2, #4]
+ 126:Modules/OS/OSAL/src/ActivateTask.c ****          /* clear all events */
+ 127:Modules/OS/OSAL/src/ActivateTask.c ****          /* \req OSEK_SYS_3.1.6 When an extended task is transferred from
+ 128:Modules/OS/OSAL/src/ActivateTask.c ****           * suspended state into ready state all its events are cleared. */
+ 129:Modules/OS/OSAL/src/ActivateTask.c ****          TasksVar[TaskID].Events = 0;
+ 116              		.loc 1 129 26
+ 117 0094 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 118              		.loc 1 129 34
+ 119 0098 5549     		ldr	r1, .L11+4
+ 120 009a 1346     		mov	r3, r2
+ 121 009c 9B00     		lsls	r3, r3, #2
+ 122 009e 1344     		add	r3, r3, r2
+ 123 00a0 9B00     		lsls	r3, r3, #2
+ 124 00a2 0B44     		add	r3, r3, r1
+ 125 00a4 0833     		adds	r3, r3, #8
+ 126 00a6 0022     		movs	r2, #0
+ 127 00a8 1A60     		str	r2, [r3]
+ 130:Modules/OS/OSAL/src/ActivateTask.c ****          /* add the task to the ready list */
+ 131:Modules/OS/OSAL/src/ActivateTask.c ****          AddReady(TaskID);
+ 128              		.loc 1 131 10
+ 129 00aa 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 130 00ae 1846     		mov	r0, r3
+ 131 00b0 FFF7FEFF 		bl	AddReady
+ 132 00b4 46E0     		b	.L5
+ 133              	.L4:
+ 132:Modules/OS/OSAL/src/ActivateTask.c ****       }
+ 133:Modules/OS/OSAL/src/ActivateTask.c ****       else
+ 134:Modules/OS/OSAL/src/ActivateTask.c ****       {
+ 135:Modules/OS/OSAL/src/ActivateTask.c ****          /* task is not suspended */
+ 136:Modules/OS/OSAL/src/ActivateTask.c **** 
+ 137:Modules/OS/OSAL/src/ActivateTask.c ****          /* check if the task is a extended task */
+ 138:Modules/OS/OSAL/src/ActivateTask.c ****          if ( TasksConst[TaskID].ConstFlags.Extended )
+ 134              		.loc 1 138 44
+ 135 00b6 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 136 00ba 4E49     		ldr	r1, .L11+8
+ 137 00bc 1346     		mov	r3, r2
+ 138 00be DB00     		lsls	r3, r3, #3
+ 139 00c0 9B1A     		subs	r3, r3, r2
+ 140 00c2 9B00     		lsls	r3, r3, #2
+ 141 00c4 0B44     		add	r3, r3, r1
+ 142 00c6 1033     		adds	r3, r3, #16
+ 143 00c8 1B78     		ldrb	r3, [r3]
+ 144 00ca C3F30003 		ubfx	r3, r3, #0, #1
+ 145 00ce DBB2     		uxtb	r3, r3
+ 146              		.loc 1 138 13
+ 147 00d0 002B     		cmp	r3, #0
+ 148 00d2 03D0     		beq	.L6
+ 139:Modules/OS/OSAL/src/ActivateTask.c ****          {
+ 140:Modules/OS/OSAL/src/ActivateTask.c ****             /* return E_OS_LIMIT */
+ 141:Modules/OS/OSAL/src/ActivateTask.c ****             /* \req OSEK_SYS_3.1.5-2/3 If other than E_OK is returned the activation
+ 142:Modules/OS/OSAL/src/ActivateTask.c ****              * is ignored */
+ 143:Modules/OS/OSAL/src/ActivateTask.c ****             /* \req OSEK_SYS_3.1.7-2/3 Possible return values in Standard mode are
+ 144:Modules/OS/OSAL/src/ActivateTask.c ****              * E_OK or E_OS_LIMIT */
+ 145:Modules/OS/OSAL/src/ActivateTask.c ****             ret = E_OS_LIMIT;
+ 149              		.loc 1 145 17
+ 150 00d4 0423     		movs	r3, #4
+ 151 00d6 8DF80F30 		strb	r3, [sp, #15]
+ 152 00da 33E0     		b	.L5
+ 153              	.L6:
+ 146:Modules/OS/OSAL/src/ActivateTask.c ****          }
+ 147:Modules/OS/OSAL/src/ActivateTask.c ****          else
+ 148:Modules/OS/OSAL/src/ActivateTask.c ****          {
+ 149:Modules/OS/OSAL/src/ActivateTask.c ****             /* check if more activations are allowed */
+ 150:Modules/OS/OSAL/src/ActivateTask.c ****             if ( TasksVar[TaskID].Activations < TasksConst[TaskID].MaxActivations )
+ 154              		.loc 1 150 34
+ 155 00dc 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 156 00e0 4349     		ldr	r1, .L11+4
+ 157 00e2 1346     		mov	r3, r2
+ 158 00e4 9B00     		lsls	r3, r3, #2
+ 159 00e6 1344     		add	r3, r3, r2
+ 160 00e8 9B00     		lsls	r3, r3, #2
+ 161 00ea 0B44     		add	r3, r3, r1
+ 162 00ec 0133     		adds	r3, r3, #1
+ 163 00ee 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 164              		.loc 1 150 47
+ 165 00f0 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 166              		.loc 1 150 67
+ 167 00f4 3F48     		ldr	r0, .L11+8
+ 168 00f6 1346     		mov	r3, r2
+ 169 00f8 DB00     		lsls	r3, r3, #3
+ 170 00fa 9B1A     		subs	r3, r3, r2
+ 171 00fc 9B00     		lsls	r3, r3, #2
+ 172 00fe 0344     		add	r3, r3, r0
+ 173 0100 0F33     		adds	r3, r3, #15
+ 174 0102 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 175              		.loc 1 150 16
+ 176 0104 9942     		cmp	r1, r3
+ 177 0106 1AD2     		bcs	.L7
+ 151:Modules/OS/OSAL/src/ActivateTask.c ****             {
+ 152:Modules/OS/OSAL/src/ActivateTask.c ****                /* increment activation counter */
+ 153:Modules/OS/OSAL/src/ActivateTask.c ****                TasksVar[TaskID].Activations++;
+ 178              		.loc 1 153 32
+ 179 0108 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 180 010c 3849     		ldr	r1, .L11+4
+ 181 010e 1346     		mov	r3, r2
+ 182 0110 9B00     		lsls	r3, r3, #2
+ 183 0112 1344     		add	r3, r3, r2
+ 184 0114 9B00     		lsls	r3, r3, #2
+ 185 0116 0B44     		add	r3, r3, r1
+ 186 0118 0133     		adds	r3, r3, #1
+ 187 011a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 188              		.loc 1 153 44
+ 189 011c 0133     		adds	r3, r3, #1
+ 190 011e D8B2     		uxtb	r0, r3
+ 191 0120 3349     		ldr	r1, .L11+4
+ 192 0122 1346     		mov	r3, r2
+ 193 0124 9B00     		lsls	r3, r3, #2
+ 194 0126 1344     		add	r3, r3, r2
+ 195 0128 9B00     		lsls	r3, r3, #2
+ 196 012a 0B44     		add	r3, r3, r1
+ 197 012c 0133     		adds	r3, r3, #1
+ 198 012e 0246     		mov	r2, r0
+ 199 0130 1A70     		strb	r2, [r3]
+ 154:Modules/OS/OSAL/src/ActivateTask.c ****                /* add the task to the ready list */
+ 155:Modules/OS/OSAL/src/ActivateTask.c ****                AddReady(TaskID);
+ 200              		.loc 1 155 16
+ 201 0132 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 202 0136 1846     		mov	r0, r3
+ 203 0138 FFF7FEFF 		bl	AddReady
+ 204 013c 02E0     		b	.L5
+ 205              	.L7:
+ 156:Modules/OS/OSAL/src/ActivateTask.c ****             }
+ 157:Modules/OS/OSAL/src/ActivateTask.c ****             else
+ 158:Modules/OS/OSAL/src/ActivateTask.c ****             {
+ 159:Modules/OS/OSAL/src/ActivateTask.c ****                /* maximal activation reached, return E_OS_LIMIT */
+ 160:Modules/OS/OSAL/src/ActivateTask.c ****                /* \req OSEK_SYS_3.1.5-3/3 If other than E_OK is returned the
+ 161:Modules/OS/OSAL/src/ActivateTask.c ****                 * activation is ignored */
+ 162:Modules/OS/OSAL/src/ActivateTask.c ****                /* \req OSEK_SYS_3.1.7-3/3 Possible return values in Standard mode are
+ 163:Modules/OS/OSAL/src/ActivateTask.c ****                 * E_OK or E_OS_LIMIT */
+ 164:Modules/OS/OSAL/src/ActivateTask.c ****                ret = E_OS_LIMIT;
+ 206              		.loc 1 164 20
+ 207 013e 0423     		movs	r3, #4
+ 208 0140 8DF80F30 		strb	r3, [sp, #15]
+ 209              	.L5:
+ 165:Modules/OS/OSAL/src/ActivateTask.c ****             }
+ 166:Modules/OS/OSAL/src/ActivateTask.c ****          }
+ 167:Modules/OS/OSAL/src/ActivateTask.c ****       }
+ 168:Modules/OS/OSAL/src/ActivateTask.c **** 
+ 169:Modules/OS/OSAL/src/ActivateTask.c ****       IntSecure_End();
+ 210              		.loc 1 169 7
+ 211 0144 294B     		ldr	r3, .L11
+ 212 0146 93F90030 		ldrsb	r3, [r3]
+ 213 014a DBB2     		uxtb	r3, r3
+ 214 014c 013B     		subs	r3, r3, #1
+ 215 014e DBB2     		uxtb	r3, r3
+ 216 0150 5AB2     		sxtb	r2, r3
+ 217 0152 264B     		ldr	r3, .L11
+ 218 0154 1A70     		strb	r2, [r3]
+ 219 0156 254B     		ldr	r3, .L11
+ 220 0158 93F90030 		ldrsb	r3, [r3]
+ 221 015c 002B     		cmp	r3, #0
+ 222 015e 03DC     		bgt	.L8
+ 223              		.loc 1 169 7 is_stmt 0 discriminator 1
+ 224 0160 224B     		ldr	r3, .L11
+ 225 0162 0022     		movs	r2, #0
+ 226 0164 1A70     		strb	r2, [r3]
+ 227              		.syntax unified
+ 228              	@ 169 "Modules/OS/OSAL/src/ActivateTask.c" 1
+ 229 0166 62B6     		cpsie i
+ 230              	@ 0 "" 2
+ 231              		.thumb
+ 232              		.syntax unified
+ 233              	.L8:
+ 170:Modules/OS/OSAL/src/ActivateTask.c **** 
+ 171:Modules/OS/OSAL/src/ActivateTask.c **** #if (NON_PREEMPTIVE == OSEK_DISABLE)
+ 172:Modules/OS/OSAL/src/ActivateTask.c ****       /* check if called from a Task Context */
+ 173:Modules/OS/OSAL/src/ActivateTask.c ****       if ( GetCallingContext() ==  CONTEXT_TASK )
+ 234              		.loc 1 173 32 is_stmt 1
+ 235 0168 234B     		ldr	r3, .L11+12
+ 236 016a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 237              		.loc 1 173 10
+ 238 016c 012B     		cmp	r3, #1
+ 239 016e 1BD1     		bne	.L3
+ 174:Modules/OS/OSAL/src/ActivateTask.c ****       {
+ 175:Modules/OS/OSAL/src/ActivateTask.c ****          if ( ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) &&
+ 240              		.loc 1 175 56
+ 241 0170 224B     		ldr	r3, .L11+16
+ 242 0172 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 243 0174 1946     		mov	r1, r3
+ 244 0176 1F4A     		ldr	r2, .L11+8
+ 245 0178 0B46     		mov	r3, r1
+ 246 017a DB00     		lsls	r3, r3, #3
+ 247 017c 5B1A     		subs	r3, r3, r1
+ 248 017e 9B00     		lsls	r3, r3, #2
+ 249 0180 1344     		add	r3, r3, r2
+ 250 0182 1033     		adds	r3, r3, #16
+ 251 0184 1B78     		ldrb	r3, [r3]
+ 252 0186 C3F34003 		ubfx	r3, r3, #1, #1
+ 253 018a DBB2     		uxtb	r3, r3
+ 254              		.loc 1 175 13
+ 255 018c 002B     		cmp	r3, #0
+ 256 018e 0BD0     		beq	.L3
+ 257              		.loc 1 175 69 discriminator 1
+ 258 0190 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 259 0194 002B     		cmp	r3, #0
+ 260 0196 07D1     		bne	.L3
+ 176:Modules/OS/OSAL/src/ActivateTask.c ****                ( ret == E_OK )	)
+ 177:Modules/OS/OSAL/src/ActivateTask.c ****          {
+ 178:Modules/OS/OSAL/src/ActivateTask.c ****             /* This is needed to avoid Schedule to perform standard checks
+ 179:Modules/OS/OSAL/src/ActivateTask.c ****              * which are done when normally called from the application
+ 180:Modules/OS/OSAL/src/ActivateTask.c ****              * the actual context has to be task so is not need to store it */
+ 181:Modules/OS/OSAL/src/ActivateTask.c ****             SetActualContext(CONTEXT_SYS);
+ 261              		.loc 1 181 13
+ 262 0198 174B     		ldr	r3, .L11+12
+ 263 019a 0422     		movs	r2, #4
+ 264 019c 1A70     		strb	r2, [r3]
+ 182:Modules/OS/OSAL/src/ActivateTask.c **** 
+ 183:Modules/OS/OSAL/src/ActivateTask.c ****             /* \req OSEK_SYS_3.1.4 Rescheduling shall take place only if called from a
+ 184:Modules/OS/OSAL/src/ActivateTask.c ****              * preemptable task. */
+ 185:Modules/OS/OSAL/src/ActivateTask.c ****             (void)Schedule();
+ 265              		.loc 1 185 19
+ 266 019e FFF7FEFF 		bl	Schedule
+ 186:Modules/OS/OSAL/src/ActivateTask.c **** 
+ 187:Modules/OS/OSAL/src/ActivateTask.c ****             /* restore the old context */
+ 188:Modules/OS/OSAL/src/ActivateTask.c ****             SetActualContext(CONTEXT_TASK);
+ 267              		.loc 1 188 13
+ 268 01a2 154B     		ldr	r3, .L11+12
+ 269 01a4 0122     		movs	r2, #1
+ 270 01a6 1A70     		strb	r2, [r3]
+ 271              	.L3:
+ 189:Modules/OS/OSAL/src/ActivateTask.c ****          }
+ 190:Modules/OS/OSAL/src/ActivateTask.c ****       }
+ 191:Modules/OS/OSAL/src/ActivateTask.c **** #endif /* #if (NON_PREEMPTIVE == OSEK_DISABLE) */
+ 192:Modules/OS/OSAL/src/ActivateTask.c ****    }
+ 193:Modules/OS/OSAL/src/ActivateTask.c **** 
+ 194:Modules/OS/OSAL/src/ActivateTask.c **** 
+ 195:Modules/OS/OSAL/src/ActivateTask.c **** #if (HOOK_ERRORHOOK == OSEK_ENABLE)
+ 196:Modules/OS/OSAL/src/ActivateTask.c ****    /* \req OSEK_ERR_1.3-1/xx The ErrorHook hook routine shall be called if a
+ 197:Modules/OS/OSAL/src/ActivateTask.c ****     * system service returns a StatusType value not equal to E_OK.*/
+ 198:Modules/OS/OSAL/src/ActivateTask.c ****    /* \req OSEK_ERR_1.3.1-1/xx The hook routine ErrorHook is not called if a
+ 199:Modules/OS/OSAL/src/ActivateTask.c ****     * system service is called from the ErrorHook itself. */
+ 200:Modules/OS/OSAL/src/ActivateTask.c ****    if ( ( ret != E_OK ) && (ErrorHookRunning != 1U))
+ 272              		.loc 1 200 7
+ 273 01a8 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 274 01ac 002B     		cmp	r3, #0
+ 275 01ae 16D0     		beq	.L9
+ 276              		.loc 1 200 46 discriminator 1
+ 277 01b0 134B     		ldr	r3, .L11+20
+ 278 01b2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 279              		.loc 1 200 25 discriminator 1
+ 280 01b4 012B     		cmp	r3, #1
+ 281 01b6 12D0     		beq	.L9
+ 201:Modules/OS/OSAL/src/ActivateTask.c ****    {
+ 202:Modules/OS/OSAL/src/ActivateTask.c ****       SetError_Api(OSServiceId_ActivateTask);
+ 282              		.loc 1 202 7
+ 283 01b8 124B     		ldr	r3, .L11+24
+ 284 01ba 0122     		movs	r2, #1
+ 285 01bc 1A60     		str	r2, [r3]
+ 203:Modules/OS/OSAL/src/ActivateTask.c ****       SetError_Param1(TaskID);
+ 286              		.loc 1 203 7
+ 287 01be 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 288 01c2 114A     		ldr	r2, .L11+28
+ 289 01c4 1360     		str	r3, [r2]
+ 204:Modules/OS/OSAL/src/ActivateTask.c ****       SetError_Ret(ret);
+ 290              		.loc 1 204 7
+ 291 01c6 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 292 01ca 104A     		ldr	r2, .L11+32
+ 293 01cc 1360     		str	r3, [r2]
+ 205:Modules/OS/OSAL/src/ActivateTask.c ****       SetError_Msg("ActivateTask returns != than E_OK");
+ 206:Modules/OS/OSAL/src/ActivateTask.c ****       SetError_ErrorHook();
+ 294              		.loc 1 206 7
+ 295 01ce 0C4B     		ldr	r3, .L11+20
+ 296 01d0 0122     		movs	r2, #1
+ 297 01d2 1A70     		strb	r2, [r3]
+ 298 01d4 FFF7FEFF 		bl	ErrorHook
+ 299 01d8 094B     		ldr	r3, .L11+20
+ 300 01da 0022     		movs	r2, #0
+ 301 01dc 1A70     		strb	r2, [r3]
+ 302              	.L9:
+ 207:Modules/OS/OSAL/src/ActivateTask.c ****    }
+ 208:Modules/OS/OSAL/src/ActivateTask.c **** #endif
+ 209:Modules/OS/OSAL/src/ActivateTask.c **** 
+ 210:Modules/OS/OSAL/src/ActivateTask.c ****    return ret;
+ 303              		.loc 1 210 11
+ 304 01de 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 211:Modules/OS/OSAL/src/ActivateTask.c **** }
+ 305              		.loc 1 211 1
+ 306 01e2 1846     		mov	r0, r3
+ 307 01e4 05B0     		add	sp, sp, #20
+ 308              		.cfi_def_cfa_offset 4
+ 309              		@ sp needed
+ 310 01e6 5DF804FB 		ldr	pc, [sp], #4
+ 311              	.L12:
+ 312 01ea 00BF     		.align	2
+ 313              	.L11:
+ 314 01ec 00000000 		.word	SuspendAllInterrupts_Counter
+ 315 01f0 00000000 		.word	TasksVar
+ 316 01f4 00000000 		.word	TasksConst
+ 317 01f8 00000000 		.word	ActualContext
+ 318 01fc 00000000 		.word	RunningTask
+ 319 0200 00000000 		.word	ErrorHookRunning
+ 320 0204 00000000 		.word	Osek_ErrorApi
+ 321 0208 00000000 		.word	Osek_ErrorParam1
+ 322 020c 00000000 		.word	Osek_ErrorRet
+ 323              		.cfi_endproc
+ 324              	.LFE0:
+ 326              		.text
+ 327              	.Letext0:
+ 328              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 329              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 330              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Types.h"
+ 331              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Cfg.h"
+ 332              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 333              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+ 334              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 335              		.file 9 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os_intern
+DEFINED SYMBOLS
+                            *ABS*:00000000 ActivateTask.c
+C:\Users\AAA\AppData\Local\Temp\cc90OE87.s:19     .text.ActivateTask:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cc90OE87.s:26     .text.ActivateTask:00000000 ActivateTask
+C:\Users\AAA\AppData\Local\Temp\cc90OE87.s:314    .text.ActivateTask:000001ec $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+UNDEFINED SYMBOLS
+AddReady
+Schedule
+ErrorHook
+SuspendAllInterrupts_Counter
+TasksVar
+TasksConst
+ActualContext
+RunningTask
+ErrorHookRunning
+Osek_ErrorApi
+Osek_ErrorParam1
+Osek_ErrorRet

@@ -1,0 +1,15 @@
+# /****************************************************************************
+# *
+# * Copyright (c) 2021 STMicroelectronics - All Rights Reserved
+# *
+# * License terms: STMicroelectronics Proprietary in accordance with licensing
+# * terms SLA0089 at www.st.com.
+# * 
+# * THIS SOFTWARE IS DISTRIBUTED "AS IS," AND ALL WARRANTIES ARE DISCLAIMED, 
+# * INCLUDING MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+# *
+# * EVALUATION ONLY - NOT FOR USE IN PRODUCTION
+# *****************************************************************************/
+#!/usr/bin/sh
+export PATH=/usr/bin
+export PS1="[\u@\h] \w\$"

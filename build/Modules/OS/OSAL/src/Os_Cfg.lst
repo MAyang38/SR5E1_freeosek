@@ -1,0 +1,242 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"Os_Cfg.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	Osek_ErrorApi
+  19              		.section	.bss.Osek_ErrorApi,"aw",%nobits
+  20              		.align	2
+  23              	Osek_ErrorApi:
+  24 0000 00000000 		.space	4
+  25              		.global	Osek_ErrorParam1
+  26              		.section	.bss.Osek_ErrorParam1,"aw",%nobits
+  27              		.align	2
+  30              	Osek_ErrorParam1:
+  31 0000 00000000 		.space	4
+  32              		.global	Osek_ErrorParam2
+  33              		.section	.bss.Osek_ErrorParam2,"aw",%nobits
+  34              		.align	2
+  37              	Osek_ErrorParam2:
+  38 0000 00000000 		.space	4
+  39              		.global	Osek_ErrorParam3
+  40              		.section	.bss.Osek_ErrorParam3,"aw",%nobits
+  41              		.align	2
+  44              	Osek_ErrorParam3:
+  45 0000 00000000 		.space	4
+  46              		.global	Osek_ErrorRet
+  47              		.section	.bss.Osek_ErrorRet,"aw",%nobits
+  48              		.align	2
+  51              	Osek_ErrorRet:
+  52 0000 00000000 		.space	4
+  53              		.section	.rodata
+  54              		.align	2
+  55              	.LC0:
+  56 0000 6B65726E 		.ascii	"kernel panic\000"
+  56      656C2070 
+  56      616E6963 
+  56      00
+  57              		.section	.text.ErrorHook,"ax",%progbits
+  58              		.align	1
+  59              		.p2align 4,,15
+  60              		.global	ErrorHook
+  61              		.syntax unified
+  62              		.thumb
+  63              		.thumb_func
+  65              	ErrorHook:
+  66              	.LFB3:
+  67              		.file 1 "Modules/OS/OSAL/src/Os_Cfg.c"
+   1:Modules/OS/OSAL/src/Os_Cfg.c **** /********************************************************
+   2:Modules/OS/OSAL/src/Os_Cfg.c ****  * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
+   3:Modules/OS/OSAL/src/Os_Cfg.c ****  ********************************************************/
+   4:Modules/OS/OSAL/src/Os_Cfg.c **** 
+   5:Modules/OS/OSAL/src/Os_Cfg.c **** /* Copyright 2008, 2009 Mariano Cerdeiro
+   6:Modules/OS/OSAL/src/Os_Cfg.c ****  * Copyright 2014, ACSE & CADIEEL
+   7:Modules/OS/OSAL/src/Os_Cfg.c ****  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+   8:Modules/OS/OSAL/src/Os_Cfg.c ****  *      CADIEEL: http://www.cadieel.org.ar
+   9:Modules/OS/OSAL/src/Os_Cfg.c ****  *
+  10:Modules/OS/OSAL/src/Os_Cfg.c ****  * This file is part of CIAA Firmware.
+  11:Modules/OS/OSAL/src/Os_Cfg.c ****  *
+  12:Modules/OS/OSAL/src/Os_Cfg.c ****  * Redistribution and use in source and binary forms, with or without
+  13:Modules/OS/OSAL/src/Os_Cfg.c ****  * modification, are permitted provided that the following conditions are met:
+  14:Modules/OS/OSAL/src/Os_Cfg.c ****  *
+  15:Modules/OS/OSAL/src/Os_Cfg.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  16:Modules/OS/OSAL/src/Os_Cfg.c ****  *    this list of conditions and the following disclaimer.
+  17:Modules/OS/OSAL/src/Os_Cfg.c ****  *
+  18:Modules/OS/OSAL/src/Os_Cfg.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  19:Modules/OS/OSAL/src/Os_Cfg.c ****  *    this list of conditions and the following disclaimer in the documentation
+  20:Modules/OS/OSAL/src/Os_Cfg.c ****  *    and/or other materials provided with the distribution.
+  21:Modules/OS/OSAL/src/Os_Cfg.c ****  *
+  22:Modules/OS/OSAL/src/Os_Cfg.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  23:Modules/OS/OSAL/src/Os_Cfg.c ****  *    contributors may be used to endorse or promote products derived from this
+  24:Modules/OS/OSAL/src/Os_Cfg.c ****  *    software without specific prior written permission.
+  25:Modules/OS/OSAL/src/Os_Cfg.c ****  *
+  26:Modules/OS/OSAL/src/Os_Cfg.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  27:Modules/OS/OSAL/src/Os_Cfg.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  28:Modules/OS/OSAL/src/Os_Cfg.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  29:Modules/OS/OSAL/src/Os_Cfg.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  30:Modules/OS/OSAL/src/Os_Cfg.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  31:Modules/OS/OSAL/src/Os_Cfg.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  32:Modules/OS/OSAL/src/Os_Cfg.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  33:Modules/OS/OSAL/src/Os_Cfg.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  34:Modules/OS/OSAL/src/Os_Cfg.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  35:Modules/OS/OSAL/src/Os_Cfg.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  36:Modules/OS/OSAL/src/Os_Cfg.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  37:Modules/OS/OSAL/src/Os_Cfg.c ****  *
+  38:Modules/OS/OSAL/src/Os_Cfg.c ****  */
+  39:Modules/OS/OSAL/src/Os_Cfg.c **** 
+  40:Modules/OS/OSAL/src/Os_Cfg.c **** /** \brief FreeOSEK Os Generated Configuration Implementation File
+  41:Modules/OS/OSAL/src/Os_Cfg.c ****  **
+  42:Modules/OS/OSAL/src/Os_Cfg.c ****  ** \file Os_Cfg.c
+  43:Modules/OS/OSAL/src/Os_Cfg.c ****  **/
+  44:Modules/OS/OSAL/src/Os_Cfg.c **** 
+  45:Modules/OS/OSAL/src/Os_Cfg.c **** /** \addtogroup FreeOSEK
+  46:Modules/OS/OSAL/src/Os_Cfg.c ****  ** @{ */
+  47:Modules/OS/OSAL/src/Os_Cfg.c **** /** \addtogroup FreeOSEK_Os
+  48:Modules/OS/OSAL/src/Os_Cfg.c ****  ** @{ */
+  49:Modules/OS/OSAL/src/Os_Cfg.c **** /** \addtogroup FreeOSEK_Os_Global
+  50:Modules/OS/OSAL/src/Os_Cfg.c ****  ** @{ */
+  51:Modules/OS/OSAL/src/Os_Cfg.c **** 
+  52:Modules/OS/OSAL/src/Os_Cfg.c **** /*
+  53:Modules/OS/OSAL/src/Os_Cfg.c ****  * Initials     Name
+  54:Modules/OS/OSAL/src/Os_Cfg.c ****  * ---------------------------
+  55:Modules/OS/OSAL/src/Os_Cfg.c ****  * MaCe         Mariano Cerdeiro
+  56:Modules/OS/OSAL/src/Os_Cfg.c ****  */
+  57:Modules/OS/OSAL/src/Os_Cfg.c **** 
+  58:Modules/OS/OSAL/src/Os_Cfg.c **** /*
+  59:Modules/OS/OSAL/src/Os_Cfg.c ****  * modification history (new versions first)
+  60:Modules/OS/OSAL/src/Os_Cfg.c ****  * -----------------------------------------------------------
+  61:Modules/OS/OSAL/src/Os_Cfg.c ****  * 20090719 v0.1.1 MaCe rename file to Os_
+  62:Modules/OS/OSAL/src/Os_Cfg.c ****  * 20080909 v0.1.0 MaCe initial version
+  63:Modules/OS/OSAL/src/Os_Cfg.c ****  */
+  64:Modules/OS/OSAL/src/Os_Cfg.c **** 
+  65:Modules/OS/OSAL/src/Os_Cfg.c **** /*==================[inclusions]=============================================*/
+  66:Modules/OS/OSAL/src/Os_Cfg.c **** #include "Os_Internal.h"
+  67:Modules/OS/OSAL/src/Os_Cfg.c **** #include <stdio.h>
+  68:Modules/OS/OSAL/src/Os_Cfg.c **** /*==================[macros and definitions]=================================*/
+  69:Modules/OS/OSAL/src/Os_Cfg.c **** 
+  70:Modules/OS/OSAL/src/Os_Cfg.c **** /*==================[internal data declaration]==============================*/
+  71:Modules/OS/OSAL/src/Os_Cfg.c **** 
+  72:Modules/OS/OSAL/src/Os_Cfg.c **** /*==================[internal functions declaration]=========================*/
+  73:Modules/OS/OSAL/src/Os_Cfg.c **** 
+  74:Modules/OS/OSAL/src/Os_Cfg.c **** /*==================[internal data definition]===============================*/
+  75:Modules/OS/OSAL/src/Os_Cfg.c **** unsigned int Osek_ErrorApi;
+  76:Modules/OS/OSAL/src/Os_Cfg.c **** 
+  77:Modules/OS/OSAL/src/Os_Cfg.c **** unsigned int Osek_ErrorParam1;
+  78:Modules/OS/OSAL/src/Os_Cfg.c **** 
+  79:Modules/OS/OSAL/src/Os_Cfg.c **** unsigned int Osek_ErrorParam2;
+  80:Modules/OS/OSAL/src/Os_Cfg.c **** 
+  81:Modules/OS/OSAL/src/Os_Cfg.c **** unsigned int Osek_ErrorParam3;
+  82:Modules/OS/OSAL/src/Os_Cfg.c **** 
+  83:Modules/OS/OSAL/src/Os_Cfg.c **** unsigned int Osek_ErrorRet;
+  84:Modules/OS/OSAL/src/Os_Cfg.c **** 
+  85:Modules/OS/OSAL/src/Os_Cfg.c **** 
+  86:Modules/OS/OSAL/src/Os_Cfg.c **** /*==================[external data definition]===============================*/
+  87:Modules/OS/OSAL/src/Os_Cfg.c **** 
+  88:Modules/OS/OSAL/src/Os_Cfg.c **** /*==================[internal functions definition]==========================*/
+  89:Modules/OS/OSAL/src/Os_Cfg.c **** void ErrorHook(void)
+  90:Modules/OS/OSAL/src/Os_Cfg.c **** {
+  68              		.loc 1 90 1
+  69              		.cfi_startproc
+  70              		@ args = 0, pretend = 0, frame = 0
+  71              		@ frame_needed = 0, uses_anonymous_args = 0
+  72 0000 08B5     		push	{r3, lr}
+  73              		.cfi_def_cfa_offset 8
+  74              		.cfi_offset 3, -8
+  75              		.cfi_offset 14, -4
+  91:Modules/OS/OSAL/src/Os_Cfg.c **** 	/* kernel panic :( */
+  92:Modules/OS/OSAL/src/Os_Cfg.c ****     printf("kernel panic\n");
+  76              		.loc 1 92 5
+  77 0002 0448     		ldr	r0, .L2
+  78 0004 FFF7FEFF 		bl	puts
+  93:Modules/OS/OSAL/src/Os_Cfg.c **** 	ShutdownOS(0);
+  79              		.loc 1 93 2
+  80 0008 0020     		movs	r0, #0
+  81 000a FFF7FEFF 		bl	ShutdownOS
+  94:Modules/OS/OSAL/src/Os_Cfg.c **** }
+  82              		.loc 1 94 1
+  83 000e 00BF     		nop
+  84 0010 08BD     		pop	{r3, pc}
+  85              	.L3:
+  86 0012 00BF     		.align	2
+  87              	.L2:
+  88 0014 00000000 		.word	.LC0
+  89              		.cfi_endproc
+  90              	.LFE3:
+  92              		.text
+  93              	.Letext0:
+  94              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Cfg.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 Os_Cfg.c
+C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:23     .bss.Osek_ErrorApi:00000000 Osek_ErrorApi
+C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:20     .bss.Osek_ErrorApi:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:30     .bss.Osek_ErrorParam1:00000000 Osek_ErrorParam1
+C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:27     .bss.Osek_ErrorParam1:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:37     .bss.Osek_ErrorParam2:00000000 Osek_ErrorParam2
+C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:34     .bss.Osek_ErrorParam2:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:44     .bss.Osek_ErrorParam3:00000000 Osek_ErrorParam3
+C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:41     .bss.Osek_ErrorParam3:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:51     .bss.Osek_ErrorRet:00000000 Osek_ErrorRet
+C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:48     .bss.Osek_ErrorRet:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:54     .rodata:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:58     .text.ErrorHook:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:65     .text.ErrorHook:00000000 ErrorHook
+C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:88     .text.ErrorHook:00000014 $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+                           .group:00000000 wm4.newlib.h.8.7cb3972cd43265932d4782d5eb589854
+                           .group:00000000 wm4.ieeefp.h.77.2bc94c1d1ed8b02df437510a04ac1e45
+                           .group:00000000 wm4.config.h.224.c701144a7b0518c6ee9b9b5465b79f81
+                           .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
+                           .group:00000000 wm4.stdio.h.31.7c0e28c411445f3f9c5b11accf882760
+                           .group:00000000 wm4.stddef.h.155.ba788add86a0e365f264484f110c3c29
+                           .group:00000000 wm4.cdefs.h.49.a54b2d5c07711bc7320a3fea9f12cb56
+                           .group:00000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
+                           .group:00000000 wm4._types.h.20.dd0d04dca3800a0d2a6129b87f3adbb2
+                           .group:00000000 wm4.stddef.h.155.3588ebfdd1e8c7ede80509bb9c3b8009
+                           .group:00000000 wm4._types.h.127.34941de1b2539d59d5cac00e0dd27a45
+                           .group:00000000 wm4.reent.h.17.e292bf8b0bec6c96e131a54347145a30
+                           .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
+                           .group:00000000 wm4.reent.h.77.dcd6129ff07fe81bd5636db29abe53b2
+                           .group:00000000 wm4.types.h.40.8b6acba56cefbb11746718204edc8f5e
+                           .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
+                           .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
+                           .group:00000000 wm4._timeval.h.32.bec3221fa7a9bb0bdde696c9c57e47d2
+                           .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
+                           .group:00000000 wm4.select.h.19.40cd3f2bfc456b193b790c2754690ebf
+                           .group:00000000 wm4.types.h.51.5571ec98f267d17d3c670b7a3ba33afa
+                           .group:00000000 wm4.sched.h.22.c60982713a5c428609783c78f9c78d95
+                           .group:00000000 wm4._pthreadtypes.h.36.fcee9961c35163dde6267ef772ad1972
+                           .group:00000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
+                           .group:00000000 wm4.stdio.h.81.932d0c162786b883f622b8d05c120c78
+
+UNDEFINED SYMBOLS
+puts
+ShutdownOS

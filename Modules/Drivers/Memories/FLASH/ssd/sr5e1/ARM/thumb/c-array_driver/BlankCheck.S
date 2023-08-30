@@ -1,0 +1,20 @@
+.text  // This is code
+       .thumb // We will be using thumb code
+	   .thumb_func
+
+       .globl BlankCheck_C // BlankCheck_C is externally visible
+
+BlankCheck_C:
+       .word 0xB089B480, 0x60F8AF00, 0x607A60B9, 0x2300603B
+       .word 0x68BA61BB, 0x4313687B, 0x0303F003, 0xD0022B00
+       .word 0x61BB2301, 0x687BE037, 0xD0332B00, 0x089B687B
+       .word 0x697B617B, 0xD9012B59, 0x617B235A, 0x61FB2300
+       .word 0x68BBE014, 0xF1B3681B, 0xD0093FFF, 0x61BB2320
+       .word 0x68BA683B, 0x68BB601A, 0x6ABB681A, 0xE01A601A
+       .word 0x330468BB, 0x69FB60BB, 0x61FB3301, 0x69FA697B
+       .word 0xD3E6429A, 0x68BA6AFB, 0x697B601A, 0x687A009B
+       .word 0x6AFB1AD2, 0x6AFB605A, 0x60DA683A, 0x6ABA6AFB
+       .word 0xE000611A, 0x68FBBF00, 0x3048F893, 0xD0042B00
+       .word 0x461B69BB, 0xDF0CBF00, 0x69BBBF00, 0x37244618
+       .word 0xF85D46BD, 0x47707B04
+       ;  // BlankCheck_C is a function

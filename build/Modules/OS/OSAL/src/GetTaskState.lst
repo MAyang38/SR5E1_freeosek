@@ -1,0 +1,306 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"GetTaskState.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.GetTaskState,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	GetTaskState
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	GetTaskState:
+  27              	.LFB0:
+  28              		.file 1 "Modules/OS/OSAL/src/GetTaskState.c"
+   1:Modules/OS/OSAL/src/GetTaskState.c **** /* Copyright 2008, 2009 Mariano Cerdeiro
+   2:Modules/OS/OSAL/src/GetTaskState.c ****  * Copyright 2014, ACSE & CADIEEL
+   3:Modules/OS/OSAL/src/GetTaskState.c ****  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+   4:Modules/OS/OSAL/src/GetTaskState.c ****  *      CADIEEL: http://www.cadieel.org.ar
+   5:Modules/OS/OSAL/src/GetTaskState.c ****  *
+   6:Modules/OS/OSAL/src/GetTaskState.c ****  * This file is part of CIAA Firmware.
+   7:Modules/OS/OSAL/src/GetTaskState.c ****  *
+   8:Modules/OS/OSAL/src/GetTaskState.c ****  * Redistribution and use in source and binary forms, with or without
+   9:Modules/OS/OSAL/src/GetTaskState.c ****  * modification, are permitted provided that the following conditions are met:
+  10:Modules/OS/OSAL/src/GetTaskState.c ****  *
+  11:Modules/OS/OSAL/src/GetTaskState.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  12:Modules/OS/OSAL/src/GetTaskState.c ****  *    this list of conditions and the following disclaimer.
+  13:Modules/OS/OSAL/src/GetTaskState.c ****  *
+  14:Modules/OS/OSAL/src/GetTaskState.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  15:Modules/OS/OSAL/src/GetTaskState.c ****  *    this list of conditions and the following disclaimer in the documentation
+  16:Modules/OS/OSAL/src/GetTaskState.c ****  *    and/or other materials provided with the distribution.
+  17:Modules/OS/OSAL/src/GetTaskState.c ****  *
+  18:Modules/OS/OSAL/src/GetTaskState.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  19:Modules/OS/OSAL/src/GetTaskState.c ****  *    contributors may be used to endorse or promote products derived from this
+  20:Modules/OS/OSAL/src/GetTaskState.c ****  *    software without specific prior written permission.
+  21:Modules/OS/OSAL/src/GetTaskState.c ****  *
+  22:Modules/OS/OSAL/src/GetTaskState.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Modules/OS/OSAL/src/GetTaskState.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Modules/OS/OSAL/src/GetTaskState.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  25:Modules/OS/OSAL/src/GetTaskState.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  26:Modules/OS/OSAL/src/GetTaskState.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  27:Modules/OS/OSAL/src/GetTaskState.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  28:Modules/OS/OSAL/src/GetTaskState.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  29:Modules/OS/OSAL/src/GetTaskState.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  30:Modules/OS/OSAL/src/GetTaskState.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  31:Modules/OS/OSAL/src/GetTaskState.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  32:Modules/OS/OSAL/src/GetTaskState.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  33:Modules/OS/OSAL/src/GetTaskState.c ****  *
+  34:Modules/OS/OSAL/src/GetTaskState.c ****  */
+  35:Modules/OS/OSAL/src/GetTaskState.c **** 
+  36:Modules/OS/OSAL/src/GetTaskState.c **** /** \brief FreeOSEK GetTaskState Implementation File
+  37:Modules/OS/OSAL/src/GetTaskState.c ****  **
+  38:Modules/OS/OSAL/src/GetTaskState.c ****  ** This file implements the GetTaskState API
+  39:Modules/OS/OSAL/src/GetTaskState.c ****  **
+  40:Modules/OS/OSAL/src/GetTaskState.c ****  ** \file GetTaskState.c
+  41:Modules/OS/OSAL/src/GetTaskState.c ****  **
+  42:Modules/OS/OSAL/src/GetTaskState.c ****  **/
+  43:Modules/OS/OSAL/src/GetTaskState.c **** 
+  44:Modules/OS/OSAL/src/GetTaskState.c **** /** \addtogroup FreeOSEK
+  45:Modules/OS/OSAL/src/GetTaskState.c ****  ** @{ */
+  46:Modules/OS/OSAL/src/GetTaskState.c **** /** \addtogroup FreeOSEK_Os
+  47:Modules/OS/OSAL/src/GetTaskState.c ****  ** @{ */
+  48:Modules/OS/OSAL/src/GetTaskState.c **** /** \addtogroup FreeOSEK_Os_Global
+  49:Modules/OS/OSAL/src/GetTaskState.c ****  ** @{ */
+  50:Modules/OS/OSAL/src/GetTaskState.c **** 
+  51:Modules/OS/OSAL/src/GetTaskState.c **** /*
+  52:Modules/OS/OSAL/src/GetTaskState.c ****  * Initials     Name
+  53:Modules/OS/OSAL/src/GetTaskState.c ****  * ---------------------------
+  54:Modules/OS/OSAL/src/GetTaskState.c ****  * MaCe         Mariano Cerdeiro
+  55:Modules/OS/OSAL/src/GetTaskState.c ****  * KLi          Kang Li
+  56:Modules/OS/OSAL/src/GetTaskState.c ****  */
+  57:Modules/OS/OSAL/src/GetTaskState.c **** 
+  58:Modules/OS/OSAL/src/GetTaskState.c **** /*
+  59:Modules/OS/OSAL/src/GetTaskState.c ****  * modification history (new versions first)
+  60:Modules/OS/OSAL/src/GetTaskState.c ****  * -----------------------------------------------------------
+  61:Modules/OS/OSAL/src/GetTaskState.c ****  * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
+  62:Modules/OS/OSAL/src/GetTaskState.c ****  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+  63:Modules/OS/OSAL/src/GetTaskState.c ****  * 20080713 v0.1.0 MaCe	initial version
+  64:Modules/OS/OSAL/src/GetTaskState.c ****  */
+  65:Modules/OS/OSAL/src/GetTaskState.c **** 
+  66:Modules/OS/OSAL/src/GetTaskState.c **** /*==================[inclusions]=============================================*/
+  67:Modules/OS/OSAL/src/GetTaskState.c **** #include "Os_Internal.h"
+  68:Modules/OS/OSAL/src/GetTaskState.c **** 
+  69:Modules/OS/OSAL/src/GetTaskState.c **** /*==================[macros and definitions]=================================*/
+  70:Modules/OS/OSAL/src/GetTaskState.c **** 
+  71:Modules/OS/OSAL/src/GetTaskState.c **** /*==================[internal data declaration]==============================*/
+  72:Modules/OS/OSAL/src/GetTaskState.c **** 
+  73:Modules/OS/OSAL/src/GetTaskState.c **** /*==================[internal functions declaration]=========================*/
+  74:Modules/OS/OSAL/src/GetTaskState.c **** 
+  75:Modules/OS/OSAL/src/GetTaskState.c **** /*==================[internal data definition]===============================*/
+  76:Modules/OS/OSAL/src/GetTaskState.c **** 
+  77:Modules/OS/OSAL/src/GetTaskState.c **** /*==================[external data definition]===============================*/
+  78:Modules/OS/OSAL/src/GetTaskState.c **** 
+  79:Modules/OS/OSAL/src/GetTaskState.c **** /*==================[internal functions definition]==========================*/
+  80:Modules/OS/OSAL/src/GetTaskState.c **** 
+  81:Modules/OS/OSAL/src/GetTaskState.c **** /*==================[external functions definition]==========================*/
+  82:Modules/OS/OSAL/src/GetTaskState.c **** StatusType GetTaskState
+  83:Modules/OS/OSAL/src/GetTaskState.c **** (
+  84:Modules/OS/OSAL/src/GetTaskState.c **** 	TaskType TaskID,
+  85:Modules/OS/OSAL/src/GetTaskState.c **** 	TaskStateRefType State
+  86:Modules/OS/OSAL/src/GetTaskState.c **** )
+  87:Modules/OS/OSAL/src/GetTaskState.c **** {
+  29              		.loc 1 87 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 16
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 00B5     		push	{lr}
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 14, -4
+  36 0002 85B0     		sub	sp, sp, #20
+  37              		.cfi_def_cfa_offset 24
+  38 0004 0346     		mov	r3, r0
+  39 0006 0091     		str	r1, [sp]
+  40 0008 8DF80730 		strb	r3, [sp, #7]
+  88:Modules/OS/OSAL/src/GetTaskState.c **** 	/* \req OSEK_SYS_3.6 The system service StatusType
+  89:Modules/OS/OSAL/src/GetTaskState.c **** 	 ** GetTaskState ( TaskType TaskID, TaskStateRefType State ) shall be
+  90:Modules/OS/OSAL/src/GetTaskState.c **** 	 ** defined. */
+  91:Modules/OS/OSAL/src/GetTaskState.c **** 
+  92:Modules/OS/OSAL/src/GetTaskState.c **** 	/* \req OSEK_SYS_3.6.3Possible return values in Standard mode is E_OK */
+  93:Modules/OS/OSAL/src/GetTaskState.c **** 	StatusType ret = E_OK;
+  41              		.loc 1 93 13
+  42 000c 0023     		movs	r3, #0
+  43 000e 8DF80F30 		strb	r3, [sp, #15]
+  94:Modules/OS/OSAL/src/GetTaskState.c **** 
+  95:Modules/OS/OSAL/src/GetTaskState.c **** #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+  96:Modules/OS/OSAL/src/GetTaskState.c **** 	/* check if TaskID is in a valid range */
+  97:Modules/OS/OSAL/src/GetTaskState.c **** 	if ( TaskID >= TASKS_COUNT )
+  44              		.loc 1 97 5
+  45 0012 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+  46 0016 032B     		cmp	r3, #3
+  47 0018 06D9     		bls	.L2
+  98:Modules/OS/OSAL/src/GetTaskState.c **** 	{
+  99:Modules/OS/OSAL/src/GetTaskState.c **** 		/* TaskID is out of range */
+ 100:Modules/OS/OSAL/src/GetTaskState.c **** 		/* return E_OS_ID */
+ 101:Modules/OS/OSAL/src/GetTaskState.c **** 		/* \req OSEK_SYS_3.6.4 Extra possible return values in Extended mode is
+ 102:Modules/OS/OSAL/src/GetTaskState.c **** 		 ** E_OS_ID */
+ 103:Modules/OS/OSAL/src/GetTaskState.c **** 		ret = E_OS_ID;
+  48              		.loc 1 103 7
+  49 001a 0323     		movs	r3, #3
+  50 001c 8DF80F30 		strb	r3, [sp, #15]
+ 104:Modules/OS/OSAL/src/GetTaskState.c **** 
+ 105:Modules/OS/OSAL/src/GetTaskState.c **** 		/* set invalid task value to the state */
+ 106:Modules/OS/OSAL/src/GetTaskState.c **** 		*State = TASK_ST_INVALID;
+  51              		.loc 1 106 10
+  52 0020 009B     		ldr	r3, [sp]
+  53 0022 FF22     		movs	r2, #255
+  54 0024 1A70     		strb	r2, [r3]
+  55 0026 0EE0     		b	.L3
+  56              	.L2:
+ 107:Modules/OS/OSAL/src/GetTaskState.c **** 	}
+ 108:Modules/OS/OSAL/src/GetTaskState.c **** 	else
+ 109:Modules/OS/OSAL/src/GetTaskState.c **** #endif
+ 110:Modules/OS/OSAL/src/GetTaskState.c **** 	{
+ 111:Modules/OS/OSAL/src/GetTaskState.c **** 
+ 112:Modules/OS/OSAL/src/GetTaskState.c **** 		/* \req OSEK_SYS_3.6.1 The service shall returns the state of a task
+ 113:Modules/OS/OSAL/src/GetTaskState.c **** 		 ** (running, ready, waiting, suspended) at the time of calling
+ 114:Modules/OS/OSAL/src/GetTaskState.c **** 		 ** GetTaskState */
+ 115:Modules/OS/OSAL/src/GetTaskState.c **** 		/* \req OSEK_SYS_3.6.2 When the service is called for a task, which is
+ 116:Modules/OS/OSAL/src/GetTaskState.c **** 		 ** activated more than once, the state is set to running if any instance
+ 117:Modules/OS/OSAL/src/GetTaskState.c **** 		 ** of the task is running. */
+ 118:Modules/OS/OSAL/src/GetTaskState.c **** 		*State = (TaskStateType) TasksVar[TaskID].Flags.State;
+  57              		.loc 1 118 50
+  58 0028 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+  59 002c 1849     		ldr	r1, .L6
+  60 002e 1346     		mov	r3, r2
+  61 0030 9B00     		lsls	r3, r3, #2
+  62 0032 1344     		add	r3, r3, r2
+  63 0034 9B00     		lsls	r3, r3, #2
+  64 0036 0B44     		add	r3, r3, r1
+  65 0038 1B79     		ldrb	r3, [r3, #4]
+  66 003a C3F38103 		ubfx	r3, r3, #2, #2
+  67 003e DBB2     		uxtb	r3, r3
+  68              		.loc 1 118 12
+  69 0040 1A46     		mov	r2, r3
+  70              		.loc 1 118 10
+  71 0042 009B     		ldr	r3, [sp]
+  72 0044 1A70     		strb	r2, [r3]
+  73              	.L3:
+ 119:Modules/OS/OSAL/src/GetTaskState.c **** 	}
+ 120:Modules/OS/OSAL/src/GetTaskState.c **** 
+ 121:Modules/OS/OSAL/src/GetTaskState.c **** #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
+ 122:Modules/OS/OSAL/src/GetTaskState.c **** 		(HOOK_ERRORHOOK == OSEK_ENABLE) )
+ 123:Modules/OS/OSAL/src/GetTaskState.c **** 	/* \req OSEK_ERR_1.3-5/xx The ErrorHook hook routine shall be called if a
+ 124:Modules/OS/OSAL/src/GetTaskState.c **** 	 ** system service returns a StatusType value not equal to E_OK.*/
+ 125:Modules/OS/OSAL/src/GetTaskState.c **** 	/* \req OSEK_ERR_1.3.1-5/xx The hook routine ErrorHook is not called if a
+ 126:Modules/OS/OSAL/src/GetTaskState.c **** 	 ** system service is called from the ErrorHook itself. */
+ 127:Modules/OS/OSAL/src/GetTaskState.c ****    if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
+  74              		.loc 1 127 7
+  75 0046 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+  76 004a 002B     		cmp	r3, #0
+  77 004c 19D0     		beq	.L4
+  78              		.loc 1 127 46 discriminator 1
+  79 004e 114B     		ldr	r3, .L6+4
+  80 0050 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  81              		.loc 1 127 25 discriminator 1
+  82 0052 012B     		cmp	r3, #1
+  83 0054 15D0     		beq	.L4
+ 128:Modules/OS/OSAL/src/GetTaskState.c **** 	{
+ 129:Modules/OS/OSAL/src/GetTaskState.c **** 		SetError_Api(OSServiceId_GetTaskState);
+  84              		.loc 1 129 3
+  85 0056 104B     		ldr	r3, .L6+8
+  86 0058 0622     		movs	r2, #6
+  87 005a 1A60     		str	r2, [r3]
+ 130:Modules/OS/OSAL/src/GetTaskState.c **** 		SetError_Param1(TaskID);
+  88              		.loc 1 130 3
+  89 005c 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+  90 0060 0E4A     		ldr	r2, .L6+12
+  91 0062 1360     		str	r3, [r2]
+ 131:Modules/OS/OSAL/src/GetTaskState.c **** 		SetError_Param2((size_t)State);
+  92              		.loc 1 131 3
+  93 0064 009B     		ldr	r3, [sp]
+  94 0066 0E4A     		ldr	r2, .L6+16
+  95 0068 1360     		str	r3, [r2]
+ 132:Modules/OS/OSAL/src/GetTaskState.c **** 		SetError_Ret(ret);
+  96              		.loc 1 132 3
+  97 006a 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+  98 006e 0D4A     		ldr	r2, .L6+20
+  99 0070 1360     		str	r3, [r2]
+ 133:Modules/OS/OSAL/src/GetTaskState.c **** 		SetError_Msg("GetTaskState returns != than E_OK");
+ 134:Modules/OS/OSAL/src/GetTaskState.c **** 		SetError_ErrorHook();
+ 100              		.loc 1 134 3
+ 101 0072 084B     		ldr	r3, .L6+4
+ 102 0074 0122     		movs	r2, #1
+ 103 0076 1A70     		strb	r2, [r3]
+ 104 0078 FFF7FEFF 		bl	ErrorHook
+ 105 007c 054B     		ldr	r3, .L6+4
+ 106 007e 0022     		movs	r2, #0
+ 107 0080 1A70     		strb	r2, [r3]
+ 108              	.L4:
+ 135:Modules/OS/OSAL/src/GetTaskState.c **** 	}
+ 136:Modules/OS/OSAL/src/GetTaskState.c **** #endif
+ 137:Modules/OS/OSAL/src/GetTaskState.c **** 
+ 138:Modules/OS/OSAL/src/GetTaskState.c **** 	return ret;
+ 109              		.loc 1 138 9
+ 110 0082 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 139:Modules/OS/OSAL/src/GetTaskState.c **** }
+ 111              		.loc 1 139 1
+ 112 0086 1846     		mov	r0, r3
+ 113 0088 05B0     		add	sp, sp, #20
+ 114              		.cfi_def_cfa_offset 4
+ 115              		@ sp needed
+ 116 008a 5DF804FB 		ldr	pc, [sp], #4
+ 117              	.L7:
+ 118 008e 00BF     		.align	2
+ 119              	.L6:
+ 120 0090 00000000 		.word	TasksVar
+ 121 0094 00000000 		.word	ErrorHookRunning
+ 122 0098 00000000 		.word	Osek_ErrorApi
+ 123 009c 00000000 		.word	Osek_ErrorParam1
+ 124 00a0 00000000 		.word	Osek_ErrorParam2
+ 125 00a4 00000000 		.word	Osek_ErrorRet
+ 126              		.cfi_endproc
+ 127              	.LFE0:
+ 129              		.text
+ 130              	.Letext0:
+ 131              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 132              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 133              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Types.h"
+ 134              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Cfg.h"
+ 135              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+ 136              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 137              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+DEFINED SYMBOLS
+                            *ABS*:00000000 GetTaskState.c
+C:\Users\AAA\AppData\Local\Temp\ccuDXobs.s:19     .text.GetTaskState:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccuDXobs.s:26     .text.GetTaskState:00000000 GetTaskState
+C:\Users\AAA\AppData\Local\Temp\ccuDXobs.s:120    .text.GetTaskState:00000090 $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+UNDEFINED SYMBOLS
+ErrorHook
+TasksVar
+ErrorHookRunning
+Osek_ErrorApi
+Osek_ErrorParam1
+Osek_ErrorParam2
+Osek_ErrorRet

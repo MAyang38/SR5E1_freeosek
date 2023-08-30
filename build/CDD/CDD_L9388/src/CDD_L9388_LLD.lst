@@ -1,0 +1,1139 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"CDD_L9388_LLD.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	L9388_tx_buffer
+  19              		.section	.bss.L9388_tx_buffer,"aw",%nobits
+  20              		.align	2
+  23              	L9388_tx_buffer:
+  24 0000 00000000 		.space	4
+  25              		.global	L9388_rx_buffer
+  26              		.section	.bss.L9388_rx_buffer,"aw",%nobits
+  27              		.align	2
+  30              	L9388_rx_buffer:
+  31 0000 00000000 		.space	4
+  32              		.global	L9388_SPI_Buffer
+  33              		.section	.bss.L9388_SPI_Buffer,"aw",%nobits
+  34              		.align	2
+  37              	L9388_SPI_Buffer:
+  38 0000 00000000 		.space	8
+  38      00000000 
+  39              		.section	.text.L9388_CrcCompute,"ax",%progbits
+  40              		.align	1
+  41              		.p2align 4,,15
+  42              		.global	L9388_CrcCompute
+  43              		.syntax unified
+  44              		.thumb
+  45              		.thumb_func
+  47              	L9388_CrcCompute:
+  48              	.LFB445:
+  49              		.file 1 "CDD/CDD_L9388/src/CDD_L9388_LLD.c"
+   1:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** #include "CDD_L9388_LLD.h"
+   2:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** /*SPI-GLOBAL_DATA*/
+   3:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** uint8_t L9388_tx_buffer[L9388_SPI_BUFFER_SIZE] = {0x00,0x00,0x00,0x00};
+   4:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** uint8_t L9388_rx_buffer[L9388_SPI_BUFFER_SIZE] = {0x00,0x00,0x00,0x00};;
+   5:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+   6:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** L9388_Data_tag L9388_SPI_Buffer;
+   7:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+   8:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** /***************************************************
+   9:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** Description:
+  10:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** example
+  11:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** InputWord: 32bits data need to add 5bit lower crc
+  12:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		data returned is 32bit with lower 3bit lower crc
+  13:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** return :5bits crc
+  14:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+  15:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+  16:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** ***************************************************/
+  17:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** void L9388_CrcCompute(L9388_Data_tag* InputWord)
+  18:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** {
+  50              		.loc 1 18 1
+  51              		.cfi_startproc
+  52              		@ args = 0, pretend = 0, frame = 24
+  53              		@ frame_needed = 0, uses_anonymous_args = 0
+  54              		@ link register save eliminated.
+  55 0000 86B0     		sub	sp, sp, #24
+  56              		.cfi_def_cfa_offset 24
+  57 0002 0190     		str	r0, [sp, #4]
+  19:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+  20:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	/*data exchange*/
+  21:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	uint32_t init_value;
+  22:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	uint32_t init_value_bit0_20;
+  23:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	uint32_t init_value_bit22_31;
+  24:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	init_value = ((~InputWord->TxOut.R ) & 0xF8000000);
+  58              		.loc 1 24 34
+  59 0004 019B     		ldr	r3, [sp, #4]
+  60 0006 1B68     		ldr	r3, [r3]
+  61              		.loc 1 24 17
+  62 0008 DB43     		mvns	r3, r3
+  63              		.loc 1 24 13
+  64 000a 03F07843 		and	r3, r3, #-134217728
+  65 000e 0593     		str	r3, [sp, #20]
+  25:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	init_value |= (InputWord->TxOut.R & 0x07FFFFFF);
+  66              		.loc 1 25 33
+  67 0010 019B     		ldr	r3, [sp, #4]
+  68 0012 1B68     		ldr	r3, [r3]
+  69              		.loc 1 25 36
+  70 0014 23F07843 		bic	r3, r3, #-134217728
+  71              		.loc 1 25 13
+  72 0018 059A     		ldr	r2, [sp, #20]
+  73 001a 1343     		orrs	r3, r3, r2
+  74 001c 0593     		str	r3, [sp, #20]
+  26:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	init_value_bit0_20 = (init_value & 0x001FFFFF);
+  75              		.loc 1 26 21
+  76 001e 059B     		ldr	r3, [sp, #20]
+  77 0020 C3F31403 		ubfx	r3, r3, #0, #21
+  78 0024 0393     		str	r3, [sp, #12]
+  27:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	init_value_bit22_31 = (init_value & 0xFFD00000)>>22;
+  79              		.loc 1 27 22
+  80 0026 059B     		ldr	r3, [sp, #20]
+  81 0028 9B0D     		lsrs	r3, r3, #22
+  82 002a 0293     		str	r3, [sp, #8]
+  28:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	init_value = (init_value_bit22_31 << 21) | init_value_bit0_20;
+  83              		.loc 1 28 36
+  84 002c 029B     		ldr	r3, [sp, #8]
+  85 002e 5B05     		lsls	r3, r3, #21
+  86              		.loc 1 28 13
+  87 0030 039A     		ldr	r2, [sp, #12]
+  88 0032 1343     		orrs	r3, r3, r2
+  89 0034 0593     		str	r3, [sp, #20]
+  29:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	init_value &= 0xFFFFFFE0;
+  90              		.loc 1 29 13
+  91 0036 059B     		ldr	r3, [sp, #20]
+  92 0038 23F01F03 		bic	r3, r3, #31
+  93 003c 0593     		str	r3, [sp, #20]
+  30:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+  31:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	/*CRC-calculator*/
+  32:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	uint8_t i;
+  33:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	for(i=0;i<27;i++)
+  94              		.loc 1 33 7
+  95 003e 0023     		movs	r3, #0
+  96 0040 8DF81330 		strb	r3, [sp, #19]
+  97              		.loc 1 33 2
+  98 0044 12E0     		b	.L2
+  99              	.L5:
+  34:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	{
+  35:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		if((init_value & 0x80000000) != 0)
+ 100              		.loc 1 35 32
+ 101 0046 059B     		ldr	r3, [sp, #20]
+ 102              		.loc 1 35 5
+ 103 0048 002B     		cmp	r3, #0
+ 104 004a 07DA     		bge	.L3
+  36:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		{
+  37:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 			init_value ^= ((uint32_t)L9388_CRC_POLY_VALUE << 26);
+ 105              		.loc 1 37 15
+ 106 004c 059B     		ldr	r3, [sp, #20]
+ 107 004e 83F01443 		eor	r3, r3, #-1811939328
+ 108 0052 0593     		str	r3, [sp, #20]
+  38:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 			init_value <<= 1;
+ 109              		.loc 1 38 15
+ 110 0054 059B     		ldr	r3, [sp, #20]
+ 111 0056 5B00     		lsls	r3, r3, #1
+ 112 0058 0593     		str	r3, [sp, #20]
+ 113 005a 02E0     		b	.L4
+ 114              	.L3:
+  39:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		}
+  40:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		else
+  41:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		{
+  42:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 			init_value <<= 1;	
+ 115              		.loc 1 42 15
+ 116 005c 059B     		ldr	r3, [sp, #20]
+ 117 005e 5B00     		lsls	r3, r3, #1
+ 118 0060 0593     		str	r3, [sp, #20]
+ 119              	.L4:
+  33:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	{
+ 120              		.loc 1 33 16 discriminator 2
+ 121 0062 9DF81330 		ldrb	r3, [sp, #19]	@ zero_extendqisi2
+ 122 0066 0133     		adds	r3, r3, #1
+ 123 0068 8DF81330 		strb	r3, [sp, #19]
+ 124              	.L2:
+  33:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	{
+ 125              		.loc 1 33 2 discriminator 1
+ 126 006c 9DF81330 		ldrb	r3, [sp, #19]	@ zero_extendqisi2
+ 127 0070 1A2B     		cmp	r3, #26
+ 128 0072 E8D9     		bls	.L5
+  43:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		}
+  44:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	}
+  45:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+  46:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	InputWord->TxOut.B.Tx_CRC = ((init_value >> 27) & 0x1F);
+ 129              		.loc 1 46 43
+ 130 0074 059B     		ldr	r3, [sp, #20]
+ 131 0076 DB0E     		lsrs	r3, r3, #27
+ 132              		.loc 1 46 50
+ 133 0078 03F01F03 		and	r3, r3, #31
+ 134 007c D9B2     		uxtb	r1, r3
+ 135              		.loc 1 46 28
+ 136 007e 019A     		ldr	r2, [sp, #4]
+ 137 0080 1378     		ldrb	r3, [r2]
+ 138 0082 61F30403 		bfi	r3, r1, #0, #5
+ 139 0086 1370     		strb	r3, [r2]
+  47:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+  48:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** }
+ 140              		.loc 1 48 1
+ 141 0088 00BF     		nop
+ 142 008a 06B0     		add	sp, sp, #24
+ 143              		.cfi_def_cfa_offset 0
+ 144              		@ sp needed
+ 145 008c 7047     		bx	lr
+ 146              		.cfi_endproc
+ 147              	.LFE445:
+ 149 008e 00BF     		.section	.text.L9388_Fill_SPI_Tx_Buffer,"ax",%progbits
+ 150              		.align	1
+ 151              		.p2align 4,,15
+ 152              		.global	L9388_Fill_SPI_Tx_Buffer
+ 153              		.syntax unified
+ 154              		.thumb
+ 155              		.thumb_func
+ 157              	L9388_Fill_SPI_Tx_Buffer:
+ 158              	.LFB446:
+  49:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+  50:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** /***************************************************
+  51:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** Description:
+  52:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** example
+  53:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** InputWord: 32bits data need to add 5bit lower crc
+  54:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		data returned is 32bit with lower 3bit lower crc
+  55:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** return :5bits crc
+  56:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+  57:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+  58:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** ***************************************************/
+  59:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+  60:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** void L9388_Fill_SPI_Tx_Buffer(L9388_Data_tag* ulSPIOutWithCRC)
+  61:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** {
+ 159              		.loc 1 61 1
+ 160              		.cfi_startproc
+ 161              		@ args = 0, pretend = 0, frame = 8
+ 162              		@ frame_needed = 0, uses_anonymous_args = 0
+ 163              		@ link register save eliminated.
+ 164 0000 82B0     		sub	sp, sp, #8
+ 165              		.cfi_def_cfa_offset 8
+ 166 0002 0190     		str	r0, [sp, #4]
+  62:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	L9388_tx_buffer[3] = (uint8_t)(ulSPIOutWithCRC->TxOut.R&0xFF);
+ 167              		.loc 1 62 55
+ 168 0004 019B     		ldr	r3, [sp, #4]
+ 169 0006 1B68     		ldr	r3, [r3]
+ 170              		.loc 1 62 23
+ 171 0008 DAB2     		uxtb	r2, r3
+ 172              		.loc 1 62 21
+ 173 000a 0B4B     		ldr	r3, .L7
+ 174 000c DA70     		strb	r2, [r3, #3]
+  63:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     L9388_tx_buffer[2] = (uint8_t)(ulSPIOutWithCRC->TxOut.R>>8&0xFF);
+ 175              		.loc 1 63 58
+ 176 000e 019B     		ldr	r3, [sp, #4]
+ 177 0010 1B68     		ldr	r3, [r3]
+ 178              		.loc 1 63 60
+ 179 0012 1B0A     		lsrs	r3, r3, #8
+ 180              		.loc 1 63 26
+ 181 0014 DAB2     		uxtb	r2, r3
+ 182              		.loc 1 63 24
+ 183 0016 084B     		ldr	r3, .L7
+ 184 0018 9A70     		strb	r2, [r3, #2]
+  64:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     L9388_tx_buffer[1] = (uint8_t)(ulSPIOutWithCRC->TxOut.R>>16&0xFF);
+ 185              		.loc 1 64 58
+ 186 001a 019B     		ldr	r3, [sp, #4]
+ 187 001c 1B68     		ldr	r3, [r3]
+ 188              		.loc 1 64 60
+ 189 001e 1B0C     		lsrs	r3, r3, #16
+ 190              		.loc 1 64 26
+ 191 0020 DAB2     		uxtb	r2, r3
+ 192              		.loc 1 64 24
+ 193 0022 054B     		ldr	r3, .L7
+ 194 0024 5A70     		strb	r2, [r3, #1]
+  65:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     L9388_tx_buffer[0] = (uint8_t)(ulSPIOutWithCRC->TxOut.R>>24&0xFF);
+ 195              		.loc 1 65 58
+ 196 0026 019B     		ldr	r3, [sp, #4]
+ 197 0028 1B68     		ldr	r3, [r3]
+ 198              		.loc 1 65 60
+ 199 002a 1B0E     		lsrs	r3, r3, #24
+ 200              		.loc 1 65 26
+ 201 002c DAB2     		uxtb	r2, r3
+ 202              		.loc 1 65 24
+ 203 002e 024B     		ldr	r3, .L7
+ 204 0030 1A70     		strb	r2, [r3]
+  66:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** }
+ 205              		.loc 1 66 1
+ 206 0032 00BF     		nop
+ 207 0034 02B0     		add	sp, sp, #8
+ 208              		.cfi_def_cfa_offset 0
+ 209              		@ sp needed
+ 210 0036 7047     		bx	lr
+ 211              	.L8:
+ 212              		.align	2
+ 213              	.L7:
+ 214 0038 00000000 		.word	L9388_tx_buffer
+ 215              		.cfi_endproc
+ 216              	.LFE446:
+ 218              		.section	.text.L9388_SPI_ExchangeDataWithCRC,"ax",%progbits
+ 219              		.align	1
+ 220              		.p2align 4,,15
+ 221              		.global	L9388_SPI_ExchangeDataWithCRC
+ 222              		.syntax unified
+ 223              		.thumb
+ 224              		.thumb_func
+ 226              	L9388_SPI_ExchangeDataWithCRC:
+ 227              	.LFB447:
+  67:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+  68:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** /****************************************************************************
+  69:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** * Name:    SPI_ExDataWithCRC
+  70:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** * Parameters:
+  71:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** *              ulSPIOutNoCRC
+  72:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** * Returns:
+  73:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** *              none
+  74:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** * Description:		Exchange data from register.
+  75:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** *
+  76:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** * ****************************************************************************/
+  77:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** void L9388_SPI_ExchangeDataWithCRC(L9388_Data_tag* ulSPIOutNoCRC){
+ 228              		.loc 1 77 66
+ 229              		.cfi_startproc
+ 230              		@ args = 0, pretend = 0, frame = 8
+ 231              		@ frame_needed = 0, uses_anonymous_args = 0
+ 232 0000 00B5     		push	{lr}
+ 233              		.cfi_def_cfa_offset 4
+ 234              		.cfi_offset 14, -4
+ 235 0002 83B0     		sub	sp, sp, #12
+ 236              		.cfi_def_cfa_offset 16
+ 237 0004 0190     		str	r0, [sp, #4]
+  78:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+  79:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	/*Calculate Crc*/
+  80:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	L9388_CrcCompute(ulSPIOutNoCRC);
+ 238              		.loc 1 80 2
+ 239 0006 0198     		ldr	r0, [sp, #4]
+ 240 0008 FFF7FEFF 		bl	L9388_CrcCompute
+  81:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	
+  82:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     /*Fill SPI Tx buffer*/
+  83:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	L9388_Fill_SPI_Tx_Buffer(ulSPIOutNoCRC);
+ 241              		.loc 1 83 2
+ 242 000c 0198     		ldr	r0, [sp, #4]
+ 243 000e FFF7FEFF 		bl	L9388_Fill_SPI_Tx_Buffer
+  84:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+  85:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     /*SPI polled exchange*/
+  86:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     spi_exchange(&MASTER_SPID, (uint8_t *)L9388_tx_buffer, (uint8_t *)L9388_rx_buffer, L9388_SPI_BU
+ 244              		.loc 1 86 5
+ 245 0012 0423     		movs	r3, #4
+ 246 0014 3B4A     		ldr	r2, .L12
+ 247 0016 3C49     		ldr	r1, .L12+4
+ 248 0018 3C48     		ldr	r0, .L12+8
+ 249 001a FFF7FEFF 		bl	spi_exchange
+  87:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+  88:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     /*Fill SPI receive message*/
+  89:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     ulSPIOutNoCRC->RxIn.R = ((L9388_rx_buffer[0]<<24)|(L9388_rx_buffer[1]<<16)|(L9388_rx_buffer[2]<
+ 250              		.loc 1 89 46
+ 251 001e 394B     		ldr	r3, .L12
+ 252 0020 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 253              		.loc 1 89 49
+ 254 0022 1A06     		lsls	r2, r3, #24
+ 255              		.loc 1 89 71
+ 256 0024 374B     		ldr	r3, .L12
+ 257 0026 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 258              		.loc 1 89 74
+ 259 0028 1B04     		lsls	r3, r3, #16
+ 260              		.loc 1 89 54
+ 261 002a 1A43     		orrs	r2, r2, r3
+ 262              		.loc 1 89 96
+ 263 002c 354B     		ldr	r3, .L12
+ 264 002e 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 265              		.loc 1 89 99
+ 266 0030 1B02     		lsls	r3, r3, #8
+ 267              		.loc 1 89 79
+ 268 0032 1343     		orrs	r3, r3, r2
+ 269              		.loc 1 89 120
+ 270 0034 334A     		ldr	r2, .L12
+ 271 0036 D278     		ldrb	r2, [r2, #3]	@ zero_extendqisi2
+ 272              		.loc 1 89 103
+ 273 0038 1343     		orrs	r3, r3, r2
+ 274 003a 1A46     		mov	r2, r3
+ 275              		.loc 1 89 27
+ 276 003c 019B     		ldr	r3, [sp, #4]
+ 277 003e 5A60     		str	r2, [r3, #4]
+  90:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+  91:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	if((ulSPIOutNoCRC->RxIn.B.ShortFrameErr)&&(ulSPIOutNoCRC->RxIn.B.DataRx=0x1000))
+ 278              		.loc 1 91 5
+ 279 0040 019B     		ldr	r3, [sp, #4]
+ 280 0042 DB79     		ldrb	r3, [r3, #7]	@ zero_extendqisi2
+ 281 0044 23F07F03 		bic	r3, r3, #127
+ 282 0048 DBB2     		uxtb	r3, r3
+ 283              		.loc 1 91 4
+ 284 004a 002B     		cmp	r3, #0
+ 285 004c 09D0     		beq	.L10
+ 286              		.loc 1 91 73 discriminator 1
+ 287 004e 019A     		ldr	r2, [sp, #4]
+ 288 0050 5368     		ldr	r3, [r2, #4]
+ 289 0052 4FF48051 		mov	r1, #4096
+ 290 0056 61F35413 		bfi	r3, r1, #5, #16
+ 291 005a 5360     		str	r3, [r2, #4]
+  92:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	{
+  93:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		Wrong_FCNT_Handler(ulSPIOutNoCRC);
+ 292              		.loc 1 93 3 discriminator 1
+ 293 005c 0198     		ldr	r0, [sp, #4]
+ 294 005e FFF7FEFF 		bl	Wrong_FCNT_Handler
+ 295              	.L10:
+  94:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	}
+  95:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	// else
+  96:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	// {
+  97:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		/*Flip FCNT*/
+  98:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		ulSPIOutNoCRC->TxOut.B.FCNT ^= 1;
+ 296              		.loc 1 98 31
+ 297 0062 019B     		ldr	r3, [sp, #4]
+ 298 0064 9B78     		ldrb	r3, [r3, #2]
+ 299 0066 C3F34013 		ubfx	r3, r3, #5, #1
+ 300 006a DBB2     		uxtb	r3, r3
+ 301 006c 83F00103 		eor	r3, r3, #1
+ 302 0070 D9B2     		uxtb	r1, r3
+ 303 0072 019A     		ldr	r2, [sp, #4]
+ 304 0074 9378     		ldrb	r3, [r2, #2]
+ 305 0076 61F34513 		bfi	r3, r1, #5, #1
+ 306 007a 9370     		strb	r3, [r2, #2]
+  99:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	// }
+ 100:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 101:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	/*Set R/W to Read*/
+ 102:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	ulSPIOutNoCRC->TxOut.B.WRn = 0;
+ 307              		.loc 1 102 29
+ 308 007c 019A     		ldr	r2, [sp, #4]
+ 309 007e D378     		ldrb	r3, [r2, #3]
+ 310 0080 6FF3C713 		bfc	r3, #7, #1
+ 311 0084 D370     		strb	r3, [r2, #3]
+ 103:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 104:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	/*Calculate Crc with update message*/
+ 105:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	L9388_CrcCompute(ulSPIOutNoCRC);
+ 312              		.loc 1 105 2
+ 313 0086 0198     		ldr	r0, [sp, #4]
+ 314 0088 FFF7FEFF 		bl	L9388_CrcCompute
+ 106:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 107:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     /*Fill SPI Tx buffer*/
+ 108:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	L9388_Fill_SPI_Tx_Buffer(ulSPIOutNoCRC);
+ 315              		.loc 1 108 2
+ 316 008c 0198     		ldr	r0, [sp, #4]
+ 317 008e FFF7FEFF 		bl	L9388_Fill_SPI_Tx_Buffer
+ 109:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 110:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     /*SPI polled exchange*/
+ 111:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	spi_exchange(&MASTER_SPID, (uint8_t *)L9388_tx_buffer, (uint8_t *)L9388_rx_buffer, L9388_SPI_BUFFE
+ 318              		.loc 1 111 2
+ 319 0092 0423     		movs	r3, #4
+ 320 0094 1B4A     		ldr	r2, .L12
+ 321 0096 1C49     		ldr	r1, .L12+4
+ 322 0098 1C48     		ldr	r0, .L12+8
+ 323 009a FFF7FEFF 		bl	spi_exchange
+ 112:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 113:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     /*Fill SPI receive message*/
+ 114:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     ulSPIOutNoCRC->RxIn.R = ((L9388_rx_buffer[0]<<24)|(L9388_rx_buffer[1]<<16)|(L9388_rx_buffer[2]<
+ 324              		.loc 1 114 46
+ 325 009e 194B     		ldr	r3, .L12
+ 326 00a0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 327              		.loc 1 114 49
+ 328 00a2 1A06     		lsls	r2, r3, #24
+ 329              		.loc 1 114 71
+ 330 00a4 174B     		ldr	r3, .L12
+ 331 00a6 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 332              		.loc 1 114 74
+ 333 00a8 1B04     		lsls	r3, r3, #16
+ 334              		.loc 1 114 54
+ 335 00aa 1A43     		orrs	r2, r2, r3
+ 336              		.loc 1 114 96
+ 337 00ac 154B     		ldr	r3, .L12
+ 338 00ae 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 339              		.loc 1 114 99
+ 340 00b0 1B02     		lsls	r3, r3, #8
+ 341              		.loc 1 114 79
+ 342 00b2 1343     		orrs	r3, r3, r2
+ 343              		.loc 1 114 120
+ 344 00b4 134A     		ldr	r2, .L12
+ 345 00b6 D278     		ldrb	r2, [r2, #3]	@ zero_extendqisi2
+ 346              		.loc 1 114 103
+ 347 00b8 1343     		orrs	r3, r3, r2
+ 348 00ba 1A46     		mov	r2, r3
+ 349              		.loc 1 114 27
+ 350 00bc 019B     		ldr	r3, [sp, #4]
+ 351 00be 5A60     		str	r2, [r3, #4]
+ 115:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 116:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	if((ulSPIOutNoCRC->RxIn.B.ShortFrameErr)&&(ulSPIOutNoCRC->RxIn.B.DataRx=0x1000))
+ 352              		.loc 1 116 5
+ 353 00c0 019B     		ldr	r3, [sp, #4]
+ 354 00c2 DB79     		ldrb	r3, [r3, #7]	@ zero_extendqisi2
+ 355 00c4 23F07F03 		bic	r3, r3, #127
+ 356 00c8 DBB2     		uxtb	r3, r3
+ 357              		.loc 1 116 4
+ 358 00ca 002B     		cmp	r3, #0
+ 359 00cc 09D0     		beq	.L11
+ 360              		.loc 1 116 73 discriminator 1
+ 361 00ce 019A     		ldr	r2, [sp, #4]
+ 362 00d0 5368     		ldr	r3, [r2, #4]
+ 363 00d2 4FF48051 		mov	r1, #4096
+ 364 00d6 61F35413 		bfi	r3, r1, #5, #16
+ 365 00da 5360     		str	r3, [r2, #4]
+ 117:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	{
+ 118:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		Wrong_FCNT_Handler(ulSPIOutNoCRC);
+ 366              		.loc 1 118 3 discriminator 1
+ 367 00dc 0198     		ldr	r0, [sp, #4]
+ 368 00de FFF7FEFF 		bl	Wrong_FCNT_Handler
+ 369              	.L11:
+ 119:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	}
+ 120:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	// else
+ 121:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	// {
+ 122:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		/*Flip FCNT*/
+ 123:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		ulSPIOutNoCRC->TxOut.B.FCNT ^= 1;
+ 370              		.loc 1 123 31
+ 371 00e2 019B     		ldr	r3, [sp, #4]
+ 372 00e4 9B78     		ldrb	r3, [r3, #2]
+ 373 00e6 C3F34013 		ubfx	r3, r3, #5, #1
+ 374 00ea DBB2     		uxtb	r3, r3
+ 375 00ec 83F00103 		eor	r3, r3, #1
+ 376 00f0 D9B2     		uxtb	r1, r3
+ 377 00f2 019A     		ldr	r2, [sp, #4]
+ 378 00f4 9378     		ldrb	r3, [r2, #2]
+ 379 00f6 61F34513 		bfi	r3, r1, #5, #1
+ 380 00fa 9370     		strb	r3, [r2, #2]
+ 124:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	// }
+ 125:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 126:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** }
+ 381              		.loc 1 126 1
+ 382 00fc 00BF     		nop
+ 383 00fe 03B0     		add	sp, sp, #12
+ 384              		.cfi_def_cfa_offset 4
+ 385              		@ sp needed
+ 386 0100 5DF804FB 		ldr	pc, [sp], #4
+ 387              	.L13:
+ 388              		.align	2
+ 389              	.L12:
+ 390 0104 00000000 		.word	L9388_rx_buffer
+ 391 0108 00000000 		.word	L9388_tx_buffer
+ 392 010c 00000000 		.word	DRV_SPI1
+ 393              		.cfi_endproc
+ 394              	.LFE447:
+ 396              		.section	.text.L9388_SPI_WRDataWithCRC,"ax",%progbits
+ 397              		.align	1
+ 398              		.p2align 4,,15
+ 399              		.global	L9388_SPI_WRDataWithCRC
+ 400              		.syntax unified
+ 401              		.thumb
+ 402              		.thumb_func
+ 404              	L9388_SPI_WRDataWithCRC:
+ 405              	.LFB448:
+ 127:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 128:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** /****************************************************************************
+ 129:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** * Name:    SPI_WRDataWithCRC
+ 130:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** * Parameters:
+ 131:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** *              ulSPIOutNoCRC
+ 132:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** * Returns:
+ 133:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** *              none
+ 134:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** * Description:		Write data into register but not read back.
+ 135:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** *
+ 136:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** * ****************************************************************************/
+ 137:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** void L9388_SPI_WRDataWithCRC(L9388_Data_tag* ulSPIOutNoCRC){
+ 406              		.loc 1 137 60
+ 407              		.cfi_startproc
+ 408              		@ args = 0, pretend = 0, frame = 8
+ 409              		@ frame_needed = 0, uses_anonymous_args = 0
+ 410 0000 00B5     		push	{lr}
+ 411              		.cfi_def_cfa_offset 4
+ 412              		.cfi_offset 14, -4
+ 413 0002 83B0     		sub	sp, sp, #12
+ 414              		.cfi_def_cfa_offset 16
+ 415 0004 0190     		str	r0, [sp, #4]
+ 138:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 139:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	/*Calculate Crc*/
+ 140:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	L9388_CrcCompute(ulSPIOutNoCRC);
+ 416              		.loc 1 140 2
+ 417 0006 0198     		ldr	r0, [sp, #4]
+ 418 0008 FFF7FEFF 		bl	L9388_CrcCompute
+ 141:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	
+ 142:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     /*Fill SPI Tx buffer*/
+ 143:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	L9388_Fill_SPI_Tx_Buffer(ulSPIOutNoCRC);
+ 419              		.loc 1 143 2
+ 420 000c 0198     		ldr	r0, [sp, #4]
+ 421 000e FFF7FEFF 		bl	L9388_Fill_SPI_Tx_Buffer
+ 144:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 145:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     /*SPI polled exchange*/
+ 146:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     spi_exchange(&MASTER_SPID, (uint8_t *)L9388_tx_buffer, (uint8_t *)L9388_rx_buffer, L9388_SPI_BU
+ 422              		.loc 1 146 5
+ 423 0012 0423     		movs	r3, #4
+ 424 0014 1B4A     		ldr	r2, .L16
+ 425 0016 1C49     		ldr	r1, .L16+4
+ 426 0018 1C48     		ldr	r0, .L16+8
+ 427 001a FFF7FEFF 		bl	spi_exchange
+ 147:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 148:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     /*Fill SPI receive message*/
+ 149:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     ulSPIOutNoCRC->RxIn.R = ((L9388_rx_buffer[0]<<24)|(L9388_rx_buffer[1]<<16)|(L9388_rx_buffer[2]<
+ 428              		.loc 1 149 46
+ 429 001e 194B     		ldr	r3, .L16
+ 430 0020 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 431              		.loc 1 149 49
+ 432 0022 1A06     		lsls	r2, r3, #24
+ 433              		.loc 1 149 71
+ 434 0024 174B     		ldr	r3, .L16
+ 435 0026 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 436              		.loc 1 149 74
+ 437 0028 1B04     		lsls	r3, r3, #16
+ 438              		.loc 1 149 54
+ 439 002a 1A43     		orrs	r2, r2, r3
+ 440              		.loc 1 149 96
+ 441 002c 154B     		ldr	r3, .L16
+ 442 002e 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 443              		.loc 1 149 99
+ 444 0030 1B02     		lsls	r3, r3, #8
+ 445              		.loc 1 149 79
+ 446 0032 1343     		orrs	r3, r3, r2
+ 447              		.loc 1 149 120
+ 448 0034 134A     		ldr	r2, .L16
+ 449 0036 D278     		ldrb	r2, [r2, #3]	@ zero_extendqisi2
+ 450              		.loc 1 149 103
+ 451 0038 1343     		orrs	r3, r3, r2
+ 452 003a 1A46     		mov	r2, r3
+ 453              		.loc 1 149 27
+ 454 003c 019B     		ldr	r3, [sp, #4]
+ 455 003e 5A60     		str	r2, [r3, #4]
+ 150:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 151:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	if((ulSPIOutNoCRC->RxIn.B.ShortFrameErr)&&(ulSPIOutNoCRC->RxIn.B.DataRx=0x1000))
+ 456              		.loc 1 151 5
+ 457 0040 019B     		ldr	r3, [sp, #4]
+ 458 0042 DB79     		ldrb	r3, [r3, #7]	@ zero_extendqisi2
+ 459 0044 23F07F03 		bic	r3, r3, #127
+ 460 0048 DBB2     		uxtb	r3, r3
+ 461              		.loc 1 151 4
+ 462 004a 002B     		cmp	r3, #0
+ 463 004c 09D0     		beq	.L15
+ 464              		.loc 1 151 73 discriminator 1
+ 465 004e 019A     		ldr	r2, [sp, #4]
+ 466 0050 5368     		ldr	r3, [r2, #4]
+ 467 0052 4FF48051 		mov	r1, #4096
+ 468 0056 61F35413 		bfi	r3, r1, #5, #16
+ 469 005a 5360     		str	r3, [r2, #4]
+ 152:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	{
+ 153:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		Wrong_FCNT_Handler(ulSPIOutNoCRC);
+ 470              		.loc 1 153 3 discriminator 1
+ 471 005c 0198     		ldr	r0, [sp, #4]
+ 472 005e FFF7FEFF 		bl	Wrong_FCNT_Handler
+ 473              	.L15:
+ 154:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	}
+ 155:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	// else
+ 156:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	// {
+ 157:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		ulSPIOutNoCRC->TxOut.B.FCNT ^= 1;
+ 474              		.loc 1 157 31
+ 475 0062 019B     		ldr	r3, [sp, #4]
+ 476 0064 9B78     		ldrb	r3, [r3, #2]
+ 477 0066 C3F34013 		ubfx	r3, r3, #5, #1
+ 478 006a DBB2     		uxtb	r3, r3
+ 479 006c 83F00103 		eor	r3, r3, #1
+ 480 0070 D9B2     		uxtb	r1, r3
+ 481 0072 019A     		ldr	r2, [sp, #4]
+ 482 0074 9378     		ldrb	r3, [r2, #2]
+ 483 0076 61F34513 		bfi	r3, r1, #5, #1
+ 484 007a 9370     		strb	r3, [r2, #2]
+ 158:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	// }
+ 159:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** }
+ 485              		.loc 1 159 1
+ 486 007c 00BF     		nop
+ 487 007e 03B0     		add	sp, sp, #12
+ 488              		.cfi_def_cfa_offset 4
+ 489              		@ sp needed
+ 490 0080 5DF804FB 		ldr	pc, [sp], #4
+ 491              	.L17:
+ 492              		.align	2
+ 493              	.L16:
+ 494 0084 00000000 		.word	L9388_rx_buffer
+ 495 0088 00000000 		.word	L9388_tx_buffer
+ 496 008c 00000000 		.word	DRV_SPI1
+ 497              		.cfi_endproc
+ 498              	.LFE448:
+ 500              		.section	.text.L9388_SPI_RDDataWithCRC,"ax",%progbits
+ 501              		.align	1
+ 502              		.p2align 4,,15
+ 503              		.global	L9388_SPI_RDDataWithCRC
+ 504              		.syntax unified
+ 505              		.thumb
+ 506              		.thumb_func
+ 508              	L9388_SPI_RDDataWithCRC:
+ 509              	.LFB449:
+ 160:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 161:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** /****************************************************************************
+ 162:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** * Name:    SPI_RDDataWithCRC
+ 163:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** * Parameters:
+ 164:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** *              ulSPIOutNoCRC
+ 165:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** * Returns:
+ 166:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** *              none
+ 167:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** * Description:		Write data into register but not read back.
+ 168:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** *
+ 169:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** * ****************************************************************************/
+ 170:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** void L9388_SPI_RDDataWithCRC(L9388_Data_tag* ulSPIOutNoCRC){
+ 510              		.loc 1 170 60
+ 511              		.cfi_startproc
+ 512              		@ args = 0, pretend = 0, frame = 8
+ 513              		@ frame_needed = 0, uses_anonymous_args = 0
+ 514 0000 00B5     		push	{lr}
+ 515              		.cfi_def_cfa_offset 4
+ 516              		.cfi_offset 14, -4
+ 517 0002 83B0     		sub	sp, sp, #12
+ 518              		.cfi_def_cfa_offset 16
+ 519 0004 0190     		str	r0, [sp, #4]
+ 171:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 172:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	/*Calculate Crc*/
+ 173:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	L9388_CrcCompute(ulSPIOutNoCRC);
+ 520              		.loc 1 173 2
+ 521 0006 0198     		ldr	r0, [sp, #4]
+ 522 0008 FFF7FEFF 		bl	L9388_CrcCompute
+ 174:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	
+ 175:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     /*Fill SPI Tx buffer*/
+ 176:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	L9388_Fill_SPI_Tx_Buffer(ulSPIOutNoCRC);
+ 523              		.loc 1 176 2
+ 524 000c 0198     		ldr	r0, [sp, #4]
+ 525 000e FFF7FEFF 		bl	L9388_Fill_SPI_Tx_Buffer
+ 177:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 178:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     /*SPI polled exchange*/
+ 179:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     spi_exchange(&MASTER_SPID, (uint8_t *)L9388_tx_buffer, (uint8_t *)L9388_rx_buffer, L9388_SPI_BU
+ 526              		.loc 1 179 5
+ 527 0012 0423     		movs	r3, #4
+ 528 0014 244A     		ldr	r2, .L20
+ 529 0016 2549     		ldr	r1, .L20+4
+ 530 0018 2548     		ldr	r0, .L20+8
+ 531 001a FFF7FEFF 		bl	spi_exchange
+ 180:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 181:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     /*Fill SPI receive message*/
+ 182:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     ulSPIOutNoCRC->RxIn.R = ((L9388_rx_buffer[0]<<24)|(L9388_rx_buffer[1]<<16)|(L9388_rx_buffer[2]<
+ 532              		.loc 1 182 46
+ 533 001e 224B     		ldr	r3, .L20
+ 534 0020 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 535              		.loc 1 182 49
+ 536 0022 1A06     		lsls	r2, r3, #24
+ 537              		.loc 1 182 71
+ 538 0024 204B     		ldr	r3, .L20
+ 539 0026 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 540              		.loc 1 182 74
+ 541 0028 1B04     		lsls	r3, r3, #16
+ 542              		.loc 1 182 54
+ 543 002a 1A43     		orrs	r2, r2, r3
+ 544              		.loc 1 182 96
+ 545 002c 1E4B     		ldr	r3, .L20
+ 546 002e 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 547              		.loc 1 182 99
+ 548 0030 1B02     		lsls	r3, r3, #8
+ 549              		.loc 1 182 79
+ 550 0032 1343     		orrs	r3, r3, r2
+ 551              		.loc 1 182 120
+ 552 0034 1C4A     		ldr	r2, .L20
+ 553 0036 D278     		ldrb	r2, [r2, #3]	@ zero_extendqisi2
+ 554              		.loc 1 182 103
+ 555 0038 1343     		orrs	r3, r3, r2
+ 556 003a 1A46     		mov	r2, r3
+ 557              		.loc 1 182 27
+ 558 003c 019B     		ldr	r3, [sp, #4]
+ 559 003e 5A60     		str	r2, [r3, #4]
+ 183:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 184:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	if((ulSPIOutNoCRC->RxIn.B.ShortFrameErr)&&(ulSPIOutNoCRC->RxIn.B.DataRx=0x1000))
+ 560              		.loc 1 184 5
+ 561 0040 019B     		ldr	r3, [sp, #4]
+ 562 0042 DB79     		ldrb	r3, [r3, #7]	@ zero_extendqisi2
+ 563 0044 23F07F03 		bic	r3, r3, #127
+ 564 0048 DBB2     		uxtb	r3, r3
+ 565              		.loc 1 184 4
+ 566 004a 002B     		cmp	r3, #0
+ 567 004c 09D0     		beq	.L19
+ 568              		.loc 1 184 73 discriminator 1
+ 569 004e 019A     		ldr	r2, [sp, #4]
+ 570 0050 5368     		ldr	r3, [r2, #4]
+ 571 0052 4FF48051 		mov	r1, #4096
+ 572 0056 61F35413 		bfi	r3, r1, #5, #16
+ 573 005a 5360     		str	r3, [r2, #4]
+ 185:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	{
+ 186:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		Wrong_FCNT_Handler(ulSPIOutNoCRC);
+ 574              		.loc 1 186 3 discriminator 1
+ 575 005c 0198     		ldr	r0, [sp, #4]
+ 576 005e FFF7FEFF 		bl	Wrong_FCNT_Handler
+ 577              	.L19:
+ 187:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	}
+ 188:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	// else
+ 189:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	// {
+ 190:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		ulSPIOutNoCRC->TxOut.B.FCNT ^= 1;
+ 578              		.loc 1 190 31
+ 579 0062 019B     		ldr	r3, [sp, #4]
+ 580 0064 9B78     		ldrb	r3, [r3, #2]
+ 581 0066 C3F34013 		ubfx	r3, r3, #5, #1
+ 582 006a DBB2     		uxtb	r3, r3
+ 583 006c 83F00103 		eor	r3, r3, #1
+ 584 0070 D9B2     		uxtb	r1, r3
+ 585 0072 019A     		ldr	r2, [sp, #4]
+ 586 0074 9378     		ldrb	r3, [r2, #2]
+ 587 0076 61F34513 		bfi	r3, r1, #5, #1
+ 588 007a 9370     		strb	r3, [r2, #2]
+ 191:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	// }
+ 192:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 193:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	/*Fill SPI receive message*/
+ 194:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     ulSPIOutNoCRC->RxIn.R = ((L9388_rx_buffer[0]<<24)|(L9388_rx_buffer[1]<<16)|(L9388_rx_buffer[2]<
+ 589              		.loc 1 194 46
+ 590 007c 0A4B     		ldr	r3, .L20
+ 591 007e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 592              		.loc 1 194 49
+ 593 0080 1A06     		lsls	r2, r3, #24
+ 594              		.loc 1 194 71
+ 595 0082 094B     		ldr	r3, .L20
+ 596 0084 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 597              		.loc 1 194 74
+ 598 0086 1B04     		lsls	r3, r3, #16
+ 599              		.loc 1 194 54
+ 600 0088 1A43     		orrs	r2, r2, r3
+ 601              		.loc 1 194 96
+ 602 008a 074B     		ldr	r3, .L20
+ 603 008c 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 604              		.loc 1 194 99
+ 605 008e 1B02     		lsls	r3, r3, #8
+ 606              		.loc 1 194 79
+ 607 0090 1343     		orrs	r3, r3, r2
+ 608              		.loc 1 194 120
+ 609 0092 054A     		ldr	r2, .L20
+ 610 0094 D278     		ldrb	r2, [r2, #3]	@ zero_extendqisi2
+ 611              		.loc 1 194 103
+ 612 0096 1343     		orrs	r3, r3, r2
+ 613 0098 1A46     		mov	r2, r3
+ 614              		.loc 1 194 27
+ 615 009a 019B     		ldr	r3, [sp, #4]
+ 616 009c 5A60     		str	r2, [r3, #4]
+ 195:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** }
+ 617              		.loc 1 195 1
+ 618 009e 00BF     		nop
+ 619 00a0 03B0     		add	sp, sp, #12
+ 620              		.cfi_def_cfa_offset 4
+ 621              		@ sp needed
+ 622 00a2 5DF804FB 		ldr	pc, [sp], #4
+ 623              	.L21:
+ 624 00a6 00BF     		.align	2
+ 625              	.L20:
+ 626 00a8 00000000 		.word	L9388_rx_buffer
+ 627 00ac 00000000 		.word	L9388_tx_buffer
+ 628 00b0 00000000 		.word	DRV_SPI1
+ 629              		.cfi_endproc
+ 630              	.LFE449:
+ 632              		.section	.text.Wrong_FCNT_Handler,"ax",%progbits
+ 633              		.align	1
+ 634              		.p2align 4,,15
+ 635              		.global	Wrong_FCNT_Handler
+ 636              		.syntax unified
+ 637              		.thumb
+ 638              		.thumb_func
+ 640              	Wrong_FCNT_Handler:
+ 641              	.LFB450:
+ 196:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 197:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** void Wrong_FCNT_Handler(L9388_Data_tag* ulSPIOutWithCRC)
+ 198:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** {
+ 642              		.loc 1 198 1
+ 643              		.cfi_startproc
+ 644              		@ args = 0, pretend = 0, frame = 8
+ 645              		@ frame_needed = 0, uses_anonymous_args = 0
+ 646 0000 00B5     		push	{lr}
+ 647              		.cfi_def_cfa_offset 4
+ 648              		.cfi_offset 14, -4
+ 649 0002 83B0     		sub	sp, sp, #12
+ 650              		.cfi_def_cfa_offset 16
+ 651 0004 0190     		str	r0, [sp, #4]
+ 199:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 200:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	/*Set R/W to Read*/
+ 201:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	ulSPIOutWithCRC->TxOut.B.WRn = 0;
+ 652              		.loc 1 201 31
+ 653 0006 019A     		ldr	r2, [sp, #4]
+ 654 0008 D378     		ldrb	r3, [r2, #3]
+ 655 000a 6FF3C713 		bfc	r3, #7, #1
+ 656 000e D370     		strb	r3, [r2, #3]
+ 202:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 203:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	/*Calculate Crc with update message*/
+ 204:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	L9388_CrcCompute(ulSPIOutWithCRC);
+ 657              		.loc 1 204 2
+ 658 0010 0198     		ldr	r0, [sp, #4]
+ 659 0012 FFF7FEFF 		bl	L9388_CrcCompute
+ 205:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 206:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     /*Fill SPI Tx buffer*/
+ 207:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	L9388_Fill_SPI_Tx_Buffer(ulSPIOutWithCRC);
+ 660              		.loc 1 207 2
+ 661 0016 0198     		ldr	r0, [sp, #4]
+ 662 0018 FFF7FEFF 		bl	L9388_Fill_SPI_Tx_Buffer
+ 208:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 209:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     /*SPI polled exchange*/
+ 210:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	spi_exchange(&MASTER_SPID, (uint8_t *)L9388_tx_buffer, (uint8_t *)L9388_rx_buffer, L9388_SPI_BUFFE
+ 663              		.loc 1 210 2
+ 664 001c 0423     		movs	r3, #4
+ 665 001e 364A     		ldr	r2, .L28
+ 666 0020 3649     		ldr	r1, .L28+4
+ 667 0022 3748     		ldr	r0, .L28+8
+ 668 0024 FFF7FEFF 		bl	spi_exchange
+ 211:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 212:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	/*Flip FCNT*/
+ 213:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	L9388_SPI_Buffer.TxOut.B.FCNT ^= 1;
+ 669              		.loc 1 213 32
+ 670 0028 364B     		ldr	r3, .L28+12
+ 671 002a 9B78     		ldrb	r3, [r3, #2]
+ 672 002c C3F34013 		ubfx	r3, r3, #5, #1
+ 673 0030 DBB2     		uxtb	r3, r3
+ 674 0032 83F00103 		eor	r3, r3, #1
+ 675 0036 D9B2     		uxtb	r1, r3
+ 676 0038 324A     		ldr	r2, .L28+12
+ 677 003a 9378     		ldrb	r3, [r2, #2]
+ 678 003c 61F34513 		bfi	r3, r1, #5, #1
+ 679 0040 9370     		strb	r3, [r2, #2]
+ 214:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	
+ 215:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	/*Calculate Crc with update message*/
+ 216:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	L9388_CrcCompute(ulSPIOutWithCRC);
+ 680              		.loc 1 216 2
+ 681 0042 0198     		ldr	r0, [sp, #4]
+ 682 0044 FFF7FEFF 		bl	L9388_CrcCompute
+ 217:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 218:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     /*Fill SPI Tx buffer*/
+ 219:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	L9388_Fill_SPI_Tx_Buffer(ulSPIOutWithCRC);
+ 683              		.loc 1 219 2
+ 684 0048 0198     		ldr	r0, [sp, #4]
+ 685 004a FFF7FEFF 		bl	L9388_Fill_SPI_Tx_Buffer
+ 220:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 221:CDD/CDD_L9388/src/CDD_L9388_LLD.c ****     /*SPI polled exchange*/
+ 222:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	spi_exchange(&MASTER_SPID, (uint8_t *)L9388_tx_buffer, (uint8_t *)L9388_rx_buffer, L9388_SPI_BUFFE
+ 686              		.loc 1 222 2
+ 687 004e 0423     		movs	r3, #4
+ 688 0050 294A     		ldr	r2, .L28
+ 689 0052 2A49     		ldr	r1, .L28+4
+ 690 0054 2A48     		ldr	r0, .L28+8
+ 691 0056 FFF7FEFF 		bl	spi_exchange
+ 223:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	ulSPIOutWithCRC->RxIn.R = ((L9388_rx_buffer[0]<<24)|(L9388_rx_buffer[1]<<16)|(L9388_rx_buffer[2]<<
+ 692              		.loc 1 223 45
+ 693 005a 274B     		ldr	r3, .L28
+ 694 005c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 695              		.loc 1 223 48
+ 696 005e 1A06     		lsls	r2, r3, #24
+ 697              		.loc 1 223 70
+ 698 0060 254B     		ldr	r3, .L28
+ 699 0062 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 700              		.loc 1 223 73
+ 701 0064 1B04     		lsls	r3, r3, #16
+ 702              		.loc 1 223 53
+ 703 0066 1A43     		orrs	r2, r2, r3
+ 704              		.loc 1 223 95
+ 705 0068 234B     		ldr	r3, .L28
+ 706 006a 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 707              		.loc 1 223 98
+ 708 006c 1B02     		lsls	r3, r3, #8
+ 709              		.loc 1 223 78
+ 710 006e 1343     		orrs	r3, r3, r2
+ 711              		.loc 1 223 119
+ 712 0070 214A     		ldr	r2, .L28
+ 713 0072 D278     		ldrb	r2, [r2, #3]	@ zero_extendqisi2
+ 714              		.loc 1 223 102
+ 715 0074 1343     		orrs	r3, r3, r2
+ 716 0076 1A46     		mov	r2, r3
+ 717              		.loc 1 223 26
+ 718 0078 019B     		ldr	r3, [sp, #4]
+ 719 007a 5A60     		str	r2, [r3, #4]
+ 224:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 225:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	while((ulSPIOutWithCRC->RxIn.B.ShortFrameErr)&&(ulSPIOutWithCRC->RxIn.B.DataRx=0x1000))
+ 720              		.loc 1 225 7
+ 721 007c 29E0     		b	.L23
+ 722              	.L26:
+ 226:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	{
+ 227:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		/*Flip FCNT*/
+ 228:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		ulSPIOutWithCRC->TxOut.B.FCNT ^= 1;
+ 723              		.loc 1 228 33
+ 724 007e 019B     		ldr	r3, [sp, #4]
+ 725 0080 9B78     		ldrb	r3, [r3, #2]
+ 726 0082 C3F34013 		ubfx	r3, r3, #5, #1
+ 727 0086 DBB2     		uxtb	r3, r3
+ 728 0088 83F00103 		eor	r3, r3, #1
+ 729 008c D9B2     		uxtb	r1, r3
+ 730 008e 019A     		ldr	r2, [sp, #4]
+ 731 0090 9378     		ldrb	r3, [r2, #2]
+ 732 0092 61F34513 		bfi	r3, r1, #5, #1
+ 733 0096 9370     		strb	r3, [r2, #2]
+ 229:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		
+ 230:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		/*Calculate Crc with update message*/
+ 231:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		L9388_CrcCompute(ulSPIOutWithCRC);
+ 734              		.loc 1 231 3
+ 735 0098 0198     		ldr	r0, [sp, #4]
+ 736 009a FFF7FEFF 		bl	L9388_CrcCompute
+ 232:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 233:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		/*Fill SPI Tx buffer*/
+ 234:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		L9388_Fill_SPI_Tx_Buffer(ulSPIOutWithCRC);
+ 737              		.loc 1 234 3
+ 738 009e 0198     		ldr	r0, [sp, #4]
+ 739 00a0 FFF7FEFF 		bl	L9388_Fill_SPI_Tx_Buffer
+ 235:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 236:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		/*SPI polled exchange*/
+ 237:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		spi_exchange(&MASTER_SPID, (uint8_t *)L9388_tx_buffer, (uint8_t *)L9388_rx_buffer, L9388_SPI_BUFF
+ 740              		.loc 1 237 3
+ 741 00a4 0423     		movs	r3, #4
+ 742 00a6 144A     		ldr	r2, .L28
+ 743 00a8 1449     		ldr	r1, .L28+4
+ 744 00aa 1548     		ldr	r0, .L28+8
+ 745 00ac FFF7FEFF 		bl	spi_exchange
+ 238:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 239:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 		ulSPIOutWithCRC->RxIn.R = ((L9388_rx_buffer[0]<<24)|(L9388_rx_buffer[1]<<16)|(L9388_rx_buffer[2]<
+ 746              		.loc 1 239 46
+ 747 00b0 114B     		ldr	r3, .L28
+ 748 00b2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 749              		.loc 1 239 49
+ 750 00b4 1A06     		lsls	r2, r3, #24
+ 751              		.loc 1 239 71
+ 752 00b6 104B     		ldr	r3, .L28
+ 753 00b8 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 754              		.loc 1 239 74
+ 755 00ba 1B04     		lsls	r3, r3, #16
+ 756              		.loc 1 239 54
+ 757 00bc 1A43     		orrs	r2, r2, r3
+ 758              		.loc 1 239 96
+ 759 00be 0E4B     		ldr	r3, .L28
+ 760 00c0 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 761              		.loc 1 239 99
+ 762 00c2 1B02     		lsls	r3, r3, #8
+ 763              		.loc 1 239 79
+ 764 00c4 1343     		orrs	r3, r3, r2
+ 765              		.loc 1 239 120
+ 766 00c6 0C4A     		ldr	r2, .L28
+ 767 00c8 D278     		ldrb	r2, [r2, #3]	@ zero_extendqisi2
+ 768              		.loc 1 239 103
+ 769 00ca 1343     		orrs	r3, r3, r2
+ 770 00cc 1A46     		mov	r2, r3
+ 771              		.loc 1 239 27
+ 772 00ce 019B     		ldr	r3, [sp, #4]
+ 773 00d0 5A60     		str	r2, [r3, #4]
+ 774              	.L23:
+ 225:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	{
+ 775              		.loc 1 225 8
+ 776 00d2 019B     		ldr	r3, [sp, #4]
+ 777 00d4 DB79     		ldrb	r3, [r3, #7]	@ zero_extendqisi2
+ 778 00d6 23F07F03 		bic	r3, r3, #127
+ 779 00da DBB2     		uxtb	r3, r3
+ 225:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	{
+ 780              		.loc 1 225 7
+ 781 00dc 002B     		cmp	r3, #0
+ 782 00de 07D0     		beq	.L27
+ 225:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	{
+ 783              		.loc 1 225 80 discriminator 1
+ 784 00e0 019A     		ldr	r2, [sp, #4]
+ 785 00e2 5368     		ldr	r3, [r2, #4]
+ 786 00e4 4FF48051 		mov	r1, #4096
+ 787 00e8 61F35413 		bfi	r3, r1, #5, #16
+ 788 00ec 5360     		str	r3, [r2, #4]
+ 789 00ee C6E7     		b	.L26
+ 790              	.L27:
+ 240:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 
+ 241:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** 	}
+ 242:CDD/CDD_L9388/src/CDD_L9388_LLD.c **** }
+ 791              		.loc 1 242 1
+ 792 00f0 00BF     		nop
+ 793 00f2 03B0     		add	sp, sp, #12
+ 794              		.cfi_def_cfa_offset 4
+ 795              		@ sp needed
+ 796 00f4 5DF804FB 		ldr	pc, [sp], #4
+ 797              	.L29:
+ 798              		.align	2
+ 799              	.L28:
+ 800 00f8 00000000 		.word	L9388_rx_buffer
+ 801 00fc 00000000 		.word	L9388_tx_buffer
+ 802 0100 00000000 		.word	DRV_SPI1
+ 803 0104 00000000 		.word	L9388_SPI_Buffer
+ 804              		.cfi_endproc
+ 805              	.LFE450:
+ 807              		.text
+ 808              	.Letext0:
+ 809              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 810              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 811              		.file 4 "CDD/CDD_L9388/include/CDD_L9388_Struct.h"
+ 812              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\drivers\\comms\\spi\\include
+ 813              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\drivers\\comms\\spi\\include
+ 814              		.file 7 "CDD/CDD_L9388/include/CDD_L9388_LLD.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 CDD_L9388_LLD.c
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:23     .bss.L9388_tx_buffer:00000000 L9388_tx_buffer
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:20     .bss.L9388_tx_buffer:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:30     .bss.L9388_rx_buffer:00000000 L9388_rx_buffer
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:27     .bss.L9388_rx_buffer:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:37     .bss.L9388_SPI_Buffer:00000000 L9388_SPI_Buffer
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:34     .bss.L9388_SPI_Buffer:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:40     .text.L9388_CrcCompute:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:47     .text.L9388_CrcCompute:00000000 L9388_CrcCompute
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:150    .text.L9388_Fill_SPI_Tx_Buffer:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:157    .text.L9388_Fill_SPI_Tx_Buffer:00000000 L9388_Fill_SPI_Tx_Buffer
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:214    .text.L9388_Fill_SPI_Tx_Buffer:00000038 $d
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:219    .text.L9388_SPI_ExchangeDataWithCRC:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:226    .text.L9388_SPI_ExchangeDataWithCRC:00000000 L9388_SPI_ExchangeDataWithCRC
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:640    .text.Wrong_FCNT_Handler:00000000 Wrong_FCNT_Handler
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:390    .text.L9388_SPI_ExchangeDataWithCRC:00000104 $d
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:397    .text.L9388_SPI_WRDataWithCRC:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:404    .text.L9388_SPI_WRDataWithCRC:00000000 L9388_SPI_WRDataWithCRC
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:494    .text.L9388_SPI_WRDataWithCRC:00000084 $d
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:501    .text.L9388_SPI_RDDataWithCRC:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:508    .text.L9388_SPI_RDDataWithCRC:00000000 L9388_SPI_RDDataWithCRC
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:626    .text.L9388_SPI_RDDataWithCRC:000000a8 $d
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:633    .text.Wrong_FCNT_Handler:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccLRC5mi.s:800    .text.Wrong_FCNT_Handler:000000f8 $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.typedefs.h.36.07fe3956b4e751037cfee70edcd0b397
+                           .group:00000000 wm4.clock_cfg.h.23.3c8ba5c0347398a4587362787f86fe62
+                           .group:00000000 wm4.sr5e1xx.h.22.568547583bf3c00ded67adadc0110f08
+                           .group:00000000 wm4.cmsis_version.h.32.0f826810625204eca22a19868bdc7586
+                           .group:00000000 wm4.core_cm7.h.66.a4062db891274e2143912fc0bd7e55e3
+                           .group:00000000 wm4.cmsis_gcc.h.26.498d0ad17a45fc9ef20fdc01caf02259
+                           .group:00000000 wm4.core_cm7.h.305.f28cb27b64654b9b703ea60dbab0003d
+                           .group:00000000 wm4.mpu_armv7.h.32.83326921a797fa9d6f70449916b4b839
+                           .group:00000000 wm4.cachel1_armv7.h.32.abd77761a989e008b0c60891114a33c7
+                           .group:00000000 wm4.core_cm7.h.2376.07b7b0525701732543280b71e0cd2400
+                           .group:00000000 wm4.SR5E1_ADC.h.14.21608e6aff125ba995dd767d6d8dc311
+                           .group:00000000 wm4.SR5E1_CEM.h.14.01fe5742c8f1ae35b1f3af05932f702e
+                           .group:00000000 wm4.SR5E1_CMU.h.14.2617b38b159abe38028862394531e06d
+                           .group:00000000 wm4.SR5E1_COMP.h.14.4b6fdfe4f5f7fd9bedf3a99b98bdf4cd
+                           .group:00000000 wm4.SR5E1_CORDIC.h.14.354fbf7c9eaf6963d38eaa25cf28ffe8
+                           .group:00000000 wm4.SR5E1_CRC.h.14.270685b4f0bb89cdb48054af5fe3c4ef
+                           .group:00000000 wm4.SR5E1_DAC.h.14.8c26a0ff04b0cfeb55306cc3f22187b8
+                           .group:00000000 wm4.SR5E1_DBGMCU.h.14.427df893d53a8044654f017ba01c25ed
+                           .group:00000000 wm4.SR5E1_DMA.h.14.a7f9a92f844b40a86965798c2e64240b
+                           .group:00000000 wm4.SR5E1_DMAMUX.h.14.471b3b4dfd4d41515f1df49493698866
+                           .group:00000000 wm4.SR5E1_EXTI.h.14.a325ea3fe89cd84894660551c33241ea
+                           .group:00000000 wm4.SR5E1_FCCU.h.14.0ebf0f0f36e079d28613ad2c80e17e23
+                           .group:00000000 wm4.SR5E1_FDCAN.h.14.ac57101fad5dbc798bfb93f34c899de7
+                           .group:00000000 wm4.SR5E1_FLASH_REG_ITF.h.14.d23d1d44923f9b20b8c8fdb51d66aefd
+                           .group:00000000 wm4.SR5E1_GPIO.h.14.1c84071e130d7c64b62470ab0e18a1f1
+                           .group:00000000 wm4.SR5E1_HRTIM.h.24.03932387d2522e6bd5c772a4edaf2f5d
+                           .group:00000000 wm4.SR5E1_HSEM.h.14.cbe70eee519f01b16452c3f8c99d8df1
+                           .group:00000000 wm4.SR5E1_I2C.h.14.350ba3e0f4fd57828457efa80135c36c
+                           .group:00000000 wm4.SR5E1_IWDG.h.14.20b7c5f05cf7ae94464c360d7af3660d
+                           .group:00000000 wm4.SR5E1_NVM_CTRL.h.14.5f442617f0628d4f16258f211c614ef9
+                           .group:00000000 wm4.SR5E1_PLLDIG.h.14.bd87a8e6917eee17dae2f312c8e5fa53
+                           .group:00000000 wm4.SR5E1_PMC_DIG.h.14.6b7406ff48d7bcd1e53033a370604200
+                           .group:00000000 wm4.SR5E1_RCC.h.14.56734803c71534de286e793a53649740
+                           .group:00000000 wm4.SR5E1_RTC.h.14.47037cbc7d8175dbf2be1dc0bb955e3f
+                           .group:00000000 wm4.SR5E1_SD_ADC.h.14.552b97d0b8f3c1fd4df6d8964b2f1a80
+                           .group:00000000 wm4.SR5E1_SPI.h.14.42d52112e540f85ade4d9135f8b87d72
+                           .group:00000000 wm4.SR5E1_SSCM.h.14.8e6a2ad0ce5fca422fc3d69939b6125b
+                           .group:00000000 wm4.SR5E1_SYSCFG.h.14.02b969490118ce4069914b5e94f7ca65
+                           .group:00000000 wm4.SR5E1_TDM.h.14.a40ed7928cad243a57fd233fccf01ad2
+                           .group:00000000 wm4.SR5E1_TIM.h.14.05b8efc5395873619642d61a4b0b5a54
+                           .group:00000000 wm4.SR5E1_UART.h.14.eec3ab82b02b3bdb3de500483675b83f
+                           .group:00000000 wm4.SR5E1_WWDG.h.14.59b45efc70e442cc6ef03702aad4ad88
+                           .group:00000000 wm4.irq_numbers.h.38.b76ee9208c5ae3feb2392b512990cf71
+                           .group:00000000 wm4.regs.h.23.38915225b13378a72a9bf21e632c378b
+                           .group:00000000 wm4.clock.h.37.c942461032b5a15e2a4133c6666f70ce
+                           .group:00000000 wm4.gpio.h.25.d41a0c19fda8c2de42e666afb48ec15a
+                           .group:00000000 wm4.irq.h.37.78714f25754c8b09d1428599101f6cc7
+                           .group:00000000 wm4.osal_cfg.h.23.b97ea04faf646103324df3ecc2655260
+                           .group:00000000 wm4.osal.h.38.40390df6c87bbed5f1c054e622a926ee
+                           .group:00000000 wm4.test_env.h.57.690797a2e7b6aa0f01d5a7ba687211c6
+                           .group:00000000 wm4.evbe7000p.h.25.2f49fb17c3dd8379489c2784aa8b2c97
+                           .group:00000000 wm4.test_env.h.92.68c13ade9b3e38ad2c77de7ebbfe3e53
+                           .group:00000000 wm4.CDD_L9388_Struct.h.30.c97c44dfb835ac2f11130b1e90187324
+                           .group:00000000 wm4.dmamux.h.25.337aea179f6dbcc87c52aae26d38f76e
+                           .group:00000000 wm4.dma.h.40.f77dd217a06ceba13a3cfdd4102a73c1
+                           .group:00000000 wm4.SPI_LLD_Init.h.9.4b7d91fdd0a6a204eaba9ee0f6a090bc
+                           .group:00000000 wm4.CDD_L9388_LLD.h.4.c0e4ee74ebd31d158c70a54c5d929771
+
+UNDEFINED SYMBOLS
+spi_exchange
+DRV_SPI1

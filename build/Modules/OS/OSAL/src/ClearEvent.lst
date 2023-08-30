@@ -1,0 +1,396 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"ClearEvent.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.ClearEvent,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	ClearEvent
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	ClearEvent:
+  27              	.LFB0:
+  28              		.file 1 "Modules/OS/OSAL/src/ClearEvent.c"
+   1:Modules/OS/OSAL/src/ClearEvent.c **** /* Copyright 2008, 2009, 2014 Mariano Cerdeiro
+   2:Modules/OS/OSAL/src/ClearEvent.c ****  * Copyright 2014, ACSE & CADIEEL
+   3:Modules/OS/OSAL/src/ClearEvent.c ****  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+   4:Modules/OS/OSAL/src/ClearEvent.c ****  *      CADIEEL: http://www.cadieel.org.ar
+   5:Modules/OS/OSAL/src/ClearEvent.c ****  *
+   6:Modules/OS/OSAL/src/ClearEvent.c ****  * This file is part of CIAA Firmware.
+   7:Modules/OS/OSAL/src/ClearEvent.c ****  *
+   8:Modules/OS/OSAL/src/ClearEvent.c ****  * Redistribution and use in source and binary forms, with or without
+   9:Modules/OS/OSAL/src/ClearEvent.c ****  * modification, are permitted provided that the following conditions are met:
+  10:Modules/OS/OSAL/src/ClearEvent.c ****  *
+  11:Modules/OS/OSAL/src/ClearEvent.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  12:Modules/OS/OSAL/src/ClearEvent.c ****  *    this list of conditions and the following disclaimer.
+  13:Modules/OS/OSAL/src/ClearEvent.c ****  *
+  14:Modules/OS/OSAL/src/ClearEvent.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  15:Modules/OS/OSAL/src/ClearEvent.c ****  *    this list of conditions and the following disclaimer in the documentation
+  16:Modules/OS/OSAL/src/ClearEvent.c ****  *    and/or other materials provided with the distribution.
+  17:Modules/OS/OSAL/src/ClearEvent.c ****  *
+  18:Modules/OS/OSAL/src/ClearEvent.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  19:Modules/OS/OSAL/src/ClearEvent.c ****  *    contributors may be used to endorse or promote products derived from this
+  20:Modules/OS/OSAL/src/ClearEvent.c ****  *    software without specific prior written permission.
+  21:Modules/OS/OSAL/src/ClearEvent.c ****  *
+  22:Modules/OS/OSAL/src/ClearEvent.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Modules/OS/OSAL/src/ClearEvent.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Modules/OS/OSAL/src/ClearEvent.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  25:Modules/OS/OSAL/src/ClearEvent.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  26:Modules/OS/OSAL/src/ClearEvent.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  27:Modules/OS/OSAL/src/ClearEvent.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  28:Modules/OS/OSAL/src/ClearEvent.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  29:Modules/OS/OSAL/src/ClearEvent.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  30:Modules/OS/OSAL/src/ClearEvent.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  31:Modules/OS/OSAL/src/ClearEvent.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  32:Modules/OS/OSAL/src/ClearEvent.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  33:Modules/OS/OSAL/src/ClearEvent.c ****  *
+  34:Modules/OS/OSAL/src/ClearEvent.c ****  */
+  35:Modules/OS/OSAL/src/ClearEvent.c **** 
+  36:Modules/OS/OSAL/src/ClearEvent.c **** /** \brief FreeOSEK Os ClearEvent Implementation File
+  37:Modules/OS/OSAL/src/ClearEvent.c ****  **
+  38:Modules/OS/OSAL/src/ClearEvent.c ****  ** This file implements the ClearEvent API
+  39:Modules/OS/OSAL/src/ClearEvent.c ****  **
+  40:Modules/OS/OSAL/src/ClearEvent.c ****  ** \file ClearEvent.c
+  41:Modules/OS/OSAL/src/ClearEvent.c ****  **
+  42:Modules/OS/OSAL/src/ClearEvent.c ****  **/
+  43:Modules/OS/OSAL/src/ClearEvent.c **** 
+  44:Modules/OS/OSAL/src/ClearEvent.c **** /** \addtogroup FreeOSEK
+  45:Modules/OS/OSAL/src/ClearEvent.c ****  ** @{ */
+  46:Modules/OS/OSAL/src/ClearEvent.c **** /** \addtogroup FreeOSEK_Os
+  47:Modules/OS/OSAL/src/ClearEvent.c ****  ** @{ */
+  48:Modules/OS/OSAL/src/ClearEvent.c **** /** \addtogroup FreeOSEK_Os_Global
+  49:Modules/OS/OSAL/src/ClearEvent.c ****  ** @{ */
+  50:Modules/OS/OSAL/src/ClearEvent.c **** 
+  51:Modules/OS/OSAL/src/ClearEvent.c **** /*
+  52:Modules/OS/OSAL/src/ClearEvent.c ****  * Initials     Name
+  53:Modules/OS/OSAL/src/ClearEvent.c ****  * ---------------------------
+  54:Modules/OS/OSAL/src/ClearEvent.c ****  * MaCe         Mariano Cerdeiro
+  55:Modules/OS/OSAL/src/ClearEvent.c ****  * KLi          Kang Li
+  56:Modules/OS/OSAL/src/ClearEvent.c ****  */
+  57:Modules/OS/OSAL/src/ClearEvent.c **** 
+  58:Modules/OS/OSAL/src/ClearEvent.c **** /*
+  59:Modules/OS/OSAL/src/ClearEvent.c ****  * modification history (new versions first)
+  60:Modules/OS/OSAL/src/ClearEvent.c ****  * -----------------------------------------------------------
+  61:Modules/OS/OSAL/src/ClearEvent.c ****  * 20141109 v0.1.6 MaCe ClearEvent shall E_OS_CALLEVEL is called from any
+  62:Modules/OS/OSAL/src/ClearEvent.c ****  *                      context != task
+  63:Modules/OS/OSAL/src/ClearEvent.c ****  * 20090330 v0.1.3 MaCe add NO_EVENTS evaluation
+  64:Modules/OS/OSAL/src/ClearEvent.c ****  * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
+  65:Modules/OS/OSAL/src/ClearEvent.c ****  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+  66:Modules/OS/OSAL/src/ClearEvent.c ****  * 20080814 v0.1.0 MaCe	initial version
+  67:Modules/OS/OSAL/src/ClearEvent.c ****  */
+  68:Modules/OS/OSAL/src/ClearEvent.c **** 
+  69:Modules/OS/OSAL/src/ClearEvent.c **** /*==================[inclusions]=============================================*/
+  70:Modules/OS/OSAL/src/ClearEvent.c **** #include "Os_Internal.h"
+  71:Modules/OS/OSAL/src/ClearEvent.c **** 
+  72:Modules/OS/OSAL/src/ClearEvent.c **** /*==================[macros and definitions]=================================*/
+  73:Modules/OS/OSAL/src/ClearEvent.c **** 
+  74:Modules/OS/OSAL/src/ClearEvent.c **** /*==================[internal data declaration]==============================*/
+  75:Modules/OS/OSAL/src/ClearEvent.c **** 
+  76:Modules/OS/OSAL/src/ClearEvent.c **** /*==================[internal functions declaration]=========================*/
+  77:Modules/OS/OSAL/src/ClearEvent.c **** 
+  78:Modules/OS/OSAL/src/ClearEvent.c **** /*==================[internal data definition]===============================*/
+  79:Modules/OS/OSAL/src/ClearEvent.c **** 
+  80:Modules/OS/OSAL/src/ClearEvent.c **** /*==================[external data definition]===============================*/
+  81:Modules/OS/OSAL/src/ClearEvent.c **** 
+  82:Modules/OS/OSAL/src/ClearEvent.c **** /*==================[internal functions definition]==========================*/
+  83:Modules/OS/OSAL/src/ClearEvent.c **** 
+  84:Modules/OS/OSAL/src/ClearEvent.c **** /*==================[external functions definition]==========================*/
+  85:Modules/OS/OSAL/src/ClearEvent.c **** #if (NO_EVENTS == OSEK_DISABLE)
+  86:Modules/OS/OSAL/src/ClearEvent.c **** StatusType ClearEvent
+  87:Modules/OS/OSAL/src/ClearEvent.c **** (
+  88:Modules/OS/OSAL/src/ClearEvent.c ****    EventMaskType Mask
+  89:Modules/OS/OSAL/src/ClearEvent.c **** )
+  90:Modules/OS/OSAL/src/ClearEvent.c **** {
+  29              		.loc 1 90 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 16
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 00B5     		push	{lr}
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 14, -4
+  36 0002 85B0     		sub	sp, sp, #20
+  37              		.cfi_def_cfa_offset 24
+  38 0004 0190     		str	r0, [sp, #4]
+  91:Modules/OS/OSAL/src/ClearEvent.c ****    /* \req OSEK_SYS_3.16 The system service StatusType
+  92:Modules/OS/OSAL/src/ClearEvent.c ****     * ClearEvent ( EventMaskType Mask ) shall be defined */
+  93:Modules/OS/OSAL/src/ClearEvent.c **** 
+  94:Modules/OS/OSAL/src/ClearEvent.c ****    /* \req OSEK_SYS_3.16.2 Possible return values in Standard mode is E_OK */
+  95:Modules/OS/OSAL/src/ClearEvent.c ****    StatusType ret = E_OK;
+  39              		.loc 1 95 15
+  40 0006 0023     		movs	r3, #0
+  41 0008 8DF80F30 		strb	r3, [sp, #15]
+  96:Modules/OS/OSAL/src/ClearEvent.c **** 
+  97:Modules/OS/OSAL/src/ClearEvent.c **** #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+  98:Modules/OS/OSAL/src/ClearEvent.c ****    if ( GetCallingContext() != CONTEXT_TASK )
+  42              		.loc 1 98 29
+  43 000c 3E4B     		ldr	r3, .L7
+  44 000e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  45              		.loc 1 98 7
+  46 0010 012B     		cmp	r3, #1
+  47 0012 03D0     		beq	.L2
+  99:Modules/OS/OSAL/src/ClearEvent.c ****    {
+ 100:Modules/OS/OSAL/src/ClearEvent.c ****       /* \req OSEK_SYS_3.16.3-2/2 Extra possible return values in Extended
+ 101:Modules/OS/OSAL/src/ClearEvent.c ****        * mode are E_OS_ACCESS, E_OS_CALLEVEL */
+ 102:Modules/OS/OSAL/src/ClearEvent.c ****       ret = E_OS_CALLEVEL;
+  48              		.loc 1 102 11
+  49 0014 0223     		movs	r3, #2
+  50 0016 8DF80F30 		strb	r3, [sp, #15]
+  51 001a 54E0     		b	.L3
+  52              	.L2:
+ 103:Modules/OS/OSAL/src/ClearEvent.c ****    }
+ 104:Modules/OS/OSAL/src/ClearEvent.c ****    else if ( !TasksConst[GetRunningTask()].ConstFlags.Extended )
+  53              		.loc 1 104 54
+  54 001c 3B4B     		ldr	r3, .L7+4
+  55 001e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  56 0020 1946     		mov	r1, r3
+  57 0022 3B4A     		ldr	r2, .L7+8
+  58 0024 0B46     		mov	r3, r1
+  59 0026 DB00     		lsls	r3, r3, #3
+  60 0028 5B1A     		subs	r3, r3, r1
+  61 002a 9B00     		lsls	r3, r3, #2
+  62 002c 1344     		add	r3, r3, r2
+  63 002e 1033     		adds	r3, r3, #16
+  64 0030 1B78     		ldrb	r3, [r3]
+  65 0032 C3F30003 		ubfx	r3, r3, #0, #1
+  66 0036 DBB2     		uxtb	r3, r3
+  67              		.loc 1 104 12
+  68 0038 002B     		cmp	r3, #0
+  69 003a 03D1     		bne	.L4
+ 105:Modules/OS/OSAL/src/ClearEvent.c ****    {
+ 106:Modules/OS/OSAL/src/ClearEvent.c ****       /* \req OSEK_SYS_3.16.3-1/2 Extra possible return values in Extended
+ 107:Modules/OS/OSAL/src/ClearEvent.c ****        * mode are E_OS_ACCESS, E_OS_CALLEVEL */
+ 108:Modules/OS/OSAL/src/ClearEvent.c ****       ret = E_OS_ACCESS;
+  70              		.loc 1 108 11
+  71 003c 0123     		movs	r3, #1
+  72 003e 8DF80F30 		strb	r3, [sp, #15]
+  73 0042 40E0     		b	.L3
+  74              	.L4:
+ 109:Modules/OS/OSAL/src/ClearEvent.c ****    }
+ 110:Modules/OS/OSAL/src/ClearEvent.c ****    else
+ 111:Modules/OS/OSAL/src/ClearEvent.c **** #endif
+ 112:Modules/OS/OSAL/src/ClearEvent.c ****    {
+ 113:Modules/OS/OSAL/src/ClearEvent.c ****       /* enter to critical code */
+ 114:Modules/OS/OSAL/src/ClearEvent.c ****       IntSecure_Start();
+  75              		.loc 1 114 7
+  76 0044 334B     		ldr	r3, .L7+12
+  77 0046 93F90030 		ldrsb	r3, [r3]
+  78 004a DBB2     		uxtb	r3, r3
+  79 004c 0133     		adds	r3, r3, #1
+  80 004e DBB2     		uxtb	r3, r3
+  81 0050 5AB2     		sxtb	r2, r3
+  82 0052 304B     		ldr	r3, .L7+12
+  83 0054 1A70     		strb	r2, [r3]
+  84              		.syntax unified
+  85              	@ 114 "Modules/OS/OSAL/src/ClearEvent.c" 1
+  86 0056 72B6     		cpsid i
+  87              	@ 0 "" 2
+ 115:Modules/OS/OSAL/src/ClearEvent.c **** 
+ 116:Modules/OS/OSAL/src/ClearEvent.c ****       /* \req OSEK_SYS_3.16.1 The events of the extended task calling ClearEvent
+ 117:Modules/OS/OSAL/src/ClearEvent.c ****        * are cleared according to the event mask Mask */
+ 118:Modules/OS/OSAL/src/ClearEvent.c ****       TasksVar[GetRunningTask()].Events &=
+  88              		.loc 1 118 41
+  89              		.thumb
+  90              		.syntax unified
+  91 0058 2C4B     		ldr	r3, .L7+4
+  92 005a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  93 005c 1946     		mov	r1, r3
+  94 005e 2E4A     		ldr	r2, .L7+16
+  95 0060 0B46     		mov	r3, r1
+  96 0062 9B00     		lsls	r3, r3, #2
+  97 0064 0B44     		add	r3, r3, r1
+  98 0066 9B00     		lsls	r3, r3, #2
+  99 0068 1344     		add	r3, r3, r2
+ 100 006a 0833     		adds	r3, r3, #8
+ 101 006c 1A68     		ldr	r2, [r3]
+ 119:Modules/OS/OSAL/src/ClearEvent.c ****          (EventMaskType)~( Mask & TasksConst[GetRunningTask()].EventsMask );
+ 102              		.loc 1 119 63
+ 103 006e 274B     		ldr	r3, .L7+4
+ 104 0070 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 105 0072 1846     		mov	r0, r3
+ 106 0074 2649     		ldr	r1, .L7+8
+ 107 0076 0346     		mov	r3, r0
+ 108 0078 DB00     		lsls	r3, r3, #3
+ 109 007a 1B1A     		subs	r3, r3, r0
+ 110 007c 9B00     		lsls	r3, r3, #2
+ 111 007e 0B44     		add	r3, r3, r1
+ 112 0080 1433     		adds	r3, r3, #20
+ 113 0082 1968     		ldr	r1, [r3]
+ 114              		.loc 1 119 33
+ 115 0084 019B     		ldr	r3, [sp, #4]
+ 116 0086 0B40     		ands	r3, r3, r1
+ 117              		.loc 1 119 25
+ 118 0088 DB43     		mvns	r3, r3
+ 118:Modules/OS/OSAL/src/ClearEvent.c ****          (EventMaskType)~( Mask & TasksConst[GetRunningTask()].EventsMask );
+ 119              		.loc 1 118 41
+ 120 008a 2049     		ldr	r1, .L7+4
+ 121 008c 0978     		ldrb	r1, [r1]	@ zero_extendqisi2
+ 122 008e 0846     		mov	r0, r1
+ 123 0090 1A40     		ands	r2, r2, r3
+ 124 0092 2149     		ldr	r1, .L7+16
+ 125 0094 0346     		mov	r3, r0
+ 126 0096 9B00     		lsls	r3, r3, #2
+ 127 0098 0344     		add	r3, r3, r0
+ 128 009a 9B00     		lsls	r3, r3, #2
+ 129 009c 0B44     		add	r3, r3, r1
+ 130 009e 0833     		adds	r3, r3, #8
+ 131 00a0 1A60     		str	r2, [r3]
+ 120:Modules/OS/OSAL/src/ClearEvent.c **** 
+ 121:Modules/OS/OSAL/src/ClearEvent.c ****       /* finish cirtical code */
+ 122:Modules/OS/OSAL/src/ClearEvent.c ****       IntSecure_End();
+ 132              		.loc 1 122 7
+ 133 00a2 1C4B     		ldr	r3, .L7+12
+ 134 00a4 93F90030 		ldrsb	r3, [r3]
+ 135 00a8 DBB2     		uxtb	r3, r3
+ 136 00aa 013B     		subs	r3, r3, #1
+ 137 00ac DBB2     		uxtb	r3, r3
+ 138 00ae 5AB2     		sxtb	r2, r3
+ 139 00b0 184B     		ldr	r3, .L7+12
+ 140 00b2 1A70     		strb	r2, [r3]
+ 141 00b4 174B     		ldr	r3, .L7+12
+ 142 00b6 93F90030 		ldrsb	r3, [r3]
+ 143 00ba 002B     		cmp	r3, #0
+ 144 00bc 03DC     		bgt	.L3
+ 145              		.loc 1 122 7 is_stmt 0 discriminator 1
+ 146 00be 154B     		ldr	r3, .L7+12
+ 147 00c0 0022     		movs	r2, #0
+ 148 00c2 1A70     		strb	r2, [r3]
+ 149              		.syntax unified
+ 150              	@ 122 "Modules/OS/OSAL/src/ClearEvent.c" 1
+ 151 00c4 62B6     		cpsie i
+ 152              	@ 0 "" 2
+ 153              		.thumb
+ 154              		.syntax unified
+ 155              	.L3:
+ 123:Modules/OS/OSAL/src/ClearEvent.c **** 
+ 124:Modules/OS/OSAL/src/ClearEvent.c ****    }
+ 125:Modules/OS/OSAL/src/ClearEvent.c **** 
+ 126:Modules/OS/OSAL/src/ClearEvent.c **** #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
+ 127:Modules/OS/OSAL/src/ClearEvent.c ****       (HOOK_ERRORHOOK == OSEK_ENABLE) )
+ 128:Modules/OS/OSAL/src/ClearEvent.c ****    /* \req OSEK_ERR_1.3-9/xx The ErrorHook hook routine shall be called if a
+ 129:Modules/OS/OSAL/src/ClearEvent.c ****     * system service returns a StatusType value not equal to E_OK.*/
+ 130:Modules/OS/OSAL/src/ClearEvent.c ****    /* \req OSEK_ERR_1.3.1-9/xx The hook routine ErrorHook is not called if a
+ 131:Modules/OS/OSAL/src/ClearEvent.c ****     * system service is called from the ErrorHook itself. */
+ 132:Modules/OS/OSAL/src/ClearEvent.c ****    if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
+ 156              		.loc 1 132 7 is_stmt 1
+ 157 00c6 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 158 00ca 002B     		cmp	r3, #0
+ 159 00cc 15D0     		beq	.L5
+ 160              		.loc 1 132 46 discriminator 1
+ 161 00ce 134B     		ldr	r3, .L7+20
+ 162 00d0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 163              		.loc 1 132 25 discriminator 1
+ 164 00d2 012B     		cmp	r3, #1
+ 165 00d4 11D0     		beq	.L5
+ 133:Modules/OS/OSAL/src/ClearEvent.c ****    {
+ 134:Modules/OS/OSAL/src/ClearEvent.c ****       SetError_Api(OSServiceId_ClearEvent);
+ 166              		.loc 1 134 7
+ 167 00d6 124B     		ldr	r3, .L7+24
+ 168 00d8 1022     		movs	r2, #16
+ 169 00da 1A60     		str	r2, [r3]
+ 135:Modules/OS/OSAL/src/ClearEvent.c ****       SetError_Param1(Mask);
+ 170              		.loc 1 135 7
+ 171 00dc 114A     		ldr	r2, .L7+28
+ 172 00de 019B     		ldr	r3, [sp, #4]
+ 173 00e0 1360     		str	r3, [r2]
+ 136:Modules/OS/OSAL/src/ClearEvent.c ****       SetError_Ret(ret);
+ 174              		.loc 1 136 7
+ 175 00e2 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 176 00e6 104A     		ldr	r2, .L7+32
+ 177 00e8 1360     		str	r3, [r2]
+ 137:Modules/OS/OSAL/src/ClearEvent.c ****       SetError_Msg("ClearEvent returns != than E_OK");
+ 138:Modules/OS/OSAL/src/ClearEvent.c ****       SetError_ErrorHook();
+ 178              		.loc 1 138 7
+ 179 00ea 0C4B     		ldr	r3, .L7+20
+ 180 00ec 0122     		movs	r2, #1
+ 181 00ee 1A70     		strb	r2, [r3]
+ 182 00f0 FFF7FEFF 		bl	ErrorHook
+ 183 00f4 094B     		ldr	r3, .L7+20
+ 184 00f6 0022     		movs	r2, #0
+ 185 00f8 1A70     		strb	r2, [r3]
+ 186              	.L5:
+ 139:Modules/OS/OSAL/src/ClearEvent.c ****    }
+ 140:Modules/OS/OSAL/src/ClearEvent.c **** #endif
+ 141:Modules/OS/OSAL/src/ClearEvent.c **** 
+ 142:Modules/OS/OSAL/src/ClearEvent.c ****    return ret;
+ 187              		.loc 1 142 11
+ 188 00fa 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 143:Modules/OS/OSAL/src/ClearEvent.c **** }
+ 189              		.loc 1 143 1
+ 190 00fe 1846     		mov	r0, r3
+ 191 0100 05B0     		add	sp, sp, #20
+ 192              		.cfi_def_cfa_offset 4
+ 193              		@ sp needed
+ 194 0102 5DF804FB 		ldr	pc, [sp], #4
+ 195              	.L8:
+ 196 0106 00BF     		.align	2
+ 197              	.L7:
+ 198 0108 00000000 		.word	ActualContext
+ 199 010c 00000000 		.word	RunningTask
+ 200 0110 00000000 		.word	TasksConst
+ 201 0114 00000000 		.word	SuspendAllInterrupts_Counter
+ 202 0118 00000000 		.word	TasksVar
+ 203 011c 00000000 		.word	ErrorHookRunning
+ 204 0120 00000000 		.word	Osek_ErrorApi
+ 205 0124 00000000 		.word	Osek_ErrorParam1
+ 206 0128 00000000 		.word	Osek_ErrorRet
+ 207              		.cfi_endproc
+ 208              	.LFE0:
+ 210              		.text
+ 211              	.Letext0:
+ 212              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 213              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 214              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Types.h"
+ 215              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Cfg.h"
+ 216              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 217              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+ 218              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 219              		.file 9 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os_intern
+DEFINED SYMBOLS
+                            *ABS*:00000000 ClearEvent.c
+C:\Users\AAA\AppData\Local\Temp\ccTi6akd.s:19     .text.ClearEvent:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccTi6akd.s:26     .text.ClearEvent:00000000 ClearEvent
+C:\Users\AAA\AppData\Local\Temp\ccTi6akd.s:198    .text.ClearEvent:00000108 $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+UNDEFINED SYMBOLS
+ErrorHook
+ActualContext
+RunningTask
+TasksConst
+SuspendAllInterrupts_Counter
+TasksVar
+ErrorHookRunning
+Osek_ErrorApi
+Osek_ErrorParam1
+Osek_ErrorRet

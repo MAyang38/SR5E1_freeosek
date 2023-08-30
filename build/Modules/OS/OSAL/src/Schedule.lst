@@ -1,0 +1,801 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"Schedule.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.Schedule,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	Schedule
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	Schedule:
+  27              	.LFB0:
+  28              		.file 1 "Modules/OS/OSAL/src/Schedule.c"
+   1:Modules/OS/OSAL/src/Schedule.c **** /* Copyright 2008, 2009, 2014 Mariano Cerdeiro
+   2:Modules/OS/OSAL/src/Schedule.c ****  * Copyright 2014, ACSE & CADIEEL
+   3:Modules/OS/OSAL/src/Schedule.c ****  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+   4:Modules/OS/OSAL/src/Schedule.c ****  *      CADIEEL: http://www.cadieel.org.ar
+   5:Modules/OS/OSAL/src/Schedule.c ****  *
+   6:Modules/OS/OSAL/src/Schedule.c ****  * This file is part of CIAA Firmware.
+   7:Modules/OS/OSAL/src/Schedule.c ****  *
+   8:Modules/OS/OSAL/src/Schedule.c ****  * Redistribution and use in source and binary forms, with or without
+   9:Modules/OS/OSAL/src/Schedule.c ****  * modification, are permitted provided that the following conditions are met:
+  10:Modules/OS/OSAL/src/Schedule.c ****  *
+  11:Modules/OS/OSAL/src/Schedule.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  12:Modules/OS/OSAL/src/Schedule.c ****  *    this list of conditions and the following disclaimer.
+  13:Modules/OS/OSAL/src/Schedule.c ****  *
+  14:Modules/OS/OSAL/src/Schedule.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  15:Modules/OS/OSAL/src/Schedule.c ****  *    this list of conditions and the following disclaimer in the documentation
+  16:Modules/OS/OSAL/src/Schedule.c ****  *    and/or other materials provided with the distribution.
+  17:Modules/OS/OSAL/src/Schedule.c ****  *
+  18:Modules/OS/OSAL/src/Schedule.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  19:Modules/OS/OSAL/src/Schedule.c ****  *    contributors may be used to endorse or promote products derived from this
+  20:Modules/OS/OSAL/src/Schedule.c ****  *    software without specific prior written permission.
+  21:Modules/OS/OSAL/src/Schedule.c ****  *
+  22:Modules/OS/OSAL/src/Schedule.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Modules/OS/OSAL/src/Schedule.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Modules/OS/OSAL/src/Schedule.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  25:Modules/OS/OSAL/src/Schedule.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  26:Modules/OS/OSAL/src/Schedule.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  27:Modules/OS/OSAL/src/Schedule.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  28:Modules/OS/OSAL/src/Schedule.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  29:Modules/OS/OSAL/src/Schedule.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  30:Modules/OS/OSAL/src/Schedule.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  31:Modules/OS/OSAL/src/Schedule.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  32:Modules/OS/OSAL/src/Schedule.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  33:Modules/OS/OSAL/src/Schedule.c ****  *
+  34:Modules/OS/OSAL/src/Schedule.c ****  */
+  35:Modules/OS/OSAL/src/Schedule.c **** 
+  36:Modules/OS/OSAL/src/Schedule.c **** /** \brief FreeOSEK Os Schedule Implementation File
+  37:Modules/OS/OSAL/src/Schedule.c ****  **
+  38:Modules/OS/OSAL/src/Schedule.c ****  ** This file implements the Schedule API
+  39:Modules/OS/OSAL/src/Schedule.c ****  **
+  40:Modules/OS/OSAL/src/Schedule.c ****  ** \file Schedule.c
+  41:Modules/OS/OSAL/src/Schedule.c ****  **
+  42:Modules/OS/OSAL/src/Schedule.c ****  **/
+  43:Modules/OS/OSAL/src/Schedule.c **** 
+  44:Modules/OS/OSAL/src/Schedule.c **** /** \addtogroup FreeOSEK
+  45:Modules/OS/OSAL/src/Schedule.c ****  ** @{ */
+  46:Modules/OS/OSAL/src/Schedule.c **** /** \addtogroup FreeOSEK_Os
+  47:Modules/OS/OSAL/src/Schedule.c ****  ** @{ */
+  48:Modules/OS/OSAL/src/Schedule.c **** /** \addtogroup FreeOSEK_Os_Global
+  49:Modules/OS/OSAL/src/Schedule.c ****  ** @{ */
+  50:Modules/OS/OSAL/src/Schedule.c **** 
+  51:Modules/OS/OSAL/src/Schedule.c **** /*
+  52:Modules/OS/OSAL/src/Schedule.c ****  * Initials     Name
+  53:Modules/OS/OSAL/src/Schedule.c ****  * ---------------------------
+  54:Modules/OS/OSAL/src/Schedule.c ****  * MaCe         Mariano Cerdeiro
+  55:Modules/OS/OSAL/src/Schedule.c ****  * KLi          Kang Li
+  56:Modules/OS/OSAL/src/Schedule.c ****  */
+  57:Modules/OS/OSAL/src/Schedule.c **** 
+  58:Modules/OS/OSAL/src/Schedule.c **** /*
+  59:Modules/OS/OSAL/src/Schedule.c ****  * modification history (new versions first)
+  60:Modules/OS/OSAL/src/Schedule.c ****  * -----------------------------------------------------------
+  61:Modules/OS/OSAL/src/Schedule.c ****  * 20141121 v0.2.0 MaCe rework Schedule
+  62:Modules/OS/OSAL/src/Schedule.c ****  * 20090418 v0.1.5 MaCe add Pre/Post TaskHook handling
+  63:Modules/OS/OSAL/src/Schedule.c ****  * 20090417 v0.1.4 MaCe update license
+  64:Modules/OS/OSAL/src/Schedule.c ****  * 20090330 v0.1.3 MaCe use new CallTask macro and add use of SetActualContext
+  65:Modules/OS/OSAL/src/Schedule.c ****  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
+  66:Modules/OS/OSAL/src/Schedule.c ****  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+  67:Modules/OS/OSAL/src/Schedule.c ****  * 20080810 v0.1.0 MaCe initial version
+  68:Modules/OS/OSAL/src/Schedule.c ****  */
+  69:Modules/OS/OSAL/src/Schedule.c **** 
+  70:Modules/OS/OSAL/src/Schedule.c **** /*==================[inclusions]=============================================*/
+  71:Modules/OS/OSAL/src/Schedule.c **** #include "Os_Internal.h"
+  72:Modules/OS/OSAL/src/Schedule.c **** 
+  73:Modules/OS/OSAL/src/Schedule.c **** /*==================[macros and definitions]=================================*/
+  74:Modules/OS/OSAL/src/Schedule.c **** 
+  75:Modules/OS/OSAL/src/Schedule.c **** /*==================[internal data declaration]==============================*/
+  76:Modules/OS/OSAL/src/Schedule.c **** 
+  77:Modules/OS/OSAL/src/Schedule.c **** /*==================[internal functions declaration]=========================*/
+  78:Modules/OS/OSAL/src/Schedule.c **** 
+  79:Modules/OS/OSAL/src/Schedule.c **** /*==================[internal data definition]===============================*/
+  80:Modules/OS/OSAL/src/Schedule.c **** 
+  81:Modules/OS/OSAL/src/Schedule.c **** /*==================[external data definition]===============================*/
+  82:Modules/OS/OSAL/src/Schedule.c **** 
+  83:Modules/OS/OSAL/src/Schedule.c **** /*==================[internal functions definition]==========================*/
+  84:Modules/OS/OSAL/src/Schedule.c **** 
+  85:Modules/OS/OSAL/src/Schedule.c **** /*==================[external functions definition]==========================*/
+  86:Modules/OS/OSAL/src/Schedule.c **** StatusType Schedule
+  87:Modules/OS/OSAL/src/Schedule.c **** (
+  88:Modules/OS/OSAL/src/Schedule.c ****    void
+  89:Modules/OS/OSAL/src/Schedule.c **** )
+  90:Modules/OS/OSAL/src/Schedule.c **** {
+  29              		.loc 1 90 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 8
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 00B5     		push	{lr}
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 14, -4
+  36 0002 83B0     		sub	sp, sp, #12
+  37              		.cfi_def_cfa_offset 16
+  91:Modules/OS/OSAL/src/Schedule.c ****    /* \req OSEK_SYS_3.4 The system service StatusType Schedule ( void ) shall
+  92:Modules/OS/OSAL/src/Schedule.c ****     ** be defined */
+  93:Modules/OS/OSAL/src/Schedule.c **** 
+  94:Modules/OS/OSAL/src/Schedule.c ****    /* \req OSEK_SYS_3.4.4 Possible return values in Standard mode is E_OK */
+  95:Modules/OS/OSAL/src/Schedule.c ****    StatusType ret = E_OK;
+  38              		.loc 1 95 15
+  39 0004 0023     		movs	r3, #0
+  40 0006 8DF80730 		strb	r3, [sp, #7]
+  96:Modules/OS/OSAL/src/Schedule.c ****    TaskType nextTask;
+  97:Modules/OS/OSAL/src/Schedule.c ****    TaskType actualTask;
+  98:Modules/OS/OSAL/src/Schedule.c **** #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+  99:Modules/OS/OSAL/src/Schedule.c ****    ContextType actualContext;
+ 100:Modules/OS/OSAL/src/Schedule.c **** #endif
+ 101:Modules/OS/OSAL/src/Schedule.c **** 
+ 102:Modules/OS/OSAL/src/Schedule.c ****    IntSecure_Start();
+  41              		.loc 1 102 4
+  42 000a 9D4B     		ldr	r3, .L18
+  43 000c 93F90030 		ldrsb	r3, [r3]
+  44 0010 DBB2     		uxtb	r3, r3
+  45 0012 0133     		adds	r3, r3, #1
+  46 0014 DBB2     		uxtb	r3, r3
+  47 0016 5AB2     		sxtb	r2, r3
+  48 0018 994B     		ldr	r3, .L18
+  49 001a 1A70     		strb	r2, [r3]
+  50              		.syntax unified
+  51              	@ 102 "Modules/OS/OSAL/src/Schedule.c" 1
+  52 001c 72B6     		cpsid i
+  53              	@ 0 "" 2
+ 103:Modules/OS/OSAL/src/Schedule.c **** 
+ 104:Modules/OS/OSAL/src/Schedule.c ****    /* get actual running task */
+ 105:Modules/OS/OSAL/src/Schedule.c ****    actualTask = GetRunningTask();
+  54              		.loc 1 105 15
+  55              		.thumb
+  56              		.syntax unified
+  57 001e 994B     		ldr	r3, .L18+4
+  58 0020 1B78     		ldrb	r3, [r3]
+  59 0022 8DF80530 		strb	r3, [sp, #5]
+ 106:Modules/OS/OSAL/src/Schedule.c **** 
+ 107:Modules/OS/OSAL/src/Schedule.c ****    /* \req OSEK_SYS_3.3.5 Extra possible return values in Extended mode are E_OS
+ 108:Modules/OS/OSAL/src/Schedule.c ****     ** CALLEVEL, E_OS_RESOURCE  */
+ 109:Modules/OS/OSAL/src/Schedule.c **** #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+ 110:Modules/OS/OSAL/src/Schedule.c **** 
+ 111:Modules/OS/OSAL/src/Schedule.c ****    /* get actual context */
+ 112:Modules/OS/OSAL/src/Schedule.c ****    actualContext = GetCallingContext();
+  60              		.loc 1 112 18
+  61 0026 984B     		ldr	r3, .L18+8
+  62 0028 1B78     		ldrb	r3, [r3]
+  63 002a 8DF80430 		strb	r3, [sp, #4]
+ 113:Modules/OS/OSAL/src/Schedule.c **** 
+ 114:Modules/OS/OSAL/src/Schedule.c **** 
+ 115:Modules/OS/OSAL/src/Schedule.c ****    if ( ( CONTEXT_TASK != actualContext ) &&
+  64              		.loc 1 115 7
+  65 002e 9DF80430 		ldrb	r3, [sp, #4]	@ zero_extendqisi2
+  66 0032 012B     		cmp	r3, #1
+  67 0034 07D0     		beq	.L2
+  68              		.loc 1 115 43 discriminator 1
+  69 0036 9DF80430 		ldrb	r3, [sp, #4]	@ zero_extendqisi2
+  70 003a 042B     		cmp	r3, #4
+  71 003c 03D0     		beq	.L2
+ 116:Modules/OS/OSAL/src/Schedule.c ****         ( CONTEXT_SYS != actualContext ) )
+ 117:Modules/OS/OSAL/src/Schedule.c ****    {
+ 118:Modules/OS/OSAL/src/Schedule.c ****       /* \req OSEK_SYS_3.3.5 Extra possible return values in Extended mode
+ 119:Modules/OS/OSAL/src/Schedule.c ****        ** are E_OS_CALLEVEL, E_OS_RESOURCE */
+ 120:Modules/OS/OSAL/src/Schedule.c ****       ret = E_OS_CALLEVEL;
+  72              		.loc 1 120 11
+  73 003e 0223     		movs	r3, #2
+  74 0040 8DF80730 		strb	r3, [sp, #7]
+  75 0044 16E0     		b	.L3
+  76              	.L2:
+ 121:Modules/OS/OSAL/src/Schedule.c ****    }
+ 122:Modules/OS/OSAL/src/Schedule.c ****    else if ( ( INVALID_TASK != actualTask ) &&
+  77              		.loc 1 122 12
+  78 0046 9DF80530 		ldrb	r3, [sp, #5]	@ zero_extendqisi2
+  79 004a FF2B     		cmp	r3, #255
+  80 004c 12D0     		beq	.L3
+  81              		.loc 1 122 45 discriminator 1
+  82 004e 9DF80430 		ldrb	r3, [sp, #4]	@ zero_extendqisi2
+  83 0052 012B     		cmp	r3, #1
+  84 0054 0ED1     		bne	.L3
+ 123:Modules/OS/OSAL/src/Schedule.c ****              ( CONTEXT_TASK == actualContext ) )
+ 124:Modules/OS/OSAL/src/Schedule.c ****    {
+ 125:Modules/OS/OSAL/src/Schedule.c ****       if ( TasksVar[actualTask].Resources != 0 )
+  85              		.loc 1 125 32
+  86 0056 9DF80520 		ldrb	r2, [sp, #5]	@ zero_extendqisi2
+  87 005a 8C49     		ldr	r1, .L18+12
+  88 005c 1346     		mov	r3, r2
+  89 005e 9B00     		lsls	r3, r3, #2
+  90 0060 1344     		add	r3, r3, r2
+  91 0062 9B00     		lsls	r3, r3, #2
+  92 0064 0B44     		add	r3, r3, r1
+  93 0066 1033     		adds	r3, r3, #16
+  94 0068 1B68     		ldr	r3, [r3]
+  95              		.loc 1 125 10
+  96 006a 002B     		cmp	r3, #0
+  97 006c 02D0     		beq	.L3
+ 126:Modules/OS/OSAL/src/Schedule.c ****       {
+ 127:Modules/OS/OSAL/src/Schedule.c ****          /* \req OSEK_SYS_3.3.5 Extra possible return values in Extended mode
+ 128:Modules/OS/OSAL/src/Schedule.c ****           ** are E_OS_CALLEVEL, E_OS_RESOURCE */
+ 129:Modules/OS/OSAL/src/Schedule.c ****          ret = E_OS_RESOURCE;
+  98              		.loc 1 129 14
+  99 006e 0623     		movs	r3, #6
+ 100 0070 8DF80730 		strb	r3, [sp, #7]
+ 101              	.L3:
+ 130:Modules/OS/OSAL/src/Schedule.c ****       }
+ 131:Modules/OS/OSAL/src/Schedule.c ****    }
+ 132:Modules/OS/OSAL/src/Schedule.c ****    else
+ 133:Modules/OS/OSAL/src/Schedule.c ****    {
+ 134:Modules/OS/OSAL/src/Schedule.c ****       /* nothing to check Runngin Task is invalid */
+ 135:Modules/OS/OSAL/src/Schedule.c ****    }
+ 136:Modules/OS/OSAL/src/Schedule.c **** 
+ 137:Modules/OS/OSAL/src/Schedule.c ****    if (ret == E_OK)
+ 102              		.loc 1 137 7
+ 103 0074 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 104 0078 002B     		cmp	r3, #0
+ 105 007a 40F01181 		bne	.L4
+ 138:Modules/OS/OSAL/src/Schedule.c **** #endif
+ 139:Modules/OS/OSAL/src/Schedule.c ****    {
+ 140:Modules/OS/OSAL/src/Schedule.c ****       /* get next task */
+ 141:Modules/OS/OSAL/src/Schedule.c ****       nextTask = GetNextTask();
+ 106              		.loc 1 141 18
+ 107 007e FFF7FEFF 		bl	GetNextTask
+ 108 0082 0346     		mov	r3, r0
+ 109 0084 8DF80630 		strb	r3, [sp, #6]
+ 142:Modules/OS/OSAL/src/Schedule.c **** 
+ 143:Modules/OS/OSAL/src/Schedule.c ****       /* while until one or boths are not more invalid tasks */
+ 144:Modules/OS/OSAL/src/Schedule.c ****       while (	( actualTask == INVALID_TASK ) &&
+ 110              		.loc 1 144 13
+ 111 0088 21E0     		b	.L5
+ 112              	.L8:
+ 145:Modules/OS/OSAL/src/Schedule.c ****             ( nextTask == INVALID_TASK) )
+ 146:Modules/OS/OSAL/src/Schedule.c ****       {
+ 147:Modules/OS/OSAL/src/Schedule.c ****          IntSecure_End();
+ 113              		.loc 1 147 10
+ 114 008a 7D4B     		ldr	r3, .L18
+ 115 008c 93F90030 		ldrsb	r3, [r3]
+ 116 0090 DBB2     		uxtb	r3, r3
+ 117 0092 013B     		subs	r3, r3, #1
+ 118 0094 DBB2     		uxtb	r3, r3
+ 119 0096 5AB2     		sxtb	r2, r3
+ 120 0098 794B     		ldr	r3, .L18
+ 121 009a 1A70     		strb	r2, [r3]
+ 122 009c 784B     		ldr	r3, .L18
+ 123 009e 93F90030 		ldrsb	r3, [r3]
+ 124 00a2 002B     		cmp	r3, #0
+ 125 00a4 03DC     		bgt	.L6
+ 126              		.loc 1 147 10 is_stmt 0 discriminator 1
+ 127 00a6 764B     		ldr	r3, .L18
+ 128 00a8 0022     		movs	r2, #0
+ 129 00aa 1A70     		strb	r2, [r3]
+ 130              		.syntax unified
+ 131              	@ 147 "Modules/OS/OSAL/src/Schedule.c" 1
+ 132 00ac 62B6     		cpsie i
+ 133              	@ 0 "" 2
+ 134              		.thumb
+ 135              		.syntax unified
+ 136              	.L6:
+ 148:Modules/OS/OSAL/src/Schedule.c **** 
+ 149:Modules/OS/OSAL/src/Schedule.c ****          /* macro used to indicate the processor that we are in idle time */
+ 150:Modules/OS/OSAL/src/Schedule.c ****          osekpause();
+ 137              		.loc 1 150 10 is_stmt 1
+ 138              		.syntax unified
+ 139              	@ 150 "Modules/OS/OSAL/src/Schedule.c" 1
+ 140 00ae 30BF     		wfi
+ 141              	@ 0 "" 2
+ 151:Modules/OS/OSAL/src/Schedule.c **** 
+ 152:Modules/OS/OSAL/src/Schedule.c ****          IntSecure_Start();
+ 142              		.loc 1 152 10
+ 143              		.thumb
+ 144              		.syntax unified
+ 145 00b0 734B     		ldr	r3, .L18
+ 146 00b2 93F90030 		ldrsb	r3, [r3]
+ 147 00b6 DBB2     		uxtb	r3, r3
+ 148 00b8 0133     		adds	r3, r3, #1
+ 149 00ba DBB2     		uxtb	r3, r3
+ 150 00bc 5AB2     		sxtb	r2, r3
+ 151 00be 704B     		ldr	r3, .L18
+ 152 00c0 1A70     		strb	r2, [r3]
+ 153              		.syntax unified
+ 154              	@ 152 "Modules/OS/OSAL/src/Schedule.c" 1
+ 155 00c2 72B6     		cpsid i
+ 156              	@ 0 "" 2
+ 153:Modules/OS/OSAL/src/Schedule.c **** 
+ 154:Modules/OS/OSAL/src/Schedule.c ****          /* get next task */
+ 155:Modules/OS/OSAL/src/Schedule.c ****          nextTask = GetNextTask();
+ 157              		.loc 1 155 21
+ 158              		.thumb
+ 159              		.syntax unified
+ 160 00c4 FFF7FEFF 		bl	GetNextTask
+ 161 00c8 0346     		mov	r3, r0
+ 162 00ca 8DF80630 		strb	r3, [sp, #6]
+ 163              	.L5:
+ 144:Modules/OS/OSAL/src/Schedule.c ****             ( nextTask == INVALID_TASK) )
+ 164              		.loc 1 144 13
+ 165 00ce 9DF80530 		ldrb	r3, [sp, #5]	@ zero_extendqisi2
+ 166 00d2 FF2B     		cmp	r3, #255
+ 167 00d4 03D1     		bne	.L7
+ 144:Modules/OS/OSAL/src/Schedule.c ****             ( nextTask == INVALID_TASK) )
+ 168              		.loc 1 144 46 discriminator 1
+ 169 00d6 9DF80630 		ldrb	r3, [sp, #6]	@ zero_extendqisi2
+ 170 00da FF2B     		cmp	r3, #255
+ 171 00dc D5D0     		beq	.L8
+ 172              	.L7:
+ 156:Modules/OS/OSAL/src/Schedule.c ****       };
+ 157:Modules/OS/OSAL/src/Schedule.c **** 
+ 158:Modules/OS/OSAL/src/Schedule.c ****       /* if the actual task is invalid */
+ 159:Modules/OS/OSAL/src/Schedule.c ****       if ( actualTask == INVALID_TASK )
+ 173              		.loc 1 159 10
+ 174 00de 9DF80530 		ldrb	r3, [sp, #5]	@ zero_extendqisi2
+ 175 00e2 FF2B     		cmp	r3, #255
+ 176 00e4 51D1     		bne	.L9
+ 160:Modules/OS/OSAL/src/Schedule.c ****       {
+ 161:Modules/OS/OSAL/src/Schedule.c ****          /* set task state to running */
+ 162:Modules/OS/OSAL/src/Schedule.c ****          TasksVar[nextTask].Flags.State = TASK_ST_RUNNING;
+ 177              		.loc 1 162 34
+ 178 00e6 9DF80620 		ldrb	r2, [sp, #6]	@ zero_extendqisi2
+ 179              		.loc 1 162 41
+ 180 00ea 6849     		ldr	r1, .L18+12
+ 181 00ec 1346     		mov	r3, r2
+ 182 00ee 9B00     		lsls	r3, r3, #2
+ 183 00f0 1344     		add	r3, r3, r2
+ 184 00f2 9B00     		lsls	r3, r3, #2
+ 185 00f4 CA18     		adds	r2, r1, r3
+ 186 00f6 1379     		ldrb	r3, [r2, #4]
+ 187 00f8 0221     		movs	r1, #2
+ 188 00fa 61F38303 		bfi	r3, r1, #2, #2
+ 189 00fe 1371     		strb	r3, [r2, #4]
+ 163:Modules/OS/OSAL/src/Schedule.c **** 
+ 164:Modules/OS/OSAL/src/Schedule.c ****          /* set as running task */
+ 165:Modules/OS/OSAL/src/Schedule.c ****          SetRunningTask(nextTask);
+ 190              		.loc 1 165 10
+ 191 0100 604A     		ldr	r2, .L18+4
+ 192 0102 9DF80630 		ldrb	r3, [sp, #6]
+ 193 0106 1370     		strb	r3, [r2]
+ 166:Modules/OS/OSAL/src/Schedule.c **** 
+ 167:Modules/OS/OSAL/src/Schedule.c ****          /* set actual context task */
+ 168:Modules/OS/OSAL/src/Schedule.c ****          SetActualContext(CONTEXT_TASK);
+ 194              		.loc 1 168 10
+ 195 0108 5F4B     		ldr	r3, .L18+8
+ 196 010a 0122     		movs	r2, #1
+ 197 010c 1A70     		strb	r2, [r3]
+ 169:Modules/OS/OSAL/src/Schedule.c **** 
+ 170:Modules/OS/OSAL/src/Schedule.c ****          IntSecure_End();
+ 198              		.loc 1 170 10
+ 199 010e 5C4B     		ldr	r3, .L18
+ 200 0110 93F90030 		ldrsb	r3, [r3]
+ 201 0114 DBB2     		uxtb	r3, r3
+ 202 0116 013B     		subs	r3, r3, #1
+ 203 0118 DBB2     		uxtb	r3, r3
+ 204 011a 5AB2     		sxtb	r2, r3
+ 205 011c 584B     		ldr	r3, .L18
+ 206 011e 1A70     		strb	r2, [r3]
+ 207 0120 574B     		ldr	r3, .L18
+ 208 0122 93F90030 		ldrsb	r3, [r3]
+ 209 0126 002B     		cmp	r3, #0
+ 210 0128 03DC     		bgt	.L10
+ 211              		.loc 1 170 10 is_stmt 0 discriminator 1
+ 212 012a 554B     		ldr	r3, .L18
+ 213 012c 0022     		movs	r2, #0
+ 214 012e 1A70     		strb	r2, [r3]
+ 215              		.syntax unified
+ 216              	@ 170 "Modules/OS/OSAL/src/Schedule.c" 1
+ 217 0130 62B6     		cpsie i
+ 218              	@ 0 "" 2
+ 219              		.thumb
+ 220              		.syntax unified
+ 221              	.L10:
+ 222              	.LBB2:
+ 171:Modules/OS/OSAL/src/Schedule.c **** 
+ 172:Modules/OS/OSAL/src/Schedule.c **** #if (HOOK_PRETASKHOOK == OSEK_ENABLE)
+ 173:Modules/OS/OSAL/src/Schedule.c ****          PreTaskHook();
+ 174:Modules/OS/OSAL/src/Schedule.c **** #endif /* #if (HOOK_PRETASKHOOK == OSEK_ENABLE) */
+ 175:Modules/OS/OSAL/src/Schedule.c **** 
+ 176:Modules/OS/OSAL/src/Schedule.c ****          /* jmp tp the next task */
+ 177:Modules/OS/OSAL/src/Schedule.c ****          JmpTask(nextTask);
+ 223              		.loc 1 177 10 is_stmt 1
+ 224 0132 574B     		ldr	r3, .L18+16
+ 225 0134 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 226 0136 FF2B     		cmp	r3, #255
+ 227 0138 10D0     		beq	.L11
+ 228              		.loc 1 177 10 is_stmt 0 discriminator 1
+ 229 013a 554B     		ldr	r3, .L18+16
+ 230 013c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 231 013e 1946     		mov	r1, r3
+ 232 0140 544A     		ldr	r2, .L18+20
+ 233 0142 0B46     		mov	r3, r1
+ 234 0144 DB00     		lsls	r3, r3, #3
+ 235 0146 5B1A     		subs	r3, r3, r1
+ 236 0148 9B00     		lsls	r3, r3, #2
+ 237 014a 1344     		add	r3, r3, r2
+ 238 014c 0433     		adds	r3, r3, #4
+ 239 014e 1B68     		ldr	r3, [r3]
+ 240 0150 514A     		ldr	r2, .L18+24
+ 241 0152 1360     		str	r3, [r2]
+ 242 0154 4E4B     		ldr	r3, .L18+16
+ 243 0156 FF22     		movs	r2, #255
+ 244 0158 1A70     		strb	r2, [r3]
+ 245 015a 02E0     		b	.L12
+ 246              	.L11:
+ 247              		.loc 1 177 10 discriminator 2
+ 248 015c 4E4B     		ldr	r3, .L18+24
+ 249 015e 0022     		movs	r2, #0
+ 250 0160 1A60     		str	r2, [r3]
+ 251              	.L12:
+ 252              		.loc 1 177 10 discriminator 4
+ 253 0162 9DF80620 		ldrb	r2, [sp, #6]	@ zero_extendqisi2
+ 254 0166 4B49     		ldr	r1, .L18+20
+ 255 0168 1346     		mov	r3, r2
+ 256 016a DB00     		lsls	r3, r3, #3
+ 257 016c 9B1A     		subs	r3, r3, r2
+ 258 016e 9B00     		lsls	r3, r3, #2
+ 259 0170 0B44     		add	r3, r3, r1
+ 260 0172 0433     		adds	r3, r3, #4
+ 261 0174 1B68     		ldr	r3, [r3]
+ 262 0176 494A     		ldr	r2, .L18+28
+ 263 0178 1360     		str	r3, [r2]
+ 264              		.syntax unified
+ 265              	@ 177 "Modules/OS/OSAL/src/Schedule.c" 1
+ 266 017a 03B4     		push {r0,r1}												
+ 267 017c 6448     		ldr r0,=0xE000ED04											
+ 268 017e 0168     		ldr r1,[r0]												
+ 269 0180 41F08051 		orr r1,1<<28												
+ 270 0184 0160     		str r1,[r0]												
+ 271 0186 03BC     		pop {r0,r1}												
+ 272              		
+ 273              	@ 0 "" 2
+ 274              		.thumb
+ 275              		.syntax unified
+ 276              	.LBE2:
+ 277 0188 9CE0     		b	.L13
+ 278              	.L9:
+ 178:Modules/OS/OSAL/src/Schedule.c ****       }
+ 179:Modules/OS/OSAL/src/Schedule.c ****       else
+ 180:Modules/OS/OSAL/src/Schedule.c ****       {
+ 181:Modules/OS/OSAL/src/Schedule.c ****          /* check priorities */
+ 182:Modules/OS/OSAL/src/Schedule.c ****          /* \req OSEK_SYS_3.4.1 If a task with a lower or equal priority than the
+ 183:Modules/OS/OSAL/src/Schedule.c ****           ** ceiling priority of the internal resource and higher priority than
+ 184:Modules/OS/OSAL/src/Schedule.c ****           ** the priority of the calling task is ready */
+ 185:Modules/OS/OSAL/src/Schedule.c ****          if ( TasksConst[nextTask].StaticPriority > TasksVar[actualTask].ActualPriority )
+ 279              		.loc 1 185 35 is_stmt 1
+ 280 018a 9DF80620 		ldrb	r2, [sp, #6]	@ zero_extendqisi2
+ 281 018e 4149     		ldr	r1, .L18+20
+ 282 0190 1346     		mov	r3, r2
+ 283 0192 DB00     		lsls	r3, r3, #3
+ 284 0194 9B1A     		subs	r3, r3, r2
+ 285 0196 9B00     		lsls	r3, r3, #2
+ 286 0198 0B44     		add	r3, r3, r1
+ 287 019a 0E33     		adds	r3, r3, #14
+ 288 019c 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 289              		.loc 1 185 51
+ 290 019e 9DF80520 		ldrb	r2, [sp, #5]	@ zero_extendqisi2
+ 291              		.loc 1 185 73
+ 292 01a2 3A48     		ldr	r0, .L18+12
+ 293 01a4 1346     		mov	r3, r2
+ 294 01a6 9B00     		lsls	r3, r3, #2
+ 295 01a8 1344     		add	r3, r3, r2
+ 296 01aa 9B00     		lsls	r3, r3, #2
+ 297 01ac 0344     		add	r3, r3, r0
+ 298 01ae 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 299              		.loc 1 185 13
+ 300 01b0 9942     		cmp	r1, r3
+ 301 01b2 52D9     		bls	.L14
+ 186:Modules/OS/OSAL/src/Schedule.c ****          {
+ 187:Modules/OS/OSAL/src/Schedule.c **** 
+ 188:Modules/OS/OSAL/src/Schedule.c **** #if (HOOK_POSTTASKHOOK == OSEK_ENABLE)
+ 189:Modules/OS/OSAL/src/Schedule.c ****             PostTaskHook();
+ 190:Modules/OS/OSAL/src/Schedule.c **** #endif /* #if (HOOK_POSTTASKHOOK == OSEK_ENABLE) */
+ 191:Modules/OS/OSAL/src/Schedule.c **** 
+ 192:Modules/OS/OSAL/src/Schedule.c ****             /* \req OSEK_SYS_3.4.1.1 the internal resource of the task shall be
+ 193:Modules/OS/OSAL/src/Schedule.c ****              ** released */
+ 194:Modules/OS/OSAL/src/Schedule.c ****             ReleaseInternalResources();
+ 195:Modules/OS/OSAL/src/Schedule.c **** 
+ 196:Modules/OS/OSAL/src/Schedule.c ****             /* \req OSEK_SYS_3.4.1.2 the current task is put into the ready state */
+ 197:Modules/OS/OSAL/src/Schedule.c ****             TasksVar[actualTask].Flags.State = TASK_ST_READY;
+ 302              		.loc 1 197 39
+ 303 01b4 9DF80520 		ldrb	r2, [sp, #5]	@ zero_extendqisi2
+ 304              		.loc 1 197 46
+ 305 01b8 3449     		ldr	r1, .L18+12
+ 306 01ba 1346     		mov	r3, r2
+ 307 01bc 9B00     		lsls	r3, r3, #2
+ 308 01be 1344     		add	r3, r3, r2
+ 309 01c0 9B00     		lsls	r3, r3, #2
+ 310 01c2 CA18     		adds	r2, r1, r3
+ 311 01c4 1379     		ldrb	r3, [r2, #4]
+ 312 01c6 0121     		movs	r1, #1
+ 313 01c8 61F38303 		bfi	r3, r1, #2, #2
+ 314 01cc 1371     		strb	r3, [r2, #4]
+ 198:Modules/OS/OSAL/src/Schedule.c **** 
+ 199:Modules/OS/OSAL/src/Schedule.c ****             /* set the new task to running */
+ 200:Modules/OS/OSAL/src/Schedule.c ****             TasksVar[nextTask].Flags.State = TASK_ST_RUNNING;
+ 315              		.loc 1 200 37
+ 316 01ce 9DF80620 		ldrb	r2, [sp, #6]	@ zero_extendqisi2
+ 317              		.loc 1 200 44
+ 318 01d2 2E49     		ldr	r1, .L18+12
+ 319 01d4 1346     		mov	r3, r2
+ 320 01d6 9B00     		lsls	r3, r3, #2
+ 321 01d8 1344     		add	r3, r3, r2
+ 322 01da 9B00     		lsls	r3, r3, #2
+ 323 01dc CA18     		adds	r2, r1, r3
+ 324 01de 1379     		ldrb	r3, [r2, #4]
+ 325 01e0 0221     		movs	r1, #2
+ 326 01e2 61F38303 		bfi	r3, r1, #2, #2
+ 327 01e6 1371     		strb	r3, [r2, #4]
+ 201:Modules/OS/OSAL/src/Schedule.c **** 
+ 202:Modules/OS/OSAL/src/Schedule.c ****             /* set as running task */
+ 203:Modules/OS/OSAL/src/Schedule.c ****             SetRunningTask(nextTask);
+ 328              		.loc 1 203 13
+ 329 01e8 264A     		ldr	r2, .L18+4
+ 330 01ea 9DF80630 		ldrb	r3, [sp, #6]
+ 331 01ee 1370     		strb	r3, [r2]
+ 204:Modules/OS/OSAL/src/Schedule.c **** 
+ 205:Modules/OS/OSAL/src/Schedule.c ****             /* set actual context task */
+ 206:Modules/OS/OSAL/src/Schedule.c ****             SetActualContext(CONTEXT_TASK);
+ 332              		.loc 1 206 13
+ 333 01f0 254B     		ldr	r3, .L18+8
+ 334 01f2 0122     		movs	r2, #1
+ 335 01f4 1A70     		strb	r2, [r3]
+ 207:Modules/OS/OSAL/src/Schedule.c **** 
+ 208:Modules/OS/OSAL/src/Schedule.c ****             IntSecure_End();
+ 336              		.loc 1 208 13
+ 337 01f6 224B     		ldr	r3, .L18
+ 338 01f8 93F90030 		ldrsb	r3, [r3]
+ 339 01fc DBB2     		uxtb	r3, r3
+ 340 01fe 013B     		subs	r3, r3, #1
+ 341 0200 DBB2     		uxtb	r3, r3
+ 342 0202 5AB2     		sxtb	r2, r3
+ 343 0204 1E4B     		ldr	r3, .L18
+ 344 0206 1A70     		strb	r2, [r3]
+ 345 0208 1D4B     		ldr	r3, .L18
+ 346 020a 93F90030 		ldrsb	r3, [r3]
+ 347 020e 002B     		cmp	r3, #0
+ 348 0210 03DC     		bgt	.L15
+ 349              		.loc 1 208 13 is_stmt 0 discriminator 1
+ 350 0212 1B4B     		ldr	r3, .L18
+ 351 0214 0022     		movs	r2, #0
+ 352 0216 1A70     		strb	r2, [r3]
+ 353              		.syntax unified
+ 354              	@ 208 "Modules/OS/OSAL/src/Schedule.c" 1
+ 355 0218 62B6     		cpsie i
+ 356              	@ 0 "" 2
+ 357              		.thumb
+ 358              		.syntax unified
+ 359              	.L15:
+ 209:Modules/OS/OSAL/src/Schedule.c **** 
+ 210:Modules/OS/OSAL/src/Schedule.c **** #if (HOOK_PRETASKHOOK == OSEK_ENABLE)
+ 211:Modules/OS/OSAL/src/Schedule.c ****             PreTaskHook();
+ 212:Modules/OS/OSAL/src/Schedule.c **** #endif /* #if (HOOK_PRETASKHOOK == OSEK_ENABLE) */
+ 213:Modules/OS/OSAL/src/Schedule.c **** 
+ 214:Modules/OS/OSAL/src/Schedule.c ****             /* \req OSEK_SYS_3.4.1.3 its context is saved */
+ 215:Modules/OS/OSAL/src/Schedule.c ****             /* \req OSEK_SYS_3.4.1.4 and the higher-priority task is executed */
+ 216:Modules/OS/OSAL/src/Schedule.c ****             CallTask(actualTask, nextTask);
+ 360              		.loc 1 216 13 is_stmt 1
+ 361 021a 9DF80520 		ldrb	r2, [sp, #5]	@ zero_extendqisi2
+ 362 021e 1D49     		ldr	r1, .L18+20
+ 363 0220 1346     		mov	r3, r2
+ 364 0222 DB00     		lsls	r3, r3, #3
+ 365 0224 9B1A     		subs	r3, r3, r2
+ 366 0226 9B00     		lsls	r3, r3, #2
+ 367 0228 0B44     		add	r3, r3, r1
+ 368 022a 0433     		adds	r3, r3, #4
+ 369 022c 1B68     		ldr	r3, [r3]
+ 370 022e 1A4A     		ldr	r2, .L18+24
+ 371 0230 1360     		str	r3, [r2]
+ 372 0232 9DF80620 		ldrb	r2, [sp, #6]	@ zero_extendqisi2
+ 373 0236 1749     		ldr	r1, .L18+20
+ 374 0238 1346     		mov	r3, r2
+ 375 023a DB00     		lsls	r3, r3, #3
+ 376 023c 9B1A     		subs	r3, r3, r2
+ 377 023e 9B00     		lsls	r3, r3, #2
+ 378 0240 0B44     		add	r3, r3, r1
+ 379 0242 0433     		adds	r3, r3, #4
+ 380 0244 1B68     		ldr	r3, [r3]
+ 381 0246 154A     		ldr	r2, .L18+28
+ 382 0248 1360     		str	r3, [r2]
+ 383              		.syntax unified
+ 384              	@ 216 "Modules/OS/OSAL/src/Schedule.c" 1
+ 385 024a 03B4     		push {r0,r1}												
+ 386 024c 3048     		ldr r0,=0xE000ED04											
+ 387 024e 0168     		ldr r1,[r0]												
+ 388 0250 41F08051 		orr r1,1<<28												
+ 389 0254 0160     		str r1,[r0]												
+ 390 0256 03BC     		pop {r0,r1}												
+ 391              		
+ 392              	@ 0 "" 2
+ 393              		.thumb
+ 394              		.syntax unified
+ 395 0258 34E0     		b	.L13
+ 396              	.L14:
+ 217:Modules/OS/OSAL/src/Schedule.c ****          }
+ 218:Modules/OS/OSAL/src/Schedule.c ****          else
+ 219:Modules/OS/OSAL/src/Schedule.c ****          {
+ 220:Modules/OS/OSAL/src/Schedule.c ****             IntSecure_End();
+ 397              		.loc 1 220 13
+ 398 025a 094B     		ldr	r3, .L18
+ 399 025c 93F90030 		ldrsb	r3, [r3]
+ 400 0260 DBB2     		uxtb	r3, r3
+ 401 0262 013B     		subs	r3, r3, #1
+ 402 0264 DBB2     		uxtb	r3, r3
+ 403 0266 5AB2     		sxtb	r2, r3
+ 404 0268 054B     		ldr	r3, .L18
+ 405 026a 1A70     		strb	r2, [r3]
+ 406 026c 044B     		ldr	r3, .L18
+ 407 026e 93F90030 		ldrsb	r3, [r3]
+ 408 0272 002B     		cmp	r3, #0
+ 409 0274 26DC     		bgt	.L13
+ 410              		.loc 1 220 13 is_stmt 0 discriminator 1
+ 411 0276 024B     		ldr	r3, .L18
+ 412 0278 0022     		movs	r2, #0
+ 413 027a 1A70     		strb	r2, [r3]
+ 414              		.syntax unified
+ 415              	@ 220 "Modules/OS/OSAL/src/Schedule.c" 1
+ 416 027c 62B6     		cpsie i
+ 417              	@ 0 "" 2
+ 418              		.thumb
+ 419              		.syntax unified
+ 420 027e 21E0     		b	.L13
+ 421              	.L19:
+ 422              		.align	2
+ 423              	.L18:
+ 424 0280 00000000 		.word	SuspendAllInterrupts_Counter
+ 425 0284 00000000 		.word	RunningTask
+ 426 0288 00000000 		.word	ActualContext
+ 427 028c 00000000 		.word	TasksVar
+ 428 0290 00000000 		.word	WaitingTask
+ 429 0294 00000000 		.word	TasksConst
+ 430 0298 00000000 		.word	Osek_OldTaskPtr_Arch
+ 431 029c 00000000 		.word	Osek_NewTaskPtr_Arch
+ 432              	.L4:
+ 221:Modules/OS/OSAL/src/Schedule.c **** 
+ 222:Modules/OS/OSAL/src/Schedule.c ****             /* \req OSEK_SYS_3.4.2 Otherwise the calling task is continued */
+ 223:Modules/OS/OSAL/src/Schedule.c ****          }
+ 224:Modules/OS/OSAL/src/Schedule.c ****       }
+ 225:Modules/OS/OSAL/src/Schedule.c ****    }
+ 226:Modules/OS/OSAL/src/Schedule.c **** #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+ 227:Modules/OS/OSAL/src/Schedule.c ****    else
+ 228:Modules/OS/OSAL/src/Schedule.c ****    {
+ 229:Modules/OS/OSAL/src/Schedule.c ****       IntSecure_End();
+ 433              		.loc 1 229 7 is_stmt 1
+ 434 02a0 174B     		ldr	r3, .L20
+ 435 02a2 93F90030 		ldrsb	r3, [r3]
+ 436 02a6 DBB2     		uxtb	r3, r3
+ 437 02a8 013B     		subs	r3, r3, #1
+ 438 02aa DBB2     		uxtb	r3, r3
+ 439 02ac 5AB2     		sxtb	r2, r3
+ 440 02ae 144B     		ldr	r3, .L20
+ 441 02b0 1A70     		strb	r2, [r3]
+ 442 02b2 134B     		ldr	r3, .L20
+ 443 02b4 93F90030 		ldrsb	r3, [r3]
+ 444 02b8 002B     		cmp	r3, #0
+ 445 02ba 03DC     		bgt	.L13
+ 446              		.loc 1 229 7 is_stmt 0 discriminator 1
+ 447 02bc 104B     		ldr	r3, .L20
+ 448 02be 0022     		movs	r2, #0
+ 449 02c0 1A70     		strb	r2, [r3]
+ 450              		.syntax unified
+ 451              	@ 229 "Modules/OS/OSAL/src/Schedule.c" 1
+ 452 02c2 62B6     		cpsie i
+ 453              	@ 0 "" 2
+ 454              		.thumb
+ 455              		.syntax unified
+ 456              	.L13:
+ 230:Modules/OS/OSAL/src/Schedule.c ****    }
+ 231:Modules/OS/OSAL/src/Schedule.c **** #endif /* #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) */
+ 232:Modules/OS/OSAL/src/Schedule.c **** 
+ 233:Modules/OS/OSAL/src/Schedule.c **** #if (HOOK_ERRORHOOK == OSEK_ENABLE)
+ 234:Modules/OS/OSAL/src/Schedule.c ****    /* \req OSEK_ERR_1.3-4/xx The ErrorHook hook routine shall be called if a
+ 235:Modules/OS/OSAL/src/Schedule.c ****     ** system service returns a StatusType value not equal to E_OK.*/
+ 236:Modules/OS/OSAL/src/Schedule.c ****    /* \req OSEK_ERR_1.3.1-4/xx The hook routine ErrorHook is not called if a
+ 237:Modules/OS/OSAL/src/Schedule.c ****     ** system service is called from the ErrorHook itself. */
+ 238:Modules/OS/OSAL/src/Schedule.c ****    if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
+ 457              		.loc 1 238 7 is_stmt 1
+ 458 02c4 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 459 02c8 002B     		cmp	r3, #0
+ 460 02ca 12D0     		beq	.L16
+ 461              		.loc 1 238 46 discriminator 1
+ 462 02cc 0D4B     		ldr	r3, .L20+4
+ 463 02ce 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 464              		.loc 1 238 25 discriminator 1
+ 465 02d0 012B     		cmp	r3, #1
+ 466 02d2 0ED0     		beq	.L16
+ 239:Modules/OS/OSAL/src/Schedule.c ****    {
+ 240:Modules/OS/OSAL/src/Schedule.c ****       SetError_Api(OSServiceId_Schedule);
+ 467              		.loc 1 240 7
+ 468 02d4 0C4B     		ldr	r3, .L20+8
+ 469 02d6 0422     		movs	r2, #4
+ 470 02d8 1A60     		str	r2, [r3]
+ 241:Modules/OS/OSAL/src/Schedule.c ****       SetError_Ret(ret);
+ 471              		.loc 1 241 7
+ 472 02da 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 473 02de 0B4A     		ldr	r2, .L20+12
+ 474 02e0 1360     		str	r3, [r2]
+ 242:Modules/OS/OSAL/src/Schedule.c ****       SetError_Msg("Schedule Task returns != than E_OK");
+ 243:Modules/OS/OSAL/src/Schedule.c ****       SetError_ErrorHook();
+ 475              		.loc 1 243 7
+ 476 02e2 084B     		ldr	r3, .L20+4
+ 477 02e4 0122     		movs	r2, #1
+ 478 02e6 1A70     		strb	r2, [r3]
+ 479 02e8 FFF7FEFF 		bl	ErrorHook
+ 480 02ec 054B     		ldr	r3, .L20+4
+ 481 02ee 0022     		movs	r2, #0
+ 482 02f0 1A70     		strb	r2, [r3]
+ 483              	.L16:
+ 244:Modules/OS/OSAL/src/Schedule.c ****    }
+ 245:Modules/OS/OSAL/src/Schedule.c **** #endif
+ 246:Modules/OS/OSAL/src/Schedule.c **** 
+ 247:Modules/OS/OSAL/src/Schedule.c ****    return ret;
+ 484              		.loc 1 247 11
+ 485 02f2 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 248:Modules/OS/OSAL/src/Schedule.c **** }
+ 486              		.loc 1 248 1
+ 487 02f6 1846     		mov	r0, r3
+ 488 02f8 03B0     		add	sp, sp, #12
+ 489              		.cfi_def_cfa_offset 4
+ 490              		@ sp needed
+ 491 02fa 5DF804FB 		ldr	pc, [sp], #4
+ 492              	.L21:
+ 493 02fe 00BF     		.align	2
+ 494              	.L20:
+ 495 0300 00000000 		.word	SuspendAllInterrupts_Counter
+ 496 0304 00000000 		.word	ErrorHookRunning
+ 497 0308 00000000 		.word	Osek_ErrorApi
+ 498 030c 00000000 		.word	Osek_ErrorRet
+ 499              		.cfi_endproc
+ 500              	.LFE0:
+ 502              		.text
+ 503              	.Letext0:
+ 504              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 505              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 506              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Types.h"
+ 507              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Cfg.h"
+ 508              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 509              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+ 510              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 511              		.file 9 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 512              		.file 10 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os_inter
+DEFINED SYMBOLS
+                            *ABS*:00000000 Schedule.c
+C:\Users\AAA\AppData\Local\Temp\ccuJ7llR.s:19     .text.Schedule:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccuJ7llR.s:26     .text.Schedule:00000000 Schedule
+C:\Users\AAA\AppData\Local\Temp\ccuJ7llR.s:424    .text.Schedule:00000280 $d
+C:\Users\AAA\AppData\Local\Temp\ccuJ7llR.s:434    .text.Schedule:000002a0 $t
+C:\Users\AAA\AppData\Local\Temp\ccuJ7llR.s:495    .text.Schedule:00000300 $d
+C:\Users\AAA\AppData\Local\Temp\ccuJ7llR.s:5978   .text.Schedule:00000310 $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+UNDEFINED SYMBOLS
+GetNextTask
+SuspendAllInterrupts_Counter
+RunningTask
+ActualContext
+TasksVar
+WaitingTask
+TasksConst
+Osek_OldTaskPtr_Arch
+Osek_NewTaskPtr_Arch
+ErrorHook
+ErrorHookRunning
+Osek_ErrorApi
+Osek_ErrorRet

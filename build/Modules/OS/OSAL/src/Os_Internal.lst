@@ -1,0 +1,1337 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"Os_Internal.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	RunningTask
+  19              		.section	.bss.RunningTask,"aw",%nobits
+  22              	RunningTask:
+  23 0000 00       		.space	1
+  24              		.global	ActualContext
+  25              		.section	.bss.ActualContext,"aw",%nobits
+  28              	ActualContext:
+  29 0000 00       		.space	1
+  30              		.section	.text.AddReady,"ax",%progbits
+  31              		.align	1
+  32              		.p2align 4,,15
+  33              		.global	AddReady
+  34              		.syntax unified
+  35              		.thumb
+  36              		.thumb_func
+  38              	AddReady:
+  39              	.LFB0:
+  40              		.file 1 "Modules/OS/OSAL/src/Os_Internal.c"
+   1:Modules/OS/OSAL/src/Os_Internal.c **** /* Copyright 2008, 2009 Mariano Cerdeiro
+   2:Modules/OS/OSAL/src/Os_Internal.c ****  * Copyright 2014, ACSE & CADIEEL
+   3:Modules/OS/OSAL/src/Os_Internal.c ****  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+   4:Modules/OS/OSAL/src/Os_Internal.c ****  *      CADIEEL: http://www.cadieel.org.ar
+   5:Modules/OS/OSAL/src/Os_Internal.c ****  *
+   6:Modules/OS/OSAL/src/Os_Internal.c ****  * This file is part of CIAA Firmware.
+   7:Modules/OS/OSAL/src/Os_Internal.c ****  *
+   8:Modules/OS/OSAL/src/Os_Internal.c ****  * Redistribution and use in source and binary forms, with or without
+   9:Modules/OS/OSAL/src/Os_Internal.c ****  * modification, are permitted provided that the following conditions are met:
+  10:Modules/OS/OSAL/src/Os_Internal.c ****  *
+  11:Modules/OS/OSAL/src/Os_Internal.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  12:Modules/OS/OSAL/src/Os_Internal.c ****  *    this list of conditions and the following disclaimer.
+  13:Modules/OS/OSAL/src/Os_Internal.c ****  *
+  14:Modules/OS/OSAL/src/Os_Internal.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  15:Modules/OS/OSAL/src/Os_Internal.c ****  *    this list of conditions and the following disclaimer in the documentation
+  16:Modules/OS/OSAL/src/Os_Internal.c ****  *    and/or other materials provided with the distribution.
+  17:Modules/OS/OSAL/src/Os_Internal.c ****  *
+  18:Modules/OS/OSAL/src/Os_Internal.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  19:Modules/OS/OSAL/src/Os_Internal.c ****  *    contributors may be used to endorse or promote products derived from this
+  20:Modules/OS/OSAL/src/Os_Internal.c ****  *    software without specific prior written permission.
+  21:Modules/OS/OSAL/src/Os_Internal.c ****  *
+  22:Modules/OS/OSAL/src/Os_Internal.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Modules/OS/OSAL/src/Os_Internal.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Modules/OS/OSAL/src/Os_Internal.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  25:Modules/OS/OSAL/src/Os_Internal.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  26:Modules/OS/OSAL/src/Os_Internal.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  27:Modules/OS/OSAL/src/Os_Internal.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  28:Modules/OS/OSAL/src/Os_Internal.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  29:Modules/OS/OSAL/src/Os_Internal.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  30:Modules/OS/OSAL/src/Os_Internal.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  31:Modules/OS/OSAL/src/Os_Internal.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  32:Modules/OS/OSAL/src/Os_Internal.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  33:Modules/OS/OSAL/src/Os_Internal.c ****  *
+  34:Modules/OS/OSAL/src/Os_Internal.c ****  */
+  35:Modules/OS/OSAL/src/Os_Internal.c **** 
+  36:Modules/OS/OSAL/src/Os_Internal.c **** /** \brief FreeOSEK Os Internal Implementation File
+  37:Modules/OS/OSAL/src/Os_Internal.c ****  **
+  38:Modules/OS/OSAL/src/Os_Internal.c ****  ** \file Os_Internal.c
+  39:Modules/OS/OSAL/src/Os_Internal.c ****  **/
+  40:Modules/OS/OSAL/src/Os_Internal.c **** 
+  41:Modules/OS/OSAL/src/Os_Internal.c **** /** \addtogroup FreeOSEK
+  42:Modules/OS/OSAL/src/Os_Internal.c ****  ** @{ */
+  43:Modules/OS/OSAL/src/Os_Internal.c **** /** \addtogroup FreeOSEK_Os
+  44:Modules/OS/OSAL/src/Os_Internal.c ****  ** @{ */
+  45:Modules/OS/OSAL/src/Os_Internal.c **** /** \addtogroup FreeOSEK_Os_Internal
+  46:Modules/OS/OSAL/src/Os_Internal.c ****  ** @{ */
+  47:Modules/OS/OSAL/src/Os_Internal.c **** 
+  48:Modules/OS/OSAL/src/Os_Internal.c **** /*
+  49:Modules/OS/OSAL/src/Os_Internal.c ****  * Initials     Name
+  50:Modules/OS/OSAL/src/Os_Internal.c ****  * ---------------------------
+  51:Modules/OS/OSAL/src/Os_Internal.c ****  * MaCe         Mariano Cerdeiro
+  52:Modules/OS/OSAL/src/Os_Internal.c ****  * KLi          Kang Li
+  53:Modules/OS/OSAL/src/Os_Internal.c ****  */
+  54:Modules/OS/OSAL/src/Os_Internal.c **** 
+  55:Modules/OS/OSAL/src/Os_Internal.c **** /*
+  56:Modules/OS/OSAL/src/Os_Internal.c ****  * modification history (new versions first)
+  57:Modules/OS/OSAL/src/Os_Internal.c ****  * -----------------------------------------------------------
+  58:Modules/OS/OSAL/src/Os_Internal.c ****  * 20090719 v0.1.4 MaCe rename file to Os_
+  59:Modules/OS/OSAL/src/Os_Internal.c ****  * 20090424 v0.1.3 MaCe correct initial task priority
+  60:Modules/OS/OSAL/src/Os_Internal.c ****  * 20090128 v0.1.2 MaCe add OSEK_MEMMAP check
+  61:Modules/OS/OSAL/src/Os_Internal.c ****  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+  62:Modules/OS/OSAL/src/Os_Internal.c ****  * 20080713 v0.1.0 MaCe initial version
+  63:Modules/OS/OSAL/src/Os_Internal.c ****  */
+  64:Modules/OS/OSAL/src/Os_Internal.c **** 
+  65:Modules/OS/OSAL/src/Os_Internal.c **** /*==================[inclusions]=============================================*/
+  66:Modules/OS/OSAL/src/Os_Internal.c **** #include "Os_Internal.h"
+  67:Modules/OS/OSAL/src/Os_Internal.c **** 
+  68:Modules/OS/OSAL/src/Os_Internal.c **** /*==================[macros and definitions]=================================*/
+  69:Modules/OS/OSAL/src/Os_Internal.c **** 
+  70:Modules/OS/OSAL/src/Os_Internal.c **** /*==================[internal data declaration]==============================*/
+  71:Modules/OS/OSAL/src/Os_Internal.c **** 
+  72:Modules/OS/OSAL/src/Os_Internal.c **** /*==================[internal functions declaration]=========================*/
+  73:Modules/OS/OSAL/src/Os_Internal.c **** 
+  74:Modules/OS/OSAL/src/Os_Internal.c **** /*==================[internal data definition]===============================*/
+  75:Modules/OS/OSAL/src/Os_Internal.c **** 
+  76:Modules/OS/OSAL/src/Os_Internal.c **** /*==================[external data definition]===============================*/
+  77:Modules/OS/OSAL/src/Os_Internal.c **** TaskType RunningTask;
+  78:Modules/OS/OSAL/src/Os_Internal.c **** 
+  79:Modules/OS/OSAL/src/Os_Internal.c **** ContextType ActualContext;
+  80:Modules/OS/OSAL/src/Os_Internal.c **** 
+  81:Modules/OS/OSAL/src/Os_Internal.c **** /*==================[internal functions definition]==========================*/
+  82:Modules/OS/OSAL/src/Os_Internal.c **** 
+  83:Modules/OS/OSAL/src/Os_Internal.c **** /*==================[external functions definition]==========================*/
+  84:Modules/OS/OSAL/src/Os_Internal.c **** void AddReady(TaskType TaskID)
+  85:Modules/OS/OSAL/src/Os_Internal.c **** {
+  41              		.loc 1 85 1
+  42              		.cfi_startproc
+  43              		@ args = 0, pretend = 0, frame = 24
+  44              		@ frame_needed = 0, uses_anonymous_args = 0
+  45              		@ link register save eliminated.
+  46 0000 86B0     		sub	sp, sp, #24
+  47              		.cfi_def_cfa_offset 24
+  48 0002 0346     		mov	r3, r0
+  49 0004 8DF80730 		strb	r3, [sp, #7]
+  86:Modules/OS/OSAL/src/Os_Internal.c **** 	TaskPriorityType priority;
+  87:Modules/OS/OSAL/src/Os_Internal.c **** 	TaskRefType readylist;
+  88:Modules/OS/OSAL/src/Os_Internal.c **** 	TaskTotalType maxtasks;
+  89:Modules/OS/OSAL/src/Os_Internal.c **** 	TaskTotalType position;
+  90:Modules/OS/OSAL/src/Os_Internal.c **** 
+  91:Modules/OS/OSAL/src/Os_Internal.c **** 	/* get task priority */
+  92:Modules/OS/OSAL/src/Os_Internal.c **** 	priority = TasksConst[TaskID].StaticPriority;
+  50              		.loc 1 92 31
+  51 0008 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+  52              		.loc 1 92 11
+  53 000c 2D49     		ldr	r1, .L3
+  54 000e 1346     		mov	r3, r2
+  55 0010 DB00     		lsls	r3, r3, #3
+  56 0012 9B1A     		subs	r3, r3, r2
+  57 0014 9B00     		lsls	r3, r3, #2
+  58 0016 0B44     		add	r3, r3, r1
+  59 0018 0E33     		adds	r3, r3, #14
+  60 001a 1B78     		ldrb	r3, [r3]
+  61 001c 8DF81630 		strb	r3, [sp, #22]
+  93:Modules/OS/OSAL/src/Os_Internal.c **** 
+  94:Modules/OS/OSAL/src/Os_Internal.c **** 	/* set the start priority for this task */
+  95:Modules/OS/OSAL/src/Os_Internal.c **** 	TasksVar[TaskID].ActualPriority = priority;
+  62              		.loc 1 95 18
+  63 0020 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+  64              		.loc 1 95 34
+  65 0024 2849     		ldr	r1, .L3+4
+  66 0026 1346     		mov	r3, r2
+  67 0028 9B00     		lsls	r3, r3, #2
+  68 002a 1344     		add	r3, r3, r2
+  69 002c 9B00     		lsls	r3, r3, #2
+  70 002e 0B44     		add	r3, r3, r1
+  71 0030 9DF81620 		ldrb	r2, [sp, #22]
+  72 0034 1A70     		strb	r2, [r3]
+  96:Modules/OS/OSAL/src/Os_Internal.c **** 
+  97:Modules/OS/OSAL/src/Os_Internal.c **** 	/* conver the priority to the array index */
+  98:Modules/OS/OSAL/src/Os_Internal.c **** 	/* do not remove the -1 is needed. for example if READYLIST_COUNT is 4
+  99:Modules/OS/OSAL/src/Os_Internal.c **** 	* the valida entries for this array are between 0 and 3, so the -1 is needed
+ 100:Modules/OS/OSAL/src/Os_Internal.c **** 	* since the lower priority is 0.
+ 101:Modules/OS/OSAL/src/Os_Internal.c **** 	*/
+ 102:Modules/OS/OSAL/src/Os_Internal.c **** 	priority = (READYLISTS_COUNT-1)-priority;
+  73              		.loc 1 102 11
+  74 0036 9DF81630 		ldrb	r3, [sp, #22]
+  75 003a C3F10203 		rsb	r3, r3, #2
+  76 003e 8DF81630 		strb	r3, [sp, #22]
+ 103:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 104:Modules/OS/OSAL/src/Os_Internal.c **** 	/* get ready list */
+ 105:Modules/OS/OSAL/src/Os_Internal.c **** 	readylist = ReadyConst[priority].TaskRef;
+  77              		.loc 1 105 34
+  78 0042 9DF81630 		ldrb	r3, [sp, #22]	@ zero_extendqisi2
+  79              		.loc 1 105 12
+  80 0046 214A     		ldr	r2, .L3+8
+  81 0048 DB00     		lsls	r3, r3, #3
+  82 004a 1344     		add	r3, r3, r2
+  83 004c 5B68     		ldr	r3, [r3, #4]
+  84 004e 0493     		str	r3, [sp, #16]
+ 106:Modules/OS/OSAL/src/Os_Internal.c **** 	/* get max number of entries */
+ 107:Modules/OS/OSAL/src/Os_Internal.c **** 	maxtasks = ReadyConst[priority].ListLength;
+  85              		.loc 1 107 33
+  86 0050 9DF81630 		ldrb	r3, [sp, #22]	@ zero_extendqisi2
+  87              		.loc 1 107 11
+  88 0054 1D4A     		ldr	r2, .L3+8
+  89 0056 12F83330 		ldrb	r3, [r2, r3, lsl #3]
+  90 005a 8DF80F30 		strb	r3, [sp, #15]
+ 108:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 109:Modules/OS/OSAL/src/Os_Internal.c **** 	/* get position incrementtion */
+ 110:Modules/OS/OSAL/src/Os_Internal.c **** 	position = ReadyVar[priority].ListStart + ReadyVar[priority].ListCount;
+  91              		.loc 1 110 31
+  92 005e 9DF81630 		ldrb	r3, [sp, #22]	@ zero_extendqisi2
+  93 0062 1B4A     		ldr	r2, .L3+12
+  94 0064 12F81320 		ldrb	r2, [r2, r3, lsl #1]	@ zero_extendqisi2
+  95              		.loc 1 110 62
+  96 0068 9DF81630 		ldrb	r3, [sp, #22]	@ zero_extendqisi2
+  97 006c 1849     		ldr	r1, .L3+12
+  98 006e 5B00     		lsls	r3, r3, #1
+  99 0070 0B44     		add	r3, r3, r1
+ 100 0072 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 101              		.loc 1 110 11
+ 102 0074 1344     		add	r3, r3, r2
+ 103 0076 8DF81730 		strb	r3, [sp, #23]
+ 111:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 112:Modules/OS/OSAL/src/Os_Internal.c **** 	/* go arround maxtasks */
+ 113:Modules/OS/OSAL/src/Os_Internal.c **** 	/* this if works like  % instruction */
+ 114:Modules/OS/OSAL/src/Os_Internal.c **** 	if (position >= maxtasks)
+ 104              		.loc 1 114 5
+ 105 007a 9DF81720 		ldrb	r2, [sp, #23]	@ zero_extendqisi2
+ 106 007e 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 107 0082 9A42     		cmp	r2, r3
+ 108 0084 06D3     		bcc	.L2
+ 115:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 116:Modules/OS/OSAL/src/Os_Internal.c **** 		position -= maxtasks;
+ 109              		.loc 1 116 12
+ 110 0086 9DF81720 		ldrb	r2, [sp, #23]
+ 111 008a 9DF80F30 		ldrb	r3, [sp, #15]
+ 112 008e D31A     		subs	r3, r2, r3
+ 113 0090 8DF81730 		strb	r3, [sp, #23]
+ 114              	.L2:
+ 117:Modules/OS/OSAL/src/Os_Internal.c **** 	}
+ 118:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 119:Modules/OS/OSAL/src/Os_Internal.c **** 	/* set the task id in ready the list */
+ 120:Modules/OS/OSAL/src/Os_Internal.c **** 	readylist[position] = TaskID;
+ 115              		.loc 1 120 11
+ 116 0094 9DF81730 		ldrb	r3, [sp, #23]	@ zero_extendqisi2
+ 117 0098 049A     		ldr	r2, [sp, #16]
+ 118 009a 1344     		add	r3, r3, r2
+ 119              		.loc 1 120 22
+ 120 009c 9DF80720 		ldrb	r2, [sp, #7]
+ 121 00a0 1A70     		strb	r2, [r3]
+ 121:Modules/OS/OSAL/src/Os_Internal.c **** 	/* increment the list counter */
+ 122:Modules/OS/OSAL/src/Os_Internal.c **** 	ReadyVar[priority].ListCount++;
+ 122              		.loc 1 122 20
+ 123 00a2 9DF81620 		ldrb	r2, [sp, #22]	@ zero_extendqisi2
+ 124 00a6 0A49     		ldr	r1, .L3+12
+ 125 00a8 5300     		lsls	r3, r2, #1
+ 126 00aa 0B44     		add	r3, r3, r1
+ 127 00ac 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 128              		.loc 1 122 30
+ 129 00ae 0133     		adds	r3, r3, #1
+ 130 00b0 D8B2     		uxtb	r0, r3
+ 131 00b2 0749     		ldr	r1, .L3+12
+ 132 00b4 5300     		lsls	r3, r2, #1
+ 133 00b6 0B44     		add	r3, r3, r1
+ 134 00b8 0246     		mov	r2, r0
+ 135 00ba 5A70     		strb	r2, [r3, #1]
+ 123:Modules/OS/OSAL/src/Os_Internal.c **** }
+ 136              		.loc 1 123 1
+ 137 00bc 00BF     		nop
+ 138 00be 06B0     		add	sp, sp, #24
+ 139              		.cfi_def_cfa_offset 0
+ 140              		@ sp needed
+ 141 00c0 7047     		bx	lr
+ 142              	.L4:
+ 143 00c2 00BF     		.align	2
+ 144              	.L3:
+ 145 00c4 00000000 		.word	TasksConst
+ 146 00c8 00000000 		.word	TasksVar
+ 147 00cc 00000000 		.word	ReadyConst
+ 148 00d0 00000000 		.word	ReadyVar
+ 149              		.cfi_endproc
+ 150              	.LFE0:
+ 152              		.section	.text.RemoveTask,"ax",%progbits
+ 153              		.align	1
+ 154              		.p2align 4,,15
+ 155              		.global	RemoveTask
+ 156              		.syntax unified
+ 157              		.thumb
+ 158              		.thumb_func
+ 160              	RemoveTask:
+ 161              	.LFB1:
+ 124:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 125:Modules/OS/OSAL/src/Os_Internal.c **** void RemoveTask
+ 126:Modules/OS/OSAL/src/Os_Internal.c **** (
+ 127:Modules/OS/OSAL/src/Os_Internal.c **** 	TaskType TaskID
+ 128:Modules/OS/OSAL/src/Os_Internal.c **** )
+ 129:Modules/OS/OSAL/src/Os_Internal.c **** {
+ 162              		.loc 1 129 1
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 16
+ 165              		@ frame_needed = 0, uses_anonymous_args = 0
+ 166              		@ link register save eliminated.
+ 167 0000 84B0     		sub	sp, sp, #16
+ 168              		.cfi_def_cfa_offset 16
+ 169 0002 0346     		mov	r3, r0
+ 170 0004 8DF80730 		strb	r3, [sp, #7]
+ 130:Modules/OS/OSAL/src/Os_Internal.c **** 	TaskPriorityType priority;
+ 131:Modules/OS/OSAL/src/Os_Internal.c **** 	TaskTotalType maxtasks;
+ 132:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 133:Modules/OS/OSAL/src/Os_Internal.c **** 	/* get task priority */
+ 134:Modules/OS/OSAL/src/Os_Internal.c **** 	priority = TasksConst[TaskID].StaticPriority;
+ 171              		.loc 1 134 31
+ 172 0008 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 173              		.loc 1 134 11
+ 174 000c 2449     		ldr	r1, .L7
+ 175 000e 1346     		mov	r3, r2
+ 176 0010 DB00     		lsls	r3, r3, #3
+ 177 0012 9B1A     		subs	r3, r3, r2
+ 178 0014 9B00     		lsls	r3, r3, #2
+ 179 0016 0B44     		add	r3, r3, r1
+ 180 0018 0E33     		adds	r3, r3, #14
+ 181 001a 1B78     		ldrb	r3, [r3]
+ 182 001c 8DF80F30 		strb	r3, [sp, #15]
+ 135:Modules/OS/OSAL/src/Os_Internal.c **** 	/* conver the priority to the array index */
+ 136:Modules/OS/OSAL/src/Os_Internal.c **** 	/* do not remove the -1 is needed. for example if READYLIST_COUNT is 4
+ 137:Modules/OS/OSAL/src/Os_Internal.c **** 	* the valida entries for this array are between 0 and 3, so the -1 is needed
+ 138:Modules/OS/OSAL/src/Os_Internal.c **** 	* since the lower priority is 0.
+ 139:Modules/OS/OSAL/src/Os_Internal.c **** 	*/
+ 140:Modules/OS/OSAL/src/Os_Internal.c **** 	priority = (READYLISTS_COUNT-1)-priority;
+ 183              		.loc 1 140 11
+ 184 0020 9DF80F30 		ldrb	r3, [sp, #15]
+ 185 0024 C3F10203 		rsb	r3, r3, #2
+ 186 0028 8DF80F30 		strb	r3, [sp, #15]
+ 141:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 142:Modules/OS/OSAL/src/Os_Internal.c **** 	/* get max number of entries */
+ 143:Modules/OS/OSAL/src/Os_Internal.c **** 	maxtasks = ReadyConst[priority].ListLength;
+ 187              		.loc 1 143 33
+ 188 002c 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 189              		.loc 1 143 11
+ 190 0030 1C4A     		ldr	r2, .L7+4
+ 191 0032 12F83330 		ldrb	r3, [r2, r3, lsl #3]
+ 192 0036 8DF80E30 		strb	r3, [sp, #14]
+ 144:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 145:Modules/OS/OSAL/src/Os_Internal.c **** 	/* increment the ListStart */
+ 146:Modules/OS/OSAL/src/Os_Internal.c **** 	ReadyVar[priority].ListStart = ReadyVar[priority].ListStart + 1;
+ 193              		.loc 1 146 51
+ 194 003a 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 195 003e 1A4A     		ldr	r2, .L7+8
+ 196 0040 12F81320 		ldrb	r2, [r2, r3, lsl #1]	@ zero_extendqisi2
+ 197              		.loc 1 146 20
+ 198 0044 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 199              		.loc 1 146 62
+ 200 0048 0132     		adds	r2, r2, #1
+ 201 004a D1B2     		uxtb	r1, r2
+ 202              		.loc 1 146 31
+ 203 004c 164A     		ldr	r2, .L7+8
+ 204 004e 02F81310 		strb	r1, [r2, r3, lsl #1]
+ 147:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 148:Modules/OS/OSAL/src/Os_Internal.c **** 	/* go arround maxtasks */
+ 149:Modules/OS/OSAL/src/Os_Internal.c **** 	/* this if works like a % instruction */
+ 150:Modules/OS/OSAL/src/Os_Internal.c **** 	if (ReadyVar[priority].ListStart >= maxtasks)
+ 205              		.loc 1 150 24
+ 206 0052 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 207 0056 144A     		ldr	r2, .L7+8
+ 208 0058 12F81330 		ldrb	r3, [r2, r3, lsl #1]	@ zero_extendqisi2
+ 209              		.loc 1 150 5
+ 210 005c 9DF80E20 		ldrb	r2, [sp, #14]	@ zero_extendqisi2
+ 211 0060 9A42     		cmp	r2, r3
+ 212 0062 0DD8     		bhi	.L6
+ 151:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 152:Modules/OS/OSAL/src/Os_Internal.c **** 		ReadyVar[priority].ListStart -= maxtasks;
+ 213              		.loc 1 152 32
+ 214 0064 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 215 0068 0F4A     		ldr	r2, .L7+8
+ 216 006a 12F81310 		ldrb	r1, [r2, r3, lsl #1]	@ zero_extendqisi2
+ 217 006e 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 218 0072 9DF80E20 		ldrb	r2, [sp, #14]
+ 219 0076 8A1A     		subs	r2, r1, r2
+ 220 0078 D1B2     		uxtb	r1, r2
+ 221 007a 0B4A     		ldr	r2, .L7+8
+ 222 007c 02F81310 		strb	r1, [r2, r3, lsl #1]
+ 223              	.L6:
+ 153:Modules/OS/OSAL/src/Os_Internal.c **** 	}
+ 154:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 155:Modules/OS/OSAL/src/Os_Internal.c **** 	/* decrement the count of ready tasks */
+ 156:Modules/OS/OSAL/src/Os_Internal.c **** 	ReadyVar[priority].ListCount--;
+ 224              		.loc 1 156 20
+ 225 0080 9DF80F20 		ldrb	r2, [sp, #15]	@ zero_extendqisi2
+ 226 0084 0849     		ldr	r1, .L7+8
+ 227 0086 5300     		lsls	r3, r2, #1
+ 228 0088 0B44     		add	r3, r3, r1
+ 229 008a 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 230              		.loc 1 156 30
+ 231 008c 013B     		subs	r3, r3, #1
+ 232 008e D8B2     		uxtb	r0, r3
+ 233 0090 0549     		ldr	r1, .L7+8
+ 234 0092 5300     		lsls	r3, r2, #1
+ 235 0094 0B44     		add	r3, r3, r1
+ 236 0096 0246     		mov	r2, r0
+ 237 0098 5A70     		strb	r2, [r3, #1]
+ 157:Modules/OS/OSAL/src/Os_Internal.c **** }
+ 238              		.loc 1 157 1
+ 239 009a 00BF     		nop
+ 240 009c 04B0     		add	sp, sp, #16
+ 241              		.cfi_def_cfa_offset 0
+ 242              		@ sp needed
+ 243 009e 7047     		bx	lr
+ 244              	.L8:
+ 245              		.align	2
+ 246              	.L7:
+ 247 00a0 00000000 		.word	TasksConst
+ 248 00a4 00000000 		.word	ReadyConst
+ 249 00a8 00000000 		.word	ReadyVar
+ 250              		.cfi_endproc
+ 251              	.LFE1:
+ 253              		.section	.text.GetNextTask,"ax",%progbits
+ 254              		.align	1
+ 255              		.p2align 4,,15
+ 256              		.global	GetNextTask
+ 257              		.syntax unified
+ 258              		.thumb
+ 259              		.thumb_func
+ 261              	GetNextTask:
+ 262              	.LFB2:
+ 158:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 159:Modules/OS/OSAL/src/Os_Internal.c **** TaskType GetNextTask
+ 160:Modules/OS/OSAL/src/Os_Internal.c **** (
+ 161:Modules/OS/OSAL/src/Os_Internal.c **** 	void
+ 162:Modules/OS/OSAL/src/Os_Internal.c **** )
+ 163:Modules/OS/OSAL/src/Os_Internal.c **** {
+ 263              		.loc 1 163 1
+ 264              		.cfi_startproc
+ 265              		@ args = 0, pretend = 0, frame = 8
+ 266              		@ frame_needed = 0, uses_anonymous_args = 0
+ 267              		@ link register save eliminated.
+ 268 0000 82B0     		sub	sp, sp, #8
+ 269              		.cfi_def_cfa_offset 8
+ 164:Modules/OS/OSAL/src/Os_Internal.c ****    /* if at least one resource is configured */
+ 165:Modules/OS/OSAL/src/Os_Internal.c **** #if (RESOURCES_COUNT != 0)
+ 166:Modules/OS/OSAL/src/Os_Internal.c ****    TaskType resTask = INVALID_TASK;
+ 167:Modules/OS/OSAL/src/Os_Internal.c ****    uint8 prio = 0;
+ 168:Modules/OS/OSAL/src/Os_Internal.c **** #endif /* #if (RESOURCES_COUNT != 0) */
+ 169:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 170:Modules/OS/OSAL/src/Os_Internal.c **** 	uint8f loopi;
+ 171:Modules/OS/OSAL/src/Os_Internal.c **** 	boolean found = FALSE;
+ 270              		.loc 1 171 10
+ 271 0002 0023     		movs	r3, #0
+ 272 0004 8DF80330 		strb	r3, [sp, #3]
+ 172:Modules/OS/OSAL/src/Os_Internal.c **** 	TaskType ret = INVALID_TASK;
+ 273              		.loc 1 172 11
+ 274 0008 FF23     		movs	r3, #255
+ 275 000a 8DF80230 		strb	r3, [sp, #2]
+ 173:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 174:Modules/OS/OSAL/src/Os_Internal.c **** 	/* check in all ready lists */
+ 175:Modules/OS/OSAL/src/Os_Internal.c **** 	for (loopi = 0; ( loopi < READYLISTS_COUNT ) && (!found) ; loopi++)
+ 276              		.loc 1 175 13
+ 277 000e 0023     		movs	r3, #0
+ 278 0010 0193     		str	r3, [sp, #4]
+ 279              		.loc 1 175 2
+ 280 0012 19E0     		b	.L10
+ 281              	.L13:
+ 176:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 177:Modules/OS/OSAL/src/Os_Internal.c **** 		/* if one or more tasks are ready */
+ 178:Modules/OS/OSAL/src/Os_Internal.c **** 		if (ReadyVar[loopi].ListCount > 0)
+ 282              		.loc 1 178 22
+ 283 0014 144A     		ldr	r2, .L15
+ 284 0016 019B     		ldr	r3, [sp, #4]
+ 285 0018 5B00     		lsls	r3, r3, #1
+ 286 001a 1344     		add	r3, r3, r2
+ 287 001c 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 288              		.loc 1 178 6
+ 289 001e 002B     		cmp	r3, #0
+ 290 0020 0FD0     		beq	.L11
+ 179:Modules/OS/OSAL/src/Os_Internal.c **** 		{
+ 180:Modules/OS/OSAL/src/Os_Internal.c **** 			/* return the first ready task */
+ 181:Modules/OS/OSAL/src/Os_Internal.c **** 			ret = ReadyConst[loopi].TaskRef[ReadyVar[loopi].ListStart];
+ 291              		.loc 1 181 27
+ 292 0022 124A     		ldr	r2, .L15+4
+ 293 0024 019B     		ldr	r3, [sp, #4]
+ 294 0026 DB00     		lsls	r3, r3, #3
+ 295 0028 1344     		add	r3, r3, r2
+ 296 002a 5B68     		ldr	r3, [r3, #4]
+ 297              		.loc 1 181 51
+ 298 002c 0E49     		ldr	r1, .L15
+ 299 002e 019A     		ldr	r2, [sp, #4]
+ 300 0030 11F81220 		ldrb	r2, [r1, r2, lsl #1]	@ zero_extendqisi2
+ 301              		.loc 1 181 35
+ 302 0034 1344     		add	r3, r3, r2
+ 303              		.loc 1 181 8
+ 304 0036 1B78     		ldrb	r3, [r3]
+ 305 0038 8DF80230 		strb	r3, [sp, #2]
+ 182:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 183:Modules/OS/OSAL/src/Os_Internal.c **** 			/* set found true */
+ 184:Modules/OS/OSAL/src/Os_Internal.c **** 			found = TRUE;
+ 306              		.loc 1 184 10
+ 307 003c 0123     		movs	r3, #1
+ 308 003e 8DF80330 		strb	r3, [sp, #3]
+ 309              	.L11:
+ 175:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 310              		.loc 1 175 66 discriminator 2
+ 311 0042 019B     		ldr	r3, [sp, #4]
+ 312 0044 0133     		adds	r3, r3, #1
+ 313 0046 0193     		str	r3, [sp, #4]
+ 314              	.L10:
+ 175:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 315              		.loc 1 175 2 discriminator 1
+ 316 0048 019B     		ldr	r3, [sp, #4]
+ 317 004a 022B     		cmp	r3, #2
+ 318 004c 06D8     		bhi	.L12
+ 175:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 319              		.loc 1 175 51 discriminator 3
+ 320 004e 9DF80330 		ldrb	r3, [sp, #3]
+ 321 0052 83F00103 		eor	r3, r3, #1
+ 322 0056 DBB2     		uxtb	r3, r3
+ 175:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 323              		.loc 1 175 47 discriminator 3
+ 324 0058 002B     		cmp	r3, #0
+ 325 005a DBD1     		bne	.L13
+ 326              	.L12:
+ 185:Modules/OS/OSAL/src/Os_Internal.c **** 		}
+ 186:Modules/OS/OSAL/src/Os_Internal.c **** 	}
+ 187:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 188:Modules/OS/OSAL/src/Os_Internal.c ****    /* if at least one resource is configured */
+ 189:Modules/OS/OSAL/src/Os_Internal.c **** #if (RESOURCES_COUNT != 0)
+ 190:Modules/OS/OSAL/src/Os_Internal.c ****    for (loopi = 0; loopi < TASKS_COUNT; loopi++)
+ 191:Modules/OS/OSAL/src/Os_Internal.c ****    {
+ 192:Modules/OS/OSAL/src/Os_Internal.c ****       /* if at least one resource is occupied */
+ 193:Modules/OS/OSAL/src/Os_Internal.c **** 		if ( ( 0 != TasksVar[loopi].Resources ) &&
+ 194:Modules/OS/OSAL/src/Os_Internal.c ****            /* and the prio is higher */
+ 195:Modules/OS/OSAL/src/Os_Internal.c ****            ( TasksVar[loopi].ActualPriority > prio ) )
+ 196:Modules/OS/OSAL/src/Os_Internal.c ****       {
+ 197:Modules/OS/OSAL/src/Os_Internal.c ****          /* remember this task and its prio */
+ 198:Modules/OS/OSAL/src/Os_Internal.c ****          resTask = loopi;
+ 199:Modules/OS/OSAL/src/Os_Internal.c ****          prio = TasksVar[loopi].ActualPriority;
+ 200:Modules/OS/OSAL/src/Os_Internal.c ****       }
+ 201:Modules/OS/OSAL/src/Os_Internal.c ****    }
+ 202:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 203:Modules/OS/OSAL/src/Os_Internal.c ****    /* if the resource task is a valid one */
+ 204:Modules/OS/OSAL/src/Os_Internal.c ****    if ( (INVALID_TASK != resTask) &&
+ 205:Modules/OS/OSAL/src/Os_Internal.c ****         /* and the resource task has the same or higher prio than the task
+ 206:Modules/OS/OSAL/src/Os_Internal.c ****          * found in the ready list */
+ 207:Modules/OS/OSAL/src/Os_Internal.c ****         (prio >= TasksVar[ret].ActualPriority) )
+ 208:Modules/OS/OSAL/src/Os_Internal.c ****    {
+ 209:Modules/OS/OSAL/src/Os_Internal.c ****       /* next task to be executed is the task using the resource */
+ 210:Modules/OS/OSAL/src/Os_Internal.c ****       ret = resTask;
+ 211:Modules/OS/OSAL/src/Os_Internal.c ****    }
+ 212:Modules/OS/OSAL/src/Os_Internal.c **** #endif /* #if (RESOURCES_COUNT != 0) */
+ 213:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 214:Modules/OS/OSAL/src/Os_Internal.c **** 	return ret;
+ 327              		.loc 1 214 9
+ 328 005c 9DF80230 		ldrb	r3, [sp, #2]	@ zero_extendqisi2
+ 215:Modules/OS/OSAL/src/Os_Internal.c **** }
+ 329              		.loc 1 215 1
+ 330 0060 1846     		mov	r0, r3
+ 331 0062 02B0     		add	sp, sp, #8
+ 332              		.cfi_def_cfa_offset 0
+ 333              		@ sp needed
+ 334 0064 7047     		bx	lr
+ 335              	.L16:
+ 336 0066 00BF     		.align	2
+ 337              	.L15:
+ 338 0068 00000000 		.word	ReadyVar
+ 339 006c 00000000 		.word	ReadyConst
+ 340              		.cfi_endproc
+ 341              	.LFE2:
+ 343              		.section	.text.OSEK_ISR_NoHandler,"ax",%progbits
+ 344              		.align	1
+ 345              		.p2align 4,,15
+ 346              		.global	OSEK_ISR_NoHandler
+ 347              		.syntax unified
+ 348              		.thumb
+ 349              		.thumb_func
+ 351              	OSEK_ISR_NoHandler:
+ 352              	.LFB3:
+ 216:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 217:Modules/OS/OSAL/src/Os_Internal.c **** void OSEK_ISR_NoHandler(void)
+ 218:Modules/OS/OSAL/src/Os_Internal.c **** {
+ 353              		.loc 1 218 1
+ 354              		.cfi_startproc
+ 355              		@ args = 0, pretend = 0, frame = 0
+ 356              		@ frame_needed = 0, uses_anonymous_args = 0
+ 357              		@ link register save eliminated.
+ 358              	.L18:
+ 219:Modules/OS/OSAL/src/Os_Internal.c **** 	while(1);
+ 359              		.loc 1 219 7 discriminator 1
+ 360 0000 FEE7     		b	.L18
+ 361              		.cfi_endproc
+ 362              	.LFE3:
+ 364 0002 00BF     		.section	.text.IncrementAlarm,"ax",%progbits
+ 365              		.align	1
+ 366              		.p2align 4,,15
+ 367              		.global	IncrementAlarm
+ 368              		.syntax unified
+ 369              		.thumb
+ 370              		.thumb_func
+ 372              	IncrementAlarm:
+ 373              	.LFB4:
+ 220:Modules/OS/OSAL/src/Os_Internal.c **** }
+ 221:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 222:Modules/OS/OSAL/src/Os_Internal.c **** #if (ALARMS_COUNT != 0)
+ 223:Modules/OS/OSAL/src/Os_Internal.c **** AlarmIncrementType IncrementAlarm(AlarmType AlarmID, AlarmIncrementType Increment)
+ 224:Modules/OS/OSAL/src/Os_Internal.c **** {
+ 374              		.loc 1 224 1
+ 375              		.cfi_startproc
+ 376              		@ args = 0, pretend = 0, frame = 24
+ 377              		@ frame_needed = 0, uses_anonymous_args = 0
+ 378 0000 00B5     		push	{lr}
+ 379              		.cfi_def_cfa_offset 4
+ 380              		.cfi_offset 14, -4
+ 381 0002 87B0     		sub	sp, sp, #28
+ 382              		.cfi_def_cfa_offset 32
+ 383 0004 0346     		mov	r3, r0
+ 384 0006 0091     		str	r1, [sp]
+ 385 0008 8DF80730 		strb	r3, [sp, #7]
+ 225:Modules/OS/OSAL/src/Os_Internal.c **** 	AlarmIncrementType RestIncrements;
+ 226:Modules/OS/OSAL/src/Os_Internal.c **** 	AlarmIncrementType AlarmCount;
+ 227:Modules/OS/OSAL/src/Os_Internal.c **** 	CounterIncrementType CounterIncrement;
+ 228:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 229:Modules/OS/OSAL/src/Os_Internal.c **** 	/* init arlarms count */
+ 230:Modules/OS/OSAL/src/Os_Internal.c **** 	AlarmCount = 0;
+ 386              		.loc 1 230 13
+ 387 000c 0023     		movs	r3, #0
+ 388 000e 0493     		str	r3, [sp, #16]
+ 231:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 232:Modules/OS/OSAL/src/Os_Internal.c **** 	/* check if the increment is smaller than the expiration time */
+ 233:Modules/OS/OSAL/src/Os_Internal.c **** 	if ( AlarmsVar[AlarmID].AlarmTime > Increment )
+ 389              		.loc 1 233 25
+ 390 0010 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 391 0014 9749     		ldr	r1, .L38
+ 392 0016 1346     		mov	r3, r2
+ 393 0018 5B00     		lsls	r3, r3, #1
+ 394 001a 1344     		add	r3, r3, r2
+ 395 001c 9B00     		lsls	r3, r3, #2
+ 396 001e 0B44     		add	r3, r3, r1
+ 397 0020 0433     		adds	r3, r3, #4
+ 398 0022 1B68     		ldr	r3, [r3]
+ 399              		.loc 1 233 5
+ 400 0024 009A     		ldr	r2, [sp]
+ 401 0026 9A42     		cmp	r2, r3
+ 402 0028 21D2     		bcs	.L20
+ 234:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 235:Modules/OS/OSAL/src/Os_Internal.c **** 		/* decrement the alarm*/
+ 236:Modules/OS/OSAL/src/Os_Internal.c **** 		AlarmsVar[AlarmID].AlarmTime -= Increment;
+ 403              		.loc 1 236 32
+ 404 002a 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 405 002e 9149     		ldr	r1, .L38
+ 406 0030 1346     		mov	r3, r2
+ 407 0032 5B00     		lsls	r3, r3, #1
+ 408 0034 1344     		add	r3, r3, r2
+ 409 0036 9B00     		lsls	r3, r3, #2
+ 410 0038 0B44     		add	r3, r3, r1
+ 411 003a 0433     		adds	r3, r3, #4
+ 412 003c 1968     		ldr	r1, [r3]
+ 413 003e 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 414 0042 009B     		ldr	r3, [sp]
+ 415 0044 C91A     		subs	r1, r1, r3
+ 416 0046 8B48     		ldr	r0, .L38
+ 417 0048 1346     		mov	r3, r2
+ 418 004a 5B00     		lsls	r3, r3, #1
+ 419 004c 1344     		add	r3, r3, r2
+ 420 004e 9B00     		lsls	r3, r3, #2
+ 421 0050 0344     		add	r3, r3, r0
+ 422 0052 0433     		adds	r3, r3, #4
+ 423 0054 1960     		str	r1, [r3]
+ 237:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 238:Modules/OS/OSAL/src/Os_Internal.c **** 		/* alarm doesn't expires now */
+ 239:Modules/OS/OSAL/src/Os_Internal.c **** 		RestIncrements = AlarmsVar[AlarmID].AlarmTime;
+ 424              		.loc 1 239 38
+ 425 0056 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 426              		.loc 1 239 18
+ 427 005a 8649     		ldr	r1, .L38
+ 428 005c 1346     		mov	r3, r2
+ 429 005e 5B00     		lsls	r3, r3, #1
+ 430 0060 1344     		add	r3, r3, r2
+ 431 0062 9B00     		lsls	r3, r3, #2
+ 432 0064 0B44     		add	r3, r3, r1
+ 433 0066 0433     		adds	r3, r3, #4
+ 434 0068 1B68     		ldr	r3, [r3]
+ 435 006a 0593     		str	r3, [sp, #20]
+ 436 006c FCE0     		b	.L21
+ 437              	.L20:
+ 240:Modules/OS/OSAL/src/Os_Internal.c **** 	}
+ 241:Modules/OS/OSAL/src/Os_Internal.c **** 	else
+ 242:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 243:Modules/OS/OSAL/src/Os_Internal.c **** 		/* increment is graeter or equal than the alarm time, the alarm may
+ 244:Modules/OS/OSAL/src/Os_Internal.c **** 			expire one or more times */
+ 245:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 246:Modules/OS/OSAL/src/Os_Internal.c **** 		/* check if new alarm time has to be set */
+ 247:Modules/OS/OSAL/src/Os_Internal.c **** 		if(AlarmsVar[AlarmID].AlarmCycleTime == 0)
+ 438              		.loc 1 247 24
+ 439 006e 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 440 0072 8049     		ldr	r1, .L38
+ 441 0074 1346     		mov	r3, r2
+ 442 0076 5B00     		lsls	r3, r3, #1
+ 443 0078 1344     		add	r3, r3, r2
+ 444 007a 9B00     		lsls	r3, r3, #2
+ 445 007c 0B44     		add	r3, r3, r1
+ 446 007e 0833     		adds	r3, r3, #8
+ 447 0080 1B68     		ldr	r3, [r3]
+ 448              		.loc 1 247 5
+ 449 0082 002B     		cmp	r3, #0
+ 450 0084 3BD1     		bne	.L24
+ 248:Modules/OS/OSAL/src/Os_Internal.c **** 		{
+ 249:Modules/OS/OSAL/src/Os_Internal.c **** 			/* in case of a non cyclic alarm */
+ 250:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 251:Modules/OS/OSAL/src/Os_Internal.c **** 			/* alarm has expires 1 time */
+ 252:Modules/OS/OSAL/src/Os_Internal.c **** 			AlarmCount = 1;
+ 451              		.loc 1 252 15
+ 452 0086 0123     		movs	r3, #1
+ 453 0088 0493     		str	r3, [sp, #16]
+ 253:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 254:Modules/OS/OSAL/src/Os_Internal.c **** 			/* set alarm to 0 */
+ 255:Modules/OS/OSAL/src/Os_Internal.c **** 			AlarmsVar[AlarmID].AlarmTime = 0;
+ 454              		.loc 1 255 22
+ 455 008a 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 456              		.loc 1 255 33
+ 457 008e 7949     		ldr	r1, .L38
+ 458 0090 1346     		mov	r3, r2
+ 459 0092 5B00     		lsls	r3, r3, #1
+ 460 0094 1344     		add	r3, r3, r2
+ 461 0096 9B00     		lsls	r3, r3, #2
+ 462 0098 0B44     		add	r3, r3, r1
+ 463 009a 0433     		adds	r3, r3, #4
+ 464 009c 0022     		movs	r2, #0
+ 465 009e 1A60     		str	r2, [r3]
+ 256:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 257:Modules/OS/OSAL/src/Os_Internal.c **** 			/* disable alarm */
+ 258:Modules/OS/OSAL/src/Os_Internal.c **** 			AlarmsVar[AlarmID].AlarmState = 0;
+ 466              		.loc 1 258 22
+ 467 00a0 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 468              		.loc 1 258 34
+ 469 00a4 7349     		ldr	r1, .L38
+ 470 00a6 1346     		mov	r3, r2
+ 471 00a8 5B00     		lsls	r3, r3, #1
+ 472 00aa 1344     		add	r3, r3, r2
+ 473 00ac 9B00     		lsls	r3, r3, #2
+ 474 00ae 0B44     		add	r3, r3, r1
+ 475 00b0 0022     		movs	r2, #0
+ 476 00b2 1A70     		strb	r2, [r3]
+ 259:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 260:Modules/OS/OSAL/src/Os_Internal.c **** 			/* set rest increments to zero */
+ 261:Modules/OS/OSAL/src/Os_Internal.c **** 			RestIncrements = 0;
+ 477              		.loc 1 261 19
+ 478 00b4 0023     		movs	r3, #0
+ 479 00b6 0593     		str	r3, [sp, #20]
+ 480 00b8 4FE0     		b	.L23
+ 481              	.L25:
+ 262:Modules/OS/OSAL/src/Os_Internal.c **** 		}
+ 263:Modules/OS/OSAL/src/Os_Internal.c **** 		else
+ 264:Modules/OS/OSAL/src/Os_Internal.c **** 		{
+ 265:Modules/OS/OSAL/src/Os_Internal.c **** 			/* the alarm is cyclic */
+ 266:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 267:Modules/OS/OSAL/src/Os_Internal.c **** 			/* decrement alarm */
+ 268:Modules/OS/OSAL/src/Os_Internal.c **** 			while ( AlarmsVar[AlarmID].AlarmTime <= Increment )
+ 269:Modules/OS/OSAL/src/Os_Internal.c **** 			{
+ 270:Modules/OS/OSAL/src/Os_Internal.c **** 				/* add cycle time */
+ 271:Modules/OS/OSAL/src/Os_Internal.c **** 				AlarmsVar[AlarmID].AlarmTime += AlarmsVar[AlarmID].AlarmCycleTime;
+ 482              		.loc 1 271 34
+ 483 00ba 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 484 00be 6D49     		ldr	r1, .L38
+ 485 00c0 1346     		mov	r3, r2
+ 486 00c2 5B00     		lsls	r3, r3, #1
+ 487 00c4 1344     		add	r3, r3, r2
+ 488 00c6 9B00     		lsls	r3, r3, #2
+ 489 00c8 0B44     		add	r3, r3, r1
+ 490 00ca 0433     		adds	r3, r3, #4
+ 491 00cc 1968     		ldr	r1, [r3]
+ 492              		.loc 1 271 55
+ 493 00ce 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 494 00d2 6848     		ldr	r0, .L38
+ 495 00d4 1346     		mov	r3, r2
+ 496 00d6 5B00     		lsls	r3, r3, #1
+ 497 00d8 1344     		add	r3, r3, r2
+ 498 00da 9B00     		lsls	r3, r3, #2
+ 499 00dc 0344     		add	r3, r3, r0
+ 500 00de 0833     		adds	r3, r3, #8
+ 501 00e0 1B68     		ldr	r3, [r3]
+ 502              		.loc 1 271 34
+ 503 00e2 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 504 00e6 1944     		add	r1, r1, r3
+ 505 00e8 6248     		ldr	r0, .L38
+ 506 00ea 1346     		mov	r3, r2
+ 507 00ec 5B00     		lsls	r3, r3, #1
+ 508 00ee 1344     		add	r3, r3, r2
+ 509 00f0 9B00     		lsls	r3, r3, #2
+ 510 00f2 0344     		add	r3, r3, r0
+ 511 00f4 0433     		adds	r3, r3, #4
+ 512 00f6 1960     		str	r1, [r3]
+ 272:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 273:Modules/OS/OSAL/src/Os_Internal.c **** 				/* increment Alarms expiration times */
+ 274:Modules/OS/OSAL/src/Os_Internal.c **** 				AlarmCount++;
+ 513              		.loc 1 274 15
+ 514 00f8 049B     		ldr	r3, [sp, #16]
+ 515 00fa 0133     		adds	r3, r3, #1
+ 516 00fc 0493     		str	r3, [sp, #16]
+ 517              	.L24:
+ 268:Modules/OS/OSAL/src/Os_Internal.c **** 			{
+ 518              		.loc 1 268 30
+ 519 00fe 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 520 0102 5C49     		ldr	r1, .L38
+ 521 0104 1346     		mov	r3, r2
+ 522 0106 5B00     		lsls	r3, r3, #1
+ 523 0108 1344     		add	r3, r3, r2
+ 524 010a 9B00     		lsls	r3, r3, #2
+ 525 010c 0B44     		add	r3, r3, r1
+ 526 010e 0433     		adds	r3, r3, #4
+ 527 0110 1B68     		ldr	r3, [r3]
+ 268:Modules/OS/OSAL/src/Os_Internal.c **** 			{
+ 528              		.loc 1 268 10
+ 529 0112 009A     		ldr	r2, [sp]
+ 530 0114 9A42     		cmp	r2, r3
+ 531 0116 D0D2     		bcs	.L25
+ 275:Modules/OS/OSAL/src/Os_Internal.c **** 			}
+ 276:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 277:Modules/OS/OSAL/src/Os_Internal.c **** 			/* decrement the increments of this alarm */
+ 278:Modules/OS/OSAL/src/Os_Internal.c **** 			AlarmsVar[AlarmID].AlarmTime -= Increment;
+ 532              		.loc 1 278 33
+ 533 0118 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 534 011c 5549     		ldr	r1, .L38
+ 535 011e 1346     		mov	r3, r2
+ 536 0120 5B00     		lsls	r3, r3, #1
+ 537 0122 1344     		add	r3, r3, r2
+ 538 0124 9B00     		lsls	r3, r3, #2
+ 539 0126 0B44     		add	r3, r3, r1
+ 540 0128 0433     		adds	r3, r3, #4
+ 541 012a 1968     		ldr	r1, [r3]
+ 542 012c 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 543 0130 009B     		ldr	r3, [sp]
+ 544 0132 C91A     		subs	r1, r1, r3
+ 545 0134 4F48     		ldr	r0, .L38
+ 546 0136 1346     		mov	r3, r2
+ 547 0138 5B00     		lsls	r3, r3, #1
+ 548 013a 1344     		add	r3, r3, r2
+ 549 013c 9B00     		lsls	r3, r3, #2
+ 550 013e 0344     		add	r3, r3, r0
+ 551 0140 0433     		adds	r3, r3, #4
+ 552 0142 1960     		str	r1, [r3]
+ 279:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 280:Modules/OS/OSAL/src/Os_Internal.c **** 			/* store the rest increments */
+ 281:Modules/OS/OSAL/src/Os_Internal.c **** 			RestIncrements = AlarmsVar[AlarmID].AlarmTime;
+ 553              		.loc 1 281 39
+ 554 0144 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 555              		.loc 1 281 19
+ 556 0148 4A49     		ldr	r1, .L38
+ 557 014a 1346     		mov	r3, r2
+ 558 014c 5B00     		lsls	r3, r3, #1
+ 559 014e 1344     		add	r3, r3, r2
+ 560 0150 9B00     		lsls	r3, r3, #2
+ 561 0152 0B44     		add	r3, r3, r1
+ 562 0154 0433     		adds	r3, r3, #4
+ 563 0156 1B68     		ldr	r3, [r3]
+ 564 0158 0593     		str	r3, [sp, #20]
+ 565              	.L23:
+ 282:Modules/OS/OSAL/src/Os_Internal.c **** 		}
+ 283:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 284:Modules/OS/OSAL/src/Os_Internal.c **** 		if (AlarmsConst[AlarmID].AlarmAction == INCREMENT)
+ 566              		.loc 1 284 27
+ 567 015a 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 568 015e 4649     		ldr	r1, .L38+4
+ 569 0160 1346     		mov	r3, r2
+ 570 0162 9B00     		lsls	r3, r3, #2
+ 571 0164 1344     		add	r3, r3, r2
+ 572 0166 9B00     		lsls	r3, r3, #2
+ 573 0168 0B44     		add	r3, r3, r1
+ 574 016a 0133     		adds	r3, r3, #1
+ 575 016c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 576              		.loc 1 284 6
+ 577 016e 032B     		cmp	r3, #3
+ 578 0170 77D1     		bne	.L27
+ 285:Modules/OS/OSAL/src/Os_Internal.c **** 		{
+ 286:Modules/OS/OSAL/src/Os_Internal.c **** 			/* call counter function */
+ 287:Modules/OS/OSAL/src/Os_Internal.c **** 			CounterIncrement = IncrementCounter(AlarmsConst[AlarmID].AlarmActionInfo.Counter, AlarmCount);
+ 579              		.loc 1 287 23
+ 580 0172 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 581 0176 4049     		ldr	r1, .L38+4
+ 582 0178 1346     		mov	r3, r2
+ 583 017a 9B00     		lsls	r3, r3, #2
+ 584 017c 1344     		add	r3, r3, r2
+ 585 017e 9B00     		lsls	r3, r3, #2
+ 586 0180 0B44     		add	r3, r3, r1
+ 587 0182 1033     		adds	r3, r3, #16
+ 588 0184 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 589 0186 0499     		ldr	r1, [sp, #16]
+ 590 0188 1846     		mov	r0, r3
+ 591 018a FFF7FEFF 		bl	IncrementCounter
+ 592 018e 0390     		str	r0, [sp, #12]
+ 288:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 289:Modules/OS/OSAL/src/Os_Internal.c **** 			/* re-calculate the rest of the increments */
+ 290:Modules/OS/OSAL/src/Os_Internal.c **** 			RestIncrements += AlarmsVar[AlarmID].AlarmCycleTime * ( CounterIncrement-1 );
+ 593              		.loc 1 290 40
+ 594 0190 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 595 0194 3749     		ldr	r1, .L38
+ 596 0196 1346     		mov	r3, r2
+ 597 0198 5B00     		lsls	r3, r3, #1
+ 598 019a 1344     		add	r3, r3, r2
+ 599 019c 9B00     		lsls	r3, r3, #2
+ 600 019e 0B44     		add	r3, r3, r1
+ 601 01a0 0833     		adds	r3, r3, #8
+ 602 01a2 1B68     		ldr	r3, [r3]
+ 603              		.loc 1 290 76
+ 604 01a4 039A     		ldr	r2, [sp, #12]
+ 605 01a6 013A     		subs	r2, r2, #1
+ 606              		.loc 1 290 56
+ 607 01a8 02FB03F3 		mul	r3, r2, r3
+ 608              		.loc 1 290 19
+ 609 01ac 059A     		ldr	r2, [sp, #20]
+ 610 01ae 1344     		add	r3, r3, r2
+ 611 01b0 0593     		str	r3, [sp, #20]
+ 612 01b2 59E0     		b	.L21
+ 613              	.L34:
+ 291:Modules/OS/OSAL/src/Os_Internal.c **** 		}
+ 292:Modules/OS/OSAL/src/Os_Internal.c **** 		else
+ 293:Modules/OS/OSAL/src/Os_Internal.c **** 		{
+ 294:Modules/OS/OSAL/src/Os_Internal.c **** 			/* execute the alarm so many times as needed */
+ 295:Modules/OS/OSAL/src/Os_Internal.c **** 			for ( ;AlarmCount > 0; AlarmCount--)
+ 296:Modules/OS/OSAL/src/Os_Internal.c **** 			{
+ 297:Modules/OS/OSAL/src/Os_Internal.c **** 				/* check alarm actions differents to INCREMENT */
+ 298:Modules/OS/OSAL/src/Os_Internal.c **** 				switch(AlarmsConst[AlarmID].AlarmAction)
+ 614              		.loc 1 298 32
+ 615 01b4 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 616 01b8 2F49     		ldr	r1, .L38+4
+ 617 01ba 1346     		mov	r3, r2
+ 618 01bc 9B00     		lsls	r3, r3, #2
+ 619 01be 1344     		add	r3, r3, r2
+ 620 01c0 9B00     		lsls	r3, r3, #2
+ 621 01c2 0B44     		add	r3, r3, r1
+ 622 01c4 0133     		adds	r3, r3, #1
+ 623 01c6 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 624              		.loc 1 298 5
+ 625 01c8 022B     		cmp	r3, #2
+ 626 01ca 06D0     		beq	.L28
+ 627 01cc 022B     		cmp	r3, #2
+ 628 01ce 42DC     		bgt	.L36
+ 629 01d0 002B     		cmp	r3, #0
+ 630 01d2 10D0     		beq	.L30
+ 631 01d4 012B     		cmp	r3, #1
+ 632 01d6 26D0     		beq	.L31
+ 299:Modules/OS/OSAL/src/Os_Internal.c **** 				{
+ 300:Modules/OS/OSAL/src/Os_Internal.c **** 					case ACTIVATETASK:
+ 301:Modules/OS/OSAL/src/Os_Internal.c **** 						/* activate task */
+ 302:Modules/OS/OSAL/src/Os_Internal.c **** 						ActivateTask(AlarmsConst[AlarmID].AlarmActionInfo.TaskID);
+ 303:Modules/OS/OSAL/src/Os_Internal.c **** 						break;
+ 304:Modules/OS/OSAL/src/Os_Internal.c **** 					case ALARMCALLBACK:
+ 305:Modules/OS/OSAL/src/Os_Internal.c **** 						/* callback */
+ 306:Modules/OS/OSAL/src/Os_Internal.c **** 						if(AlarmsConst[AlarmID].AlarmActionInfo.CallbackFunction != NULL)
+ 307:Modules/OS/OSAL/src/Os_Internal.c **** 						{
+ 308:Modules/OS/OSAL/src/Os_Internal.c **** 							AlarmsConst[AlarmID].AlarmActionInfo.CallbackFunction();
+ 309:Modules/OS/OSAL/src/Os_Internal.c **** 						}
+ 310:Modules/OS/OSAL/src/Os_Internal.c **** 						break;
+ 311:Modules/OS/OSAL/src/Os_Internal.c **** #if (NO_EVENTS == OSEK_DISABLE)
+ 312:Modules/OS/OSAL/src/Os_Internal.c **** 					case SETEVENT:
+ 313:Modules/OS/OSAL/src/Os_Internal.c **** 						/* set event */
+ 314:Modules/OS/OSAL/src/Os_Internal.c **** 						SetEvent(AlarmsConst[AlarmID].AlarmActionInfo.TaskID, AlarmsConst[AlarmID].AlarmActionInfo.Ev
+ 315:Modules/OS/OSAL/src/Os_Internal.c **** 						break;
+ 316:Modules/OS/OSAL/src/Os_Internal.c **** #endif /* #if (NO_EVENTS == OSEK_DISABLE) */
+ 317:Modules/OS/OSAL/src/Os_Internal.c **** 					default:
+ 318:Modules/OS/OSAL/src/Os_Internal.c **** 						/* some error */
+ 319:Modules/OS/OSAL/src/Os_Internal.c **** 						/* possibly TODO, report an error */
+ 320:Modules/OS/OSAL/src/Os_Internal.c **** 						break;
+ 633              		.loc 1 320 7
+ 634 01d8 3DE0     		b	.L36
+ 635              	.L28:
+ 302:Modules/OS/OSAL/src/Os_Internal.c **** 						break;
+ 636              		.loc 1 302 7
+ 637 01da 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 638 01de 2649     		ldr	r1, .L38+4
+ 639 01e0 1346     		mov	r3, r2
+ 640 01e2 9B00     		lsls	r3, r3, #2
+ 641 01e4 1344     		add	r3, r3, r2
+ 642 01e6 9B00     		lsls	r3, r3, #2
+ 643 01e8 0B44     		add	r3, r3, r1
+ 644 01ea 0833     		adds	r3, r3, #8
+ 645 01ec 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 646 01ee 1846     		mov	r0, r3
+ 647 01f0 FFF7FEFF 		bl	ActivateTask
+ 303:Modules/OS/OSAL/src/Os_Internal.c **** 					case ALARMCALLBACK:
+ 648              		.loc 1 303 7
+ 649 01f4 32E0     		b	.L32
+ 650              	.L30:
+ 306:Modules/OS/OSAL/src/Os_Internal.c **** 						{
+ 651              		.loc 1 306 46
+ 652 01f6 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 653 01fa 1F49     		ldr	r1, .L38+4
+ 654 01fc 1346     		mov	r3, r2
+ 655 01fe 9B00     		lsls	r3, r3, #2
+ 656 0200 1344     		add	r3, r3, r2
+ 657 0202 9B00     		lsls	r3, r3, #2
+ 658 0204 0B44     		add	r3, r3, r1
+ 659 0206 0433     		adds	r3, r3, #4
+ 660 0208 1B68     		ldr	r3, [r3]
+ 306:Modules/OS/OSAL/src/Os_Internal.c **** 						{
+ 661              		.loc 1 306 9
+ 662 020a 002B     		cmp	r3, #0
+ 663 020c 25D0     		beq	.L37
+ 308:Modules/OS/OSAL/src/Os_Internal.c **** 						}
+ 664              		.loc 1 308 44
+ 665 020e 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 666 0212 1949     		ldr	r1, .L38+4
+ 667 0214 1346     		mov	r3, r2
+ 668 0216 9B00     		lsls	r3, r3, #2
+ 669 0218 1344     		add	r3, r3, r2
+ 670 021a 9B00     		lsls	r3, r3, #2
+ 671 021c 0B44     		add	r3, r3, r1
+ 672 021e 0433     		adds	r3, r3, #4
+ 673 0220 1B68     		ldr	r3, [r3]
+ 308:Modules/OS/OSAL/src/Os_Internal.c **** 						}
+ 674              		.loc 1 308 8
+ 675 0222 9847     		blx	r3
+ 676              	.LVL0:
+ 310:Modules/OS/OSAL/src/Os_Internal.c **** #if (NO_EVENTS == OSEK_DISABLE)
+ 677              		.loc 1 310 7
+ 678 0224 19E0     		b	.L37
+ 679              	.L31:
+ 314:Modules/OS/OSAL/src/Os_Internal.c **** 						break;
+ 680              		.loc 1 314 7
+ 681 0226 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 682 022a 1349     		ldr	r1, .L38+4
+ 683 022c 1346     		mov	r3, r2
+ 684 022e 9B00     		lsls	r3, r3, #2
+ 685 0230 1344     		add	r3, r3, r2
+ 686 0232 9B00     		lsls	r3, r3, #2
+ 687 0234 0B44     		add	r3, r3, r1
+ 688 0236 0833     		adds	r3, r3, #8
+ 689 0238 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 690 023a 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 691 023e 0E49     		ldr	r1, .L38+4
+ 692 0240 1346     		mov	r3, r2
+ 693 0242 9B00     		lsls	r3, r3, #2
+ 694 0244 1344     		add	r3, r3, r2
+ 695 0246 9B00     		lsls	r3, r3, #2
+ 696 0248 0B44     		add	r3, r3, r1
+ 697 024a 0C33     		adds	r3, r3, #12
+ 698 024c 1B68     		ldr	r3, [r3]
+ 699 024e 1946     		mov	r1, r3
+ 700 0250 FFF7FEFF 		bl	SetEvent
+ 315:Modules/OS/OSAL/src/Os_Internal.c **** #endif /* #if (NO_EVENTS == OSEK_DISABLE) */
+ 701              		.loc 1 315 7
+ 702 0254 02E0     		b	.L32
+ 703              	.L36:
+ 704              		.loc 1 320 7
+ 705 0256 00BF     		nop
+ 706 0258 00E0     		b	.L32
+ 707              	.L37:
+ 310:Modules/OS/OSAL/src/Os_Internal.c **** #if (NO_EVENTS == OSEK_DISABLE)
+ 708              		.loc 1 310 7
+ 709 025a 00BF     		nop
+ 710              	.L32:
+ 295:Modules/OS/OSAL/src/Os_Internal.c **** 			{
+ 711              		.loc 1 295 37
+ 712 025c 049B     		ldr	r3, [sp, #16]
+ 713 025e 013B     		subs	r3, r3, #1
+ 714 0260 0493     		str	r3, [sp, #16]
+ 715              	.L27:
+ 295:Modules/OS/OSAL/src/Os_Internal.c **** 			{
+ 716              		.loc 1 295 4 discriminator 1
+ 717 0262 049B     		ldr	r3, [sp, #16]
+ 718 0264 002B     		cmp	r3, #0
+ 719 0266 A5D1     		bne	.L34
+ 720              	.L21:
+ 321:Modules/OS/OSAL/src/Os_Internal.c **** 				}
+ 322:Modules/OS/OSAL/src/Os_Internal.c **** 			}
+ 323:Modules/OS/OSAL/src/Os_Internal.c **** 		}
+ 324:Modules/OS/OSAL/src/Os_Internal.c **** 	}
+ 325:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 326:Modules/OS/OSAL/src/Os_Internal.c **** 	return RestIncrements;
+ 721              		.loc 1 326 9
+ 722 0268 059B     		ldr	r3, [sp, #20]
+ 327:Modules/OS/OSAL/src/Os_Internal.c **** }
+ 723              		.loc 1 327 1
+ 724 026a 1846     		mov	r0, r3
+ 725 026c 07B0     		add	sp, sp, #28
+ 726              		.cfi_def_cfa_offset 4
+ 727              		@ sp needed
+ 728 026e 5DF804FB 		ldr	pc, [sp], #4
+ 729              	.L39:
+ 730 0272 00BF     		.align	2
+ 731              	.L38:
+ 732 0274 00000000 		.word	AlarmsVar
+ 733 0278 00000000 		.word	AlarmsConst
+ 734              		.cfi_endproc
+ 735              	.LFE4:
+ 737              		.section	.text.IncrementCounter,"ax",%progbits
+ 738              		.align	1
+ 739              		.p2align 4,,15
+ 740              		.global	IncrementCounter
+ 741              		.syntax unified
+ 742              		.thumb
+ 743              		.thumb_func
+ 745              	IncrementCounter:
+ 746              	.LFB5:
+ 328:Modules/OS/OSAL/src/Os_Internal.c **** #endif /* #if (ALARMS_COUNT != 0) */
+ 329:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 330:Modules/OS/OSAL/src/Os_Internal.c **** #if (ALARMS_COUNT != 0)
+ 331:Modules/OS/OSAL/src/Os_Internal.c **** CounterIncrementType IncrementCounter(CounterType CounterID, CounterIncrementType Increment)
+ 332:Modules/OS/OSAL/src/Os_Internal.c **** {
+ 747              		.loc 1 332 1
+ 748              		.cfi_startproc
+ 749              		@ args = 0, pretend = 0, frame = 24
+ 750              		@ frame_needed = 0, uses_anonymous_args = 0
+ 751 0000 00B5     		push	{lr}
+ 752              		.cfi_def_cfa_offset 4
+ 753              		.cfi_offset 14, -4
+ 754 0002 87B0     		sub	sp, sp, #28
+ 755              		.cfi_def_cfa_offset 32
+ 756 0004 0346     		mov	r3, r0
+ 757 0006 0091     		str	r1, [sp]
+ 758 0008 8DF80730 		strb	r3, [sp, #7]
+ 333:Modules/OS/OSAL/src/Os_Internal.c **** 	uint8f loopi;
+ 334:Modules/OS/OSAL/src/Os_Internal.c **** 	AlarmType AlarmID;
+ 335:Modules/OS/OSAL/src/Os_Internal.c **** 	AlarmIncrementType MinimalCount = -1;
+ 759              		.loc 1 335 21
+ 760 000c 4FF0FF33 		mov	r3, #-1
+ 761 0010 0493     		str	r3, [sp, #16]
+ 336:Modules/OS/OSAL/src/Os_Internal.c **** 	AlarmIncrementType TmpCount;
+ 337:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 338:Modules/OS/OSAL/src/Os_Internal.c **** 	/* increment counter */
+ 339:Modules/OS/OSAL/src/Os_Internal.c **** 	CountersVar[CounterID].Time+=Increment;
+ 762              		.loc 1 339 29
+ 763 0012 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 764 0016 384A     		ldr	r2, .L47
+ 765 0018 52F82310 		ldr	r1, [r2, r3, lsl #2]
+ 766 001c 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 767 0020 009A     		ldr	r2, [sp]
+ 768 0022 0A44     		add	r2, r2, r1
+ 769 0024 3449     		ldr	r1, .L47
+ 770 0026 41F82320 		str	r2, [r1, r3, lsl #2]
+ 340:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 341:Modules/OS/OSAL/src/Os_Internal.c **** 	/* check if the timer has an overvlow */
+ 342:Modules/OS/OSAL/src/Os_Internal.c **** 	while ( CountersVar[CounterID].Time >= CountersConst[CounterID].MaxAllowedValue )
+ 771              		.loc 1 342 8
+ 772 002a 14E0     		b	.L41
+ 773              	.L42:
+ 343:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 344:Modules/OS/OSAL/src/Os_Internal.c **** 		/* reset counter */
+ 345:Modules/OS/OSAL/src/Os_Internal.c **** 		CountersVar[CounterID].Time -= CountersConst[CounterID].MaxAllowedValue;
+ 774              		.loc 1 345 31
+ 775 002c 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 776 0030 314A     		ldr	r2, .L47
+ 777 0032 52F82310 		ldr	r1, [r2, r3, lsl #2]
+ 778              		.loc 1 345 58
+ 779 0036 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 780 003a 3048     		ldr	r0, .L47+4
+ 781 003c 1346     		mov	r3, r2
+ 782 003e 9B00     		lsls	r3, r3, #2
+ 783 0040 1344     		add	r3, r3, r2
+ 784 0042 9B00     		lsls	r3, r3, #2
+ 785 0044 0344     		add	r3, r3, r0
+ 786 0046 0833     		adds	r3, r3, #8
+ 787 0048 1A68     		ldr	r2, [r3]
+ 788              		.loc 1 345 31
+ 789 004a 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 790 004e 8A1A     		subs	r2, r1, r2
+ 791 0050 2949     		ldr	r1, .L47
+ 792 0052 41F82320 		str	r2, [r1, r3, lsl #2]
+ 793              	.L41:
+ 342:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 794              		.loc 1 342 32
+ 795 0056 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 796 005a 274A     		ldr	r2, .L47
+ 797 005c 52F82310 		ldr	r1, [r2, r3, lsl #2]
+ 342:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 798              		.loc 1 342 65
+ 799 0060 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 800 0064 2548     		ldr	r0, .L47+4
+ 801 0066 1346     		mov	r3, r2
+ 802 0068 9B00     		lsls	r3, r3, #2
+ 803 006a 1344     		add	r3, r3, r2
+ 804 006c 9B00     		lsls	r3, r3, #2
+ 805 006e 0344     		add	r3, r3, r0
+ 806 0070 0833     		adds	r3, r3, #8
+ 807 0072 1B68     		ldr	r3, [r3]
+ 342:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 808              		.loc 1 342 8
+ 809 0074 9942     		cmp	r1, r3
+ 810 0076 D9D2     		bcs	.L42
+ 346:Modules/OS/OSAL/src/Os_Internal.c **** 	}
+ 347:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 348:Modules/OS/OSAL/src/Os_Internal.c **** 	/* for alarms on this counter */
+ 349:Modules/OS/OSAL/src/Os_Internal.c **** 	for(loopi = 0; loopi < CountersConst[CounterID].AlarmsCount; loopi++)
+ 811              		.loc 1 349 12
+ 812 0078 0023     		movs	r3, #0
+ 813 007a 0593     		str	r3, [sp, #20]
+ 814              		.loc 1 349 2
+ 815 007c 29E0     		b	.L43
+ 816              	.L45:
+ 350:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 351:Modules/OS/OSAL/src/Os_Internal.c **** 		/* get alarm id */
+ 352:Modules/OS/OSAL/src/Os_Internal.c **** 		AlarmID = CountersConst[CounterID].AlarmRef[loopi];
+ 817              		.loc 1 352 37
+ 818 007e 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 819 0082 1E49     		ldr	r1, .L47+4
+ 820 0084 1346     		mov	r3, r2
+ 821 0086 9B00     		lsls	r3, r3, #2
+ 822 0088 1344     		add	r3, r3, r2
+ 823 008a 9B00     		lsls	r3, r3, #2
+ 824 008c 0B44     		add	r3, r3, r1
+ 825 008e 0433     		adds	r3, r3, #4
+ 826 0090 1A68     		ldr	r2, [r3]
+ 827              		.loc 1 352 46
+ 828 0092 059B     		ldr	r3, [sp, #20]
+ 829 0094 1344     		add	r3, r3, r2
+ 830              		.loc 1 352 11
+ 831 0096 1B78     		ldrb	r3, [r3]
+ 832 0098 8DF80F30 		strb	r3, [sp, #15]
+ 353:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 354:Modules/OS/OSAL/src/Os_Internal.c **** 		/* check if the alarm is eanble */
+ 355:Modules/OS/OSAL/src/Os_Internal.c **** 		if (AlarmsVar[AlarmID].AlarmState == 1)
+ 833              		.loc 1 355 25
+ 834 009c 9DF80F20 		ldrb	r2, [sp, #15]	@ zero_extendqisi2
+ 835 00a0 1749     		ldr	r1, .L47+8
+ 836 00a2 1346     		mov	r3, r2
+ 837 00a4 5B00     		lsls	r3, r3, #1
+ 838 00a6 1344     		add	r3, r3, r2
+ 839 00a8 9B00     		lsls	r3, r3, #2
+ 840 00aa 0B44     		add	r3, r3, r1
+ 841 00ac 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 842              		.loc 1 355 6
+ 843 00ae 012B     		cmp	r3, #1
+ 844 00b0 0CD1     		bne	.L44
+ 356:Modules/OS/OSAL/src/Os_Internal.c **** 		{
+ 357:Modules/OS/OSAL/src/Os_Internal.c **** 			/* increment alarm and get the next alarm time */
+ 358:Modules/OS/OSAL/src/Os_Internal.c **** 			TmpCount = IncrementAlarm(AlarmID, Increment);
+ 845              		.loc 1 358 15
+ 846 00b2 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 847 00b6 0099     		ldr	r1, [sp]
+ 848 00b8 1846     		mov	r0, r3
+ 849 00ba FFF7FEFF 		bl	IncrementAlarm
+ 850 00be 0290     		str	r0, [sp, #8]
+ 359:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 360:Modules/OS/OSAL/src/Os_Internal.c **** 			/* if the actual count is smaller */
+ 361:Modules/OS/OSAL/src/Os_Internal.c **** 			if (MinimalCount > TmpCount)
+ 851              		.loc 1 361 7
+ 852 00c0 049A     		ldr	r2, [sp, #16]
+ 853 00c2 029B     		ldr	r3, [sp, #8]
+ 854 00c4 9A42     		cmp	r2, r3
+ 855 00c6 01D9     		bls	.L44
+ 362:Modules/OS/OSAL/src/Os_Internal.c **** 			{
+ 363:Modules/OS/OSAL/src/Os_Internal.c **** 				/* set it as minimal count */
+ 364:Modules/OS/OSAL/src/Os_Internal.c **** 				MinimalCount = TmpCount;
+ 856              		.loc 1 364 18
+ 857 00c8 029B     		ldr	r3, [sp, #8]
+ 858 00ca 0493     		str	r3, [sp, #16]
+ 859              	.L44:
+ 349:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 860              		.loc 1 349 68 discriminator 2
+ 861 00cc 059B     		ldr	r3, [sp, #20]
+ 862 00ce 0133     		adds	r3, r3, #1
+ 863 00d0 0593     		str	r3, [sp, #20]
+ 864              	.L43:
+ 349:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 865              		.loc 1 349 49 discriminator 1
+ 866 00d2 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 867 00d6 0949     		ldr	r1, .L47+4
+ 868 00d8 1346     		mov	r3, r2
+ 869 00da 9B00     		lsls	r3, r3, #2
+ 870 00dc 1344     		add	r3, r3, r2
+ 871 00de 9B00     		lsls	r3, r3, #2
+ 872 00e0 0B44     		add	r3, r3, r1
+ 873 00e2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 874 00e4 1A46     		mov	r2, r3
+ 349:Modules/OS/OSAL/src/Os_Internal.c **** 	{
+ 875              		.loc 1 349 2 discriminator 1
+ 876 00e6 059B     		ldr	r3, [sp, #20]
+ 877 00e8 9342     		cmp	r3, r2
+ 878 00ea C8D3     		bcc	.L45
+ 365:Modules/OS/OSAL/src/Os_Internal.c **** 			}
+ 366:Modules/OS/OSAL/src/Os_Internal.c **** 		}
+ 367:Modules/OS/OSAL/src/Os_Internal.c **** 	}
+ 368:Modules/OS/OSAL/src/Os_Internal.c **** 
+ 369:Modules/OS/OSAL/src/Os_Internal.c **** 	/* return the minimal increment */
+ 370:Modules/OS/OSAL/src/Os_Internal.c **** 	return (CounterIncrementType)MinimalCount;
+ 879              		.loc 1 370 9
+ 880 00ec 049B     		ldr	r3, [sp, #16]
+ 371:Modules/OS/OSAL/src/Os_Internal.c **** }
+ 881              		.loc 1 371 1
+ 882 00ee 1846     		mov	r0, r3
+ 883 00f0 07B0     		add	sp, sp, #28
+ 884              		.cfi_def_cfa_offset 4
+ 885              		@ sp needed
+ 886 00f2 5DF804FB 		ldr	pc, [sp], #4
+ 887              	.L48:
+ 888 00f6 00BF     		.align	2
+ 889              	.L47:
+ 890 00f8 00000000 		.word	CountersVar
+ 891 00fc 00000000 		.word	CountersConst
+ 892 0100 00000000 		.word	AlarmsVar
+ 893              		.cfi_endproc
+ 894              	.LFE5:
+ 896              		.text
+ 897              	.Letext0:
+ 898              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 899              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 900              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 901              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Types.h"
+ 902              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 903              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+ 904              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 905              		.file 9 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os_intern
+DEFINED SYMBOLS
+                            *ABS*:00000000 Os_Internal.c
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:22     .bss.RunningTask:00000000 RunningTask
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:23     .bss.RunningTask:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:28     .bss.ActualContext:00000000 ActualContext
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:29     .bss.ActualContext:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:31     .text.AddReady:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:38     .text.AddReady:00000000 AddReady
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:145    .text.AddReady:000000c4 $d
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:153    .text.RemoveTask:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:160    .text.RemoveTask:00000000 RemoveTask
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:247    .text.RemoveTask:000000a0 $d
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:254    .text.GetNextTask:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:261    .text.GetNextTask:00000000 GetNextTask
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:338    .text.GetNextTask:00000068 $d
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:344    .text.OSEK_ISR_NoHandler:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:351    .text.OSEK_ISR_NoHandler:00000000 OSEK_ISR_NoHandler
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:365    .text.IncrementAlarm:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:372    .text.IncrementAlarm:00000000 IncrementAlarm
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:745    .text.IncrementCounter:00000000 IncrementCounter
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:732    .text.IncrementAlarm:00000274 $d
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:738    .text.IncrementCounter:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccKJUa8M.s:890    .text.IncrementCounter:000000f8 $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+UNDEFINED SYMBOLS
+TasksConst
+TasksVar
+ReadyConst
+ReadyVar
+ActivateTask
+SetEvent
+AlarmsVar
+AlarmsConst
+CountersVar
+CountersConst

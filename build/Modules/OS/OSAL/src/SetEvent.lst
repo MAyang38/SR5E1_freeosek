@@ -1,0 +1,667 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"SetEvent.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.SetEvent,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	SetEvent
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	SetEvent:
+  27              	.LFB0:
+  28              		.file 1 "Modules/OS/OSAL/src/SetEvent.c"
+   1:Modules/OS/OSAL/src/SetEvent.c **** /* Copyright 2008, 2009 Mariano Cerdeiro
+   2:Modules/OS/OSAL/src/SetEvent.c ****  * Copyright 2014, ACSE & CADIEEL
+   3:Modules/OS/OSAL/src/SetEvent.c ****  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+   4:Modules/OS/OSAL/src/SetEvent.c ****  *      CADIEEL: http://www.cadieel.org.ar
+   5:Modules/OS/OSAL/src/SetEvent.c ****  *
+   6:Modules/OS/OSAL/src/SetEvent.c ****  * This file is part of CIAA Firmware.
+   7:Modules/OS/OSAL/src/SetEvent.c ****  *
+   8:Modules/OS/OSAL/src/SetEvent.c ****  * Redistribution and use in source and binary forms, with or without
+   9:Modules/OS/OSAL/src/SetEvent.c ****  * modification, are permitted provided that the following conditions are met:
+  10:Modules/OS/OSAL/src/SetEvent.c ****  *
+  11:Modules/OS/OSAL/src/SetEvent.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  12:Modules/OS/OSAL/src/SetEvent.c ****  *    this list of conditions and the following disclaimer.
+  13:Modules/OS/OSAL/src/SetEvent.c ****  *
+  14:Modules/OS/OSAL/src/SetEvent.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  15:Modules/OS/OSAL/src/SetEvent.c ****  *    this list of conditions and the following disclaimer in the documentation
+  16:Modules/OS/OSAL/src/SetEvent.c ****  *    and/or other materials provided with the distribution.
+  17:Modules/OS/OSAL/src/SetEvent.c ****  *
+  18:Modules/OS/OSAL/src/SetEvent.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  19:Modules/OS/OSAL/src/SetEvent.c ****  *    contributors may be used to endorse or promote products derived from this
+  20:Modules/OS/OSAL/src/SetEvent.c ****  *    software without specific prior written permission.
+  21:Modules/OS/OSAL/src/SetEvent.c ****  *
+  22:Modules/OS/OSAL/src/SetEvent.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Modules/OS/OSAL/src/SetEvent.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Modules/OS/OSAL/src/SetEvent.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  25:Modules/OS/OSAL/src/SetEvent.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  26:Modules/OS/OSAL/src/SetEvent.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  27:Modules/OS/OSAL/src/SetEvent.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  28:Modules/OS/OSAL/src/SetEvent.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  29:Modules/OS/OSAL/src/SetEvent.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  30:Modules/OS/OSAL/src/SetEvent.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  31:Modules/OS/OSAL/src/SetEvent.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  32:Modules/OS/OSAL/src/SetEvent.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  33:Modules/OS/OSAL/src/SetEvent.c ****  *
+  34:Modules/OS/OSAL/src/SetEvent.c ****  */
+  35:Modules/OS/OSAL/src/SetEvent.c **** 
+  36:Modules/OS/OSAL/src/SetEvent.c **** /** \brief FreeOSEK Os SetEvent Implementation File
+  37:Modules/OS/OSAL/src/SetEvent.c ****  **
+  38:Modules/OS/OSAL/src/SetEvent.c ****  ** This file implements the SetEvent API
+  39:Modules/OS/OSAL/src/SetEvent.c ****  **
+  40:Modules/OS/OSAL/src/SetEvent.c ****  ** \file SetEvent.c
+  41:Modules/OS/OSAL/src/SetEvent.c ****  **
+  42:Modules/OS/OSAL/src/SetEvent.c ****  **/
+  43:Modules/OS/OSAL/src/SetEvent.c **** 
+  44:Modules/OS/OSAL/src/SetEvent.c **** /** \addtogroup FreeOSEK
+  45:Modules/OS/OSAL/src/SetEvent.c ****  ** @{ */
+  46:Modules/OS/OSAL/src/SetEvent.c **** /** \addtogroup FreeOSEK_Os
+  47:Modules/OS/OSAL/src/SetEvent.c ****  ** @{ */
+  48:Modules/OS/OSAL/src/SetEvent.c **** /** \addtogroup FreeOSEK_Os_Global
+  49:Modules/OS/OSAL/src/SetEvent.c ****  ** @{ */
+  50:Modules/OS/OSAL/src/SetEvent.c **** 
+  51:Modules/OS/OSAL/src/SetEvent.c **** /*
+  52:Modules/OS/OSAL/src/SetEvent.c ****  * Initials     Name
+  53:Modules/OS/OSAL/src/SetEvent.c ****  * ---------------------------
+  54:Modules/OS/OSAL/src/SetEvent.c ****  * MaCe         Mariano Cerdeiro
+  55:Modules/OS/OSAL/src/SetEvent.c ****  * KLi          Kang Li
+  56:Modules/OS/OSAL/src/SetEvent.c ****  */
+  57:Modules/OS/OSAL/src/SetEvent.c **** 
+  58:Modules/OS/OSAL/src/SetEvent.c **** /*
+  59:Modules/OS/OSAL/src/SetEvent.c ****  * modification history (new versions first)
+  60:Modules/OS/OSAL/src/SetEvent.c ****  * -----------------------------------------------------------
+  61:Modules/OS/OSAL/src/SetEvent.c ****  * 20090417 v0.1.5 MaCe correct task status when seting it ready and update GPL
+  62:Modules/OS/OSAL/src/SetEvent.c ****  *						 link exception
+  63:Modules/OS/OSAL/src/SetEvent.c ****  * 20090330 v0.1.4 MaCe add NO_EVENTS evaluation
+  64:Modules/OS/OSAL/src/SetEvent.c ****  * 20090330 v0.1.3 MaCe add support to NON_PREEMPTIVE systems and add non
+  65:Modules/OS/OSAL/src/SetEvent.c ****  *								preemptive check
+  66:Modules/OS/OSAL/src/SetEvent.c ****  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
+  67:Modules/OS/OSAL/src/SetEvent.c ****  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+  68:Modules/OS/OSAL/src/SetEvent.c ****  * 20080814 v0.1.0 MaCe	initial version
+  69:Modules/OS/OSAL/src/SetEvent.c ****  */
+  70:Modules/OS/OSAL/src/SetEvent.c **** 
+  71:Modules/OS/OSAL/src/SetEvent.c **** /*==================[inclusions]=============================================*/
+  72:Modules/OS/OSAL/src/SetEvent.c **** #include "Os_Internal.h"
+  73:Modules/OS/OSAL/src/SetEvent.c **** 
+  74:Modules/OS/OSAL/src/SetEvent.c **** /*==================[macros and definitions]=================================*/
+  75:Modules/OS/OSAL/src/SetEvent.c **** 
+  76:Modules/OS/OSAL/src/SetEvent.c **** /*==================[internal data declaration]==============================*/
+  77:Modules/OS/OSAL/src/SetEvent.c **** 
+  78:Modules/OS/OSAL/src/SetEvent.c **** /*==================[internal functions declaration]=========================*/
+  79:Modules/OS/OSAL/src/SetEvent.c **** 
+  80:Modules/OS/OSAL/src/SetEvent.c **** /*==================[internal data definition]===============================*/
+  81:Modules/OS/OSAL/src/SetEvent.c **** 
+  82:Modules/OS/OSAL/src/SetEvent.c **** /*==================[external data definition]===============================*/
+  83:Modules/OS/OSAL/src/SetEvent.c **** 
+  84:Modules/OS/OSAL/src/SetEvent.c **** /*==================[internal functions definition]==========================*/
+  85:Modules/OS/OSAL/src/SetEvent.c **** 
+  86:Modules/OS/OSAL/src/SetEvent.c **** /*==================[external functions definition]==========================*/
+  87:Modules/OS/OSAL/src/SetEvent.c **** #if (NO_EVENTS == OSEK_DISABLE)
+  88:Modules/OS/OSAL/src/SetEvent.c **** StatusType SetEvent
+  89:Modules/OS/OSAL/src/SetEvent.c **** (
+  90:Modules/OS/OSAL/src/SetEvent.c **** 	TaskType TaskID,
+  91:Modules/OS/OSAL/src/SetEvent.c **** 	EventMaskType Mask
+  92:Modules/OS/OSAL/src/SetEvent.c **** )
+  93:Modules/OS/OSAL/src/SetEvent.c **** {
+  29              		.loc 1 93 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 16
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 00B5     		push	{lr}
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 14, -4
+  36 0002 85B0     		sub	sp, sp, #20
+  37              		.cfi_def_cfa_offset 24
+  38 0004 0346     		mov	r3, r0
+  39 0006 0091     		str	r1, [sp]
+  40 0008 8DF80730 		strb	r3, [sp, #7]
+  94:Modules/OS/OSAL/src/SetEvent.c **** 	/* \req OSEK_SYS_3.15 The system service StatusType
+  95:Modules/OS/OSAL/src/SetEvent.c **** 	 * SetEvent ( TaskType TaskID, EventMaskType Mask ) shall be defined */
+  96:Modules/OS/OSAL/src/SetEvent.c **** 
+  97:Modules/OS/OSAL/src/SetEvent.c **** 	/* \req OSEK_SYS_3.15.2: Possible return values in Standard mode is E_OK */
+  98:Modules/OS/OSAL/src/SetEvent.c **** 	StatusType ret = E_OK;
+  41              		.loc 1 98 13
+  42 000c 0023     		movs	r3, #0
+  43 000e 8DF80F30 		strb	r3, [sp, #15]
+  99:Modules/OS/OSAL/src/SetEvent.c **** 
+ 100:Modules/OS/OSAL/src/SetEvent.c **** #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+ 101:Modules/OS/OSAL/src/SetEvent.c **** 	if ( TaskID >= TASKS_COUNT )
+  44              		.loc 1 101 5
+  45 0012 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+  46 0016 032B     		cmp	r3, #3
+  47 0018 03D9     		bls	.L2
+ 102:Modules/OS/OSAL/src/SetEvent.c **** 	{
+ 103:Modules/OS/OSAL/src/SetEvent.c **** 		/* \req OSEK_SYS_3.15.3-1/3 Extra possible return values in Extended mode
+ 104:Modules/OS/OSAL/src/SetEvent.c **** 		 * are E_OS_ID, E_OS_ACCESS, E_OS_STATE */
+ 105:Modules/OS/OSAL/src/SetEvent.c **** 		ret = E_OS_ID;
+  48              		.loc 1 105 7
+  49 001a 0323     		movs	r3, #3
+  50 001c 8DF80F30 		strb	r3, [sp, #15]
+  51 0020 07E1     		b	.L3
+  52              	.L2:
+ 106:Modules/OS/OSAL/src/SetEvent.c **** 	}
+ 107:Modules/OS/OSAL/src/SetEvent.c **** 	else if ( !TasksConst[TaskID].ConstFlags.Extended )
+  53              		.loc 1 107 42
+  54 0022 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+  55 0026 9549     		ldr	r1, .L16
+  56 0028 1346     		mov	r3, r2
+  57 002a DB00     		lsls	r3, r3, #3
+  58 002c 9B1A     		subs	r3, r3, r2
+  59 002e 9B00     		lsls	r3, r3, #2
+  60 0030 0B44     		add	r3, r3, r1
+  61 0032 1033     		adds	r3, r3, #16
+  62 0034 1B78     		ldrb	r3, [r3]
+  63 0036 C3F30003 		ubfx	r3, r3, #0, #1
+  64 003a DBB2     		uxtb	r3, r3
+  65              		.loc 1 107 10
+  66 003c 002B     		cmp	r3, #0
+  67 003e 03D1     		bne	.L4
+ 108:Modules/OS/OSAL/src/SetEvent.c **** 	{
+ 109:Modules/OS/OSAL/src/SetEvent.c **** 		/* \req OSEK_SYS_3.15.3-2/3 Extra possible return values in Extended mode
+ 110:Modules/OS/OSAL/src/SetEvent.c **** 		 * are E_OS_ID, E_OS_ACCESS, E_OS_STATE */
+ 111:Modules/OS/OSAL/src/SetEvent.c **** 		ret = E_OS_ACCESS;
+  68              		.loc 1 111 7
+  69 0040 0123     		movs	r3, #1
+  70 0042 8DF80F30 		strb	r3, [sp, #15]
+  71 0046 F4E0     		b	.L3
+  72              	.L4:
+ 112:Modules/OS/OSAL/src/SetEvent.c **** 	}
+ 113:Modules/OS/OSAL/src/SetEvent.c **** 	else if ( TasksVar[TaskID].Flags.State == TASK_ST_SUSPENDED )
+  73              		.loc 1 113 34
+  74 0048 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+  75 004c 8C49     		ldr	r1, .L16+4
+  76 004e 1346     		mov	r3, r2
+  77 0050 9B00     		lsls	r3, r3, #2
+  78 0052 1344     		add	r3, r3, r2
+  79 0054 9B00     		lsls	r3, r3, #2
+  80 0056 0B44     		add	r3, r3, r1
+  81 0058 1B79     		ldrb	r3, [r3, #4]
+  82 005a C3F38103 		ubfx	r3, r3, #2, #2
+  83 005e DBB2     		uxtb	r3, r3
+  84              		.loc 1 113 10
+  85 0060 002B     		cmp	r3, #0
+  86 0062 03D1     		bne	.L5
+ 114:Modules/OS/OSAL/src/SetEvent.c **** 	{
+ 115:Modules/OS/OSAL/src/SetEvent.c **** 		/* \req OSEK_SYS_3.15.3-3/3 Extra possible return values in Extended mode
+ 116:Modules/OS/OSAL/src/SetEvent.c **** 		 * are E_OS_ID, E_OS_ACCESS, E_OS_STATE */
+ 117:Modules/OS/OSAL/src/SetEvent.c **** 		ret = E_OS_STATE;
+  87              		.loc 1 117 7
+  88 0064 0723     		movs	r3, #7
+  89 0066 8DF80F30 		strb	r3, [sp, #15]
+  90 006a E2E0     		b	.L3
+  91              	.L5:
+ 118:Modules/OS/OSAL/src/SetEvent.c **** 	}
+ 119:Modules/OS/OSAL/src/SetEvent.c **** 	else
+ 120:Modules/OS/OSAL/src/SetEvent.c **** #endif
+ 121:Modules/OS/OSAL/src/SetEvent.c **** 	{
+ 122:Modules/OS/OSAL/src/SetEvent.c **** 		/* enter to critical code */
+ 123:Modules/OS/OSAL/src/SetEvent.c **** 		IntSecure_Start();
+  92              		.loc 1 123 3
+  93 006c 854B     		ldr	r3, .L16+8
+  94 006e 93F90030 		ldrsb	r3, [r3]
+  95 0072 DBB2     		uxtb	r3, r3
+  96 0074 0133     		adds	r3, r3, #1
+  97 0076 DBB2     		uxtb	r3, r3
+  98 0078 5AB2     		sxtb	r2, r3
+  99 007a 824B     		ldr	r3, .L16+8
+ 100 007c 1A70     		strb	r2, [r3]
+ 101              		.syntax unified
+ 102              	@ 123 "Modules/OS/OSAL/src/SetEvent.c" 1
+ 103 007e 72B6     		cpsid i
+ 104              	@ 0 "" 2
+ 124:Modules/OS/OSAL/src/SetEvent.c **** 
+ 125:Modules/OS/OSAL/src/SetEvent.c **** 		/* the event shall be set only if the task is running ready or waiting */
+ 126:Modules/OS/OSAL/src/SetEvent.c **** 		if ( 	( TasksVar[TaskID].Flags.State == TASK_ST_RUNNING ) ||
+ 105              		.loc 1 126 33
+ 106              		.thumb
+ 107              		.syntax unified
+ 108 0080 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 109 0084 7E49     		ldr	r1, .L16+4
+ 110 0086 1346     		mov	r3, r2
+ 111 0088 9B00     		lsls	r3, r3, #2
+ 112 008a 1344     		add	r3, r3, r2
+ 113 008c 9B00     		lsls	r3, r3, #2
+ 114 008e 0B44     		add	r3, r3, r1
+ 115 0090 1B79     		ldrb	r3, [r3, #4]
+ 116 0092 C3F38103 		ubfx	r3, r3, #2, #2
+ 117 0096 DBB2     		uxtb	r3, r3
+ 118              		.loc 1 126 6
+ 119 0098 022B     		cmp	r3, #2
+ 120 009a 1CD0     		beq	.L6
+ 127:Modules/OS/OSAL/src/SetEvent.c **** 				( TasksVar[TaskID].Flags.State == TASK_ST_READY ) ||
+ 121              		.loc 1 127 29 discriminator 1
+ 122 009c 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 123 00a0 7749     		ldr	r1, .L16+4
+ 124 00a2 1346     		mov	r3, r2
+ 125 00a4 9B00     		lsls	r3, r3, #2
+ 126 00a6 1344     		add	r3, r3, r2
+ 127 00a8 9B00     		lsls	r3, r3, #2
+ 128 00aa 0B44     		add	r3, r3, r1
+ 129 00ac 1B79     		ldrb	r3, [r3, #4]
+ 130 00ae C3F38103 		ubfx	r3, r3, #2, #2
+ 131 00b2 DBB2     		uxtb	r3, r3
+ 126:Modules/OS/OSAL/src/SetEvent.c **** 				( TasksVar[TaskID].Flags.State == TASK_ST_READY ) ||
+ 132              		.loc 1 126 61 discriminator 1
+ 133 00b4 012B     		cmp	r3, #1
+ 134 00b6 0ED0     		beq	.L6
+ 128:Modules/OS/OSAL/src/SetEvent.c **** 				( TasksVar[TaskID].Flags.State == TASK_ST_WAITING) )
+ 135              		.loc 1 128 29
+ 136 00b8 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 137 00bc 7049     		ldr	r1, .L16+4
+ 138 00be 1346     		mov	r3, r2
+ 139 00c0 9B00     		lsls	r3, r3, #2
+ 140 00c2 1344     		add	r3, r3, r2
+ 141 00c4 9B00     		lsls	r3, r3, #2
+ 142 00c6 0B44     		add	r3, r3, r1
+ 143 00c8 1B79     		ldrb	r3, [r3, #4]
+ 144 00ca C3F38103 		ubfx	r3, r3, #2, #2
+ 145 00ce DBB2     		uxtb	r3, r3
+ 127:Modules/OS/OSAL/src/SetEvent.c **** 				( TasksVar[TaskID].Flags.State == TASK_ST_READY ) ||
+ 146              		.loc 1 127 55
+ 147 00d0 032B     		cmp	r3, #3
+ 148 00d2 40F09A80 		bne	.L7
+ 149              	.L6:
+ 129:Modules/OS/OSAL/src/SetEvent.c **** 		{
+ 130:Modules/OS/OSAL/src/SetEvent.c **** 			/* set the events */
+ 131:Modules/OS/OSAL/src/SetEvent.c **** 			/* \req OSEK_SYS_3.15.1-1/3 The events of task TaskID are set according to the
+ 132:Modules/OS/OSAL/src/SetEvent.c **** 			 * event mask Mask. Calling SetEvent causes the task TaskID to be
+ 133:Modules/OS/OSAL/src/SetEvent.c **** 			 * transferred to the ready state, if it was waiting for at least one
+ 134:Modules/OS/OSAL/src/SetEvent.c **** 			 * of the events specified in Mask */
+ 135:Modules/OS/OSAL/src/SetEvent.c **** 			TasksVar[TaskID].Events |= ( Mask & TasksConst[TaskID].EventsMask );
+ 150              		.loc 1 135 28
+ 151 00d6 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 152 00da 6949     		ldr	r1, .L16+4
+ 153 00dc 1346     		mov	r3, r2
+ 154 00de 9B00     		lsls	r3, r3, #2
+ 155 00e0 1344     		add	r3, r3, r2
+ 156 00e2 9B00     		lsls	r3, r3, #2
+ 157 00e4 0B44     		add	r3, r3, r1
+ 158 00e6 0833     		adds	r3, r3, #8
+ 159 00e8 1968     		ldr	r1, [r3]
+ 160              		.loc 1 135 58
+ 161 00ea 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 162 00ee 6348     		ldr	r0, .L16
+ 163 00f0 1346     		mov	r3, r2
+ 164 00f2 DB00     		lsls	r3, r3, #3
+ 165 00f4 9B1A     		subs	r3, r3, r2
+ 166 00f6 9B00     		lsls	r3, r3, #2
+ 167 00f8 0344     		add	r3, r3, r0
+ 168 00fa 1433     		adds	r3, r3, #20
+ 169 00fc 1A68     		ldr	r2, [r3]
+ 170              		.loc 1 135 38
+ 171 00fe 009B     		ldr	r3, [sp]
+ 172 0100 1340     		ands	r3, r3, r2
+ 173              		.loc 1 135 28
+ 174 0102 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 175 0106 1943     		orrs	r1, r1, r3
+ 176 0108 5D48     		ldr	r0, .L16+4
+ 177 010a 1346     		mov	r3, r2
+ 178 010c 9B00     		lsls	r3, r3, #2
+ 179 010e 1344     		add	r3, r3, r2
+ 180 0110 9B00     		lsls	r3, r3, #2
+ 181 0112 0344     		add	r3, r3, r0
+ 182 0114 0833     		adds	r3, r3, #8
+ 183 0116 1960     		str	r1, [r3]
+ 136:Modules/OS/OSAL/src/SetEvent.c **** 
+ 137:Modules/OS/OSAL/src/SetEvent.c **** 			/* if the task is waiting and one waiting event occurrs set it to ready */
+ 138:Modules/OS/OSAL/src/SetEvent.c **** 			if (	( TasksVar[TaskID].Flags.State == TASK_ST_WAITING ) &&
+ 184              		.loc 1 138 33
+ 185 0118 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 186 011c 5849     		ldr	r1, .L16+4
+ 187 011e 1346     		mov	r3, r2
+ 188 0120 9B00     		lsls	r3, r3, #2
+ 189 0122 1344     		add	r3, r3, r2
+ 190 0124 9B00     		lsls	r3, r3, #2
+ 191 0126 0B44     		add	r3, r3, r1
+ 192 0128 1B79     		ldrb	r3, [r3, #4]
+ 193 012a C3F38103 		ubfx	r3, r3, #2, #2
+ 194 012e DBB2     		uxtb	r3, r3
+ 195              		.loc 1 138 7
+ 196 0130 032B     		cmp	r3, #3
+ 197 0132 55D1     		bne	.L8
+ 139:Modules/OS/OSAL/src/SetEvent.c **** 					( TasksVar[TaskID].EventsWait & TasksVar[TaskID].Events ) )
+ 198              		.loc 1 139 24 discriminator 1
+ 199 0134 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 200 0138 5149     		ldr	r1, .L16+4
+ 201 013a 1346     		mov	r3, r2
+ 202 013c 9B00     		lsls	r3, r3, #2
+ 203 013e 1344     		add	r3, r3, r2
+ 204 0140 9B00     		lsls	r3, r3, #2
+ 205 0142 0B44     		add	r3, r3, r1
+ 206 0144 0C33     		adds	r3, r3, #12
+ 207 0146 1968     		ldr	r1, [r3]
+ 208              		.loc 1 139 54 discriminator 1
+ 209 0148 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 210 014c 4C48     		ldr	r0, .L16+4
+ 211 014e 1346     		mov	r3, r2
+ 212 0150 9B00     		lsls	r3, r3, #2
+ 213 0152 1344     		add	r3, r3, r2
+ 214 0154 9B00     		lsls	r3, r3, #2
+ 215 0156 0344     		add	r3, r3, r0
+ 216 0158 0833     		adds	r3, r3, #8
+ 217 015a 1B68     		ldr	r3, [r3]
+ 218              		.loc 1 139 36 discriminator 1
+ 219 015c 0B40     		ands	r3, r3, r1
+ 138:Modules/OS/OSAL/src/SetEvent.c **** 					( TasksVar[TaskID].EventsWait & TasksVar[TaskID].Events ) )
+ 220              		.loc 1 138 61 discriminator 1
+ 221 015e 002B     		cmp	r3, #0
+ 222 0160 3ED0     		beq	.L8
+ 140:Modules/OS/OSAL/src/SetEvent.c **** 			{
+ 141:Modules/OS/OSAL/src/SetEvent.c **** 				/* \req OSEK_SYS_3.15.1-2/3 The events of task TaskID are set according to the
+ 142:Modules/OS/OSAL/src/SetEvent.c **** 				 * event mask Mask. Calling SetEvent causes the task TaskID to be
+ 143:Modules/OS/OSAL/src/SetEvent.c **** 				 * transferred to the ready state, if it was waiting for at least one
+ 144:Modules/OS/OSAL/src/SetEvent.c **** 				 * of the events specified in Mask */
+ 145:Modules/OS/OSAL/src/SetEvent.c **** 				AddReady(TaskID);
+ 223              		.loc 1 145 5
+ 224 0162 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 225 0166 1846     		mov	r0, r3
+ 226 0168 FFF7FEFF 		bl	AddReady
+ 146:Modules/OS/OSAL/src/SetEvent.c **** 
+ 147:Modules/OS/OSAL/src/SetEvent.c **** 				/* \req OSEK_SYS_3.15.1-3/3 The events of task TaskID are set according to the
+ 148:Modules/OS/OSAL/src/SetEvent.c **** 				 * event mask Mask. Calling SetEvent causes the task TaskID to be
+ 149:Modules/OS/OSAL/src/SetEvent.c **** 				 * transferred to the ready state, if it was waiting for at least one
+ 150:Modules/OS/OSAL/src/SetEvent.c **** 				 * of the events specified in Mask */
+ 151:Modules/OS/OSAL/src/SetEvent.c **** 				TasksVar[TaskID].Flags.State = TASK_ST_READY;
+ 227              		.loc 1 151 27
+ 228 016c 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 229              		.loc 1 151 34
+ 230 0170 4349     		ldr	r1, .L16+4
+ 231 0172 1346     		mov	r3, r2
+ 232 0174 9B00     		lsls	r3, r3, #2
+ 233 0176 1344     		add	r3, r3, r2
+ 234 0178 9B00     		lsls	r3, r3, #2
+ 235 017a CA18     		adds	r2, r1, r3
+ 236 017c 1379     		ldrb	r3, [r2, #4]
+ 237 017e 0121     		movs	r1, #1
+ 238 0180 61F38303 		bfi	r3, r1, #2, #2
+ 239 0184 1371     		strb	r3, [r2, #4]
+ 152:Modules/OS/OSAL/src/SetEvent.c **** 
+ 153:Modules/OS/OSAL/src/SetEvent.c **** 				IntSecure_End();
+ 240              		.loc 1 153 5
+ 241 0186 3F4B     		ldr	r3, .L16+8
+ 242 0188 93F90030 		ldrsb	r3, [r3]
+ 243 018c DBB2     		uxtb	r3, r3
+ 244 018e 013B     		subs	r3, r3, #1
+ 245 0190 DBB2     		uxtb	r3, r3
+ 246 0192 5AB2     		sxtb	r2, r3
+ 247 0194 3B4B     		ldr	r3, .L16+8
+ 248 0196 1A70     		strb	r2, [r3]
+ 249 0198 3A4B     		ldr	r3, .L16+8
+ 250 019a 93F90030 		ldrsb	r3, [r3]
+ 251 019e 002B     		cmp	r3, #0
+ 252 01a0 03DC     		bgt	.L9
+ 253              		.loc 1 153 5 is_stmt 0 discriminator 1
+ 254 01a2 384B     		ldr	r3, .L16+8
+ 255 01a4 0022     		movs	r2, #0
+ 256 01a6 1A70     		strb	r2, [r3]
+ 257              		.syntax unified
+ 258              	@ 153 "Modules/OS/OSAL/src/SetEvent.c" 1
+ 259 01a8 62B6     		cpsie i
+ 260              	@ 0 "" 2
+ 261              		.thumb
+ 262              		.syntax unified
+ 263              	.L9:
+ 154:Modules/OS/OSAL/src/SetEvent.c **** 
+ 155:Modules/OS/OSAL/src/SetEvent.c **** #if (NON_PREEMPTIVE == OSEK_DISABLE)
+ 156:Modules/OS/OSAL/src/SetEvent.c **** 				/* check if called from a Task Context */
+ 157:Modules/OS/OSAL/src/SetEvent.c **** 				if ( GetCallingContext() ==  CONTEXT_TASK )
+ 264              		.loc 1 157 30 is_stmt 1
+ 265 01aa 374B     		ldr	r3, .L16+12
+ 266 01ac 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 267              		.loc 1 157 8
+ 268 01ae 012B     		cmp	r3, #1
+ 269 01b0 29D1     		bne	.L14
+ 158:Modules/OS/OSAL/src/SetEvent.c **** 				{
+ 159:Modules/OS/OSAL/src/SetEvent.c **** 					if ( ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) &&
+ 270              		.loc 1 159 52
+ 271 01b2 364B     		ldr	r3, .L16+16
+ 272 01b4 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 273 01b6 1946     		mov	r1, r3
+ 274 01b8 304A     		ldr	r2, .L16
+ 275 01ba 0B46     		mov	r3, r1
+ 276 01bc DB00     		lsls	r3, r3, #3
+ 277 01be 5B1A     		subs	r3, r3, r1
+ 278 01c0 9B00     		lsls	r3, r3, #2
+ 279 01c2 1344     		add	r3, r3, r2
+ 280 01c4 1033     		adds	r3, r3, #16
+ 281 01c6 1B78     		ldrb	r3, [r3]
+ 282 01c8 C3F34003 		ubfx	r3, r3, #1, #1
+ 283 01cc DBB2     		uxtb	r3, r3
+ 284              		.loc 1 159 9
+ 285 01ce 002B     		cmp	r3, #0
+ 286 01d0 19D0     		beq	.L14
+ 287              		.loc 1 159 65 discriminator 1
+ 288 01d2 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 289 01d6 002B     		cmp	r3, #0
+ 290 01d8 15D1     		bne	.L14
+ 160:Modules/OS/OSAL/src/SetEvent.c **** 						  ( ret == E_OK )	)
+ 161:Modules/OS/OSAL/src/SetEvent.c **** 					{
+ 162:Modules/OS/OSAL/src/SetEvent.c **** 						/* \req OSEK_SYS_3.15.4 Rescheduling shall take place only if called from a
+ 163:Modules/OS/OSAL/src/SetEvent.c **** 						 * preemptable task. */
+ 164:Modules/OS/OSAL/src/SetEvent.c **** 						(void)Schedule();
+ 291              		.loc 1 164 13
+ 292 01da FFF7FEFF 		bl	Schedule
+ 157:Modules/OS/OSAL/src/SetEvent.c **** 				{
+ 293              		.loc 1 157 8
+ 294 01de 12E0     		b	.L14
+ 295              	.L8:
+ 165:Modules/OS/OSAL/src/SetEvent.c **** 					}
+ 166:Modules/OS/OSAL/src/SetEvent.c **** 				}
+ 167:Modules/OS/OSAL/src/SetEvent.c **** #endif /* #if (NON_PREEMPTIVE == OSEK_DISABLE) */
+ 168:Modules/OS/OSAL/src/SetEvent.c **** 
+ 169:Modules/OS/OSAL/src/SetEvent.c **** 			}
+ 170:Modules/OS/OSAL/src/SetEvent.c **** 			else
+ 171:Modules/OS/OSAL/src/SetEvent.c **** 			{
+ 172:Modules/OS/OSAL/src/SetEvent.c **** 				IntSecure_End();
+ 296              		.loc 1 172 5
+ 297 01e0 284B     		ldr	r3, .L16+8
+ 298 01e2 93F90030 		ldrsb	r3, [r3]
+ 299 01e6 DBB2     		uxtb	r3, r3
+ 300 01e8 013B     		subs	r3, r3, #1
+ 301 01ea DBB2     		uxtb	r3, r3
+ 302 01ec 5AB2     		sxtb	r2, r3
+ 303 01ee 254B     		ldr	r3, .L16+8
+ 304 01f0 1A70     		strb	r2, [r3]
+ 305 01f2 244B     		ldr	r3, .L16+8
+ 306 01f4 93F90030 		ldrsb	r3, [r3]
+ 307 01f8 002B     		cmp	r3, #0
+ 308 01fa 19DC     		bgt	.L15
+ 309              		.loc 1 172 5 is_stmt 0 discriminator 1
+ 310 01fc 214B     		ldr	r3, .L16+8
+ 311 01fe 0022     		movs	r2, #0
+ 312 0200 1A70     		strb	r2, [r3]
+ 313              		.syntax unified
+ 314              	@ 172 "Modules/OS/OSAL/src/SetEvent.c" 1
+ 315 0202 62B6     		cpsie i
+ 316              	@ 0 "" 2
+ 138:Modules/OS/OSAL/src/SetEvent.c **** 					( TasksVar[TaskID].EventsWait & TasksVar[TaskID].Events ) )
+ 317              		.loc 1 138 7 is_stmt 1 discriminator 1
+ 318              		.thumb
+ 319              		.syntax unified
+ 320 0204 14E0     		b	.L15
+ 321              	.L14:
+ 157:Modules/OS/OSAL/src/SetEvent.c **** 				{
+ 322              		.loc 1 157 8
+ 323 0206 00BF     		nop
+ 138:Modules/OS/OSAL/src/SetEvent.c **** 					( TasksVar[TaskID].EventsWait & TasksVar[TaskID].Events ) )
+ 324              		.loc 1 138 7
+ 325 0208 12E0     		b	.L15
+ 326              	.L7:
+ 173:Modules/OS/OSAL/src/SetEvent.c **** 			}
+ 174:Modules/OS/OSAL/src/SetEvent.c **** 		}
+ 175:Modules/OS/OSAL/src/SetEvent.c **** 		else
+ 176:Modules/OS/OSAL/src/SetEvent.c **** 		{
+ 177:Modules/OS/OSAL/src/SetEvent.c **** 			IntSecure_End();
+ 327              		.loc 1 177 4
+ 328 020a 1E4B     		ldr	r3, .L16+8
+ 329 020c 93F90030 		ldrsb	r3, [r3]
+ 330 0210 DBB2     		uxtb	r3, r3
+ 331 0212 013B     		subs	r3, r3, #1
+ 332 0214 DBB2     		uxtb	r3, r3
+ 333 0216 5AB2     		sxtb	r2, r3
+ 334 0218 1A4B     		ldr	r3, .L16+8
+ 335 021a 1A70     		strb	r2, [r3]
+ 336 021c 194B     		ldr	r3, .L16+8
+ 337 021e 93F90030 		ldrsb	r3, [r3]
+ 338 0222 002B     		cmp	r3, #0
+ 339 0224 05DC     		bgt	.L3
+ 340              		.loc 1 177 4 is_stmt 0 discriminator 1
+ 341 0226 174B     		ldr	r3, .L16+8
+ 342 0228 0022     		movs	r2, #0
+ 343 022a 1A70     		strb	r2, [r3]
+ 344              		.syntax unified
+ 345              	@ 177 "Modules/OS/OSAL/src/SetEvent.c" 1
+ 346 022c 62B6     		cpsie i
+ 347              	@ 0 "" 2
+ 348              		.thumb
+ 349              		.syntax unified
+ 350 022e 00E0     		b	.L3
+ 351              	.L15:
+ 138:Modules/OS/OSAL/src/SetEvent.c **** 					( TasksVar[TaskID].EventsWait & TasksVar[TaskID].Events ) )
+ 352              		.loc 1 138 7 is_stmt 1
+ 353 0230 00BF     		nop
+ 354              	.L3:
+ 178:Modules/OS/OSAL/src/SetEvent.c **** 		}
+ 179:Modules/OS/OSAL/src/SetEvent.c **** 	}
+ 180:Modules/OS/OSAL/src/SetEvent.c **** 
+ 181:Modules/OS/OSAL/src/SetEvent.c **** 
+ 182:Modules/OS/OSAL/src/SetEvent.c **** #if ( (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED) && \
+ 183:Modules/OS/OSAL/src/SetEvent.c **** 		(HOOK_ERRORHOOK == OSEK_ENABLE) )
+ 184:Modules/OS/OSAL/src/SetEvent.c **** 	/* \req OSEK_ERR_1.3-8/xx The ErrorHook hook routine shall be called if a
+ 185:Modules/OS/OSAL/src/SetEvent.c **** 	 * system service returns a StatusType value not equal to E_OK.*/
+ 186:Modules/OS/OSAL/src/SetEvent.c **** 	/* \req OSEK_ERR_1.3.1-8/xx The hook routine ErrorHook is not called if a
+ 187:Modules/OS/OSAL/src/SetEvent.c **** 	 * system service is called from the ErrorHook itself. */
+ 188:Modules/OS/OSAL/src/SetEvent.c ****    if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
+ 355              		.loc 1 188 7
+ 356 0232 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 357 0236 002B     		cmp	r3, #0
+ 358 0238 19D0     		beq	.L12
+ 359              		.loc 1 188 46 discriminator 1
+ 360 023a 154B     		ldr	r3, .L16+20
+ 361 023c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 362              		.loc 1 188 25 discriminator 1
+ 363 023e 012B     		cmp	r3, #1
+ 364 0240 15D0     		beq	.L12
+ 189:Modules/OS/OSAL/src/SetEvent.c **** 	{
+ 190:Modules/OS/OSAL/src/SetEvent.c **** 		SetError_Api(OSServiceId_SetEvent);
+ 365              		.loc 1 190 3
+ 366 0242 144B     		ldr	r3, .L16+24
+ 367 0244 0F22     		movs	r2, #15
+ 368 0246 1A60     		str	r2, [r3]
+ 191:Modules/OS/OSAL/src/SetEvent.c **** 		SetError_Param1(TaskID);
+ 369              		.loc 1 191 3
+ 370 0248 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 371 024c 124A     		ldr	r2, .L16+28
+ 372 024e 1360     		str	r3, [r2]
+ 192:Modules/OS/OSAL/src/SetEvent.c **** 		SetError_Param2(Mask);
+ 373              		.loc 1 192 3
+ 374 0250 124A     		ldr	r2, .L16+32
+ 375 0252 009B     		ldr	r3, [sp]
+ 376 0254 1360     		str	r3, [r2]
+ 193:Modules/OS/OSAL/src/SetEvent.c **** 		SetError_Ret(ret);
+ 377              		.loc 1 193 3
+ 378 0256 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 379 025a 114A     		ldr	r2, .L16+36
+ 380 025c 1360     		str	r3, [r2]
+ 194:Modules/OS/OSAL/src/SetEvent.c **** 		SetError_Msg("ActivateTask returns != than E_OK");
+ 195:Modules/OS/OSAL/src/SetEvent.c **** 		SetError_ErrorHook();
+ 381              		.loc 1 195 3
+ 382 025e 0C4B     		ldr	r3, .L16+20
+ 383 0260 0122     		movs	r2, #1
+ 384 0262 1A70     		strb	r2, [r3]
+ 385 0264 FFF7FEFF 		bl	ErrorHook
+ 386 0268 094B     		ldr	r3, .L16+20
+ 387 026a 0022     		movs	r2, #0
+ 388 026c 1A70     		strb	r2, [r3]
+ 389              	.L12:
+ 196:Modules/OS/OSAL/src/SetEvent.c **** 	}
+ 197:Modules/OS/OSAL/src/SetEvent.c **** #endif
+ 198:Modules/OS/OSAL/src/SetEvent.c **** 
+ 199:Modules/OS/OSAL/src/SetEvent.c **** 	return ret;
+ 390              		.loc 1 199 9
+ 391 026e 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 200:Modules/OS/OSAL/src/SetEvent.c **** }
+ 392              		.loc 1 200 1
+ 393 0272 1846     		mov	r0, r3
+ 394 0274 05B0     		add	sp, sp, #20
+ 395              		.cfi_def_cfa_offset 4
+ 396              		@ sp needed
+ 397 0276 5DF804FB 		ldr	pc, [sp], #4
+ 398              	.L17:
+ 399 027a 00BF     		.align	2
+ 400              	.L16:
+ 401 027c 00000000 		.word	TasksConst
+ 402 0280 00000000 		.word	TasksVar
+ 403 0284 00000000 		.word	SuspendAllInterrupts_Counter
+ 404 0288 00000000 		.word	ActualContext
+ 405 028c 00000000 		.word	RunningTask
+ 406 0290 00000000 		.word	ErrorHookRunning
+ 407 0294 00000000 		.word	Osek_ErrorApi
+ 408 0298 00000000 		.word	Osek_ErrorParam1
+ 409 029c 00000000 		.word	Osek_ErrorParam2
+ 410 02a0 00000000 		.word	Osek_ErrorRet
+ 411              		.cfi_endproc
+ 412              	.LFE0:
+ 414              		.text
+ 415              	.Letext0:
+ 416              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 417              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 418              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Types.h"
+ 419              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Cfg.h"
+ 420              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 421              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+ 422              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 423              		.file 9 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os_intern
+DEFINED SYMBOLS
+                            *ABS*:00000000 SetEvent.c
+C:\Users\AAA\AppData\Local\Temp\cc2Cwm49.s:19     .text.SetEvent:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cc2Cwm49.s:26     .text.SetEvent:00000000 SetEvent
+C:\Users\AAA\AppData\Local\Temp\cc2Cwm49.s:401    .text.SetEvent:0000027c $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+UNDEFINED SYMBOLS
+AddReady
+Schedule
+ErrorHook
+TasksConst
+TasksVar
+SuspendAllInterrupts_Counter
+ActualContext
+RunningTask
+ErrorHookRunning
+Osek_ErrorApi
+Osek_ErrorParam1
+Osek_ErrorParam2
+Osek_ErrorRet

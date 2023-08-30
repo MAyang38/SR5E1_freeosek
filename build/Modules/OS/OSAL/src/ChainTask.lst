@@ -1,0 +1,612 @@
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"ChainTask.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.ChainTask,"ax",%progbits
+  19              		.align	1
+  20              		.p2align 4,,15
+  21              		.global	ChainTask
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	ChainTask:
+  27              	.LFB0:
+  28              		.file 1 "Modules/OS/OSAL/src/ChainTask.c"
+   1:Modules/OS/OSAL/src/ChainTask.c **** /* Copyright 2008, 2009 Mariano Cerdeiro
+   2:Modules/OS/OSAL/src/ChainTask.c ****  * Copyright 2014, ACSE & CADIEEL
+   3:Modules/OS/OSAL/src/ChainTask.c ****  *      ACSE: http://www.sase.com.ar/asociacion-civil-sistemas-embebidos/ciaa/
+   4:Modules/OS/OSAL/src/ChainTask.c ****  *      CADIEEL: http://www.cadieel.org.ar
+   5:Modules/OS/OSAL/src/ChainTask.c ****  *
+   6:Modules/OS/OSAL/src/ChainTask.c ****  * This file is part of CIAA Firmware.
+   7:Modules/OS/OSAL/src/ChainTask.c ****  *
+   8:Modules/OS/OSAL/src/ChainTask.c ****  * Redistribution and use in source and binary forms, with or without
+   9:Modules/OS/OSAL/src/ChainTask.c ****  * modification, are permitted provided that the following conditions are met:
+  10:Modules/OS/OSAL/src/ChainTask.c ****  *
+  11:Modules/OS/OSAL/src/ChainTask.c ****  * 1. Redistributions of source code must retain the above copyright notice,
+  12:Modules/OS/OSAL/src/ChainTask.c ****  *    this list of conditions and the following disclaimer.
+  13:Modules/OS/OSAL/src/ChainTask.c ****  *
+  14:Modules/OS/OSAL/src/ChainTask.c ****  * 2. Redistributions in binary form must reproduce the above copyright notice,
+  15:Modules/OS/OSAL/src/ChainTask.c ****  *    this list of conditions and the following disclaimer in the documentation
+  16:Modules/OS/OSAL/src/ChainTask.c ****  *    and/or other materials provided with the distribution.
+  17:Modules/OS/OSAL/src/ChainTask.c ****  *
+  18:Modules/OS/OSAL/src/ChainTask.c ****  * 3. Neither the name of the copyright holder nor the names of its
+  19:Modules/OS/OSAL/src/ChainTask.c ****  *    contributors may be used to endorse or promote products derived from this
+  20:Modules/OS/OSAL/src/ChainTask.c ****  *    software without specific prior written permission.
+  21:Modules/OS/OSAL/src/ChainTask.c ****  *
+  22:Modules/OS/OSAL/src/ChainTask.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Modules/OS/OSAL/src/ChainTask.c ****  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Modules/OS/OSAL/src/ChainTask.c ****  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  25:Modules/OS/OSAL/src/ChainTask.c ****  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+  26:Modules/OS/OSAL/src/ChainTask.c ****  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  27:Modules/OS/OSAL/src/ChainTask.c ****  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  28:Modules/OS/OSAL/src/ChainTask.c ****  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  29:Modules/OS/OSAL/src/ChainTask.c ****  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  30:Modules/OS/OSAL/src/ChainTask.c ****  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  31:Modules/OS/OSAL/src/ChainTask.c ****  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  32:Modules/OS/OSAL/src/ChainTask.c ****  * POSSIBILITY OF SUCH DAMAGE.
+  33:Modules/OS/OSAL/src/ChainTask.c ****  *
+  34:Modules/OS/OSAL/src/ChainTask.c ****  */
+  35:Modules/OS/OSAL/src/ChainTask.c **** 
+  36:Modules/OS/OSAL/src/ChainTask.c **** /** \brief FreeOSEK Os ChainTask Implementation File
+  37:Modules/OS/OSAL/src/ChainTask.c ****  **
+  38:Modules/OS/OSAL/src/ChainTask.c ****  ** This file implements the ChainTask API
+  39:Modules/OS/OSAL/src/ChainTask.c ****  **
+  40:Modules/OS/OSAL/src/ChainTask.c ****  ** \file ChainTask.c
+  41:Modules/OS/OSAL/src/ChainTask.c ****  **
+  42:Modules/OS/OSAL/src/ChainTask.c ****  **/
+  43:Modules/OS/OSAL/src/ChainTask.c **** 
+  44:Modules/OS/OSAL/src/ChainTask.c **** /** \addtogroup FreeOSEK
+  45:Modules/OS/OSAL/src/ChainTask.c ****  ** @{ */
+  46:Modules/OS/OSAL/src/ChainTask.c **** /** \addtogroup FreeOSEK_Os
+  47:Modules/OS/OSAL/src/ChainTask.c ****  ** @{ */
+  48:Modules/OS/OSAL/src/ChainTask.c **** /** \addtogroup FreeOSEK_Os_Global
+  49:Modules/OS/OSAL/src/ChainTask.c ****  ** @{ */
+  50:Modules/OS/OSAL/src/ChainTask.c **** 
+  51:Modules/OS/OSAL/src/ChainTask.c **** /*
+  52:Modules/OS/OSAL/src/ChainTask.c ****  * Initials     Name
+  53:Modules/OS/OSAL/src/ChainTask.c ****  * ---------------------------
+  54:Modules/OS/OSAL/src/ChainTask.c ****  * MaCe         Mariano Cerdeiro
+  55:Modules/OS/OSAL/src/ChainTask.c ****  * KLi          Kang Li
+  56:Modules/OS/OSAL/src/ChainTask.c ****  */
+  57:Modules/OS/OSAL/src/ChainTask.c **** 
+  58:Modules/OS/OSAL/src/ChainTask.c **** /*
+  59:Modules/OS/OSAL/src/ChainTask.c ****  * modification history (new versions first)
+  60:Modules/OS/OSAL/src/ChainTask.c ****  * -----------------------------------------------------------
+  61:Modules/OS/OSAL/src/ChainTask.c ****  * 20090418 v0.1.5 MaCe add PostTaskHook handling
+  62:Modules/OS/OSAL/src/ChainTask.c ****  * 20090406 v0.1.4 MaCe add support to RES_SCHEDULER
+  63:Modules/OS/OSAL/src/ChainTask.c ****  * 20090330 v0.1.3 MaCe add set actual context to SYS when chaining task
+  64:Modules/OS/OSAL/src/ChainTask.c ****  * 20090130 v0.1.2 MaCe add OSEK_MEMMAP check
+  65:Modules/OS/OSAL/src/ChainTask.c ****  * 20081113 v0.1.1 KLi  Added memory layout attribute macros
+  66:Modules/OS/OSAL/src/ChainTask.c ****  * 20080713 v0.1.0 MaCe initial version
+  67:Modules/OS/OSAL/src/ChainTask.c ****  */
+  68:Modules/OS/OSAL/src/ChainTask.c **** 
+  69:Modules/OS/OSAL/src/ChainTask.c **** /*==================[inclusions]=============================================*/
+  70:Modules/OS/OSAL/src/ChainTask.c **** #include "Os_Internal.h"
+  71:Modules/OS/OSAL/src/ChainTask.c **** 
+  72:Modules/OS/OSAL/src/ChainTask.c **** /*==================[macros and definitions]=================================*/
+  73:Modules/OS/OSAL/src/ChainTask.c **** 
+  74:Modules/OS/OSAL/src/ChainTask.c **** /*==================[internal data declaration]==============================*/
+  75:Modules/OS/OSAL/src/ChainTask.c **** 
+  76:Modules/OS/OSAL/src/ChainTask.c **** /*==================[internal functions declaration]=========================*/
+  77:Modules/OS/OSAL/src/ChainTask.c **** 
+  78:Modules/OS/OSAL/src/ChainTask.c **** /*==================[internal data definition]===============================*/
+  79:Modules/OS/OSAL/src/ChainTask.c **** 
+  80:Modules/OS/OSAL/src/ChainTask.c **** /*==================[external data definition]===============================*/
+  81:Modules/OS/OSAL/src/ChainTask.c **** 
+  82:Modules/OS/OSAL/src/ChainTask.c **** /*==================[internal functions definition]==========================*/
+  83:Modules/OS/OSAL/src/ChainTask.c **** 
+  84:Modules/OS/OSAL/src/ChainTask.c **** /*==================[external functions definition]==========================*/
+  85:Modules/OS/OSAL/src/ChainTask.c **** StatusType ChainTask
+  86:Modules/OS/OSAL/src/ChainTask.c **** (
+  87:Modules/OS/OSAL/src/ChainTask.c **** 	TaskType taskid
+  88:Modules/OS/OSAL/src/ChainTask.c **** )
+  89:Modules/OS/OSAL/src/ChainTask.c **** {
+  29              		.loc 1 89 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 16
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 00B5     		push	{lr}
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 14, -4
+  36 0002 85B0     		sub	sp, sp, #20
+  37              		.cfi_def_cfa_offset 24
+  38 0004 0346     		mov	r3, r0
+  39 0006 8DF80730 		strb	r3, [sp, #7]
+  90:Modules/OS/OSAL/src/ChainTask.c **** 	/* \req OSEK_SYS_3.3 The system service StatusType
+  91:Modules/OS/OSAL/src/ChainTask.c **** 	 ** ChainTask ( TaskType TaskID ) shall be defined. */
+  92:Modules/OS/OSAL/src/ChainTask.c **** 
+  93:Modules/OS/OSAL/src/ChainTask.c **** 
+  94:Modules/OS/OSAL/src/ChainTask.c **** 	StatusType ret = E_OK;
+  40              		.loc 1 94 13
+  41 000a 0023     		movs	r3, #0
+  42 000c 8DF80F30 		strb	r3, [sp, #15]
+  95:Modules/OS/OSAL/src/ChainTask.c **** 
+  96:Modules/OS/OSAL/src/ChainTask.c **** #if (ERROR_CHECKING_TYPE == ERROR_CHECKING_EXTENDED)
+  97:Modules/OS/OSAL/src/ChainTask.c **** 	if ( taskid >= TASKS_COUNT )
+  43              		.loc 1 97 5
+  44 0010 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+  45 0014 032B     		cmp	r3, #3
+  46 0016 03D9     		bls	.L2
+  98:Modules/OS/OSAL/src/ChainTask.c **** 	{
+  99:Modules/OS/OSAL/src/ChainTask.c **** 		/* \req OSEK_SYS_3.3.10-1/3 Added possible return values in Extended mode
+ 100:Modules/OS/OSAL/src/ChainTask.c **** 		 ** are E_OS_ID, E_OS_RESOURCE, E_OS_CALLEVEL */
+ 101:Modules/OS/OSAL/src/ChainTask.c **** 		ret = E_OS_ID;
+  47              		.loc 1 101 7
+  48 0018 0323     		movs	r3, #3
+  49 001a 8DF80F30 		strb	r3, [sp, #15]
+  50 001e C6E0     		b	.L3
+  51              	.L2:
+ 102:Modules/OS/OSAL/src/ChainTask.c **** 	}
+ 103:Modules/OS/OSAL/src/ChainTask.c **** 	else if ( GetCallingContext() != CONTEXT_TASK )
+  52              		.loc 1 103 32
+  53 0020 734B     		ldr	r3, .L12
+  54 0022 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  55              		.loc 1 103 10
+  56 0024 012B     		cmp	r3, #1
+  57 0026 03D0     		beq	.L4
+ 104:Modules/OS/OSAL/src/ChainTask.c **** 	{
+ 105:Modules/OS/OSAL/src/ChainTask.c **** 		/* \req OSEK_SYS_3.3.10-2/3 Added possible return values in Extended mode
+ 106:Modules/OS/OSAL/src/ChainTask.c **** 		 ** are E_OS_ID, E_OS_RESOURCE, E_OS_CALLEVEL */
+ 107:Modules/OS/OSAL/src/ChainTask.c **** 		ret = E_OS_CALLEVEL;
+  58              		.loc 1 107 7
+  59 0028 0223     		movs	r3, #2
+  60 002a 8DF80F30 		strb	r3, [sp, #15]
+  61 002e BEE0     		b	.L3
+  62              	.L4:
+ 108:Modules/OS/OSAL/src/ChainTask.c **** 	}
+ 109:Modules/OS/OSAL/src/ChainTask.c **** #if ( (RESOURCES_COUNT != 0) || (NO_RES_SCHEDULER == OSEK_DISABLE) )
+ 110:Modules/OS/OSAL/src/ChainTask.c **** 	/* check if any resource is still reserved for this task */
+ 111:Modules/OS/OSAL/src/ChainTask.c **** 	else if (
+ 112:Modules/OS/OSAL/src/ChainTask.c **** #if (RESOURCES_COUNT != 0)
+ 113:Modules/OS/OSAL/src/ChainTask.c **** 				 ( TasksVar[GetRunningTask()].Resources != 0 )
+ 114:Modules/OS/OSAL/src/ChainTask.c **** #endif /* #if (RESOURCES_COUNT != 0) */
+ 115:Modules/OS/OSAL/src/ChainTask.c **** #if ( (RESOURCES_COUNT != 0) && (NO_RES_SCHEDULER == OSEK_DISABLE) )
+ 116:Modules/OS/OSAL/src/ChainTask.c **** 					||
+ 117:Modules/OS/OSAL/src/ChainTask.c **** #endif /* #if ( (RESOURCES_COUNT != 0) && (NO_RES_SCHEDULER == OSEK_DISABLE) ) */
+ 118:Modules/OS/OSAL/src/ChainTask.c **** #if (NO_RES_SCHEDULER == OSEK_DISABLE)
+ 119:Modules/OS/OSAL/src/ChainTask.c **** 				 ( TasksVar[GetRunningTask()].ActualPriority == TASK_MAX_PRIORITY )
+ 120:Modules/OS/OSAL/src/ChainTask.c **** #endif /* #if (NO_RES_SCHEDULER == OSEK_DISABLE) */
+ 121:Modules/OS/OSAL/src/ChainTask.c **** 			  )
+ 122:Modules/OS/OSAL/src/ChainTask.c **** 	{
+ 123:Modules/OS/OSAL/src/ChainTask.c **** 		/* \req OSEK_SYS_3.3.10-3/3 Added possible return values in Extended mode
+ 124:Modules/OS/OSAL/src/ChainTask.c **** 		 ** are E_OS_ID, E_OS_RESOURCE, E_OS_CALLEVEL */
+ 125:Modules/OS/OSAL/src/ChainTask.c **** 		ret = E_OS_RESOURCE;
+ 126:Modules/OS/OSAL/src/ChainTask.c **** 	}
+ 127:Modules/OS/OSAL/src/ChainTask.c **** #endif /* #if ( (RESOURCES_COUNT != 0) || (NO_RES_SCHEDULER == OSEK_DISABLE) ) */
+ 128:Modules/OS/OSAL/src/ChainTask.c **** 	else
+ 129:Modules/OS/OSAL/src/ChainTask.c **** #endif
+ 130:Modules/OS/OSAL/src/ChainTask.c **** 	if ( ( (TasksVar[taskid].Activations + 1) > TasksConst[taskid].MaxActivations) &&
+  63              		.loc 1 130 26
+  64 0030 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+  65 0034 6F49     		ldr	r1, .L12+4
+  66 0036 1346     		mov	r3, r2
+  67 0038 9B00     		lsls	r3, r3, #2
+  68 003a 1344     		add	r3, r3, r2
+  69 003c 9B00     		lsls	r3, r3, #2
+  70 003e 0B44     		add	r3, r3, r1
+  71 0040 0133     		adds	r3, r3, #1
+  72 0042 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+  73              		.loc 1 130 44
+  74 0044 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+  75              		.loc 1 130 64
+  76 0048 6B48     		ldr	r0, .L12+8
+  77 004a 1346     		mov	r3, r2
+  78 004c DB00     		lsls	r3, r3, #3
+  79 004e 9B1A     		subs	r3, r3, r2
+  80 0050 9B00     		lsls	r3, r3, #2
+  81 0052 0344     		add	r3, r3, r0
+  82 0054 0F33     		adds	r3, r3, #15
+  83 0056 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  84              		.loc 1 130 5
+  85 0058 9942     		cmp	r1, r3
+  86 005a 09D3     		bcc	.L5
+ 131:Modules/OS/OSAL/src/ChainTask.c **** 		  ( taskid != GetRunningTask()) )
+  87              		.loc 1 131 14 discriminator 1
+  88 005c 674B     		ldr	r3, .L12+12
+  89 005e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 130:Modules/OS/OSAL/src/ChainTask.c **** 		  ( taskid != GetRunningTask()) )
+  90              		.loc 1 130 81 discriminator 1
+  91 0060 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+  92 0064 9A42     		cmp	r2, r3
+  93 0066 03D0     		beq	.L5
+ 132:Modules/OS/OSAL/src/ChainTask.c **** 	{
+ 133:Modules/OS/OSAL/src/ChainTask.c **** 		/* \req OSEK_SYS_3.3.8 If E_OS_LIMIT is returned the activation is ignored */
+ 134:Modules/OS/OSAL/src/ChainTask.c **** 		/* \req OSEK_SYS_3.3.9-1/2 Possible return values in Standard mode are:
+ 135:Modules/OS/OSAL/src/ChainTask.c **** 		 ** no return or E_OS_LIMIT */
+ 136:Modules/OS/OSAL/src/ChainTask.c **** 		ret = E_OS_LIMIT;
+  94              		.loc 1 136 7
+  95 0068 0423     		movs	r3, #4
+  96 006a 8DF80F30 		strb	r3, [sp, #15]
+  97 006e 9EE0     		b	.L3
+  98              	.L5:
+ 137:Modules/OS/OSAL/src/ChainTask.c **** 	}
+ 138:Modules/OS/OSAL/src/ChainTask.c **** 	else
+ 139:Modules/OS/OSAL/src/ChainTask.c **** 	{
+ 140:Modules/OS/OSAL/src/ChainTask.c **** 
+ 141:Modules/OS/OSAL/src/ChainTask.c **** #if (HOOK_POSTTASKHOOK == OSEK_ENABLE)
+ 142:Modules/OS/OSAL/src/ChainTask.c **** 		PostTaskHook();
+ 143:Modules/OS/OSAL/src/ChainTask.c **** #endif /* #if (HOOK_POSTTASKHOOK == OSEK_ENABLE) */
+ 144:Modules/OS/OSAL/src/ChainTask.c **** 
+ 145:Modules/OS/OSAL/src/ChainTask.c **** 		IntSecure_Start();
+  99              		.loc 1 145 3
+ 100 0070 634B     		ldr	r3, .L12+16
+ 101 0072 93F90030 		ldrsb	r3, [r3]
+ 102 0076 DBB2     		uxtb	r3, r3
+ 103 0078 0133     		adds	r3, r3, #1
+ 104 007a DBB2     		uxtb	r3, r3
+ 105 007c 5AB2     		sxtb	r2, r3
+ 106 007e 604B     		ldr	r3, .L12+16
+ 107 0080 1A70     		strb	r2, [r3]
+ 108              		.syntax unified
+ 109              	@ 145 "Modules/OS/OSAL/src/ChainTask.c" 1
+ 110 0082 72B6     		cpsid i
+ 111              	@ 0 "" 2
+ 146:Modules/OS/OSAL/src/ChainTask.c **** 
+ 147:Modules/OS/OSAL/src/ChainTask.c **** 		/* release internal resources */
+ 148:Modules/OS/OSAL/src/ChainTask.c **** 		/* \req OSEK_SYS_3.3.4 If an internal resource is assigned to the calling
+ 149:Modules/OS/OSAL/src/ChainTask.c **** 		 ** task it shall be automatically released, even if the succeeding task is
+ 150:Modules/OS/OSAL/src/ChainTask.c **** 		 ** identical with the current task. */
+ 151:Modules/OS/OSAL/src/ChainTask.c **** 		ReleaseInternalResources();
+ 152:Modules/OS/OSAL/src/ChainTask.c **** 
+ 153:Modules/OS/OSAL/src/ChainTask.c **** 		/* decrement activations for this task */
+ 154:Modules/OS/OSAL/src/ChainTask.c **** 		TasksVar[GetRunningTask()].Activations--;
+ 112              		.loc 1 154 29
+ 113              		.thumb
+ 114              		.syntax unified
+ 115 0084 5D4B     		ldr	r3, .L12+12
+ 116 0086 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 117 0088 1A46     		mov	r2, r3
+ 118 008a 5A49     		ldr	r1, .L12+4
+ 119 008c 1346     		mov	r3, r2
+ 120 008e 9B00     		lsls	r3, r3, #2
+ 121 0090 1344     		add	r3, r3, r2
+ 122 0092 9B00     		lsls	r3, r3, #2
+ 123 0094 0B44     		add	r3, r3, r1
+ 124 0096 0133     		adds	r3, r3, #1
+ 125 0098 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 126              		.loc 1 154 41
+ 127 009a 013B     		subs	r3, r3, #1
+ 128 009c D8B2     		uxtb	r0, r3
+ 129 009e 5549     		ldr	r1, .L12+4
+ 130 00a0 1346     		mov	r3, r2
+ 131 00a2 9B00     		lsls	r3, r3, #2
+ 132 00a4 1344     		add	r3, r3, r2
+ 133 00a6 9B00     		lsls	r3, r3, #2
+ 134 00a8 0B44     		add	r3, r3, r1
+ 135 00aa 0133     		adds	r3, r3, #1
+ 136 00ac 0246     		mov	r2, r0
+ 137 00ae 1A70     		strb	r2, [r3]
+ 155:Modules/OS/OSAL/src/ChainTask.c **** 
+ 156:Modules/OS/OSAL/src/ChainTask.c **** 		if (TasksVar[GetRunningTask()].Activations == 0)
+ 138              		.loc 1 156 33
+ 139 00b0 524B     		ldr	r3, .L12+12
+ 140 00b2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 141 00b4 1946     		mov	r1, r3
+ 142 00b6 4F4A     		ldr	r2, .L12+4
+ 143 00b8 0B46     		mov	r3, r1
+ 144 00ba 9B00     		lsls	r3, r3, #2
+ 145 00bc 0B44     		add	r3, r3, r1
+ 146 00be 9B00     		lsls	r3, r3, #2
+ 147 00c0 1344     		add	r3, r3, r2
+ 148 00c2 0133     		adds	r3, r3, #1
+ 149 00c4 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 150              		.loc 1 156 6
+ 151 00c6 002B     		cmp	r3, #0
+ 152 00c8 0DD1     		bne	.L6
+ 157:Modules/OS/OSAL/src/ChainTask.c **** 		{
+ 158:Modules/OS/OSAL/src/ChainTask.c **** 			/* if no more activations set state to suspended */
+ 159:Modules/OS/OSAL/src/ChainTask.c **** 			/* \req OSEK_SYS_3.3.1-1/2 This service causes the termination of the calling task. */
+ 160:Modules/OS/OSAL/src/ChainTask.c **** 			TasksVar[GetRunningTask()].Flags.State = TASK_ST_SUSPENDED;
+ 153              		.loc 1 160 36
+ 154 00ca 4C4B     		ldr	r3, .L12+12
+ 155 00cc 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 156 00ce 1946     		mov	r1, r3
+ 157              		.loc 1 160 43
+ 158 00d0 484A     		ldr	r2, .L12+4
+ 159 00d2 0B46     		mov	r3, r1
+ 160 00d4 9B00     		lsls	r3, r3, #2
+ 161 00d6 0B44     		add	r3, r3, r1
+ 162 00d8 9B00     		lsls	r3, r3, #2
+ 163 00da 1A44     		add	r2, r2, r3
+ 164 00dc 1379     		ldrb	r3, [r2, #4]
+ 165 00de 6FF38303 		bfc	r3, #2, #2
+ 166 00e2 1371     		strb	r3, [r2, #4]
+ 167 00e4 0DE0     		b	.L7
+ 168              	.L6:
+ 161:Modules/OS/OSAL/src/ChainTask.c **** 		}
+ 162:Modules/OS/OSAL/src/ChainTask.c **** 		else
+ 163:Modules/OS/OSAL/src/ChainTask.c **** 		{
+ 164:Modules/OS/OSAL/src/ChainTask.c **** 			/* if more activations set state to ready */
+ 165:Modules/OS/OSAL/src/ChainTask.c **** 			/* \req OSEK_SYS_3.3.1-2/2 This service causes the termination of the calling task. */
+ 166:Modules/OS/OSAL/src/ChainTask.c **** 			TasksVar[GetRunningTask()].Flags.State = TASK_ST_READY;
+ 169              		.loc 1 166 36
+ 170 00e6 454B     		ldr	r3, .L12+12
+ 171 00e8 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 172 00ea 1946     		mov	r1, r3
+ 173              		.loc 1 166 43
+ 174 00ec 414A     		ldr	r2, .L12+4
+ 175 00ee 0B46     		mov	r3, r1
+ 176 00f0 9B00     		lsls	r3, r3, #2
+ 177 00f2 0B44     		add	r3, r3, r1
+ 178 00f4 9B00     		lsls	r3, r3, #2
+ 179 00f6 1A44     		add	r2, r2, r3
+ 180 00f8 1379     		ldrb	r3, [r2, #4]
+ 181 00fa 0121     		movs	r1, #1
+ 182 00fc 61F38303 		bfi	r3, r1, #2, #2
+ 183 0100 1371     		strb	r3, [r2, #4]
+ 184              	.L7:
+ 167:Modules/OS/OSAL/src/ChainTask.c **** 		}
+ 168:Modules/OS/OSAL/src/ChainTask.c **** 
+ 169:Modules/OS/OSAL/src/ChainTask.c **** 		/* set entry point for this task again */
+ 170:Modules/OS/OSAL/src/ChainTask.c **** 		/* \req OSEK_SYS_3.1.2-1/3 The operating system shall ensure that the task
+ 171:Modules/OS/OSAL/src/ChainTask.c ****          * code is being executed from the first statement. */
+ 172:Modules/OS/OSAL/src/ChainTask.c **** 		SetEntryPoint(GetRunningTask());
+ 185              		.loc 1 172 3
+ 186 0102 3E4B     		ldr	r3, .L12+12
+ 187 0104 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 188 0106 3F4B     		ldr	r3, .L12+20
+ 189 0108 1A70     		strb	r2, [r3]
+ 173:Modules/OS/OSAL/src/ChainTask.c **** 		/* remove ready list */
+ 174:Modules/OS/OSAL/src/ChainTask.c **** 		RemoveTask(GetRunningTask());
+ 190              		.loc 1 174 3
+ 191 010a 3C4B     		ldr	r3, .L12+12
+ 192 010c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 193 010e 1846     		mov	r0, r3
+ 194 0110 FFF7FEFF 		bl	RemoveTask
+ 175:Modules/OS/OSAL/src/ChainTask.c **** 		/* set running task to invalid */
+ 176:Modules/OS/OSAL/src/ChainTask.c **** 		SetRunningTask(INVALID_TASK);
+ 195              		.loc 1 176 3
+ 196 0114 394B     		ldr	r3, .L12+12
+ 197 0116 FF22     		movs	r2, #255
+ 198 0118 1A70     		strb	r2, [r3]
+ 177:Modules/OS/OSAL/src/ChainTask.c **** 		/* set actual context task */
+ 178:Modules/OS/OSAL/src/ChainTask.c **** 		SetActualContext(CONTEXT_SYS);
+ 199              		.loc 1 178 3
+ 200 011a 354B     		ldr	r3, .L12
+ 201 011c 0422     		movs	r2, #4
+ 202 011e 1A70     		strb	r2, [r3]
+ 179:Modules/OS/OSAL/src/ChainTask.c **** 		/* increment activations */
+ 180:Modules/OS/OSAL/src/ChainTask.c **** 		TasksVar[taskid].Activations++;
+ 203              		.loc 1 180 19
+ 204 0120 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 205 0124 3349     		ldr	r1, .L12+4
+ 206 0126 1346     		mov	r3, r2
+ 207 0128 9B00     		lsls	r3, r3, #2
+ 208 012a 1344     		add	r3, r3, r2
+ 209 012c 9B00     		lsls	r3, r3, #2
+ 210 012e 0B44     		add	r3, r3, r1
+ 211 0130 0133     		adds	r3, r3, #1
+ 212 0132 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 213              		.loc 1 180 31
+ 214 0134 0133     		adds	r3, r3, #1
+ 215 0136 D8B2     		uxtb	r0, r3
+ 216 0138 2E49     		ldr	r1, .L12+4
+ 217 013a 1346     		mov	r3, r2
+ 218 013c 9B00     		lsls	r3, r3, #2
+ 219 013e 1344     		add	r3, r3, r2
+ 220 0140 9B00     		lsls	r3, r3, #2
+ 221 0142 0B44     		add	r3, r3, r1
+ 222 0144 0133     		adds	r3, r3, #1
+ 223 0146 0246     		mov	r2, r0
+ 224 0148 1A70     		strb	r2, [r3]
+ 181:Modules/OS/OSAL/src/ChainTask.c **** 		/* activate task */
+ 182:Modules/OS/OSAL/src/ChainTask.c **** 		/* \req OSEK_SYS_3.3.2 After termination of the calling task a succeeding
+ 183:Modules/OS/OSAL/src/ChainTask.c **** 		 **  task TaskID shall be activated. */
+ 184:Modules/OS/OSAL/src/ChainTask.c **** 		/* \req OSEK_SYS_3.3.3 If the succeeding task is identical with the current
+ 185:Modules/OS/OSAL/src/ChainTask.c **** 		 ** task, this does not result in multiple requests. The task is not
+ 186:Modules/OS/OSAL/src/ChainTask.c **** 		 ** transferred to the suspended state, but will immediately become ready
+ 187:Modules/OS/OSAL/src/ChainTask.c **** 		 ** again. */
+ 188:Modules/OS/OSAL/src/ChainTask.c **** 		AddReady(taskid);
+ 225              		.loc 1 188 3
+ 226 014a 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 227 014e 1846     		mov	r0, r3
+ 228 0150 FFF7FEFF 		bl	AddReady
+ 189:Modules/OS/OSAL/src/ChainTask.c **** 
+ 190:Modules/OS/OSAL/src/ChainTask.c **** 		if(TasksVar[taskid].Flags.State ==  TASK_ST_SUSPENDED)
+ 229              		.loc 1 190 28
+ 230 0154 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 231 0158 2649     		ldr	r1, .L12+4
+ 232 015a 1346     		mov	r3, r2
+ 233 015c 9B00     		lsls	r3, r3, #2
+ 234 015e 1344     		add	r3, r3, r2
+ 235 0160 9B00     		lsls	r3, r3, #2
+ 236 0162 0B44     		add	r3, r3, r1
+ 237 0164 1B79     		ldrb	r3, [r3, #4]
+ 238 0166 C3F38103 		ubfx	r3, r3, #2, #2
+ 239 016a DBB2     		uxtb	r3, r3
+ 240              		.loc 1 190 5
+ 241 016c 002B     		cmp	r3, #0
+ 242 016e 0AD1     		bne	.L8
+ 191:Modules/OS/OSAL/src/ChainTask.c **** 		{
+ 192:Modules/OS/OSAL/src/ChainTask.c **** 			/* \req OSEK_SYS_3.3.7 When an extended task is transferred from suspended
+ 193:Modules/OS/OSAL/src/ChainTask.c **** 			 ** state into ready state all its events are cleared.*/
+ 194:Modules/OS/OSAL/src/ChainTask.c **** 			TasksVar[taskid].Events = 0;
+ 243              		.loc 1 194 20
+ 244 0170 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
+ 245              		.loc 1 194 28
+ 246 0174 1F49     		ldr	r1, .L12+4
+ 247 0176 1346     		mov	r3, r2
+ 248 0178 9B00     		lsls	r3, r3, #2
+ 249 017a 1344     		add	r3, r3, r2
+ 250 017c 9B00     		lsls	r3, r3, #2
+ 251 017e 0B44     		add	r3, r3, r1
+ 252 0180 0833     		adds	r3, r3, #8
+ 253 0182 0022     		movs	r2, #0
+ 254 0184 1A60     		str	r2, [r3]
+ 255              	.L8:
+ 195:Modules/OS/OSAL/src/ChainTask.c **** 		}
+ 196:Modules/OS/OSAL/src/ChainTask.c **** 
+ 197:Modules/OS/OSAL/src/ChainTask.c **** 		IntSecure_End();
+ 256              		.loc 1 197 3
+ 257 0186 1E4B     		ldr	r3, .L12+16
+ 258 0188 93F90030 		ldrsb	r3, [r3]
+ 259 018c DBB2     		uxtb	r3, r3
+ 260 018e 013B     		subs	r3, r3, #1
+ 261 0190 DBB2     		uxtb	r3, r3
+ 262 0192 5AB2     		sxtb	r2, r3
+ 263 0194 1A4B     		ldr	r3, .L12+16
+ 264 0196 1A70     		strb	r2, [r3]
+ 265 0198 194B     		ldr	r3, .L12+16
+ 266 019a 93F90030 		ldrsb	r3, [r3]
+ 267 019e 002B     		cmp	r3, #0
+ 268 01a0 03DC     		bgt	.L9
+ 269              		.loc 1 197 3 is_stmt 0 discriminator 1
+ 270 01a2 174B     		ldr	r3, .L12+16
+ 271 01a4 0022     		movs	r2, #0
+ 272 01a6 1A70     		strb	r2, [r3]
+ 273              		.syntax unified
+ 274              	@ 197 "Modules/OS/OSAL/src/ChainTask.c" 1
+ 275 01a8 62B6     		cpsie i
+ 276              	@ 0 "" 2
+ 277              		.thumb
+ 278              		.syntax unified
+ 279              	.L9:
+ 198:Modules/OS/OSAL/src/ChainTask.c **** 
+ 199:Modules/OS/OSAL/src/ChainTask.c **** 		/* call scheduler, never returns */
+ 200:Modules/OS/OSAL/src/ChainTask.c **** 		/* \req OSEK_SYS_3.3.5 If called successfully, ChainTask does not return
+ 201:Modules/OS/OSAL/src/ChainTask.c **** 		 ** to the call level and the status can not be evaluated. */
+ 202:Modules/OS/OSAL/src/ChainTask.c **** 		/* \req OSEK_SYS_3.3.6 If the service ChainTask is called successfully,
+ 203:Modules/OS/OSAL/src/ChainTask.c **** 		 ** this enforces a rescheduling. */
+ 204:Modules/OS/OSAL/src/ChainTask.c **** 		/* \req OSEK_SYS_3.3.9-2/2 Possible return values in Standard mode are:
+ 205:Modules/OS/OSAL/src/ChainTask.c **** 		 ** no return or E_OS_LIMIT */
+ 206:Modules/OS/OSAL/src/ChainTask.c **** 		(void)Schedule();
+ 280              		.loc 1 206 9 is_stmt 1
+ 281 01aa FFF7FEFF 		bl	Schedule
+ 282              	.L3:
+ 207:Modules/OS/OSAL/src/ChainTask.c **** 
+ 208:Modules/OS/OSAL/src/ChainTask.c **** 	}
+ 209:Modules/OS/OSAL/src/ChainTask.c **** 
+ 210:Modules/OS/OSAL/src/ChainTask.c **** #if (HOOK_ERRORHOOK == OSEK_ENABLE)
+ 211:Modules/OS/OSAL/src/ChainTask.c ****    /* \req OSEK_ERR_1.3-3/xx The ErrorHook hook routine shall be called if a
+ 212:Modules/OS/OSAL/src/ChainTask.c **** 	 ** system service returns a StatusType value not equal to E_OK.*/
+ 213:Modules/OS/OSAL/src/ChainTask.c ****    /* \req OSEK_ERR_1.3.1-3/xx The hook routine ErrorHook is not called if a
+ 214:Modules/OS/OSAL/src/ChainTask.c **** 	 ** system service is called from the ErrorHook itself. */
+ 215:Modules/OS/OSAL/src/ChainTask.c **** 	if ( ( ret != E_OK ) && (ErrorHookRunning != 1))
+ 283              		.loc 1 215 5
+ 284 01ae 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 285 01b2 002B     		cmp	r3, #0
+ 286 01b4 16D0     		beq	.L10
+ 287              		.loc 1 215 44 discriminator 1
+ 288 01b6 144B     		ldr	r3, .L12+24
+ 289 01b8 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 290              		.loc 1 215 23 discriminator 1
+ 291 01ba 012B     		cmp	r3, #1
+ 292 01bc 12D0     		beq	.L10
+ 216:Modules/OS/OSAL/src/ChainTask.c **** 	{
+ 217:Modules/OS/OSAL/src/ChainTask.c **** 		SetError_Api(OSServiceId_ChainTask);
+ 293              		.loc 1 217 3
+ 294 01be 134B     		ldr	r3, .L12+28
+ 295 01c0 0322     		movs	r2, #3
+ 296 01c2 1A60     		str	r2, [r3]
+ 218:Modules/OS/OSAL/src/ChainTask.c **** 		SetError_Param1(taskid);
+ 297              		.loc 1 218 3
+ 298 01c4 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 299 01c8 114A     		ldr	r2, .L12+32
+ 300 01ca 1360     		str	r3, [r2]
+ 219:Modules/OS/OSAL/src/ChainTask.c **** 		SetError_Ret(ret);
+ 301              		.loc 1 219 3
+ 302 01cc 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 303 01d0 104A     		ldr	r2, .L12+36
+ 304 01d2 1360     		str	r3, [r2]
+ 220:Modules/OS/OSAL/src/ChainTask.c **** 		SetError_Msg("ChainTask returns != than E_OK");
+ 221:Modules/OS/OSAL/src/ChainTask.c **** 		SetError_ErrorHook();
+ 305              		.loc 1 221 3
+ 306 01d4 0C4B     		ldr	r3, .L12+24
+ 307 01d6 0122     		movs	r2, #1
+ 308 01d8 1A70     		strb	r2, [r3]
+ 309 01da FFF7FEFF 		bl	ErrorHook
+ 310 01de 0A4B     		ldr	r3, .L12+24
+ 311 01e0 0022     		movs	r2, #0
+ 312 01e2 1A70     		strb	r2, [r3]
+ 313              	.L10:
+ 222:Modules/OS/OSAL/src/ChainTask.c **** 	}
+ 223:Modules/OS/OSAL/src/ChainTask.c **** #endif
+ 224:Modules/OS/OSAL/src/ChainTask.c **** 
+ 225:Modules/OS/OSAL/src/ChainTask.c **** 	return ret;
+ 314              		.loc 1 225 9
+ 315 01e4 9DF80F30 		ldrb	r3, [sp, #15]	@ zero_extendqisi2
+ 226:Modules/OS/OSAL/src/ChainTask.c **** }
+ 316              		.loc 1 226 1
+ 317 01e8 1846     		mov	r0, r3
+ 318 01ea 05B0     		add	sp, sp, #20
+ 319              		.cfi_def_cfa_offset 4
+ 320              		@ sp needed
+ 321 01ec 5DF804FB 		ldr	pc, [sp], #4
+ 322              	.L13:
+ 323              		.align	2
+ 324              	.L12:
+ 325 01f0 00000000 		.word	ActualContext
+ 326 01f4 00000000 		.word	TasksVar
+ 327 01f8 00000000 		.word	TasksConst
+ 328 01fc 00000000 		.word	RunningTask
+ 329 0200 00000000 		.word	SuspendAllInterrupts_Counter
+ 330 0204 00000000 		.word	TerminatingTask
+ 331 0208 00000000 		.word	ErrorHookRunning
+ 332 020c 00000000 		.word	Osek_ErrorApi
+ 333 0210 00000000 		.word	Osek_ErrorParam1
+ 334 0214 00000000 		.word	Osek_ErrorRet
+ 335              		.cfi_endproc
+ 336              	.LFE0:
+ 338              		.text
+ 339              	.Letext0:
+ 340              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 341              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\tools\\toolchain\\arm\\mingw64_nt\\10
+ 342              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Types.h"
+ 343              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Cfg.h"
+ 344              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 345              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+ 346              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 347              		.file 9 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Intern
+ 348              		.file 10 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os_inter
+DEFINED SYMBOLS
+                            *ABS*:00000000 ChainTask.c
+C:\Users\AAA\AppData\Local\Temp\ccj4l8j9.s:19     .text.ChainTask:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccj4l8j9.s:26     .text.ChainTask:00000000 ChainTask
+C:\Users\AAA\AppData\Local\Temp\ccj4l8j9.s:325    .text.ChainTask:000001f0 $d
+                           .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
+                           .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
+                           .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
+                           .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:00000000 wm4.features.h.33.5bd1eea2d80518b50f7af0b5ce6750e0
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
+                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
+
+UNDEFINED SYMBOLS
+RemoveTask
+AddReady
+Schedule
+ErrorHook
+ActualContext
+TasksVar
+TasksConst
+RunningTask
+SuspendAllInterrupts_Counter
+TerminatingTask
+ErrorHookRunning
+Osek_ErrorApi
+Osek_ErrorParam1
+Osek_ErrorRet
