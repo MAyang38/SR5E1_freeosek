@@ -117,7 +117,7 @@ extern TaskType TerminatingTask;
  ** occurs, like for example an interrupt.
  **
  **/
-#define osekpause()	__asm volatile("wfi")
+#define osekpause()	__asm volatile("wfi":::"memory")
 
 /** \brief Call to an other Task
  **

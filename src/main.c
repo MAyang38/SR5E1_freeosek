@@ -47,41 +47,85 @@ int main(void) {
     // printf("Starting OSEK-OS in AppMode1\n");
     StartOS(AppMode1);
 
-    
-    /* Prepare frame to transmit.*/
-    // frame.TYPE = CAN_ID_STD;
-    // frame.ID = CAN_DEFAULT_FILTER_ID;
-    // frame.DLC = CAN_MESSAGE_SIZE;
-    // frame.data32[0] = CAN_DATA_TO_SEND;
-    // frame.OPERATION = CAN_OPERATION_NORMAL;
 
-    // // L9388_Init_res = CDD_L9388_Init();
-    // // WDG2Init_res = CDD_L9388_WDG2_Init();
-
-    // // CDD_L9388_NO_Ch1_Init_demo();
-    // /* Application main loop */
-    //     CDD_L9388_WDG2_Mainfunction();
-
-    // for ( ; ; ) {
-    //     osal_delay_millisec(11);
-        
-
-    //     CDD_L9388_Init_For_Test(Pwm_Type);
-
-    //     CDD_L9388_Read_Status_For_Test();
+}
 
 
-    //     // 1. ADC_DR 寄存器 ADC_SEL写入0000    读取ADC_DATA_OUT位
-    //     CDD_L9388_Read_ADC(0);
-    //     // 2. VSOSER 寄存器 SEL_OUT_CMD 写入1 SEL_CONF 写入1    回读VSODR寄存器 
-    //     L9388_Set_VSOSER();
-    //     L9388_Read_VSODR();
-    //     // 3. WLD1_SHLS_CONFIG寄存器 WLD_CMD位 写入1   回读WLD1_SHLSDR寄存器
-    //     L9388_Set_WLD(1);
-    //     L9388_Read_WLD1_SHLSDR();
-        
-    //     L9388_Set_SERVFLTMSK();
-    //     L9388_Read_SERVFLTMSK();
-        
-    // }
+TASK(TaskInit)
+{
+	/* Set 500 tick alarm for TaskPeriodic */
+	printf("InitTask: SetRelAlarm for TaskPeriodic.\n");
+	SetRelAlarm(ActivateTaskPeriodic, 0, 500);
+
+	/* Set 1000 tick callback alarm */
+	printf("InitTask: SetRelAlarm for AppCallback.\n");
+	SetRelAlarm(AppCallbackAlarm, 100, 1000);
+
+	/* Activate TaskBlink */
+	printf("InitTask: Activate TaskBlink.\n");
+	ActivateTask(TaskBlink);
+
+	/* Activate TaskBackground */
+	ActivateTask(TaskBackground);
+
+	/* end InitTask */
+	printf("InitTask: TerminateTask().\n");
+	TerminateTask();
+}
+
+/*
+ * This task waits for an event to be set in order
+ * to continue execution.
+ */
+TASK(TaskBlink)
+{
+	printf("TaskBlink: Init.\n");
+	while(1)
+	{
+		printf("TaskBlink: Waiting for event...\n");
+		WaitEvent(evBlink);
+		ClearEvent(evBlink);
+		printf("TaskBlink: LED Toggle.\n");
+		STM_EVAL_LEDToggle(LED3);
+	}
+	TerminateTask();
+}
+
+/*
+ * This is a periodic task.
+ */
+TASK(TaskPeriodic)
+{
+	printf("TaskPeriodic: Event set.\n");
+	SetEvent(TaskBlink, evBlink);
+
+	/* end TaskPeriodic */
+	TerminateTask();
+}
+
+/*
+ * Just a background task with an infinite loop,
+ * it has to be defined with the minimum priority!!!
+ */
+TASK(TaskBackground)
+{
+	volatile int i = 0;
+	printf("TaskBackground: Running!\n");
+	while(1)
+	{
+		i++;
+		if(i == 0xFFFFF)
+		{
+			printf("TaskBackground still running...\n");
+			i = 0;
+		}
+	}
+}
+
+/*
+ * Alarm Callback example.
+ */
+ALARMCALLBACK(AppCallback)
+{
+	printf("AppCallback.\n");
 }

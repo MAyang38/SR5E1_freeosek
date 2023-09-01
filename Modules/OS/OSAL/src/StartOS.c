@@ -92,7 +92,7 @@ void StartOS
 	/* \req OSEK_SYS_3.25.1 This system service shall starts the operating
 	 ** system */
 	uint8f loopi;
-
+	// 关中断
 	IntSecure_Start();
 
 	/* save the aplication mode */

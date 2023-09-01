@@ -29,16 +29,16 @@
   35 0000 00       		.space	1
   36              		.text
   37              	.Letext0:
-  38              		.file 1 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\os.h"
+  38              		.file 1 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\os.h"
   39              		.file 2 "Modules/OS/OSAL/src/Os.c"
 DEFINED SYMBOLS
                             *ABS*:00000000 Os.c
-C:\Users\AAA\AppData\Local\Temp\ccrAe5g5.s:22     .bss.SuspendOSInterrupts_Counter:00000000 SuspendOSInterrupts_Counter
-C:\Users\AAA\AppData\Local\Temp\ccrAe5g5.s:23     .bss.SuspendOSInterrupts_Counter:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccrAe5g5.s:28     .bss.DisableAllInterrupts_Counter:00000000 DisableAllInterrupts_Counter
-C:\Users\AAA\AppData\Local\Temp\ccrAe5g5.s:29     .bss.DisableAllInterrupts_Counter:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccrAe5g5.s:34     .bss.SuspendAllInterrupts_Counter:00000000 SuspendAllInterrupts_Counter
-C:\Users\AAA\AppData\Local\Temp\ccrAe5g5.s:35     .bss.SuspendAllInterrupts_Counter:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccz898ns.s:22     .bss.SuspendOSInterrupts_Counter:00000000 SuspendOSInterrupts_Counter
+C:\Users\AAA\AppData\Local\Temp\ccz898ns.s:23     .bss.SuspendOSInterrupts_Counter:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccz898ns.s:28     .bss.DisableAllInterrupts_Counter:00000000 DisableAllInterrupts_Counter
+C:\Users\AAA\AppData\Local\Temp\ccz898ns.s:29     .bss.DisableAllInterrupts_Counter:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccz898ns.s:34     .bss.SuspendAllInterrupts_Counter:00000000 SuspendAllInterrupts_Counter
+C:\Users\AAA\AppData\Local\Temp\ccz898ns.s:35     .bss.SuspendAllInterrupts_Counter:00000000 $d
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
                            .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3

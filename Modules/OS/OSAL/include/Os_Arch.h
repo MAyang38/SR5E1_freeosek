@@ -99,13 +99,13 @@
  **
  ** This macro shall resume (enable) all interrupts.
  **/
-#define ResumeAllInterrupts_Arch() __asm volatile("cpsie i")
+#define ResumeAllInterrupts_Arch() __asm volatile("cpsie i" : : : "memory")
 
 /** \brief Suspend All Interrupts Arch
  **
  ** This macro shall suspend (disable) all interrupts.
  **/
-#define SuspendAllInterrupts_Arch() __asm volatile("cpsid i")
+#define SuspendAllInterrupts_Arch() __asm volatile("cpsid i" : : : "memory")
 
 /** \brief Resume OS Interrupts Arch
  **

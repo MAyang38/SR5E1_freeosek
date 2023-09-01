@@ -40,23 +40,16 @@
   48              		.align	2
   51              	Osek_ErrorRet:
   52 0000 00000000 		.space	4
-  53              		.section	.rodata
-  54              		.align	2
-  55              	.LC0:
-  56 0000 6B65726E 		.ascii	"kernel panic\000"
-  56      656C2070 
-  56      616E6963 
-  56      00
-  57              		.section	.text.ErrorHook,"ax",%progbits
-  58              		.align	1
-  59              		.p2align 4,,15
-  60              		.global	ErrorHook
-  61              		.syntax unified
-  62              		.thumb
-  63              		.thumb_func
-  65              	ErrorHook:
-  66              	.LFB3:
-  67              		.file 1 "Modules/OS/OSAL/src/Os_Cfg.c"
+  53              		.section	.text.ErrorHook,"ax",%progbits
+  54              		.align	1
+  55              		.p2align 4,,15
+  56              		.global	ErrorHook
+  57              		.syntax unified
+  58              		.thumb
+  59              		.thumb_func
+  61              	ErrorHook:
+  62              	.LFB3:
+  63              		.file 1 "Modules/OS/OSAL/src/Os_Cfg.c"
    1:Modules/OS/OSAL/src/Os_Cfg.c **** /********************************************************
    2:Modules/OS/OSAL/src/Os_Cfg.c ****  * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
    3:Modules/OS/OSAL/src/Os_Cfg.c ****  ********************************************************/
@@ -147,52 +140,43 @@
   88:Modules/OS/OSAL/src/Os_Cfg.c **** /*==================[internal functions definition]==========================*/
   89:Modules/OS/OSAL/src/Os_Cfg.c **** void ErrorHook(void)
   90:Modules/OS/OSAL/src/Os_Cfg.c **** {
-  68              		.loc 1 90 1
-  69              		.cfi_startproc
-  70              		@ args = 0, pretend = 0, frame = 0
-  71              		@ frame_needed = 0, uses_anonymous_args = 0
-  72 0000 08B5     		push	{r3, lr}
-  73              		.cfi_def_cfa_offset 8
-  74              		.cfi_offset 3, -8
-  75              		.cfi_offset 14, -4
+  64              		.loc 1 90 1
+  65              		.cfi_startproc
+  66              		@ args = 0, pretend = 0, frame = 0
+  67              		@ frame_needed = 0, uses_anonymous_args = 0
+  68 0000 08B5     		push	{r3, lr}
+  69              		.cfi_def_cfa_offset 8
+  70              		.cfi_offset 3, -8
+  71              		.cfi_offset 14, -4
   91:Modules/OS/OSAL/src/Os_Cfg.c **** 	/* kernel panic :( */
-  92:Modules/OS/OSAL/src/Os_Cfg.c ****     printf("kernel panic\n");
-  76              		.loc 1 92 5
-  77 0002 0448     		ldr	r0, .L2
-  78 0004 FFF7FEFF 		bl	puts
+  92:Modules/OS/OSAL/src/Os_Cfg.c ****     // printf("kernel panic\n");
   93:Modules/OS/OSAL/src/Os_Cfg.c **** 	ShutdownOS(0);
-  79              		.loc 1 93 2
-  80 0008 0020     		movs	r0, #0
-  81 000a FFF7FEFF 		bl	ShutdownOS
+  72              		.loc 1 93 2
+  73 0002 0020     		movs	r0, #0
+  74 0004 FFF7FEFF 		bl	ShutdownOS
   94:Modules/OS/OSAL/src/Os_Cfg.c **** }
-  82              		.loc 1 94 1
-  83 000e 00BF     		nop
-  84 0010 08BD     		pop	{r3, pc}
-  85              	.L3:
-  86 0012 00BF     		.align	2
-  87              	.L2:
-  88 0014 00000000 		.word	.LC0
-  89              		.cfi_endproc
-  90              	.LFE3:
-  92              		.text
-  93              	.Letext0:
-  94              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_demo\\modules\\os\\osal\\include\\Os_Cfg.h"
+  75              		.loc 1 94 1
+  76 0008 00BF     		nop
+  77 000a 08BD     		pop	{r3, pc}
+  78              		.cfi_endproc
+  79              	.LFE3:
+  81              		.text
+  82              	.Letext0:
+  83              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\Os_Cf
 DEFINED SYMBOLS
                             *ABS*:00000000 Os_Cfg.c
-C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:23     .bss.Osek_ErrorApi:00000000 Osek_ErrorApi
-C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:20     .bss.Osek_ErrorApi:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:30     .bss.Osek_ErrorParam1:00000000 Osek_ErrorParam1
-C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:27     .bss.Osek_ErrorParam1:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:37     .bss.Osek_ErrorParam2:00000000 Osek_ErrorParam2
-C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:34     .bss.Osek_ErrorParam2:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:44     .bss.Osek_ErrorParam3:00000000 Osek_ErrorParam3
-C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:41     .bss.Osek_ErrorParam3:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:51     .bss.Osek_ErrorRet:00000000 Osek_ErrorRet
-C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:48     .bss.Osek_ErrorRet:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:54     .rodata:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:58     .text.ErrorHook:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:65     .text.ErrorHook:00000000 ErrorHook
-C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:88     .text.ErrorHook:00000014 $d
+C:\Users\AAA\AppData\Local\Temp\ccDYjLkt.s:23     .bss.Osek_ErrorApi:00000000 Osek_ErrorApi
+C:\Users\AAA\AppData\Local\Temp\ccDYjLkt.s:20     .bss.Osek_ErrorApi:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccDYjLkt.s:30     .bss.Osek_ErrorParam1:00000000 Osek_ErrorParam1
+C:\Users\AAA\AppData\Local\Temp\ccDYjLkt.s:27     .bss.Osek_ErrorParam1:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccDYjLkt.s:37     .bss.Osek_ErrorParam2:00000000 Osek_ErrorParam2
+C:\Users\AAA\AppData\Local\Temp\ccDYjLkt.s:34     .bss.Osek_ErrorParam2:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccDYjLkt.s:44     .bss.Osek_ErrorParam3:00000000 Osek_ErrorParam3
+C:\Users\AAA\AppData\Local\Temp\ccDYjLkt.s:41     .bss.Osek_ErrorParam3:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccDYjLkt.s:51     .bss.Osek_ErrorRet:00000000 Osek_ErrorRet
+C:\Users\AAA\AppData\Local\Temp\ccDYjLkt.s:48     .bss.Osek_ErrorRet:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccDYjLkt.s:54     .text.ErrorHook:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccDYjLkt.s:61     .text.ErrorHook:00000000 ErrorHook
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
                            .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
@@ -238,5 +222,4 @@ C:\Users\AAA\AppData\Local\Temp\cc0dGYxI.s:88     .text.ErrorHook:00000014 $d
                            .group:00000000 wm4.stdio.h.81.932d0c162786b883f622b8d05c120c78
 
 UNDEFINED SYMBOLS
-puts
 ShutdownOS

@@ -148,7 +148,7 @@ void clock_init(void) {
                   CLOCK_LSIPRE_FIELD(CLOCK_CFG_LSIPRE_VALUE);
 
     /* Set flash wait states.*/
-    flash_ws_init();
+    flash_ws_init();    
 
     /* Final clock source.*/
     RCC->CFGR |= CLOCK_CFG_SW;
