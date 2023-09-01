@@ -130,7 +130,7 @@
   92:Modules/OS/OSAL/src/StartOS.c **** 	/* \req OSEK_SYS_3.25.1 This system service shall starts the operating
   93:Modules/OS/OSAL/src/StartOS.c **** 	 ** system */
   94:Modules/OS/OSAL/src/StartOS.c **** 	uint8f loopi;
-  95:Modules/OS/OSAL/src/StartOS.c **** 
+  95:Modules/OS/OSAL/src/StartOS.c **** 	// 关中断
   96:Modules/OS/OSAL/src/StartOS.c **** 	IntSecure_Start();
   40              		.loc 1 96 2
   41 000a 2C4B     		ldr	r3, .L8
@@ -145,130 +145,131 @@
   50              	@ 96 "Modules/OS/OSAL/src/StartOS.c" 1
   51 001c 72B6     		cpsid i
   52              	@ 0 "" 2
-  97:Modules/OS/OSAL/src/StartOS.c **** 
-  98:Modules/OS/OSAL/src/StartOS.c **** 	/* save the aplication mode */
-  99:Modules/OS/OSAL/src/StartOS.c **** 	ApplicationMode = Mode;
-  53              		.loc 1 99 18
+  97:Modules/OS/OSAL/src/StartOS.c **** 	
+  98:Modules/OS/OSAL/src/StartOS.c **** 	// 设置应用模式
+  99:Modules/OS/OSAL/src/StartOS.c **** 	/* save the aplication mode */
+ 100:Modules/OS/OSAL/src/StartOS.c **** 	ApplicationMode = Mode;
+  53              		.loc 1 100 18
   54              		.thumb
   55              		.syntax unified
   56 001e 284A     		ldr	r2, .L8+4
   57 0020 9DF80730 		ldrb	r3, [sp, #7]
   58 0024 1370     		strb	r3, [r2]
- 100:Modules/OS/OSAL/src/StartOS.c **** 
- 101:Modules/OS/OSAL/src/StartOS.c **** 	/* StartOs_Arch */
- 102:Modules/OS/OSAL/src/StartOS.c **** 	
- 103:Modules/OS/OSAL/src/StartOS.c **** 	StartOs_Arch();
-  59              		.loc 1 103 2
+ 101:Modules/OS/OSAL/src/StartOS.c **** 
+ 102:Modules/OS/OSAL/src/StartOS.c **** 	/* StartOs_Arch */
+ 103:Modules/OS/OSAL/src/StartOS.c **** 	
+ 104:Modules/OS/OSAL/src/StartOS.c **** 	StartOs_Arch();
+  59              		.loc 1 104 2
   60 0026 FFF7FEFF 		bl	StartOs_Arch
- 104:Modules/OS/OSAL/src/StartOS.c **** 
  105:Modules/OS/OSAL/src/StartOS.c **** 
- 106:Modules/OS/OSAL/src/StartOS.c **** 	/* init every task */
- 107:Modules/OS/OSAL/src/StartOS.c ****    for( loopi = 0; loopi < TASKS_COUNT; loopi++)
-  61              		.loc 1 107 15
+ 106:Modules/OS/OSAL/src/StartOS.c **** 
+ 107:Modules/OS/OSAL/src/StartOS.c **** 	/* init every task */
+ 108:Modules/OS/OSAL/src/StartOS.c ****    for( loopi = 0; loopi < TASKS_COUNT; loopi++)
+  61              		.loc 1 108 15
   62 002a 0023     		movs	r3, #0
   63 002c 0393     		str	r3, [sp, #12]
-  64              		.loc 1 107 4
+  64              		.loc 1 108 4
   65 002e 06E0     		b	.L2
   66              	.L3:
- 108:Modules/OS/OSAL/src/StartOS.c **** 	{
- 109:Modules/OS/OSAL/src/StartOS.c **** 		/* \req OSEK_SYS_3.1.2-2/3 The operating system shall ensure that the task
- 110:Modules/OS/OSAL/src/StartOS.c **** 		 ** code is being executed from the first statement. */
- 111:Modules/OS/OSAL/src/StartOS.c **** 		SetEntryPoint(loopi); /* set task entry point */
-  67              		.loc 1 111 3 discriminator 3
+ 109:Modules/OS/OSAL/src/StartOS.c **** 	{
+ 110:Modules/OS/OSAL/src/StartOS.c **** 		/* \req OSEK_SYS_3.1.2-2/3 The operating system shall ensure that the task
+ 111:Modules/OS/OSAL/src/StartOS.c **** 		 ** code is being executed from the first statement. */
+ 112:Modules/OS/OSAL/src/StartOS.c **** 		SetEntryPoint(loopi); /* set task entry point */
+  67              		.loc 1 112 3 discriminator 3
   68 0030 039B     		ldr	r3, [sp, #12]
   69 0032 DAB2     		uxtb	r2, r3
   70 0034 234B     		ldr	r3, .L8+8
   71 0036 1A70     		strb	r2, [r3]
- 107:Modules/OS/OSAL/src/StartOS.c **** 	{
-  72              		.loc 1 107 46 discriminator 3
+ 108:Modules/OS/OSAL/src/StartOS.c **** 	{
+  72              		.loc 1 108 46 discriminator 3
   73 0038 039B     		ldr	r3, [sp, #12]
   74 003a 0133     		adds	r3, r3, #1
   75 003c 0393     		str	r3, [sp, #12]
   76              	.L2:
- 107:Modules/OS/OSAL/src/StartOS.c **** 	{
-  77              		.loc 1 107 4 discriminator 1
+ 108:Modules/OS/OSAL/src/StartOS.c **** 	{
+  77              		.loc 1 108 4 discriminator 1
   78 003e 039B     		ldr	r3, [sp, #12]
   79 0040 032B     		cmp	r3, #3
   80 0042 F5D9     		bls	.L3
- 112:Modules/OS/OSAL/src/StartOS.c **** 	}
- 113:Modules/OS/OSAL/src/StartOS.c **** 
- 114:Modules/OS/OSAL/src/StartOS.c **** 	/* set sys context */
- 115:Modules/OS/OSAL/src/StartOS.c **** 	SetActualContext(CONTEXT_SYS);
-  81              		.loc 1 115 2
+ 113:Modules/OS/OSAL/src/StartOS.c **** 	}
+ 114:Modules/OS/OSAL/src/StartOS.c **** 
+ 115:Modules/OS/OSAL/src/StartOS.c **** 	/* set sys context */
+ 116:Modules/OS/OSAL/src/StartOS.c **** 	SetActualContext(CONTEXT_SYS);
+  81              		.loc 1 116 2
   82 0044 204B     		ldr	r3, .L8+12
   83 0046 0422     		movs	r2, #4
   84 0048 1A70     		strb	r2, [r3]
- 116:Modules/OS/OSAL/src/StartOS.c **** 
- 117:Modules/OS/OSAL/src/StartOS.c **** 	/* set actual task to invalid task */
- 118:Modules/OS/OSAL/src/StartOS.c **** 	SetRunningTask(INVALID_TASK);
-  85              		.loc 1 118 2
+ 117:Modules/OS/OSAL/src/StartOS.c **** 
+ 118:Modules/OS/OSAL/src/StartOS.c **** 	/* set actual task to invalid task */
+ 119:Modules/OS/OSAL/src/StartOS.c **** 	SetRunningTask(INVALID_TASK);
+  85              		.loc 1 119 2
   86 004a 204B     		ldr	r3, .L8+16
   87 004c FF22     		movs	r2, #255
   88 004e 1A70     		strb	r2, [r3]
- 119:Modules/OS/OSAL/src/StartOS.c **** 
- 120:Modules/OS/OSAL/src/StartOS.c **** 	/* add to ready the corresponding tasks for this
- 121:Modules/OS/OSAL/src/StartOS.c ****     * Application Mode */
- 122:Modules/OS/OSAL/src/StartOS.c **** 	for (loopi = 0; loopi < AutoStart[Mode].TotalTasks; loopi++)
-  89              		.loc 1 122 13
+ 120:Modules/OS/OSAL/src/StartOS.c **** 
+ 121:Modules/OS/OSAL/src/StartOS.c **** 	/* add to ready the corresponding tasks for this
+ 122:Modules/OS/OSAL/src/StartOS.c ****     * Application Mode */
+ 123:Modules/OS/OSAL/src/StartOS.c **** 	for (loopi = 0; loopi < AutoStart[Mode].TotalTasks; loopi++)
+  89              		.loc 1 123 13
   90 0050 0023     		movs	r3, #0
   91 0052 0393     		str	r3, [sp, #12]
-  92              		.loc 1 122 2
+  92              		.loc 1 123 2
   93 0054 0EE0     		b	.L4
   94              	.L5:
- 123:Modules/OS/OSAL/src/StartOS.c **** 	{
- 124:Modules/OS/OSAL/src/StartOS.c **** 		/* activate task */
- 125:Modules/OS/OSAL/src/StartOS.c **** 		ActivateTask(AutoStart[Mode].TasksRef[loopi]);
-  95              		.loc 1 125 31 discriminator 3
+ 124:Modules/OS/OSAL/src/StartOS.c **** 	{
+ 125:Modules/OS/OSAL/src/StartOS.c **** 		/* activate task */
+ 126:Modules/OS/OSAL/src/StartOS.c **** 		ActivateTask(AutoStart[Mode].TasksRef[loopi]);
+  95              		.loc 1 126 31 discriminator 3
   96 0056 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
   97 005a 1D4A     		ldr	r2, .L8+20
   98 005c DB00     		lsls	r3, r3, #3
   99 005e 1344     		add	r3, r3, r2
  100 0060 5A68     		ldr	r2, [r3, #4]
- 101              		.loc 1 125 40 discriminator 3
+ 101              		.loc 1 126 40 discriminator 3
  102 0062 039B     		ldr	r3, [sp, #12]
  103 0064 1344     		add	r3, r3, r2
- 104              		.loc 1 125 3 discriminator 3
+ 104              		.loc 1 126 3 discriminator 3
  105 0066 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
  106 0068 1846     		mov	r0, r3
  107 006a FFF7FEFF 		bl	ActivateTask
- 122:Modules/OS/OSAL/src/StartOS.c **** 	{
- 108              		.loc 1 122 59 discriminator 3
+ 123:Modules/OS/OSAL/src/StartOS.c **** 	{
+ 108              		.loc 1 123 59 discriminator 3
  109 006e 039B     		ldr	r3, [sp, #12]
  110 0070 0133     		adds	r3, r3, #1
  111 0072 0393     		str	r3, [sp, #12]
  112              	.L4:
- 122:Modules/OS/OSAL/src/StartOS.c **** 	{
- 113              		.loc 1 122 41 discriminator 1
+ 123:Modules/OS/OSAL/src/StartOS.c **** 	{
+ 113              		.loc 1 123 41 discriminator 1
  114 0074 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
  115 0078 154A     		ldr	r2, .L8+20
  116 007a 12F83330 		ldrb	r3, [r2, r3, lsl #3]	@ zero_extendqisi2
  117 007e 1A46     		mov	r2, r3
- 122:Modules/OS/OSAL/src/StartOS.c **** 	{
- 118              		.loc 1 122 2 discriminator 1
+ 123:Modules/OS/OSAL/src/StartOS.c **** 	{
+ 118              		.loc 1 123 2 discriminator 1
  119 0080 039B     		ldr	r3, [sp, #12]
  120 0082 9342     		cmp	r3, r2
  121 0084 E7D3     		bcc	.L5
- 126:Modules/OS/OSAL/src/StartOS.c **** 	}
- 127:Modules/OS/OSAL/src/StartOS.c **** 
- 128:Modules/OS/OSAL/src/StartOS.c **** 	for (loopi = 0; loopi < ALARM_AUTOSTART_COUNT; loopi++)
- 122              		.loc 1 128 13
+ 127:Modules/OS/OSAL/src/StartOS.c **** 	}
+ 128:Modules/OS/OSAL/src/StartOS.c **** 
+ 129:Modules/OS/OSAL/src/StartOS.c **** 	for (loopi = 0; loopi < ALARM_AUTOSTART_COUNT; loopi++)
+ 122              		.loc 1 129 13
  123 0086 0023     		movs	r3, #0
  124 0088 0393     		str	r3, [sp, #12]
- 125              		.loc 1 128 2
+ 125              		.loc 1 129 2
  126 008a 00BF     		nop
- 129:Modules/OS/OSAL/src/StartOS.c **** 	{
- 130:Modules/OS/OSAL/src/StartOS.c **** 		if (AutoStartAlarm[loopi].Mode == Mode)
- 131:Modules/OS/OSAL/src/StartOS.c **** 		{
- 132:Modules/OS/OSAL/src/StartOS.c **** 			(void)SetRelAlarm(AutoStartAlarm[loopi].Alarm, AutoStartAlarm[loopi].AlarmTime, AutoStartAlarm[l
- 133:Modules/OS/OSAL/src/StartOS.c **** 		}
- 134:Modules/OS/OSAL/src/StartOS.c **** 	}
- 135:Modules/OS/OSAL/src/StartOS.c **** 
- 136:Modules/OS/OSAL/src/StartOS.c **** #if (HOOK_STARTUPHOOK == OSEK_ENABLE)
- 137:Modules/OS/OSAL/src/StartOS.c **** 	StartupHook();
- 138:Modules/OS/OSAL/src/StartOS.c **** #endif
- 139:Modules/OS/OSAL/src/StartOS.c **** 
- 140:Modules/OS/OSAL/src/StartOS.c **** 	IntSecure_End();
- 127              		.loc 1 140 2
+ 130:Modules/OS/OSAL/src/StartOS.c **** 	{
+ 131:Modules/OS/OSAL/src/StartOS.c **** 		if (AutoStartAlarm[loopi].Mode == Mode)
+ 132:Modules/OS/OSAL/src/StartOS.c **** 		{
+ 133:Modules/OS/OSAL/src/StartOS.c **** 			(void)SetRelAlarm(AutoStartAlarm[loopi].Alarm, AutoStartAlarm[loopi].AlarmTime, AutoStartAlarm[l
+ 134:Modules/OS/OSAL/src/StartOS.c **** 		}
+ 135:Modules/OS/OSAL/src/StartOS.c **** 	}
+ 136:Modules/OS/OSAL/src/StartOS.c **** 
+ 137:Modules/OS/OSAL/src/StartOS.c **** #if (HOOK_STARTUPHOOK == OSEK_ENABLE)
+ 138:Modules/OS/OSAL/src/StartOS.c **** 	StartupHook();
+ 139:Modules/OS/OSAL/src/StartOS.c **** #endif
+ 140:Modules/OS/OSAL/src/StartOS.c **** 
+ 141:Modules/OS/OSAL/src/StartOS.c **** 	IntSecure_End();
+ 127              		.loc 1 141 2
  128 008c 0B4B     		ldr	r3, .L8
  129 008e 93F90030 		ldrsb	r3, [r3]
  130 0092 DBB2     		uxtb	r3, r3
@@ -281,44 +282,44 @@
  137 00a0 93F90030 		ldrsb	r3, [r3]
  138 00a4 002B     		cmp	r3, #0
  139 00a6 03DC     		bgt	.L6
- 140              		.loc 1 140 2 is_stmt 0 discriminator 1
+ 140              		.loc 1 141 2 is_stmt 0 discriminator 1
  141 00a8 044B     		ldr	r3, .L8
  142 00aa 0022     		movs	r2, #0
  143 00ac 1A70     		strb	r2, [r3]
  144              		.syntax unified
- 145              	@ 140 "Modules/OS/OSAL/src/StartOS.c" 1
+ 145              	@ 141 "Modules/OS/OSAL/src/StartOS.c" 1
  146 00ae 62B6     		cpsie i
  147              	@ 0 "" 2
  148              		.thumb
  149              		.syntax unified
  150              	.L6:
- 141:Modules/OS/OSAL/src/StartOS.c **** 
- 142:Modules/OS/OSAL/src/StartOS.c **** 	/* enable all OS interrupts */
- 143:Modules/OS/OSAL/src/StartOS.c **** 	EnableOSInterrupts();
- 151              		.loc 1 143 2 is_stmt 1
+ 142:Modules/OS/OSAL/src/StartOS.c **** 
+ 143:Modules/OS/OSAL/src/StartOS.c **** 	/* enable all OS interrupts */
+ 144:Modules/OS/OSAL/src/StartOS.c **** 	EnableOSInterrupts();
+ 151              		.loc 1 144 2 is_stmt 1
  152              		.syntax unified
- 153              	@ 143 "Modules/OS/OSAL/src/StartOS.c" 1
+ 153              	@ 144 "Modules/OS/OSAL/src/StartOS.c" 1
  154 00b0 62B6     		cpsie i
  155              	@ 0 "" 2
- 144:Modules/OS/OSAL/src/StartOS.c **** 
- 145:Modules/OS/OSAL/src/StartOS.c **** 	/* enable interrupts */
- 146:Modules/OS/OSAL/src/StartOS.c **** 	EnableInterrupts();
- 156              		.loc 1 146 2
- 157              	@ 146 "Modules/OS/OSAL/src/StartOS.c" 1
+ 145:Modules/OS/OSAL/src/StartOS.c **** 
+ 146:Modules/OS/OSAL/src/StartOS.c **** 	/* enable interrupts */
+ 147:Modules/OS/OSAL/src/StartOS.c **** 	EnableInterrupts();
+ 156              		.loc 1 147 2
+ 157              	@ 147 "Modules/OS/OSAL/src/StartOS.c" 1
  158 00b2 62B6     		cpsie i
  159              	@ 0 "" 2
- 147:Modules/OS/OSAL/src/StartOS.c **** 
- 148:Modules/OS/OSAL/src/StartOS.c **** 	/* call Scheduler */
- 149:Modules/OS/OSAL/src/StartOS.c **** 	(void)Schedule();
- 160              		.loc 1 149 8
+ 148:Modules/OS/OSAL/src/StartOS.c **** 
+ 149:Modules/OS/OSAL/src/StartOS.c **** 	/* call Scheduler */
+ 150:Modules/OS/OSAL/src/StartOS.c **** 	(void)Schedule();
+ 160              		.loc 1 150 8
  161              		.thumb
  162              		.syntax unified
  163 00b4 FFF7FEFF 		bl	Schedule
  164              	.L7:
- 150:Modules/OS/OSAL/src/StartOS.c **** 
- 151:Modules/OS/OSAL/src/StartOS.c **** 	/* this function shall never return */
- 152:Modules/OS/OSAL/src/StartOS.c **** 	while(1);
- 165              		.loc 1 152 7 discriminator 1
+ 151:Modules/OS/OSAL/src/StartOS.c **** 
+ 152:Modules/OS/OSAL/src/StartOS.c **** 	/* this function shall never return */
+ 153:Modules/OS/OSAL/src/StartOS.c **** 	while(1);
+ 165              		.loc 1 153 7 discriminator 1
  166 00b8 FEE7     		b	.L7
  167              	.L9:
  168 00ba 00BF     		.align	2
@@ -343,9 +344,9 @@
  188              		.file 9 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\os_in
 DEFINED SYMBOLS
                             *ABS*:00000000 StartOS.c
-C:\Users\AAA\AppData\Local\Temp\cc4P1sHg.s:19     .text.StartOS:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc4P1sHg.s:26     .text.StartOS:00000000 StartOS
-C:\Users\AAA\AppData\Local\Temp\cc4P1sHg.s:170    .text.StartOS:000000bc $d
+C:\Users\AAA\AppData\Local\Temp\ccjIdtgq.s:19     .text.StartOS:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccjIdtgq.s:26     .text.StartOS:00000000 StartOS
+C:\Users\AAA\AppData\Local\Temp\ccjIdtgq.s:170    .text.StartOS:000000bc $d
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
                            .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
@@ -358,9 +359,9 @@ C:\Users\AAA\AppData\Local\Temp\cc4P1sHg.s:170    .text.StartOS:000000bc $d
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
                            .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
-                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.Os_Arch.h.93.12102c3b0d784f7b702d5066ade693b9
                            .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
-                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.0bf3ac38e9ac5f78b2da37fa4bf34633
                            .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
                            .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
                            .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369

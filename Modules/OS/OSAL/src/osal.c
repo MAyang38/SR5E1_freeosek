@@ -84,7 +84,8 @@ __STATIC_INLINE uint32_t osal_init_systick(uint32_t ticks_per_sec, uint32_t prio
             osal_ticks_per_sec = ticks_per_sec;
             /* Configure SysTick interrupt priority.*/
             if (prio < (1UL << __NVIC_PRIO_BITS)) {
-                NVIC_SetPriority(SysTick_IRQn, prio);
+                // NVIC_SetPriority(SysTick_IRQn, prio);
+                NVIC_SetPriority(SysTick_IRQn,(1UL << __NVIC_PRIO_BITS) - 1);
             } else {
                 return 1U;
             }

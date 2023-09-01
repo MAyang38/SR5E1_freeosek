@@ -221,11 +221,12 @@
  132              		.cfi_def_cfa_offset 16
  133 0002 0346     		mov	r3, r0
  134 0004 8DF80730 		strb	r3, [sp, #7]
- 103:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
- 104:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	uint32 * taskStack = (uint32 *)TasksConst[TaskID].StackPtr;
- 135              		.loc 1 104 51
+ 103:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	
+ 104:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	// 堆栈指针
+ 105:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	uint32 * taskStack = (uint32 *)TasksConst[TaskID].StackPtr;
+ 135              		.loc 1 105 51
  136 0008 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
- 137              		.loc 1 104 11
+ 137              		.loc 1 105 11
  138 000c 2A49     		ldr	r1, .L8
  139 000e 1346     		mov	r3, r2
  140 0010 DB00     		lsls	r3, r3, #3
@@ -235,8 +236,9 @@
  144 0018 0833     		adds	r3, r3, #8
  145 001a 1B68     		ldr	r3, [r3]
  146 001c 0393     		str	r3, [sp, #12]
- 105:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	int taskStackSizeWords = TasksConst[TaskID].StackSize/4;
- 147              		.loc 1 105 45
+ 106:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	// 堆栈字大小   字节/4
+ 107:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	int taskStackSizeWords = TasksConst[TaskID].StackSize/4;
+ 147              		.loc 1 107 45
  148 001e 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
  149 0022 2549     		ldr	r1, .L8
  150 0024 1346     		mov	r3, r2
@@ -246,25 +248,25 @@
  154 002c 0B44     		add	r3, r3, r1
  155 002e 0C33     		adds	r3, r3, #12
  156 0030 1B88     		ldrh	r3, [r3]
- 157              		.loc 1 105 55
+ 157              		.loc 1 107 55
  158 0032 9B08     		lsrs	r3, r3, #2
  159 0034 9BB2     		uxth	r3, r3
- 160              		.loc 1 105 6
+ 160              		.loc 1 107 6
  161 0036 0293     		str	r3, [sp, #8]
- 106:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
- 107:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	taskStack[taskStackSizeWords-1] = 1<<24; /* xPSR.T = 1 */
- 162              		.loc 1 107 11
+ 108:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	// 寄存器
+ 109:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	taskStack[taskStackSizeWords-1] = 1<<24; /* xPSR.T = 1 */
+ 162              		.loc 1 109 11
  163 0038 029A     		ldr	r2, [sp, #8]
  164 003a 6FF04043 		mvn	r3, #-1073741824
  165 003e 1344     		add	r3, r3, r2
  166 0040 9B00     		lsls	r3, r3, #2
  167 0042 039A     		ldr	r2, [sp, #12]
  168 0044 1344     		add	r3, r3, r2
- 169              		.loc 1 107 34
+ 169              		.loc 1 109 34
  170 0046 4FF08072 		mov	r2, #16777216
  171 004a 1A60     		str	r2, [r3]
- 108:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	taskStack[taskStackSizeWords-2] = (uint32) TasksConst[TaskID].EntryPoint; /*PC*/
- 172              		.loc 1 108 63
+ 110:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	taskStack[taskStackSizeWords-2] = (uint32) TasksConst[TaskID].EntryPoint; /*PC*/
+ 172              		.loc 1 110 63
  173 004c 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
  174 0050 1949     		ldr	r1, .L8
  175 0052 1346     		mov	r3, r2
@@ -273,48 +275,48 @@
  178 0058 9B00     		lsls	r3, r3, #2
  179 005a 0B44     		add	r3, r3, r1
  180 005c 1968     		ldr	r1, [r3]
- 181              		.loc 1 108 11
+ 181              		.loc 1 110 11
  182 005e 029A     		ldr	r2, [sp, #8]
  183 0060 164B     		ldr	r3, .L8+4
  184 0062 1344     		add	r3, r3, r2
  185 0064 9B00     		lsls	r3, r3, #2
  186 0066 039A     		ldr	r2, [sp, #12]
  187 0068 1344     		add	r3, r3, r2
- 188              		.loc 1 108 36
+ 188              		.loc 1 110 36
  189 006a 0A46     		mov	r2, r1
- 190              		.loc 1 108 34
+ 190              		.loc 1 110 34
  191 006c 1A60     		str	r2, [r3]
- 109:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	taskStack[taskStackSizeWords-3] = (uint32) ReturnHook_Arch; /* stacked LR */
- 192              		.loc 1 109 11
+ 111:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	taskStack[taskStackSizeWords-3] = (uint32) ReturnHook_Arch; /* stacked LR */
+ 192              		.loc 1 111 11
  193 006e 029A     		ldr	r2, [sp, #8]
  194 0070 134B     		ldr	r3, .L8+8
  195 0072 1344     		add	r3, r3, r2
  196 0074 9B00     		lsls	r3, r3, #2
  197 0076 039A     		ldr	r2, [sp, #12]
  198 0078 1344     		add	r3, r3, r2
- 199              		.loc 1 109 36
+ 199              		.loc 1 111 36
  200 007a 124A     		ldr	r2, .L8+12
- 201              		.loc 1 109 34
+ 201              		.loc 1 111 34
  202 007c 1A60     		str	r2, [r3]
- 110:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	taskStack[taskStackSizeWords-9] = 0xFFFFFFFD; /* current LR, return using PSP */
- 203              		.loc 1 110 11
+ 112:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	taskStack[taskStackSizeWords-9] = 0xFFFFFFFD; /* current LR, return using PSP */
+ 203              		.loc 1 112 11
  204 007e 029A     		ldr	r2, [sp, #8]
  205 0080 114B     		ldr	r3, .L8+16
  206 0082 1344     		add	r3, r3, r2
  207 0084 9B00     		lsls	r3, r3, #2
  208 0086 039A     		ldr	r2, [sp, #12]
  209 0088 1344     		add	r3, r3, r2
- 210              		.loc 1 110 34
+ 210              		.loc 1 112 34
  211 008a 6FF00202 		mvn	r2, #2
  212 008e 1A60     		str	r2, [r3]
- 111:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
- 112:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	*(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 17]);
- 213              		.loc 1 112 49
+ 113:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	// 上下文地址
+ 114:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	*(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 17]);
+ 213              		.loc 1 114 49
  214 0090 029A     		ldr	r2, [sp, #8]
  215 0092 0E4B     		ldr	r3, .L8+20
  216 0094 1344     		add	r3, r3, r2
  217 0096 9900     		lsls	r1, r3, #2
- 218              		.loc 1 112 22
+ 218              		.loc 1 114 22
  219 0098 9DF80720 		ldrb	r2, [sp, #7]	@ zero_extendqisi2
  220 009c 0648     		ldr	r0, .L8
  221 009e 1346     		mov	r3, r2
@@ -324,14 +326,14 @@
  225 00a6 0344     		add	r3, r3, r0
  226 00a8 0433     		adds	r3, r3, #4
  227 00aa 1B68     		ldr	r3, [r3]
- 228              		.loc 1 112 38
+ 228              		.loc 1 114 38
  229 00ac 039A     		ldr	r2, [sp, #12]
  230 00ae 0A44     		add	r2, r2, r1
- 231              		.loc 1 112 36
+ 231              		.loc 1 114 36
  232 00b0 1A60     		str	r2, [r3]
- 113:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
- 114:Modules/OS/OSAL/src/Os_Internal_Arch.c **** }
- 233              		.loc 1 114 1
+ 115:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 116:Modules/OS/OSAL/src/Os_Internal_Arch.c **** }
+ 233              		.loc 1 116 1
  234 00b2 00BF     		nop
  235 00b4 04B0     		add	sp, sp, #16
  236              		.cfi_def_cfa_offset 0
@@ -357,11 +359,11 @@
  257              		.thumb_func
  259              	SysTick_Handler:
  260              	.LFB3:
- 115:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
- 116:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /* Periodic Interrupt Timer, included in all Cortex-M4 processors */
- 117:Modules/OS/OSAL/src/Os_Internal_Arch.c **** void SysTick_Handler(void)
- 118:Modules/OS/OSAL/src/Os_Internal_Arch.c **** {
- 261              		.loc 1 118 1
+ 117:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 118:Modules/OS/OSAL/src/Os_Internal_Arch.c **** /* Periodic Interrupt Timer, included in all Cortex-M4 processors */
+ 119:Modules/OS/OSAL/src/Os_Internal_Arch.c **** void SysTick_Handler(void)
+ 120:Modules/OS/OSAL/src/Os_Internal_Arch.c **** {
+ 261              		.loc 1 120 1
  262              		.cfi_startproc
  263              		@ args = 0, pretend = 0, frame = 8
  264              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -370,176 +372,180 @@
  267              		.cfi_offset 14, -4
  268 0002 83B0     		sub	sp, sp, #12
  269              		.cfi_def_cfa_offset 16
- 119:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* store the calling context in a variable */
- 120:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	ContextType actualContext = GetCallingContext();
- 270              		.loc 1 120 14
- 271 0004 234B     		ldr	r3, .L14
+ 121:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* store the calling context in a variable */
+ 122:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	ContextType actualContext = GetCallingContext();
+ 270              		.loc 1 122 14
+ 271 0004 244B     		ldr	r3, .L14
  272 0006 1B78     		ldrb	r3, [r3]
  273 0008 8DF80730 		strb	r3, [sp, #7]
- 121:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* set isr 2 context */
- 122:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	SetActualContext(CONTEXT_ISR2);
- 274              		.loc 1 122 2
- 275 000c 214B     		ldr	r3, .L14
+ 123:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* set isr 2 context */
+ 124:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	SetActualContext(CONTEXT_ISR2);
+ 274              		.loc 1 124 2
+ 275 000c 224B     		ldr	r3, .L14
  276 000e 0322     		movs	r2, #3
  277 0010 1A70     		strb	r2, [r3]
- 123:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
- 124:Modules/OS/OSAL/src/Os_Internal_Arch.c **** #if (ALARMS_COUNT != 0)
- 125:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* counter increment */
- 126:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	static CounterIncrementType CounterIncrement = 1;
- 127:Modules/OS/OSAL/src/Os_Internal_Arch.c ****    (void)CounterIncrement; /* TODO remove me */
- 128:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
- 129:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* increment the disable interrupt conter to avoid enable the interrupts */
- 130:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	IntSecure_Start();
- 278              		.loc 1 130 2
- 279 0012 214B     		ldr	r3, .L14+4
+ 125:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 126:Modules/OS/OSAL/src/Os_Internal_Arch.c **** #if (ALARMS_COUNT != 0)
+ 127:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* counter increment */
+ 128:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	static CounterIncrementType CounterIncrement = 1;
+ 129:Modules/OS/OSAL/src/Os_Internal_Arch.c **** //    (void)CounterIncrement; /* TODO remove me */
+ 130:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 131:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* increment the disable interrupt conter to avoid enable the interrupts */
+ 132:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	IntSecure_Start();
+ 278              		.loc 1 132 2
+ 279 0012 224B     		ldr	r3, .L14+4
  280 0014 93F90030 		ldrsb	r3, [r3]
  281 0018 DBB2     		uxtb	r3, r3
  282 001a 0133     		adds	r3, r3, #1
  283 001c DBB2     		uxtb	r3, r3
  284 001e 5AB2     		sxtb	r2, r3
- 285 0020 1D4B     		ldr	r3, .L14+4
+ 285 0020 1E4B     		ldr	r3, .L14+4
  286 0022 1A70     		strb	r2, [r3]
  287              		.syntax unified
- 288              	@ 130 "Modules/OS/OSAL/src/Os_Internal_Arch.c" 1
+ 288              	@ 132 "Modules/OS/OSAL/src/Os_Internal_Arch.c" 1
  289 0024 72B6     		cpsid i
  290              	@ 0 "" 2
- 131:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
- 132:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* call counter interrupt handler */
- 133:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */); /* TODO FIXME */
- 291              		.loc 1 133 21
+ 133:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 134:Modules/OS/OSAL/src/Os_Internal_Arch.c ****     osal_inc_tick();
+ 291              		.loc 1 134 5
  292              		.thumb
  293              		.syntax unified
- 294 0026 0121     		movs	r1, #1
- 295 0028 0020     		movs	r0, #0
- 296 002a FFF7FEFF 		bl	IncrementCounter
- 297 002e 0346     		mov	r3, r0
- 298              		.loc 1 133 19
- 299 0030 1A4A     		ldr	r2, .L14+8
- 300 0032 1360     		str	r3, [r2]
- 134:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
- 135:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* set the disable interrupt counter back */
- 136:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	IntSecure_End();
- 301              		.loc 1 136 2
- 302 0034 184B     		ldr	r3, .L14+4
- 303 0036 93F90030 		ldrsb	r3, [r3]
- 304 003a DBB2     		uxtb	r3, r3
- 305 003c 013B     		subs	r3, r3, #1
+ 294 0026 FFF7FEFF 		bl	osal_inc_tick
+ 135:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 136:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* call counter interrupt handler */
+ 137:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */); /* TODO FIXME */
+ 295              		.loc 1 137 21
+ 296 002a 0121     		movs	r1, #1
+ 297 002c 0020     		movs	r0, #0
+ 298 002e FFF7FEFF 		bl	IncrementCounter
+ 299 0032 0346     		mov	r3, r0
+ 300              		.loc 1 137 19
+ 301 0034 1A4A     		ldr	r2, .L14+8
+ 302 0036 1360     		str	r3, [r2]
+ 138:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 139:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* set the disable interrupt counter back */
+ 140:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	IntSecure_End();
+ 303              		.loc 1 140 2
+ 304 0038 184B     		ldr	r3, .L14+4
+ 305 003a 93F90030 		ldrsb	r3, [r3]
  306 003e DBB2     		uxtb	r3, r3
- 307 0040 5AB2     		sxtb	r2, r3
- 308 0042 154B     		ldr	r3, .L14+4
- 309 0044 1A70     		strb	r2, [r3]
- 310 0046 144B     		ldr	r3, .L14+4
- 311 0048 93F90030 		ldrsb	r3, [r3]
- 312 004c 002B     		cmp	r3, #0
- 313 004e 03DC     		bgt	.L11
- 314              		.loc 1 136 2 is_stmt 0 discriminator 1
- 315 0050 114B     		ldr	r3, .L14+4
- 316 0052 0022     		movs	r2, #0
- 317 0054 1A70     		strb	r2, [r3]
- 318              		.syntax unified
- 319              	@ 136 "Modules/OS/OSAL/src/Os_Internal_Arch.c" 1
- 320 0056 62B6     		cpsie i
- 321              	@ 0 "" 2
- 322              		.thumb
- 323              		.syntax unified
- 324              	.L11:
- 137:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
- 138:Modules/OS/OSAL/src/Os_Internal_Arch.c **** #endif /* #if (ALARMS_COUNT != 0) */
- 139:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
- 140:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* reset context */
- 141:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	SetActualContext(actualContext);
- 325              		.loc 1 141 2 is_stmt 1
- 326 0058 0E4A     		ldr	r2, .L14
- 327 005a 9DF80730 		ldrb	r3, [sp, #7]
- 328 005e 1370     		strb	r3, [r2]
- 142:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
- 143:Modules/OS/OSAL/src/Os_Internal_Arch.c **** #if (NON_PREEMPTIVE == OSEK_DISABLE)
- 144:Modules/OS/OSAL/src/Os_Internal_Arch.c ****    /* check if the actual task is preemptive */
- 145:Modules/OS/OSAL/src/Os_Internal_Arch.c ****    if ( ( CONTEXT_TASK == actualContext ) &&
- 329              		.loc 1 145 7
- 330 0060 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
- 331 0064 012B     		cmp	r3, #1
- 332 0066 11D1     		bne	.L13
- 146:Modules/OS/OSAL/src/Os_Internal_Arch.c ****         ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
- 333              		.loc 1 146 50 discriminator 1
- 334 0068 0D4B     		ldr	r3, .L14+12
- 335 006a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 336 006c 1946     		mov	r1, r3
- 337 006e 0D4A     		ldr	r2, .L14+16
- 338 0070 0B46     		mov	r3, r1
- 339 0072 DB00     		lsls	r3, r3, #3
- 340 0074 5B1A     		subs	r3, r3, r1
- 341 0076 9B00     		lsls	r3, r3, #2
- 342 0078 1344     		add	r3, r3, r2
- 343 007a 1033     		adds	r3, r3, #16
- 344 007c 1B78     		ldrb	r3, [r3]
- 345 007e C3F34003 		ubfx	r3, r3, #1, #1
- 346 0082 DBB2     		uxtb	r3, r3
- 145:Modules/OS/OSAL/src/Os_Internal_Arch.c ****         ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
- 347              		.loc 1 145 43 discriminator 1
- 348 0084 002B     		cmp	r3, #0
- 349 0086 01D0     		beq	.L13
- 147:Modules/OS/OSAL/src/Os_Internal_Arch.c ****    {
- 148:Modules/OS/OSAL/src/Os_Internal_Arch.c ****       /* this shall force a call to the scheduler */
- 149:Modules/OS/OSAL/src/Os_Internal_Arch.c ****       PostIsr2_Arch(isr);
- 350              		.loc 1 149 7
- 351 0088 FFF7FEFF 		bl	Schedule
- 352              	.L13:
- 150:Modules/OS/OSAL/src/Os_Internal_Arch.c ****    }
- 151:Modules/OS/OSAL/src/Os_Internal_Arch.c **** #endif /* #if (NON_PREEMPTIVE == OSEK_ENABLE) */
- 152:Modules/OS/OSAL/src/Os_Internal_Arch.c **** }
- 353              		.loc 1 152 1
- 354 008c 00BF     		nop
- 355 008e 03B0     		add	sp, sp, #12
- 356              		.cfi_def_cfa_offset 4
- 357              		@ sp needed
- 358 0090 5DF804FB 		ldr	pc, [sp], #4
- 359              	.L15:
- 360              		.align	2
- 361              	.L14:
- 362 0094 00000000 		.word	ActualContext
- 363 0098 00000000 		.word	SuspendAllInterrupts_Counter
- 364 009c 00000000 		.word	CounterIncrement.0
- 365 00a0 00000000 		.word	RunningTask
- 366 00a4 00000000 		.word	TasksConst
- 367              		.cfi_endproc
- 368              	.LFE3:
- 370              		.section	.data.CounterIncrement.0,"aw"
- 371              		.align	2
- 374              	CounterIncrement.0:
- 375 0000 01000000 		.word	1
- 376              		.text
- 377              	.Letext0:
- 378              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
- 379              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
- 380              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
- 381              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\Types
- 382              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\Os_In
- 383              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\os.h"
- 384              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\Os_In
- 385              		.file 9 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\Os_In
- 386              		.file 10 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\os_i
+ 307 0040 013B     		subs	r3, r3, #1
+ 308 0042 DBB2     		uxtb	r3, r3
+ 309 0044 5AB2     		sxtb	r2, r3
+ 310 0046 154B     		ldr	r3, .L14+4
+ 311 0048 1A70     		strb	r2, [r3]
+ 312 004a 144B     		ldr	r3, .L14+4
+ 313 004c 93F90030 		ldrsb	r3, [r3]
+ 314 0050 002B     		cmp	r3, #0
+ 315 0052 03DC     		bgt	.L11
+ 316              		.loc 1 140 2 is_stmt 0 discriminator 1
+ 317 0054 114B     		ldr	r3, .L14+4
+ 318 0056 0022     		movs	r2, #0
+ 319 0058 1A70     		strb	r2, [r3]
+ 320              		.syntax unified
+ 321              	@ 140 "Modules/OS/OSAL/src/Os_Internal_Arch.c" 1
+ 322 005a 62B6     		cpsie i
+ 323              	@ 0 "" 2
+ 324              		.thumb
+ 325              		.syntax unified
+ 326              	.L11:
+ 141:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 142:Modules/OS/OSAL/src/Os_Internal_Arch.c **** #endif /* #if (ALARMS_COUNT != 0) */
+ 143:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 144:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	/* reset context */
+ 145:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 	SetActualContext(actualContext);
+ 327              		.loc 1 145 2 is_stmt 1
+ 328 005c 0E4A     		ldr	r2, .L14
+ 329 005e 9DF80730 		ldrb	r3, [sp, #7]
+ 330 0062 1370     		strb	r3, [r2]
+ 146:Modules/OS/OSAL/src/Os_Internal_Arch.c **** 
+ 147:Modules/OS/OSAL/src/Os_Internal_Arch.c **** #if (NON_PREEMPTIVE == OSEK_DISABLE)
+ 148:Modules/OS/OSAL/src/Os_Internal_Arch.c ****    /* check if the actual task is preemptive */
+ 149:Modules/OS/OSAL/src/Os_Internal_Arch.c ****    if ( ( CONTEXT_TASK == actualContext ) &&
+ 331              		.loc 1 149 7
+ 332 0064 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 333 0068 012B     		cmp	r3, #1
+ 334 006a 11D1     		bne	.L13
+ 150:Modules/OS/OSAL/src/Os_Internal_Arch.c ****         ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
+ 335              		.loc 1 150 50 discriminator 1
+ 336 006c 0D4B     		ldr	r3, .L14+12
+ 337 006e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 338 0070 1946     		mov	r1, r3
+ 339 0072 0D4A     		ldr	r2, .L14+16
+ 340 0074 0B46     		mov	r3, r1
+ 341 0076 DB00     		lsls	r3, r3, #3
+ 342 0078 5B1A     		subs	r3, r3, r1
+ 343 007a 9B00     		lsls	r3, r3, #2
+ 344 007c 1344     		add	r3, r3, r2
+ 345 007e 1033     		adds	r3, r3, #16
+ 346 0080 1B78     		ldrb	r3, [r3]
+ 347 0082 C3F34003 		ubfx	r3, r3, #1, #1
+ 348 0086 DBB2     		uxtb	r3, r3
+ 149:Modules/OS/OSAL/src/Os_Internal_Arch.c ****         ( TasksConst[GetRunningTask()].ConstFlags.Preemtive ) )
+ 349              		.loc 1 149 43 discriminator 1
+ 350 0088 002B     		cmp	r3, #0
+ 351 008a 01D0     		beq	.L13
+ 151:Modules/OS/OSAL/src/Os_Internal_Arch.c ****    {
+ 152:Modules/OS/OSAL/src/Os_Internal_Arch.c ****       /* this shall force a call to the scheduler */
+ 153:Modules/OS/OSAL/src/Os_Internal_Arch.c ****       PostIsr2_Arch(isr);
+ 352              		.loc 1 153 7
+ 353 008c FFF7FEFF 		bl	Schedule
+ 354              	.L13:
+ 154:Modules/OS/OSAL/src/Os_Internal_Arch.c ****    }
+ 155:Modules/OS/OSAL/src/Os_Internal_Arch.c **** #endif /* #if (NON_PREEMPTIVE == OSEK_ENABLE) */
+ 156:Modules/OS/OSAL/src/Os_Internal_Arch.c **** }
+ 355              		.loc 1 156 1
+ 356 0090 00BF     		nop
+ 357 0092 03B0     		add	sp, sp, #12
+ 358              		.cfi_def_cfa_offset 4
+ 359              		@ sp needed
+ 360 0094 5DF804FB 		ldr	pc, [sp], #4
+ 361              	.L15:
+ 362              		.align	2
+ 363              	.L14:
+ 364 0098 00000000 		.word	ActualContext
+ 365 009c 00000000 		.word	SuspendAllInterrupts_Counter
+ 366 00a0 00000000 		.word	CounterIncrement.0
+ 367 00a4 00000000 		.word	RunningTask
+ 368 00a8 00000000 		.word	TasksConst
+ 369              		.cfi_endproc
+ 370              	.LFE3:
+ 372              		.section	.data.CounterIncrement.0,"aw"
+ 373              		.align	2
+ 376              	CounterIncrement.0:
+ 377 0000 01000000 		.word	1
+ 378              		.text
+ 379              	.Letext0:
+ 380              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
+ 381              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
+ 382              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
+ 383              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\Types
+ 384              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\Os_In
+ 385              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\os.h"
+ 386              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\Os_In
+ 387              		.file 9 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\Os_In
+ 388              		.file 10 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\os_i
 DEFINED SYMBOLS
                             *ABS*:00000000 Os_Internal_Arch.c
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:23     .bss.Osek_NewTaskPtr_Arch:00000000 Osek_NewTaskPtr_Arch
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:20     .bss.Osek_NewTaskPtr_Arch:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:30     .bss.Osek_OldTaskPtr_Arch:00000000 Osek_OldTaskPtr_Arch
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:27     .bss.Osek_OldTaskPtr_Arch:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:36     .data.TerminatingTask:00000000 TerminatingTask
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:42     .data.WaitingTask:00000000 WaitingTask
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:45     .text.ReturnHook_Arch:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:52     .text.ReturnHook_Arch:00000000 ReturnHook_Arch
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:73     .text.CheckTerminatingTask_Arch:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:80     .text.CheckTerminatingTask_Arch:00000000 CheckTerminatingTask_Arch
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:124    .text.InitStack_Arch:00000000 InitStack_Arch
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:112    .text.CheckTerminatingTask_Arch:00000020 $d
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:117    .text.InitStack_Arch:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:242    .text.InitStack_Arch:000000b8 $d
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:252    .text.SysTick_Handler:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:259    .text.SysTick_Handler:00000000 SysTick_Handler
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:362    .text.SysTick_Handler:00000094 $d
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:374    .data.CounterIncrement.0:00000000 CounterIncrement.0
-C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:371    .data.CounterIncrement.0:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:23     .bss.Osek_NewTaskPtr_Arch:00000000 Osek_NewTaskPtr_Arch
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:20     .bss.Osek_NewTaskPtr_Arch:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:30     .bss.Osek_OldTaskPtr_Arch:00000000 Osek_OldTaskPtr_Arch
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:27     .bss.Osek_OldTaskPtr_Arch:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:36     .data.TerminatingTask:00000000 TerminatingTask
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:42     .data.WaitingTask:00000000 WaitingTask
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:45     .text.ReturnHook_Arch:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:52     .text.ReturnHook_Arch:00000000 ReturnHook_Arch
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:73     .text.CheckTerminatingTask_Arch:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:80     .text.CheckTerminatingTask_Arch:00000000 CheckTerminatingTask_Arch
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:124    .text.InitStack_Arch:00000000 InitStack_Arch
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:112    .text.CheckTerminatingTask_Arch:00000020 $d
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:117    .text.InitStack_Arch:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:242    .text.InitStack_Arch:000000b8 $d
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:252    .text.SysTick_Handler:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:259    .text.SysTick_Handler:00000000 SysTick_Handler
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:364    .text.SysTick_Handler:00000098 $d
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:376    .data.CounterIncrement.0:00000000 CounterIncrement.0
+C:\Users\AAA\AppData\Local\Temp\ccgLsSVB.s:373    .data.CounterIncrement.0:00000000 $d
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
                            .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
@@ -552,15 +558,16 @@ C:\Users\AAA\AppData\Local\Temp\ccgcukfz.s:371    .data.CounterIncrement.0:00000
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
                            .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
-                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.Os_Arch.h.93.12102c3b0d784f7b702d5066ade693b9
                            .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
-                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.0bf3ac38e9ac5f78b2da37fa4bf34633
                            .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
                            .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
                            .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
 
 UNDEFINED SYMBOLS
 TasksConst
+osal_inc_tick
 IncrementCounter
 Schedule
 ActualContext

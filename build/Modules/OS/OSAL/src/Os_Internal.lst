@@ -1284,27 +1284,27 @@
  905              		.file 9 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\os_in
 DEFINED SYMBOLS
                             *ABS*:00000000 Os_Internal.c
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:22     .bss.RunningTask:00000000 RunningTask
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:23     .bss.RunningTask:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:28     .bss.ActualContext:00000000 ActualContext
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:29     .bss.ActualContext:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:31     .text.AddReady:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:38     .text.AddReady:00000000 AddReady
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:145    .text.AddReady:000000c4 $d
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:153    .text.RemoveTask:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:160    .text.RemoveTask:00000000 RemoveTask
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:247    .text.RemoveTask:000000a0 $d
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:254    .text.GetNextTask:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:261    .text.GetNextTask:00000000 GetNextTask
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:338    .text.GetNextTask:00000068 $d
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:344    .text.OSEK_ISR_NoHandler:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:351    .text.OSEK_ISR_NoHandler:00000000 OSEK_ISR_NoHandler
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:365    .text.IncrementAlarm:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:372    .text.IncrementAlarm:00000000 IncrementAlarm
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:745    .text.IncrementCounter:00000000 IncrementCounter
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:732    .text.IncrementAlarm:00000274 $d
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:738    .text.IncrementCounter:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:890    .text.IncrementCounter:000000f8 $d
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:22     .bss.RunningTask:00000000 RunningTask
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:23     .bss.RunningTask:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:28     .bss.ActualContext:00000000 ActualContext
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:29     .bss.ActualContext:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:31     .text.AddReady:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:38     .text.AddReady:00000000 AddReady
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:145    .text.AddReady:000000c4 $d
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:153    .text.RemoveTask:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:160    .text.RemoveTask:00000000 RemoveTask
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:247    .text.RemoveTask:000000a0 $d
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:254    .text.GetNextTask:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:261    .text.GetNextTask:00000000 GetNextTask
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:338    .text.GetNextTask:00000068 $d
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:344    .text.OSEK_ISR_NoHandler:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:351    .text.OSEK_ISR_NoHandler:00000000 OSEK_ISR_NoHandler
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:365    .text.IncrementAlarm:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:372    .text.IncrementAlarm:00000000 IncrementAlarm
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:745    .text.IncrementCounter:00000000 IncrementCounter
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:732    .text.IncrementAlarm:00000274 $d
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:738    .text.IncrementCounter:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccqwN7K8.s:890    .text.IncrementCounter:000000f8 $d
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
                            .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
@@ -1317,9 +1317,9 @@ C:\Users\AAA\AppData\Local\Temp\ccoCcZ3C.s:890    .text.IncrementCounter:000000f
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
                            .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
-                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.Os_Arch.h.93.12102c3b0d784f7b702d5066ade693b9
                            .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
-                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.0bf3ac38e9ac5f78b2da37fa4bf34633
                            .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
                            .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
                            .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369

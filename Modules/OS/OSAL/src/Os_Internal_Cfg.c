@@ -120,28 +120,28 @@ const AlarmType OSEK_ALARMLIST_HardwareCounter[2] = {
  * 5					1
  * 1					0
  */
-void OSEK_TASK_TaskInit(void)
-{
-	// printf("%d",1);
-}
-void OSEK_TASK_TaskBlink(void)
-{
-	// printf("%d",2);
-}
-void OSEK_TASK_TaskPeriodic(void)
-{
-	// printf("%d",3);
-}
-void OSEK_TASK_TaskBackground(void)
-{
-	// printf("%d",4);
-}
-void OSEK_CALLBACK_AppCallback(void)
-{
-	/* kernel panic :( */
-    // printf("OSEK_CALLBACK_AppCallback\n");
+// void OSEK_TASK_TaskInit(void)
+// {
+// 	// printf("%d",1);
+// }
+// void OSEK_TASK_TaskBlink(void)
+// {
+// 	// printf("%d",2);
+// }
+// void OSEK_TASK_TaskPeriodic(void)
+// {
+// 	// printf("%d",3);
+// }
+// void OSEK_TASK_TaskBackground(void)
+// {
+// 	// printf("%d",4);
+// }
+// void OSEK_CALLBACK_AppCallback(void)
+// {
+// 	/* kernel panic :( */
+//     // printf("OSEK_CALLBACK_AppCallback\n");
 	
-}
+// }
 
 const TaskConstType TasksConst[TASKS_COUNT] = {
 	/* Task TaskInit */

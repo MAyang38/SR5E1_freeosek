@@ -2186,7 +2186,7 @@
  148:Modules/Platform/Clock/src/sr5e1/clock.c ****                   CLOCK_LSIPRE_FIELD(CLOCK_CFG_LSIPRE_VALUE);
  149:Modules/Platform/Clock/src/sr5e1/clock.c **** 
  150:Modules/Platform/Clock/src/sr5e1/clock.c ****     /* Set flash wait states.*/
- 151:Modules/Platform/Clock/src/sr5e1/clock.c ****     flash_ws_init();
+ 151:Modules/Platform/Clock/src/sr5e1/clock.c ****     flash_ws_init();    
  506              		.loc 1 151 5
  507 031c FFF7FEFF 		bl	flash_ws_init
  152:Modules/Platform/Clock/src/sr5e1/clock.c **** 
@@ -2238,14 +2238,14 @@
  549              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\platform\\mcu\\include\\
 DEFINED SYMBOLS
                             *ABS*:00000000 clock.c
-C:\Users\AAA\AppData\Local\Temp\ccUbwsoq.s:23     .data.SystemCoreClock:00000000 SystemCoreClock
-C:\Users\AAA\AppData\Local\Temp\ccUbwsoq.s:20     .data.SystemCoreClock:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccUbwsoq.s:26     .itcm:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccUbwsoq.s:32     .itcm:00000000 flash_ws_init
-C:\Users\AAA\AppData\Local\Temp\ccUbwsoq.s:56     .itcm:00000014 $d
-C:\Users\AAA\AppData\Local\Temp\ccUbwsoq.s:62     .text.clock_init:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccUbwsoq.s:69     .text.clock_init:00000000 clock_init
-C:\Users\AAA\AppData\Local\Temp\ccUbwsoq.s:535    .text.clock_init:0000034c $d
+C:\Users\AAA\AppData\Local\Temp\cck2S2e6.s:23     .data.SystemCoreClock:00000000 SystemCoreClock
+C:\Users\AAA\AppData\Local\Temp\cck2S2e6.s:20     .data.SystemCoreClock:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cck2S2e6.s:26     .itcm:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cck2S2e6.s:32     .itcm:00000000 flash_ws_init
+C:\Users\AAA\AppData\Local\Temp\cck2S2e6.s:56     .itcm:00000014 $d
+C:\Users\AAA\AppData\Local\Temp\cck2S2e6.s:62     .text.clock_init:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cck2S2e6.s:69     .text.clock_init:00000000 clock_init
+C:\Users\AAA\AppData\Local\Temp\cck2S2e6.s:535    .text.clock_init:0000034c $d
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.clock_cfg.h.23.3c8ba5c0347398a4587362787f86fe62
                            .group:00000000 wm4.sr5e1xx.h.22.568547583bf3c00ded67adadc0110f08

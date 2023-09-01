@@ -88,6 +88,51 @@ extern void _vStackTop(void);
 extern void SysTick_Handler(void);
 extern void PendSV_Handler(void);
 
+
+asm
+(
+    ".thumb_func\n"
+    ".syntax unified\n"
+    ".global PendSV_Handler\n"
+    ".extern Osek_OldTaskPtr_Arch,Osek_NewTaskPtr_Arch,CheckTerminatingTask_Arch\n"
+"PendSV_Handler:\n"
+	"cpsid f\n"
+   "push {lr}\n"
+   "bl CheckTerminatingTask_Arch\n"
+   "pop {lr}\n"
+	"tst lr,4\n"
+	"ite eq\n"
+	"mrseq r0,msp\n"
+	"mrsne r0,psp\n"
+	"stmdb r0!,{r4-r11,lr}\n"
+	"tst lr,4\n"
+	"it eq\n"
+	"msreq msp,r0\n"
+	"ldr r1,=Osek_OldTaskPtr_Arch\n"
+	"ldr r1,[r1]\n"
+	"cmp r1,0\n"
+	"it ne\n"
+	"strne r0,[r1]\n"
+
+	"ldr r1,=Osek_NewTaskPtr_Arch\n"
+	"ldr r1,[r1]\n"
+	"ldr r0,[r1]\n"
+	"ldmia r0!,{r4-r11,lr}\n"
+	"mrs r1,control\n"
+	"tst lr,4\n"
+	"ittee eq\n"
+	"biceq r1,3\n"
+	"msreq msp,r0\n"
+	"orrne r1,2\n"
+	"msrne psp,r0\n"
+	"msr control,r1\n"
+	"cpsie f\n"
+	"bx lr\n"
+);
+
+
+
+
 /*==================[internal functions definition]==========================*/
 
 /* Default exception handlers. */

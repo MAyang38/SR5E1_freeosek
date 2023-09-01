@@ -15,16 +15,56 @@
   15              		.text
   16              	.Ltext0:
   17              		.cfi_sections	.debug_frame
-  18              		.section	.text,"ax",%progbits
-  19              		.align	1
-  20              		.p2align 4,,15
-  21              		.global	NMI_Handler
-  22              		.syntax unified
-  23              		.thumb
-  24              		.thumb_func
-  26              	NMI_Handler:
-  27              	.LFB0:
-  28              		.file 1 "Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c"
+  18              		.syntax unified
+  19              		.thumb_func
+  20              	.syntax unified
+  21              	.global PendSV_Handler
+  22              	.extern Osek_OldTaskPtr_Arch,Osek_NewTaskPtr_Arch,CheckTerminatingTask_Arch
+  23              	PendSV_Handler:
+  24 0000 71B6     	cpsid f
+  25 0002 00B5     	push {lr}
+  26 0004 FFF7FEFF 	bl CheckTerminatingTask_Arch
+  27 0008 5DF804EB 	pop {lr}
+  28 000c 1EF0040F 	tst lr,4
+  29 0010 0CBF     	ite eq
+  30 0012 EFF30880 	mrseq r0,msp
+  31 0016 EFF30980 	mrsne r0,psp
+  32 001a 20E9F04F 	stmdb r0!,{r4-r11,lr}
+  33 001e 1EF0040F 	tst lr,4
+  34 0022 08BF     	it eq
+  35 0024 80F30888 	msreq msp,r0
+  36 0028 2649     	ldr r1,=Osek_OldTaskPtr_Arch
+  37 002a 0968     	ldr r1,[r1]
+  38 002c 0029     	cmp r1,0
+  39 002e 18BF     	it ne
+  40 0030 0860     	strne r0,[r1]
+  41 0032 2549     	ldr r1,=Osek_NewTaskPtr_Arch
+  42 0034 0968     	ldr r1,[r1]
+  43 0036 0868     	ldr r0,[r1]
+  44 0038 B0E8F04F 	ldmia r0!,{r4-r11,lr}
+  45 003c EFF31481 	mrs r1,control
+  46 0040 1EF0040F 	tst lr,4
+  47 0044 07BF     	ittee eq
+  48 0046 21F00301 	biceq r1,3
+  49 004a 80F30888 	msreq msp,r0
+  50 004e 41F00201 	orrne r1,2
+  51 0052 80F30988 	msrne psp,r0
+  52 0056 81F31488 	msr control,r1
+  53 005a 61B6     	cpsie f
+  54 005c 7047     	bx lr
+  55              	
+  56              		.thumb
+  57              		.syntax unified
+  58              		.section	.text,"ax",%progbits
+  59              		.align	1
+  60 005e 00BF     		.p2align 4,,15
+  61              		.global	NMI_Handler
+  62              		.syntax unified
+  63              		.thumb
+  64              		.thumb_func
+  66              	NMI_Handler:
+  67              	.LFB0:
+  68              		.file 1 "Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c"
    1:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** /********************************************************
    2:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****  * DO NOT CHANGE THIS FILE, IT IS GENERATED AUTOMATICALY*
    3:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****  ********************************************************/
@@ -115,482 +155,530 @@
   88:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** extern void SysTick_Handler(void);
   89:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** extern void PendSV_Handler(void);
   90:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
-  91:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** /*==================[internal functions definition]==========================*/
-  92:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
-  93:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** /* Default exception handlers. */
-  94:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** __attribute__ ((section(".text")))
-  95:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void NMI_Handler(void) {
-  29              		.loc 1 95 24
-  30              		.cfi_startproc
-  31              		@ args = 0, pretend = 0, frame = 0
-  32              		@ frame_needed = 0, uses_anonymous_args = 0
-  33              		@ link register save eliminated.
-  34              	.L2:
-  96:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     while (1) {
-  35              		.loc 1 96 11 discriminator 1
-  36 0000 FEE7     		b	.L2
-  37              		.cfi_endproc
-  38              	.LFE0:
-  40              		.align	1
-  41 0002 00BFAFF3 		.p2align 4,,15
-  41      0080AFF3 
-  41      0080AFF3 
-  41      0080
-  42              		.global	HardFault_Handler
-  43              		.syntax unified
-  44              		.thumb
-  45              		.thumb_func
-  47              	HardFault_Handler:
-  48              	.LFB1:
-  97:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     }
-  98:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
-  99:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** __attribute__ ((section(".text")))
- 100:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void HardFault_Handler(void) {
-  49              		.loc 1 100 30
-  50              		.cfi_startproc
-  51              		@ args = 0, pretend = 0, frame = 0
-  52              		@ frame_needed = 0, uses_anonymous_args = 0
-  53              		@ link register save eliminated.
-  54              	.L4:
- 101:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     while (1) {
-  55              		.loc 1 101 11 discriminator 1
-  56 0010 FEE7     		b	.L4
-  57              		.cfi_endproc
-  58              	.LFE1:
-  60              		.align	1
-  61 0012 00BFAFF3 		.p2align 4,,15
-  61      0080AFF3 
-  61      0080AFF3 
-  61      0080
-  62              		.global	MemManage_Handler
-  63              		.syntax unified
-  64              		.thumb
-  65              		.thumb_func
-  67              	MemManage_Handler:
-  68              	.LFB2:
- 102:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     }
- 103:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
- 104:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** __attribute__ ((section(".text")))
- 105:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void MemManage_Handler(void) {
-  69              		.loc 1 105 30
+  91:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
+  92:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** asm
+  93:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** (
+  94:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     ".thumb_func\n"
+  95:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     ".syntax unified\n"
+  96:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     ".global PendSV_Handler\n"
+  97:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     ".extern Osek_OldTaskPtr_Arch,Osek_NewTaskPtr_Arch,CheckTerminatingTask_Arch\n"
+  98:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** "PendSV_Handler:\n"
+  99:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"cpsid f\n"
+ 100:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    "push {lr}\n"
+ 101:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    "bl CheckTerminatingTask_Arch\n"
+ 102:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    "pop {lr}\n"
+ 103:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"tst lr,4\n"
+ 104:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"ite eq\n"
+ 105:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"mrseq r0,msp\n"
+ 106:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"mrsne r0,psp\n"
+ 107:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"stmdb r0!,{r4-r11,lr}\n"
+ 108:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"tst lr,4\n"
+ 109:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"it eq\n"
+ 110:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"msreq msp,r0\n"
+ 111:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"ldr r1,=Osek_OldTaskPtr_Arch\n"
+ 112:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"ldr r1,[r1]\n"
+ 113:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"cmp r1,0\n"
+ 114:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"it ne\n"
+ 115:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"strne r0,[r1]\n"
+ 116:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
+ 117:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"ldr r1,=Osek_NewTaskPtr_Arch\n"
+ 118:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"ldr r1,[r1]\n"
+ 119:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"ldr r0,[r1]\n"
+ 120:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"ldmia r0!,{r4-r11,lr}\n"
+ 121:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"mrs r1,control\n"
+ 122:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"tst lr,4\n"
+ 123:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"ittee eq\n"
+ 124:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"biceq r1,3\n"
+ 125:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"msreq msp,r0\n"
+ 126:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"orrne r1,2\n"
+ 127:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"msrne psp,r0\n"
+ 128:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"msr control,r1\n"
+ 129:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"cpsie f\n"
+ 130:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 	"bx lr\n"
+ 131:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** );
+ 132:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
+ 133:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
+ 134:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
+ 135:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
+ 136:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** /*==================[internal functions definition]==========================*/
+ 137:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
+ 138:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** /* Default exception handlers. */
+ 139:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** __attribute__ ((section(".text")))
+ 140:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void NMI_Handler(void) {
+  69              		.loc 1 140 24
   70              		.cfi_startproc
   71              		@ args = 0, pretend = 0, frame = 0
   72              		@ frame_needed = 0, uses_anonymous_args = 0
   73              		@ link register save eliminated.
-  74              	.L6:
- 106:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     while (1) {
-  75              		.loc 1 106 11 discriminator 1
-  76 0020 FEE7     		b	.L6
+  74              	.L2:
+ 141:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     while (1) {
+  75              		.loc 1 141 11 discriminator 1
+  76 0060 FEE7     		b	.L2
   77              		.cfi_endproc
-  78              	.LFE2:
+  78              	.LFE0:
   80              		.align	1
-  81 0022 00BFAFF3 		.p2align 4,,15
+  81 0062 00BFAFF3 		.p2align 4,,15
   81      0080AFF3 
   81      0080AFF3 
   81      0080
-  82              		.global	BusFault_Handler
+  82              		.global	HardFault_Handler
   83              		.syntax unified
   84              		.thumb
   85              		.thumb_func
-  87              	BusFault_Handler:
-  88              	.LFB3:
- 107:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     }
- 108:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
- 109:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** __attribute__ ((section(".text")))
- 110:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void BusFault_Handler(void) {
-  89              		.loc 1 110 29
+  87              	HardFault_Handler:
+  88              	.LFB1:
+ 142:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     }
+ 143:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
+ 144:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** __attribute__ ((section(".text")))
+ 145:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void HardFault_Handler(void) {
+  89              		.loc 1 145 30
   90              		.cfi_startproc
   91              		@ args = 0, pretend = 0, frame = 0
   92              		@ frame_needed = 0, uses_anonymous_args = 0
   93              		@ link register save eliminated.
-  94              	.L8:
- 111:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     while (1) {
-  95              		.loc 1 111 11 discriminator 1
-  96 0030 FEE7     		b	.L8
+  94              	.L4:
+ 146:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     while (1) {
+  95              		.loc 1 146 11 discriminator 1
+  96 0070 FEE7     		b	.L4
   97              		.cfi_endproc
-  98              	.LFE3:
+  98              	.LFE1:
  100              		.align	1
- 101 0032 00BFAFF3 		.p2align 4,,15
+ 101 0072 00BFAFF3 		.p2align 4,,15
  101      0080AFF3 
  101      0080AFF3 
  101      0080
- 102              		.global	UsageFault_Handler
+ 102              		.global	MemManage_Handler
  103              		.syntax unified
  104              		.thumb
  105              		.thumb_func
- 107              	UsageFault_Handler:
- 108              	.LFB4:
- 112:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     }
- 113:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
- 114:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** __attribute__ ((section(".text")))
- 115:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void UsageFault_Handler(void) {
- 109              		.loc 1 115 31
+ 107              	MemManage_Handler:
+ 108              	.LFB2:
+ 147:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     }
+ 148:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
+ 149:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** __attribute__ ((section(".text")))
+ 150:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void MemManage_Handler(void) {
+ 109              		.loc 1 150 30
  110              		.cfi_startproc
  111              		@ args = 0, pretend = 0, frame = 0
  112              		@ frame_needed = 0, uses_anonymous_args = 0
  113              		@ link register save eliminated.
- 114              	.L10:
- 116:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     while (1) {
- 115              		.loc 1 116 11 discriminator 1
- 116 0040 FEE7     		b	.L10
+ 114              	.L6:
+ 151:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     while (1) {
+ 115              		.loc 1 151 11 discriminator 1
+ 116 0080 FEE7     		b	.L6
  117              		.cfi_endproc
- 118              	.LFE4:
+ 118              	.LFE2:
  120              		.align	1
- 121 0042 00BFAFF3 		.p2align 4,,15
+ 121 0082 00BFAFF3 		.p2align 4,,15
  121      0080AFF3 
  121      0080AFF3 
  121      0080
- 122              		.global	SVC_Handler
+ 122              		.global	BusFault_Handler
  123              		.syntax unified
  124              		.thumb
  125              		.thumb_func
- 127              	SVC_Handler:
- 128              	.LFB5:
- 117:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     }
- 118:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
- 119:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** __attribute__ ((section(".text")))
- 120:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void SVC_Handler(void) {
- 129              		.loc 1 120 24
+ 127              	BusFault_Handler:
+ 128              	.LFB3:
+ 152:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     }
+ 153:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
+ 154:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** __attribute__ ((section(".text")))
+ 155:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void BusFault_Handler(void) {
+ 129              		.loc 1 155 29
  130              		.cfi_startproc
  131              		@ args = 0, pretend = 0, frame = 0
  132              		@ frame_needed = 0, uses_anonymous_args = 0
  133              		@ link register save eliminated.
- 134              	.L12:
- 121:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     while (1) {
- 135              		.loc 1 121 11 discriminator 1
- 136 0050 FEE7     		b	.L12
+ 134              	.L8:
+ 156:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     while (1) {
+ 135              		.loc 1 156 11 discriminator 1
+ 136 0090 FEE7     		b	.L8
  137              		.cfi_endproc
- 138              	.LFE5:
+ 138              	.LFE3:
  140              		.align	1
- 141 0052 00BFAFF3 		.p2align 4,,15
+ 141 0092 00BFAFF3 		.p2align 4,,15
  141      0080AFF3 
  141      0080AFF3 
  141      0080
- 142              		.global	DebugMon_Handler
+ 142              		.global	UsageFault_Handler
  143              		.syntax unified
  144              		.thumb
  145              		.thumb_func
- 147              	DebugMon_Handler:
- 148              	.LFB6:
- 122:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     }
- 123:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
- 124:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** __attribute__ ((section(".text")))
- 125:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void DebugMon_Handler(void) {
- 149              		.loc 1 125 29
+ 147              	UsageFault_Handler:
+ 148              	.LFB4:
+ 157:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     }
+ 158:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
+ 159:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** __attribute__ ((section(".text")))
+ 160:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void UsageFault_Handler(void) {
+ 149              		.loc 1 160 31
  150              		.cfi_startproc
  151              		@ args = 0, pretend = 0, frame = 0
  152              		@ frame_needed = 0, uses_anonymous_args = 0
  153              		@ link register save eliminated.
- 154              	.L14:
- 126:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     while (1) {
- 155              		.loc 1 126 11 discriminator 1
- 156 0060 FEE7     		b	.L14
+ 154              	.L10:
+ 161:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     while (1) {
+ 155              		.loc 1 161 11 discriminator 1
+ 156 00a0 FEE7     		b	.L10
  157              		.cfi_endproc
- 158              	.LFE6:
- 160              		.global	g_pfnVectors
- 161              		.section	.isr_vector,"a"
- 162              		.align	2
- 165              	g_pfnVectors:
- 166 0000 00000000 		.word	_vStackTop
- 167 0004 00000000 		.word	ResetISR
- 168 0008 00000000 		.word	NMI_Handler
- 169 000c 00000000 		.word	HardFault_Handler
- 170 0010 00000000 		.word	MemManage_Handler
- 171 0014 00000000 		.word	BusFault_Handler
- 172 0018 00000000 		.word	UsageFault_Handler
- 173 001c 00000000 		.word	0
- 174 0020 00000000 		.word	0
- 175 0024 00000000 		.word	0
- 176 0028 00000000 		.word	0
- 177 002c 00000000 		.word	SVC_Handler
- 178 0030 00000000 		.word	DebugMon_Handler
- 179 0034 00000000 		.word	0
- 180 0038 00000000 		.word	PendSV_Handler
- 181 003c 00000000 		.word	SysTick_Handler
- 182 0040 00000000 		.word	OSEK_ISR_NoHandler
- 183 0044 00000000 		.word	OSEK_ISR_NoHandler
- 184 0048 00000000 		.word	OSEK_ISR_NoHandler
- 185 004c 00000000 		.word	OSEK_ISR_NoHandler
- 186 0050 00000000 		.word	OSEK_ISR_NoHandler
- 187 0054 00000000 		.word	OSEK_ISR_NoHandler
- 188 0058 00000000 		.word	OSEK_ISR_NoHandler
- 189 005c 00000000 		.word	OSEK_ISR_NoHandler
- 190 0060 00000000 		.word	OSEK_ISR_NoHandler
- 191 0064 00000000 		.word	OSEK_ISR_NoHandler
- 192 0068 00000000 		.word	OSEK_ISR_NoHandler
- 193 006c 00000000 		.word	OSEK_ISR_NoHandler
- 194 0070 00000000 		.word	OSEK_ISR_NoHandler
- 195 0074 00000000 		.word	OSEK_ISR_NoHandler
- 196 0078 00000000 		.word	OSEK_ISR_NoHandler
- 197 007c 00000000 		.word	OSEK_ISR_NoHandler
- 198 0080 00000000 		.word	OSEK_ISR_NoHandler
- 199 0084 00000000 		.word	OSEK_ISR_NoHandler
- 200 0088 00000000 		.word	OSEK_ISR_NoHandler
- 201 008c 00000000 		.word	OSEK_ISR_NoHandler
- 202 0090 00000000 		.word	OSEK_ISR_NoHandler
- 203 0094 00000000 		.word	OSEK_ISR_NoHandler
- 204 0098 00000000 		.word	OSEK_ISR_NoHandler
- 205 009c 00000000 		.word	OSEK_ISR_NoHandler
- 206 00a0 00000000 		.word	OSEK_ISR_NoHandler
- 207 00a4 00000000 		.word	OSEK_ISR_NoHandler
- 208 00a8 00000000 		.word	OSEK_ISR_NoHandler
- 209 00ac 00000000 		.word	OSEK_ISR_NoHandler
- 210 00b0 00000000 		.word	OSEK_ISR_NoHandler
- 211 00b4 00000000 		.word	OSEK_ISR_NoHandler
- 212 00b8 00000000 		.word	OSEK_ISR_NoHandler
- 213 00bc 00000000 		.word	OSEK_ISR_NoHandler
- 214 00c0 00000000 		.word	OSEK_ISR_NoHandler
- 215 00c4 00000000 		.word	OSEK_ISR_NoHandler
- 216 00c8 00000000 		.word	OSEK_ISR_NoHandler
- 217 00cc 00000000 		.word	OSEK_ISR_NoHandler
- 218 00d0 00000000 		.word	OSEK_ISR_NoHandler
- 219 00d4 00000000 		.word	OSEK_ISR_NoHandler
- 220 00d8 00000000 		.word	OSEK_ISR_NoHandler
- 221 00dc 00000000 		.word	OSEK_ISR_NoHandler
- 222 00e0 00000000 		.word	OSEK_ISR_NoHandler
- 223 00e4 00000000 		.word	OSEK_ISR_NoHandler
- 224 00e8 00000000 		.word	OSEK_ISR_NoHandler
- 225 00ec 00000000 		.word	OSEK_ISR_NoHandler
- 226 00f0 00000000 		.word	OSEK_ISR_NoHandler
- 227 00f4 00000000 		.word	OSEK_ISR_NoHandler
- 228 00f8 00000000 		.word	OSEK_ISR_NoHandler
- 229 00fc 00000000 		.word	OSEK_ISR_NoHandler
- 230 0100 00000000 		.word	OSEK_ISR_NoHandler
- 231 0104 00000000 		.word	OSEK_ISR_NoHandler
- 232 0108 00000000 		.word	OSEK_ISR_NoHandler
- 233 010c 00000000 		.word	OSEK_ISR_NoHandler
- 234 0110 00000000 		.word	OSEK_ISR_NoHandler
- 235 0114 00000000 		.word	OSEK_ISR_NoHandler
- 236 0118 00000000 		.word	OSEK_ISR_NoHandler
- 237 011c 00000000 		.word	OSEK_ISR_NoHandler
- 238 0120 00000000 		.word	OSEK_ISR_NoHandler
- 239 0124 00000000 		.word	OSEK_ISR_NoHandler
- 240 0128 00000000 		.word	OSEK_ISR_NoHandler
- 241 012c 00000000 		.word	OSEK_ISR_NoHandler
- 242 0130 00000000 		.word	OSEK_ISR_NoHandler
- 243 0134 00000000 		.word	OSEK_ISR_NoHandler
- 244 0138 00000000 		.word	OSEK_ISR_NoHandler
- 245 013c 00000000 		.word	OSEK_ISR_NoHandler
- 246 0140 00000000 		.word	OSEK_ISR_NoHandler
- 247 0144 00000000 		.word	OSEK_ISR_NoHandler
- 248 0148 00000000 		.word	OSEK_ISR_NoHandler
- 249 014c 00000000 		.word	OSEK_ISR_NoHandler
- 250 0150 00000000 		.word	OSEK_ISR_NoHandler
- 251 0154 00000000 		.word	OSEK_ISR_NoHandler
- 252 0158 00000000 		.word	OSEK_ISR_NoHandler
- 253 015c 00000000 		.word	OSEK_ISR_NoHandler
- 254 0160 00000000 		.word	OSEK_ISR_NoHandler
- 255 0164 00000000 		.word	OSEK_ISR_NoHandler
- 256 0168 00000000 		.word	OSEK_ISR_NoHandler
- 257 016c 00000000 		.word	OSEK_ISR_NoHandler
- 258 0170 00000000 		.word	OSEK_ISR_NoHandler
- 259 0174 00000000 		.word	OSEK_ISR_NoHandler
- 260 0178 00000000 		.word	OSEK_ISR_NoHandler
- 261 017c 00000000 		.word	OSEK_ISR_NoHandler
- 262 0180 00000000 		.word	OSEK_ISR_NoHandler
- 263 0184 00000000 		.word	OSEK_ISR_NoHandler
- 264              		.section	.text.Enable_User_ISRs,"ax",%progbits
- 265              		.align	1
- 266              		.p2align 4,,15
- 267              		.global	Enable_User_ISRs
- 268              		.syntax unified
- 269              		.thumb
- 270              		.thumb_func
- 272              	Enable_User_ISRs:
- 273              	.LFB7:
- 127:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     }
- 128:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
- 129:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
- 130:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** /*==================[external functions definition]==========================*/
- 131:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
- 132:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** /** \brief STM32F4 Interrupt vector */
- 133:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** __attribute__ ((section(".isr_vector")))
- 134:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void (* const g_pfnVectors[])(void) = {
- 135:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    /* Core Level - CM4 */
- 136:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    &_vStackTop,                    /* The initial stack pointer  */
- 137:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    ResetISR,                       /* The reset handler          */
- 138:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    NMI_Handler,                    /* The NMI handler            */
- 139:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    HardFault_Handler,              /* The hard fault handler     */
- 140:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    MemManage_Handler,              /* The MPU fault handler      */
- 141:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    BusFault_Handler,               /* The bus fault handler      */
- 142:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    UsageFault_Handler,             /* The usage fault handler    */
- 143:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    0,                              /* Reserved                   */
- 144:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    0,                              /* Reserved                   */
- 145:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    0,                              /* Reserved                   */
- 146:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    0,                              /* Reserved                   */
- 147:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    SVC_Handler,                    /* SVCall handler             */
- 148:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    DebugMon_Handler,               /* Debug monitor handler      */
- 149:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    0,                              /* Reserved                   */
- 150:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    PendSV_Handler,                 /* The PendSV handler         */
- 151:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    SysTick_Handler,                /* The SysTick handler        */
- 152:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
- 153:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    /* Chip Level - STM32F4 (M4 core) */
- 154:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR WWDG (IRQ 0) */
- 155:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR PVD (IRQ 1) */
- 156:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TAMP_STAMP (IRQ 2) */
- 157:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR RTC_WKUP (IRQ 3) */
- 158:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR FLASH (IRQ 4) */
- 159:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR RCC (IRQ 5) */
- 160:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR EXTI0 (IRQ 6) */
- 161:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR EXTI1 (IRQ 7) */
- 162:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR EXTI2 (IRQ 8) */
- 163:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR EXTI3 (IRQ 9) */
- 164:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR EXTI4 (IRQ 10) */
- 165:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA1_Stream0 (IRQ 11) */
- 166:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA1_Stream1 (IRQ 12) */
- 167:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA1_Stream2 (IRQ 13) */
- 168:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA1_Stream3 (IRQ 14) */
- 169:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA1_Stream4 (IRQ 15) */
- 170:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA1_Stream5 (IRQ 16) */
- 171:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA1_Stream6 (IRQ 17) */
- 172:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR ADC (IRQ 18) */
- 173:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CAN1_TX (IRQ 19) */
- 174:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CAN1_RX0 (IRQ 20) */
- 175:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CAN1_RX1 (IRQ 21) */
- 176:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CAN1_SCE (IRQ 22) */
- 177:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR EXTI9_5 (IRQ 23) */
- 178:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM1_BRK_TIM9 (IRQ 24) */
- 179:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM1_UP_TIM10 (IRQ 25) */
- 180:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM1_TRG_COM_TIM11 (IRQ 26) */
- 181:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM1_CC (IRQ 27) */
- 182:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM2 (IRQ 28) */
- 183:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM3 (IRQ 29) */
- 184:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM4 (IRQ 30) */
- 185:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR I2C1 (IRQ 31) */
- 186:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR I2C1 (IRQ 32) */
- 187:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR I2C2 (IRQ 33) */
- 188:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR I2C2 (IRQ 34) */
- 189:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR SPI1 (IRQ 35) */
- 190:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR SPI2 (IRQ 36) */
- 191:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR USART1 (IRQ 37) */
- 192:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR USART2 (IRQ 38) */
- 193:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR USART3 (IRQ 39) */
- 194:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR EXTI15 (IRQ 40) */
- 195:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR RTC_Alarm (IRQ 41) */
- 196:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR OTG_FS_WKUP (IRQ 42) */
- 197:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM8_BRK_TIM12 (IRQ 43) */
- 198:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM8_UP_TIM13 (IRQ 44) */
- 199:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM8_TRG_COM_TIM14 (IRQ 45) */
- 200:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM8_CC (IRQ 46) */
- 201:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA1_Stream7 (IRQ 47) */
- 202:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR FSMC (IRQ 48) */
- 203:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR SDIO (IRQ 49) */
- 204:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM5 (IRQ 50) */
- 205:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR SPI3 (IRQ 51) */
- 206:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR UART4 (IRQ 52) */
- 207:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR UART5 (IRQ 53) */
- 208:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM6_DAC (IRQ 54) */
- 209:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM7 (IRQ 55) */
- 210:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA2_Stream0 (IRQ 56) */
- 211:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA2_Stream1 (IRQ 57) */
- 212:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA2_Stream2 (IRQ 58) */
- 213:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA2_Stream3 (IRQ 59) */
- 214:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA2_Stream4 (IRQ 60) */
- 215:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR ETH (IRQ 61) */
- 216:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR ETH_WKUP (IRQ 62) */
- 217:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CAN2_TX (IRQ 63) */
- 218:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CAN2_RX0 (IRQ 64) */
- 219:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CAN2_RX1 (IRQ 65) */
- 220:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CAN2_SCE (IRQ 66) */
- 221:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR OTG_FS (IRQ 67) */
- 222:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA2_Stream5 (IRQ 68) */
- 223:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA2_Stream6 (IRQ 69) */
- 224:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA2_Stream7 (IRQ 70) */
- 225:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR USART6 (IRQ 71) */
- 226:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR I2C3_EV (IRQ 72) */
- 227:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR I2C3_ER (IRQ 73) */
- 228:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR OTG_HS_EP1_OUT (IRQ 74) */
- 229:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR OTG_HS_EP1_IN (IRQ 75) */
- 230:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR OTG_HS_WKUP (IRQ 76) */
- 231:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR OTG_HS (IRQ 77) */
- 232:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DCMI (IRQ 78) */
- 233:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CRYP (IRQ 79) */
- 234:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR HASH_RNG (IRQ 80) */
- 235:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR FPU (IRQ 81) */
- 236:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** };
- 237:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
- 238:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** /** \brief Interrupt enabling and priority setting function */
- 239:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void Enable_User_ISRs(void)
- 240:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** {
- 274              		.loc 1 240 1
- 275              		.cfi_startproc
- 276              		@ args = 0, pretend = 0, frame = 0
- 277              		@ frame_needed = 0, uses_anonymous_args = 0
- 278              		@ link register save eliminated.
- 241:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
- 279              		.loc 1 241 1
- 280 0000 00BF     		nop
- 281 0002 7047     		bx	lr
- 282              		.cfi_endproc
- 283              	.LFE7:
- 285              		.section	.text.Enable_ISR2_Arch,"ax",%progbits
- 286              		.align	1
- 287              		.p2align 4,,15
- 288              		.global	Enable_ISR2_Arch
- 289              		.syntax unified
- 290              		.thumb
- 291              		.thumb_func
- 293              	Enable_ISR2_Arch:
- 294              	.LFB8:
- 242:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
- 243:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** /** \brief Enable user defined category 2 ISRs */
- 244:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void Enable_ISR2_Arch(void)
- 245:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** {
- 295              		.loc 1 245 1
- 296              		.cfi_startproc
- 297              		@ args = 0, pretend = 0, frame = 0
- 298              		@ frame_needed = 0, uses_anonymous_args = 0
- 299              		@ link register save eliminated.
- 246:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
- 300              		.loc 1 246 1
- 301 0000 00BF     		nop
- 302 0002 7047     		bx	lr
- 303              		.cfi_endproc
- 304              	.LFE8:
- 306              		.section	.text.Disable_ISR2_Arch,"ax",%progbits
- 307              		.align	1
- 308              		.p2align 4,,15
- 309              		.global	Disable_ISR2_Arch
- 310              		.syntax unified
- 311              		.thumb
- 312              		.thumb_func
- 314              	Disable_ISR2_Arch:
- 315              	.LFB9:
- 247:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
- 248:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** /** \brief Disable user defined category 2 ISRs */
- 249:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void Disable_ISR2_Arch(void)
- 250:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** {
- 316              		.loc 1 250 1
- 317              		.cfi_startproc
- 318              		@ args = 0, pretend = 0, frame = 0
- 319              		@ frame_needed = 0, uses_anonymous_args = 0
- 320              		@ link register save eliminated.
- 251:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
- 321              		.loc 1 251 1
- 322 0000 00BF     		nop
- 323 0002 7047     		bx	lr
- 324              		.cfi_endproc
- 325              	.LFE9:
- 327              		.text
- 328              	.Letext0:
+ 158              	.LFE4:
+ 160              		.align	1
+ 161 00a2 00BFAFF3 		.p2align 4,,15
+ 161      0080AFF3 
+ 161      0080AFF3 
+ 161      0080
+ 162              		.global	SVC_Handler
+ 163              		.syntax unified
+ 164              		.thumb
+ 165              		.thumb_func
+ 167              	SVC_Handler:
+ 168              	.LFB5:
+ 162:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     }
+ 163:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
+ 164:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** __attribute__ ((section(".text")))
+ 165:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void SVC_Handler(void) {
+ 169              		.loc 1 165 24
+ 170              		.cfi_startproc
+ 171              		@ args = 0, pretend = 0, frame = 0
+ 172              		@ frame_needed = 0, uses_anonymous_args = 0
+ 173              		@ link register save eliminated.
+ 174              	.L12:
+ 166:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     while (1) {
+ 175              		.loc 1 166 11 discriminator 1
+ 176 00b0 FEE7     		b	.L12
+ 177              		.cfi_endproc
+ 178              	.LFE5:
+ 180              		.align	1
+ 181 00b2 00BFAFF3 		.p2align 4,,15
+ 181      0080AFF3 
+ 181      0080AFF3 
+ 181      0080
+ 182              		.global	DebugMon_Handler
+ 183              		.syntax unified
+ 184              		.thumb
+ 185              		.thumb_func
+ 187              	DebugMon_Handler:
+ 188              	.LFB6:
+ 167:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     }
+ 168:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
+ 169:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** __attribute__ ((section(".text")))
+ 170:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void DebugMon_Handler(void) {
+ 189              		.loc 1 170 29
+ 190              		.cfi_startproc
+ 191              		@ args = 0, pretend = 0, frame = 0
+ 192              		@ frame_needed = 0, uses_anonymous_args = 0
+ 193              		@ link register save eliminated.
+ 194              	.L14:
+ 171:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     while (1) {
+ 195              		.loc 1 171 11 discriminator 1
+ 196 00c0 FEE7     		b	.L14
+ 197              		.cfi_endproc
+ 198              	.LFE6:
+ 200              		.global	g_pfnVectors
+ 201              		.section	.isr_vector,"a"
+ 202              		.align	2
+ 205              	g_pfnVectors:
+ 206 0000 00000000 		.word	_vStackTop
+ 207 0004 00000000 		.word	ResetISR
+ 208 0008 00000000 		.word	NMI_Handler
+ 209 000c 00000000 		.word	HardFault_Handler
+ 210 0010 00000000 		.word	MemManage_Handler
+ 211 0014 00000000 		.word	BusFault_Handler
+ 212 0018 00000000 		.word	UsageFault_Handler
+ 213 001c 00000000 		.word	0
+ 214 0020 00000000 		.word	0
+ 215 0024 00000000 		.word	0
+ 216 0028 00000000 		.word	0
+ 217 002c 00000000 		.word	SVC_Handler
+ 218 0030 00000000 		.word	DebugMon_Handler
+ 219 0034 00000000 		.word	0
+ 220 0038 00000000 		.word	PendSV_Handler
+ 221 003c 00000000 		.word	SysTick_Handler
+ 222 0040 00000000 		.word	OSEK_ISR_NoHandler
+ 223 0044 00000000 		.word	OSEK_ISR_NoHandler
+ 224 0048 00000000 		.word	OSEK_ISR_NoHandler
+ 225 004c 00000000 		.word	OSEK_ISR_NoHandler
+ 226 0050 00000000 		.word	OSEK_ISR_NoHandler
+ 227 0054 00000000 		.word	OSEK_ISR_NoHandler
+ 228 0058 00000000 		.word	OSEK_ISR_NoHandler
+ 229 005c 00000000 		.word	OSEK_ISR_NoHandler
+ 230 0060 00000000 		.word	OSEK_ISR_NoHandler
+ 231 0064 00000000 		.word	OSEK_ISR_NoHandler
+ 232 0068 00000000 		.word	OSEK_ISR_NoHandler
+ 233 006c 00000000 		.word	OSEK_ISR_NoHandler
+ 234 0070 00000000 		.word	OSEK_ISR_NoHandler
+ 235 0074 00000000 		.word	OSEK_ISR_NoHandler
+ 236 0078 00000000 		.word	OSEK_ISR_NoHandler
+ 237 007c 00000000 		.word	OSEK_ISR_NoHandler
+ 238 0080 00000000 		.word	OSEK_ISR_NoHandler
+ 239 0084 00000000 		.word	OSEK_ISR_NoHandler
+ 240 0088 00000000 		.word	OSEK_ISR_NoHandler
+ 241 008c 00000000 		.word	OSEK_ISR_NoHandler
+ 242 0090 00000000 		.word	OSEK_ISR_NoHandler
+ 243 0094 00000000 		.word	OSEK_ISR_NoHandler
+ 244 0098 00000000 		.word	OSEK_ISR_NoHandler
+ 245 009c 00000000 		.word	OSEK_ISR_NoHandler
+ 246 00a0 00000000 		.word	OSEK_ISR_NoHandler
+ 247 00a4 00000000 		.word	OSEK_ISR_NoHandler
+ 248 00a8 00000000 		.word	OSEK_ISR_NoHandler
+ 249 00ac 00000000 		.word	OSEK_ISR_NoHandler
+ 250 00b0 00000000 		.word	OSEK_ISR_NoHandler
+ 251 00b4 00000000 		.word	OSEK_ISR_NoHandler
+ 252 00b8 00000000 		.word	OSEK_ISR_NoHandler
+ 253 00bc 00000000 		.word	OSEK_ISR_NoHandler
+ 254 00c0 00000000 		.word	OSEK_ISR_NoHandler
+ 255 00c4 00000000 		.word	OSEK_ISR_NoHandler
+ 256 00c8 00000000 		.word	OSEK_ISR_NoHandler
+ 257 00cc 00000000 		.word	OSEK_ISR_NoHandler
+ 258 00d0 00000000 		.word	OSEK_ISR_NoHandler
+ 259 00d4 00000000 		.word	OSEK_ISR_NoHandler
+ 260 00d8 00000000 		.word	OSEK_ISR_NoHandler
+ 261 00dc 00000000 		.word	OSEK_ISR_NoHandler
+ 262 00e0 00000000 		.word	OSEK_ISR_NoHandler
+ 263 00e4 00000000 		.word	OSEK_ISR_NoHandler
+ 264 00e8 00000000 		.word	OSEK_ISR_NoHandler
+ 265 00ec 00000000 		.word	OSEK_ISR_NoHandler
+ 266 00f0 00000000 		.word	OSEK_ISR_NoHandler
+ 267 00f4 00000000 		.word	OSEK_ISR_NoHandler
+ 268 00f8 00000000 		.word	OSEK_ISR_NoHandler
+ 269 00fc 00000000 		.word	OSEK_ISR_NoHandler
+ 270 0100 00000000 		.word	OSEK_ISR_NoHandler
+ 271 0104 00000000 		.word	OSEK_ISR_NoHandler
+ 272 0108 00000000 		.word	OSEK_ISR_NoHandler
+ 273 010c 00000000 		.word	OSEK_ISR_NoHandler
+ 274 0110 00000000 		.word	OSEK_ISR_NoHandler
+ 275 0114 00000000 		.word	OSEK_ISR_NoHandler
+ 276 0118 00000000 		.word	OSEK_ISR_NoHandler
+ 277 011c 00000000 		.word	OSEK_ISR_NoHandler
+ 278 0120 00000000 		.word	OSEK_ISR_NoHandler
+ 279 0124 00000000 		.word	OSEK_ISR_NoHandler
+ 280 0128 00000000 		.word	OSEK_ISR_NoHandler
+ 281 012c 00000000 		.word	OSEK_ISR_NoHandler
+ 282 0130 00000000 		.word	OSEK_ISR_NoHandler
+ 283 0134 00000000 		.word	OSEK_ISR_NoHandler
+ 284 0138 00000000 		.word	OSEK_ISR_NoHandler
+ 285 013c 00000000 		.word	OSEK_ISR_NoHandler
+ 286 0140 00000000 		.word	OSEK_ISR_NoHandler
+ 287 0144 00000000 		.word	OSEK_ISR_NoHandler
+ 288 0148 00000000 		.word	OSEK_ISR_NoHandler
+ 289 014c 00000000 		.word	OSEK_ISR_NoHandler
+ 290 0150 00000000 		.word	OSEK_ISR_NoHandler
+ 291 0154 00000000 		.word	OSEK_ISR_NoHandler
+ 292 0158 00000000 		.word	OSEK_ISR_NoHandler
+ 293 015c 00000000 		.word	OSEK_ISR_NoHandler
+ 294 0160 00000000 		.word	OSEK_ISR_NoHandler
+ 295 0164 00000000 		.word	OSEK_ISR_NoHandler
+ 296 0168 00000000 		.word	OSEK_ISR_NoHandler
+ 297 016c 00000000 		.word	OSEK_ISR_NoHandler
+ 298 0170 00000000 		.word	OSEK_ISR_NoHandler
+ 299 0174 00000000 		.word	OSEK_ISR_NoHandler
+ 300 0178 00000000 		.word	OSEK_ISR_NoHandler
+ 301 017c 00000000 		.word	OSEK_ISR_NoHandler
+ 302 0180 00000000 		.word	OSEK_ISR_NoHandler
+ 303 0184 00000000 		.word	OSEK_ISR_NoHandler
+ 304              		.section	.text.Enable_User_ISRs,"ax",%progbits
+ 305              		.align	1
+ 306              		.p2align 4,,15
+ 307              		.global	Enable_User_ISRs
+ 308              		.syntax unified
+ 309              		.thumb
+ 310              		.thumb_func
+ 312              	Enable_User_ISRs:
+ 313              	.LFB7:
+ 172:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****     }
+ 173:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
+ 174:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
+ 175:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** /*==================[external functions definition]==========================*/
+ 176:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
+ 177:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** /** \brief STM32F4 Interrupt vector */
+ 178:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** __attribute__ ((section(".isr_vector")))
+ 179:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void (* const g_pfnVectors[])(void) = {
+ 180:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    /* Core Level - CM4 */
+ 181:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    &_vStackTop,                    /* The initial stack pointer  */
+ 182:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    ResetISR,                       /* The reset handler          */
+ 183:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    NMI_Handler,                    /* The NMI handler            */
+ 184:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    HardFault_Handler,              /* The hard fault handler     */
+ 185:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    MemManage_Handler,              /* The MPU fault handler      */
+ 186:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    BusFault_Handler,               /* The bus fault handler      */
+ 187:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    UsageFault_Handler,             /* The usage fault handler    */
+ 188:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    0,                              /* Reserved                   */
+ 189:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    0,                              /* Reserved                   */
+ 190:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    0,                              /* Reserved                   */
+ 191:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    0,                              /* Reserved                   */
+ 192:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    SVC_Handler,                    /* SVCall handler             */
+ 193:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    DebugMon_Handler,               /* Debug monitor handler      */
+ 194:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    0,                              /* Reserved                   */
+ 195:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    PendSV_Handler,                 /* The PendSV handler         */
+ 196:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    SysTick_Handler,                /* The SysTick handler        */
+ 197:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
+ 198:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    /* Chip Level - STM32F4 (M4 core) */
+ 199:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR WWDG (IRQ 0) */
+ 200:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR PVD (IRQ 1) */
+ 201:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TAMP_STAMP (IRQ 2) */
+ 202:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR RTC_WKUP (IRQ 3) */
+ 203:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR FLASH (IRQ 4) */
+ 204:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR RCC (IRQ 5) */
+ 205:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR EXTI0 (IRQ 6) */
+ 206:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR EXTI1 (IRQ 7) */
+ 207:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR EXTI2 (IRQ 8) */
+ 208:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR EXTI3 (IRQ 9) */
+ 209:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR EXTI4 (IRQ 10) */
+ 210:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA1_Stream0 (IRQ 11) */
+ 211:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA1_Stream1 (IRQ 12) */
+ 212:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA1_Stream2 (IRQ 13) */
+ 213:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA1_Stream3 (IRQ 14) */
+ 214:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA1_Stream4 (IRQ 15) */
+ 215:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA1_Stream5 (IRQ 16) */
+ 216:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA1_Stream6 (IRQ 17) */
+ 217:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR ADC (IRQ 18) */
+ 218:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CAN1_TX (IRQ 19) */
+ 219:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CAN1_RX0 (IRQ 20) */
+ 220:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CAN1_RX1 (IRQ 21) */
+ 221:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CAN1_SCE (IRQ 22) */
+ 222:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR EXTI9_5 (IRQ 23) */
+ 223:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM1_BRK_TIM9 (IRQ 24) */
+ 224:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM1_UP_TIM10 (IRQ 25) */
+ 225:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM1_TRG_COM_TIM11 (IRQ 26) */
+ 226:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM1_CC (IRQ 27) */
+ 227:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM2 (IRQ 28) */
+ 228:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM3 (IRQ 29) */
+ 229:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM4 (IRQ 30) */
+ 230:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR I2C1 (IRQ 31) */
+ 231:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR I2C1 (IRQ 32) */
+ 232:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR I2C2 (IRQ 33) */
+ 233:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR I2C2 (IRQ 34) */
+ 234:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR SPI1 (IRQ 35) */
+ 235:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR SPI2 (IRQ 36) */
+ 236:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR USART1 (IRQ 37) */
+ 237:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR USART2 (IRQ 38) */
+ 238:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR USART3 (IRQ 39) */
+ 239:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR EXTI15 (IRQ 40) */
+ 240:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR RTC_Alarm (IRQ 41) */
+ 241:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR OTG_FS_WKUP (IRQ 42) */
+ 242:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM8_BRK_TIM12 (IRQ 43) */
+ 243:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM8_UP_TIM13 (IRQ 44) */
+ 244:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM8_TRG_COM_TIM14 (IRQ 45) */
+ 245:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM8_CC (IRQ 46) */
+ 246:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA1_Stream7 (IRQ 47) */
+ 247:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR FSMC (IRQ 48) */
+ 248:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR SDIO (IRQ 49) */
+ 249:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM5 (IRQ 50) */
+ 250:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR SPI3 (IRQ 51) */
+ 251:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR UART4 (IRQ 52) */
+ 252:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR UART5 (IRQ 53) */
+ 253:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM6_DAC (IRQ 54) */
+ 254:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR TIM7 (IRQ 55) */
+ 255:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA2_Stream0 (IRQ 56) */
+ 256:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA2_Stream1 (IRQ 57) */
+ 257:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA2_Stream2 (IRQ 58) */
+ 258:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA2_Stream3 (IRQ 59) */
+ 259:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA2_Stream4 (IRQ 60) */
+ 260:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR ETH (IRQ 61) */
+ 261:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR ETH_WKUP (IRQ 62) */
+ 262:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CAN2_TX (IRQ 63) */
+ 263:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CAN2_RX0 (IRQ 64) */
+ 264:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CAN2_RX1 (IRQ 65) */
+ 265:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CAN2_SCE (IRQ 66) */
+ 266:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR OTG_FS (IRQ 67) */
+ 267:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA2_Stream5 (IRQ 68) */
+ 268:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA2_Stream6 (IRQ 69) */
+ 269:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DMA2_Stream7 (IRQ 70) */
+ 270:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR USART6 (IRQ 71) */
+ 271:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR I2C3_EV (IRQ 72) */
+ 272:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR I2C3_ER (IRQ 73) */
+ 273:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR OTG_HS_EP1_OUT (IRQ 74) */
+ 274:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR OTG_HS_EP1_IN (IRQ 75) */
+ 275:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR OTG_HS_WKUP (IRQ 76) */
+ 276:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR OTG_HS (IRQ 77) */
+ 277:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR DCMI (IRQ 78) */
+ 278:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR CRYP (IRQ 79) */
+ 279:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR HASH_RNG (IRQ 80) */
+ 280:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c ****    OSEK_ISR_NoHandler, /* No Handler set for ISR FPU (IRQ 81) */
+ 281:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** };
+ 282:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
+ 283:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** /** \brief Interrupt enabling and priority setting function */
+ 284:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void Enable_User_ISRs(void)
+ 285:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** {
+ 314              		.loc 1 285 1
+ 315              		.cfi_startproc
+ 316              		@ args = 0, pretend = 0, frame = 0
+ 317              		@ frame_needed = 0, uses_anonymous_args = 0
+ 318              		@ link register save eliminated.
+ 286:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
+ 319              		.loc 1 286 1
+ 320 0000 00BF     		nop
+ 321 0002 7047     		bx	lr
+ 322              		.cfi_endproc
+ 323              	.LFE7:
+ 325              		.section	.text.Enable_ISR2_Arch,"ax",%progbits
+ 326              		.align	1
+ 327              		.p2align 4,,15
+ 328              		.global	Enable_ISR2_Arch
+ 329              		.syntax unified
+ 330              		.thumb
+ 331              		.thumb_func
+ 333              	Enable_ISR2_Arch:
+ 334              	.LFB8:
+ 287:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
+ 288:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** /** \brief Enable user defined category 2 ISRs */
+ 289:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void Enable_ISR2_Arch(void)
+ 290:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** {
+ 335              		.loc 1 290 1
+ 336              		.cfi_startproc
+ 337              		@ args = 0, pretend = 0, frame = 0
+ 338              		@ frame_needed = 0, uses_anonymous_args = 0
+ 339              		@ link register save eliminated.
+ 291:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
+ 340              		.loc 1 291 1
+ 341 0000 00BF     		nop
+ 342 0002 7047     		bx	lr
+ 343              		.cfi_endproc
+ 344              	.LFE8:
+ 346              		.section	.text.Disable_ISR2_Arch,"ax",%progbits
+ 347              		.align	1
+ 348              		.p2align 4,,15
+ 349              		.global	Disable_ISR2_Arch
+ 350              		.syntax unified
+ 351              		.thumb
+ 352              		.thumb_func
+ 354              	Disable_ISR2_Arch:
+ 355              	.LFB9:
+ 292:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** 
+ 293:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** /** \brief Disable user defined category 2 ISRs */
+ 294:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** void Disable_ISR2_Arch(void)
+ 295:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** {
+ 356              		.loc 1 295 1
+ 357              		.cfi_startproc
+ 358              		@ args = 0, pretend = 0, frame = 0
+ 359              		@ frame_needed = 0, uses_anonymous_args = 0
+ 360              		@ link register save eliminated.
+ 296:Modules/OS/OSAL/src/Os_Internal_Arch_Cfg.c **** }
+ 361              		.loc 1 296 1
+ 362 0000 00BF     		nop
+ 363 0002 7047     		bx	lr
+ 364              		.cfi_endproc
+ 365              	.LFE9:
+ 367              		.text
+ 368              	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 Os_Internal_Arch_Cfg.c
-C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:19     .text:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:26     .text:00000000 NMI_Handler
-C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:47     .text:00000010 HardFault_Handler
-C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:67     .text:00000020 MemManage_Handler
-C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:87     .text:00000030 BusFault_Handler
-C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:107    .text:00000040 UsageFault_Handler
-C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:127    .text:00000050 SVC_Handler
-C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:147    .text:00000060 DebugMon_Handler
-C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:165    .isr_vector:00000000 g_pfnVectors
-C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:162    .isr_vector:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:265    .text.Enable_User_ISRs:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:272    .text.Enable_User_ISRs:00000000 Enable_User_ISRs
-C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:286    .text.Enable_ISR2_Arch:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:293    .text.Enable_ISR2_Arch:00000000 Enable_ISR2_Arch
-C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:307    .text.Disable_ISR2_Arch:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:314    .text.Disable_ISR2_Arch:00000000 Disable_ISR2_Arch
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:23     .text:00000000 PendSV_Handler
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:24     .text:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:66     .text:00000060 NMI_Handler
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:87     .text:00000070 HardFault_Handler
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:107    .text:00000080 MemManage_Handler
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:127    .text:00000090 BusFault_Handler
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:147    .text:000000a0 UsageFault_Handler
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:167    .text:000000b0 SVC_Handler
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:187    .text:000000c0 DebugMon_Handler
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:205    .isr_vector:00000000 g_pfnVectors
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:202    .isr_vector:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:305    .text.Enable_User_ISRs:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:312    .text.Enable_User_ISRs:00000000 Enable_User_ISRs
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:326    .text.Enable_ISR2_Arch:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:333    .text.Enable_ISR2_Arch:00000000 Enable_ISR2_Arch
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:347    .text.Disable_ISR2_Arch:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:354    .text.Disable_ISR2_Arch:00000000 Disable_ISR2_Arch
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:369    .text:000000c2 $d
+C:\Users\AAA\AppData\Local\Temp\cc7wQ43Z.s:5319   .text:000000c4 $d
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
                            .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
@@ -603,16 +691,18 @@ C:\Users\AAA\AppData\Local\Temp\ccGDwlZB.s:314    .text.Disable_ISR2_Arch:000000
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
                            .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
-                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.Os_Arch.h.93.12102c3b0d784f7b702d5066ade693b9
                            .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
-                           .group:00000000 wm4.Os_Internal_Arch.h.35.2a7cc3164dd52be0f47ede63cd82ab03
+                           .group:00000000 wm4.Os_Internal_Arch.h.35.0bf3ac38e9ac5f78b2da37fa4bf34633
                            .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
                            .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
                            .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
 
 UNDEFINED SYMBOLS
+CheckTerminatingTask_Arch
+Osek_OldTaskPtr_Arch
+Osek_NewTaskPtr_Arch
 _vStackTop
 ResetISR
-PendSV_Handler
 SysTick_Handler
 OSEK_ISR_NoHandler

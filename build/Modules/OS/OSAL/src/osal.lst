@@ -2725,42 +2725,43 @@
  240 002a 009B     		ldr	r3, [sp]
  241 002c 0F2B     		cmp	r3, #15
  242 002e 06D8     		bhi	.L18
-  87:Modules/OS/OSAL/src/osal.c ****                 NVIC_SetPriority(SysTick_IRQn, prio);
- 243              		.loc 2 87 17
- 244 0030 0099     		ldr	r1, [sp]
+  87:Modules/OS/OSAL/src/osal.c ****                 // NVIC_SetPriority(SysTick_IRQn, prio);
+  88:Modules/OS/OSAL/src/osal.c ****                 NVIC_SetPriority(SysTick_IRQn,(1UL << __NVIC_PRIO_BITS) - 1);
+ 243              		.loc 2 88 17
+ 244 0030 0F21     		movs	r1, #15
  245 0032 4FF0FF30 		mov	r0, #-1
  246 0036 FFF7FEFF 		bl	__NVIC_SetPriority
-  88:Modules/OS/OSAL/src/osal.c ****             } else {
-  89:Modules/OS/OSAL/src/osal.c ****                 return 1U;
-  90:Modules/OS/OSAL/src/osal.c ****             }
-  91:Modules/OS/OSAL/src/osal.c ****         } else {
-  92:Modules/OS/OSAL/src/osal.c ****              return 1U;
-  93:Modules/OS/OSAL/src/osal.c ****         }
-  94:Modules/OS/OSAL/src/osal.c ****     } else {
-  95:Modules/OS/OSAL/src/osal.c ****          return 1U;
-  96:Modules/OS/OSAL/src/osal.c ****     }
-  97:Modules/OS/OSAL/src/osal.c **** 
-  98:Modules/OS/OSAL/src/osal.c ****     return 0U;
- 247              		.loc 2 98 12
+  89:Modules/OS/OSAL/src/osal.c ****             } else {
+  90:Modules/OS/OSAL/src/osal.c ****                 return 1U;
+  91:Modules/OS/OSAL/src/osal.c ****             }
+  92:Modules/OS/OSAL/src/osal.c ****         } else {
+  93:Modules/OS/OSAL/src/osal.c ****              return 1U;
+  94:Modules/OS/OSAL/src/osal.c ****         }
+  95:Modules/OS/OSAL/src/osal.c ****     } else {
+  96:Modules/OS/OSAL/src/osal.c ****          return 1U;
+  97:Modules/OS/OSAL/src/osal.c ****     }
+  98:Modules/OS/OSAL/src/osal.c **** 
+  99:Modules/OS/OSAL/src/osal.c ****     return 0U;
+ 247              		.loc 2 99 12
  248 003a 0023     		movs	r3, #0
  249 003c 04E0     		b	.L20
  250              	.L18:
-  89:Modules/OS/OSAL/src/osal.c ****             }
- 251              		.loc 2 89 24
+  90:Modules/OS/OSAL/src/osal.c ****             }
+ 251              		.loc 2 90 24
  252 003e 0123     		movs	r3, #1
  253 0040 02E0     		b	.L20
  254              	.L17:
-  92:Modules/OS/OSAL/src/osal.c ****         }
- 255              		.loc 2 92 21
+  93:Modules/OS/OSAL/src/osal.c ****         }
+ 255              		.loc 2 93 21
  256 0042 0123     		movs	r3, #1
  257 0044 00E0     		b	.L20
  258              	.L16:
-  95:Modules/OS/OSAL/src/osal.c ****     }
- 259              		.loc 2 95 17
+  96:Modules/OS/OSAL/src/osal.c ****     }
+ 259              		.loc 2 96 17
  260 0046 0123     		movs	r3, #1
  261              	.L20:
-  99:Modules/OS/OSAL/src/osal.c **** }
- 262              		.loc 2 99 1
+ 100:Modules/OS/OSAL/src/osal.c **** }
+ 262              		.loc 2 100 1
  263 0048 1846     		mov	r0, r3
  264 004a 03B0     		add	sp, sp, #12
  265              		.cfi_def_cfa_offset 4
@@ -2781,16 +2782,16 @@
  281              		.thumb_func
  283              	osal_tick_delay:
  284              	.LFB411:
- 100:Modules/OS/OSAL/src/osal.c **** 
- 101:Modules/OS/OSAL/src/osal.c **** /**
- 102:Modules/OS/OSAL/src/osal.c ****  * @brief   Delays execution by specified amount of ticks
- 103:Modules/OS/OSAL/src/osal.c ****  *
- 104:Modules/OS/OSAL/src/osal.c ****  * @param[in] sec       number of ticks to delay
- 105:Modules/OS/OSAL/src/osal.c ****  *
- 106:Modules/OS/OSAL/src/osal.c ****  * @notapi
- 107:Modules/OS/OSAL/src/osal.c ****  */
- 108:Modules/OS/OSAL/src/osal.c **** __STATIC_INLINE void osal_tick_delay(uint32_t ticks) {
- 285              		.loc 2 108 54
+ 101:Modules/OS/OSAL/src/osal.c **** 
+ 102:Modules/OS/OSAL/src/osal.c **** /**
+ 103:Modules/OS/OSAL/src/osal.c ****  * @brief   Delays execution by specified amount of ticks
+ 104:Modules/OS/OSAL/src/osal.c ****  *
+ 105:Modules/OS/OSAL/src/osal.c ****  * @param[in] sec       number of ticks to delay
+ 106:Modules/OS/OSAL/src/osal.c ****  *
+ 107:Modules/OS/OSAL/src/osal.c ****  * @notapi
+ 108:Modules/OS/OSAL/src/osal.c ****  */
+ 109:Modules/OS/OSAL/src/osal.c **** __STATIC_INLINE void osal_tick_delay(uint32_t ticks) {
+ 285              		.loc 2 109 54
  286              		.cfi_startproc
  287              		@ args = 0, pretend = 0, frame = 16
  288              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -2800,30 +2801,30 @@
  292 0002 85B0     		sub	sp, sp, #20
  293              		.cfi_def_cfa_offset 24
  294 0004 0190     		str	r0, [sp, #4]
- 109:Modules/OS/OSAL/src/osal.c **** 
- 110:Modules/OS/OSAL/src/osal.c ****     const uint32_t tickstart = osal_get_tick();
- 295              		.loc 2 110 32
+ 110:Modules/OS/OSAL/src/osal.c **** 
+ 111:Modules/OS/OSAL/src/osal.c ****     const uint32_t tickstart = osal_get_tick();
+ 295              		.loc 2 111 32
  296 0006 FFF7FEFF 		bl	osal_get_tick
  297 000a 0390     		str	r0, [sp, #12]
- 111:Modules/OS/OSAL/src/osal.c **** 
- 112:Modules/OS/OSAL/src/osal.c ****     while (osal_get_tick() < tickstart + ticks) {
- 298              		.loc 2 112 11
+ 112:Modules/OS/OSAL/src/osal.c **** 
+ 113:Modules/OS/OSAL/src/osal.c ****     while (osal_get_tick() < tickstart + ticks) {
+ 298              		.loc 2 113 11
  299 000c 00BF     		nop
  300              	.L24:
- 301              		.loc 2 112 12 discriminator 1
+ 301              		.loc 2 113 12 discriminator 1
  302 000e FFF7FEFF 		bl	osal_get_tick
  303 0012 0146     		mov	r1, r0
- 304              		.loc 2 112 40 discriminator 1
+ 304              		.loc 2 113 40 discriminator 1
  305 0014 039A     		ldr	r2, [sp, #12]
  306 0016 019B     		ldr	r3, [sp, #4]
  307 0018 1344     		add	r3, r3, r2
- 308              		.loc 2 112 11 discriminator 1
+ 308              		.loc 2 113 11 discriminator 1
  309 001a 9942     		cmp	r1, r3
  310 001c F7D3     		bcc	.L24
- 113:Modules/OS/OSAL/src/osal.c ****         ;
- 114:Modules/OS/OSAL/src/osal.c ****     }
- 115:Modules/OS/OSAL/src/osal.c **** }
- 311              		.loc 2 115 1
+ 114:Modules/OS/OSAL/src/osal.c ****         ;
+ 115:Modules/OS/OSAL/src/osal.c ****     }
+ 116:Modules/OS/OSAL/src/osal.c **** }
+ 311              		.loc 2 116 1
  312 001e 00BF     		nop
  313 0020 00BF     		nop
  314 0022 05B0     		add	sp, sp, #20
@@ -2840,17 +2841,17 @@
  326              		.thumb_func
  328              	osal_systick_s2tk:
  329              	.LFB412:
- 116:Modules/OS/OSAL/src/osal.c **** 
- 117:Modules/OS/OSAL/src/osal.c **** /**
- 118:Modules/OS/OSAL/src/osal.c ****  * @brief   Converts seconds into number of ticks
- 119:Modules/OS/OSAL/src/osal.c ****  *
- 120:Modules/OS/OSAL/src/osal.c ****  * @param[in] sec       number of seconds
- 121:Modules/OS/OSAL/src/osal.c ****  * @return              number of ticks
- 122:Modules/OS/OSAL/src/osal.c ****  *
- 123:Modules/OS/OSAL/src/osal.c ****  * @notapi
- 124:Modules/OS/OSAL/src/osal.c ****  */
- 125:Modules/OS/OSAL/src/osal.c **** __STATIC_INLINE uint32_t osal_systick_s2tk(uint32_t sec) {
- 330              		.loc 2 125 58
+ 117:Modules/OS/OSAL/src/osal.c **** 
+ 118:Modules/OS/OSAL/src/osal.c **** /**
+ 119:Modules/OS/OSAL/src/osal.c ****  * @brief   Converts seconds into number of ticks
+ 120:Modules/OS/OSAL/src/osal.c ****  *
+ 121:Modules/OS/OSAL/src/osal.c ****  * @param[in] sec       number of seconds
+ 122:Modules/OS/OSAL/src/osal.c ****  * @return              number of ticks
+ 123:Modules/OS/OSAL/src/osal.c ****  *
+ 124:Modules/OS/OSAL/src/osal.c ****  * @notapi
+ 125:Modules/OS/OSAL/src/osal.c ****  */
+ 126:Modules/OS/OSAL/src/osal.c **** __STATIC_INLINE uint32_t osal_systick_s2tk(uint32_t sec) {
+ 330              		.loc 2 126 58
  331              		.cfi_startproc
  332              		@ args = 0, pretend = 0, frame = 8
  333              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -2858,16 +2859,16 @@
  335 0000 82B0     		sub	sp, sp, #8
  336              		.cfi_def_cfa_offset 8
  337 0002 0190     		str	r0, [sp, #4]
- 126:Modules/OS/OSAL/src/osal.c **** 
- 127:Modules/OS/OSAL/src/osal.c ****     return ((uint32_t)((sec) * (osal_ticks_per_sec)));
- 338              		.loc 2 127 30
+ 127:Modules/OS/OSAL/src/osal.c **** 
+ 128:Modules/OS/OSAL/src/osal.c ****     return ((uint32_t)((sec) * (osal_ticks_per_sec)));
+ 338              		.loc 2 128 30
  339 0004 034B     		ldr	r3, .L27
  340 0006 1B68     		ldr	r3, [r3]
- 341              		.loc 2 127 13
+ 341              		.loc 2 128 13
  342 0008 019A     		ldr	r2, [sp, #4]
  343 000a 02FB03F3 		mul	r3, r2, r3
- 128:Modules/OS/OSAL/src/osal.c **** }
- 344              		.loc 2 128 1
+ 129:Modules/OS/OSAL/src/osal.c **** }
+ 344              		.loc 2 129 1
  345 000e 1846     		mov	r0, r3
  346 0010 02B0     		add	sp, sp, #8
  347              		.cfi_def_cfa_offset 0
@@ -2887,17 +2888,17 @@
  362              		.thumb_func
  364              	osal_systick_ms2tk:
  365              	.LFB413:
- 129:Modules/OS/OSAL/src/osal.c **** 
- 130:Modules/OS/OSAL/src/osal.c **** /**
- 131:Modules/OS/OSAL/src/osal.c ****  * @brief   Converts milliseconds into number of ticks
- 132:Modules/OS/OSAL/src/osal.c ****  *
- 133:Modules/OS/OSAL/src/osal.c ****  * @param[in] msec      number of milliseconds
- 134:Modules/OS/OSAL/src/osal.c ****  * @return              number of ticks
- 135:Modules/OS/OSAL/src/osal.c ****  *
- 136:Modules/OS/OSAL/src/osal.c ****  * @notapi
- 137:Modules/OS/OSAL/src/osal.c ****  */
- 138:Modules/OS/OSAL/src/osal.c **** __STATIC_INLINE uint32_t osal_systick_ms2tk(uint32_t msec) {
- 366              		.loc 2 138 60
+ 130:Modules/OS/OSAL/src/osal.c **** 
+ 131:Modules/OS/OSAL/src/osal.c **** /**
+ 132:Modules/OS/OSAL/src/osal.c ****  * @brief   Converts milliseconds into number of ticks
+ 133:Modules/OS/OSAL/src/osal.c ****  *
+ 134:Modules/OS/OSAL/src/osal.c ****  * @param[in] msec      number of milliseconds
+ 135:Modules/OS/OSAL/src/osal.c ****  * @return              number of ticks
+ 136:Modules/OS/OSAL/src/osal.c ****  *
+ 137:Modules/OS/OSAL/src/osal.c ****  * @notapi
+ 138:Modules/OS/OSAL/src/osal.c ****  */
+ 139:Modules/OS/OSAL/src/osal.c **** __STATIC_INLINE uint32_t osal_systick_ms2tk(uint32_t msec) {
+ 366              		.loc 2 139 60
  367              		.cfi_startproc
  368              		@ args = 0, pretend = 0, frame = 8
  369              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -2905,35 +2906,35 @@
  371 0000 82B0     		sub	sp, sp, #8
  372              		.cfi_def_cfa_offset 8
  373 0002 0190     		str	r0, [sp, #4]
- 139:Modules/OS/OSAL/src/osal.c **** 
- 140:Modules/OS/OSAL/src/osal.c ****     return ((msec == 0U) ? ((uint32_t) 0) :
- 374              		.loc 2 140 43
+ 140:Modules/OS/OSAL/src/osal.c **** 
+ 141:Modules/OS/OSAL/src/osal.c ****     return ((msec == 0U) ? ((uint32_t) 0) :
+ 374              		.loc 2 141 43
  375 0004 019B     		ldr	r3, [sp, #4]
  376 0006 002B     		cmp	r3, #0
  377 0008 0BD0     		beq	.L30
- 141:Modules/OS/OSAL/src/osal.c ****                            ((uint32_t)((((msec) * (osal_ticks_per_sec) - 1UL) / 1000UL) + 1UL)));
- 378              		.loc 2 141 49 discriminator 1
+ 142:Modules/OS/OSAL/src/osal.c ****                            ((uint32_t)((((msec) * (osal_ticks_per_sec) - 1UL) / 1000UL) + 1UL)));
+ 378              		.loc 2 142 49 discriminator 1
  379 000a 084B     		ldr	r3, .L33
  380 000c 1B68     		ldr	r3, [r3]
  381 000e 019A     		ldr	r2, [sp, #4]
  382 0010 02FB03F3 		mul	r3, r2, r3
- 383              		.loc 2 141 72 discriminator 1
+ 383              		.loc 2 142 72 discriminator 1
  384 0014 013B     		subs	r3, r3, #1
- 385              		.loc 2 141 79 discriminator 1
+ 385              		.loc 2 142 79 discriminator 1
  386 0016 064A     		ldr	r2, .L33+4
  387 0018 A2FB0323 		umull	r2, r3, r2, r3
  388 001c 9B09     		lsrs	r3, r3, #6
- 140:Modules/OS/OSAL/src/osal.c ****                            ((uint32_t)((((msec) * (osal_ticks_per_sec) - 1UL) / 1000UL) + 1UL)));
- 389              		.loc 2 140 43 discriminator 1
+ 141:Modules/OS/OSAL/src/osal.c ****                            ((uint32_t)((((msec) * (osal_ticks_per_sec) - 1UL) / 1000UL) + 1UL)));
+ 389              		.loc 2 141 43 discriminator 1
  390 001e 0133     		adds	r3, r3, #1
  391 0020 00E0     		b	.L32
  392              	.L30:
- 140:Modules/OS/OSAL/src/osal.c ****                            ((uint32_t)((((msec) * (osal_ticks_per_sec) - 1UL) / 1000UL) + 1UL)));
- 393              		.loc 2 140 43 is_stmt 0 discriminator 2
+ 141:Modules/OS/OSAL/src/osal.c ****                            ((uint32_t)((((msec) * (osal_ticks_per_sec) - 1UL) / 1000UL) + 1UL)));
+ 393              		.loc 2 141 43 is_stmt 0 discriminator 2
  394 0022 0023     		movs	r3, #0
  395              	.L32:
- 142:Modules/OS/OSAL/src/osal.c **** }
- 396              		.loc 2 142 1 is_stmt 1 discriminator 5
+ 143:Modules/OS/OSAL/src/osal.c **** }
+ 396              		.loc 2 143 1 is_stmt 1 discriminator 5
  397 0024 1846     		mov	r0, r3
  398 0026 02B0     		add	sp, sp, #8
  399              		.cfi_def_cfa_offset 0
@@ -2954,17 +2955,17 @@
  415              		.thumb_func
  417              	osal_systick_us2tk:
  418              	.LFB414:
- 143:Modules/OS/OSAL/src/osal.c **** 
- 144:Modules/OS/OSAL/src/osal.c **** /**
- 145:Modules/OS/OSAL/src/osal.c ****  * @brief   Converts microseconds into number of ticks
- 146:Modules/OS/OSAL/src/osal.c ****  *
- 147:Modules/OS/OSAL/src/osal.c ****  * @param[in] usec      number of microseconds
- 148:Modules/OS/OSAL/src/osal.c ****  * @return              number of ticks
- 149:Modules/OS/OSAL/src/osal.c ****  *
- 150:Modules/OS/OSAL/src/osal.c ****  * @notapi
- 151:Modules/OS/OSAL/src/osal.c ****  */
- 152:Modules/OS/OSAL/src/osal.c **** __STATIC_INLINE uint32_t osal_systick_us2tk(uint32_t usec) {
- 419              		.loc 2 152 60
+ 144:Modules/OS/OSAL/src/osal.c **** 
+ 145:Modules/OS/OSAL/src/osal.c **** /**
+ 146:Modules/OS/OSAL/src/osal.c ****  * @brief   Converts microseconds into number of ticks
+ 147:Modules/OS/OSAL/src/osal.c ****  *
+ 148:Modules/OS/OSAL/src/osal.c ****  * @param[in] usec      number of microseconds
+ 149:Modules/OS/OSAL/src/osal.c ****  * @return              number of ticks
+ 150:Modules/OS/OSAL/src/osal.c ****  *
+ 151:Modules/OS/OSAL/src/osal.c ****  * @notapi
+ 152:Modules/OS/OSAL/src/osal.c ****  */
+ 153:Modules/OS/OSAL/src/osal.c **** __STATIC_INLINE uint32_t osal_systick_us2tk(uint32_t usec) {
+ 419              		.loc 2 153 60
  420              		.cfi_startproc
  421              		@ args = 0, pretend = 0, frame = 8
  422              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -2972,35 +2973,35 @@
  424 0000 82B0     		sub	sp, sp, #8
  425              		.cfi_def_cfa_offset 8
  426 0002 0190     		str	r0, [sp, #4]
- 153:Modules/OS/OSAL/src/osal.c **** 
- 154:Modules/OS/OSAL/src/osal.c ****     return ((usec == 0U) ? ((uint32_t) 0) :
- 427              		.loc 2 154 43
+ 154:Modules/OS/OSAL/src/osal.c **** 
+ 155:Modules/OS/OSAL/src/osal.c ****     return ((usec == 0U) ? ((uint32_t) 0) :
+ 427              		.loc 2 155 43
  428 0004 019B     		ldr	r3, [sp, #4]
  429 0006 002B     		cmp	r3, #0
  430 0008 0BD0     		beq	.L36
- 155:Modules/OS/OSAL/src/osal.c ****                            ((uint32_t)((((usec) * (osal_ticks_per_sec) - 1UL) / 1000000UL) + 1UL)))
- 431              		.loc 2 155 49 discriminator 1
+ 156:Modules/OS/OSAL/src/osal.c ****                            ((uint32_t)((((usec) * (osal_ticks_per_sec) - 1UL) / 1000000UL) + 1UL)))
+ 431              		.loc 2 156 49 discriminator 1
  432 000a 084B     		ldr	r3, .L39
  433 000c 1B68     		ldr	r3, [r3]
  434 000e 019A     		ldr	r2, [sp, #4]
  435 0010 02FB03F3 		mul	r3, r2, r3
- 436              		.loc 2 155 72 discriminator 1
+ 436              		.loc 2 156 72 discriminator 1
  437 0014 013B     		subs	r3, r3, #1
- 438              		.loc 2 155 79 discriminator 1
+ 438              		.loc 2 156 79 discriminator 1
  439 0016 064A     		ldr	r2, .L39+4
  440 0018 A2FB0323 		umull	r2, r3, r2, r3
  441 001c 9B0C     		lsrs	r3, r3, #18
- 154:Modules/OS/OSAL/src/osal.c ****                            ((uint32_t)((((usec) * (osal_ticks_per_sec) - 1UL) / 1000000UL) + 1UL)))
- 442              		.loc 2 154 43 discriminator 1
+ 155:Modules/OS/OSAL/src/osal.c ****                            ((uint32_t)((((usec) * (osal_ticks_per_sec) - 1UL) / 1000000UL) + 1UL)))
+ 442              		.loc 2 155 43 discriminator 1
  443 001e 0133     		adds	r3, r3, #1
  444 0020 00E0     		b	.L38
  445              	.L36:
- 154:Modules/OS/OSAL/src/osal.c ****                            ((uint32_t)((((usec) * (osal_ticks_per_sec) - 1UL) / 1000000UL) + 1UL)))
- 446              		.loc 2 154 43 is_stmt 0 discriminator 2
+ 155:Modules/OS/OSAL/src/osal.c ****                            ((uint32_t)((((usec) * (osal_ticks_per_sec) - 1UL) / 1000000UL) + 1UL)))
+ 446              		.loc 2 155 43 is_stmt 0 discriminator 2
  447 0022 0023     		movs	r3, #0
  448              	.L38:
- 156:Modules/OS/OSAL/src/osal.c **** }
- 449              		.loc 2 156 1 is_stmt 1 discriminator 5
+ 157:Modules/OS/OSAL/src/osal.c **** }
+ 449              		.loc 2 157 1 is_stmt 1 discriminator 5
  450 0024 1846     		mov	r0, r3
  451 0026 02B0     		add	sp, sp, #8
  452              		.cfi_def_cfa_offset 0
@@ -3022,55 +3023,55 @@
  469              		.thumb_func
  471              	osal_init:
  472              	.LFB415:
- 157:Modules/OS/OSAL/src/osal.c **** 
- 158:Modules/OS/OSAL/src/osal.c **** /*===========================================================================*/
- 159:Modules/OS/OSAL/src/osal.c **** /* Local function prototypes                                                 */
- 160:Modules/OS/OSAL/src/osal.c **** /*===========================================================================*/
- 161:Modules/OS/OSAL/src/osal.c **** 
- 162:Modules/OS/OSAL/src/osal.c **** IRQ_HANDLER(SysTick_Handler);
- 163:Modules/OS/OSAL/src/osal.c **** 
- 164:Modules/OS/OSAL/src/osal.c **** /*===========================================================================*/
- 165:Modules/OS/OSAL/src/osal.c **** /* Hook function prototypes                                                  */
- 166:Modules/OS/OSAL/src/osal.c **** /*===========================================================================*/
- 167:Modules/OS/OSAL/src/osal.c **** 
- 168:Modules/OS/OSAL/src/osal.c **** /**
- 169:Modules/OS/OSAL/src/osal.c ****  * @brief   OSAL Tick hook function prototype
- 170:Modules/OS/OSAL/src/osal.c ****  * @details When OSAL_CFG_USE_TICK_HOOK is set to TRUE, the application must
- 171:Modules/OS/OSAL/src/osal.c ****  *          provide a hook function with the following prototype that will be
- 172:Modules/OS/OSAL/src/osal.c ****  *          invoked each time the SysTick generate an interrupt.
- 173:Modules/OS/OSAL/src/osal.c ****  */
- 174:Modules/OS/OSAL/src/osal.c **** #if (OSAL_CFG_USE_TICK_HOOK == TRUE)
- 175:Modules/OS/OSAL/src/osal.c **** extern void osal_tick_hook(void);
- 176:Modules/OS/OSAL/src/osal.c **** #endif
- 177:Modules/OS/OSAL/src/osal.c **** 
- 178:Modules/OS/OSAL/src/osal.c **** /*===========================================================================*/
- 179:Modules/OS/OSAL/src/osal.c **** /* Module interrupt handlers.                                                */
- 180:Modules/OS/OSAL/src/osal.c **** /*===========================================================================*/
- 181:Modules/OS/OSAL/src/osal.c **** 
- 182:Modules/OS/OSAL/src/osal.c **** /**
- 183:Modules/OS/OSAL/src/osal.c ****  * @brief   SysTick interrupt handler
- 184:Modules/OS/OSAL/src/osal.c ****  *
- 185:Modules/OS/OSAL/src/osal.c ****  * @isr
- 186:Modules/OS/OSAL/src/osal.c ****  */
- 187:Modules/OS/OSAL/src/osal.c **** // IRQ_HANDLER(SysTick_Handler) {
- 188:Modules/OS/OSAL/src/osal.c **** 
- 189:Modules/OS/OSAL/src/osal.c **** //     IRQ_PROLOGUE();
- 190:Modules/OS/OSAL/src/osal.c **** 
- 191:Modules/OS/OSAL/src/osal.c **** //     osal_inc_tick();
- 192:Modules/OS/OSAL/src/osal.c **** 
- 193:Modules/OS/OSAL/src/osal.c **** // #if (OSAL_CFG_USE_TICK_HOOK == TRUE)
- 194:Modules/OS/OSAL/src/osal.c **** //     osal_tick_hook();
- 195:Modules/OS/OSAL/src/osal.c **** // #endif
- 196:Modules/OS/OSAL/src/osal.c **** 
- 197:Modules/OS/OSAL/src/osal.c **** //     IRQ_EPILOGUE();
- 198:Modules/OS/OSAL/src/osal.c **** // }
- 199:Modules/OS/OSAL/src/osal.c **** 
- 200:Modules/OS/OSAL/src/osal.c **** /*===========================================================================*/
- 201:Modules/OS/OSAL/src/osal.c **** /* Module exported functions.                                                */
- 202:Modules/OS/OSAL/src/osal.c **** /*===========================================================================*/
- 203:Modules/OS/OSAL/src/osal.c **** 
- 204:Modules/OS/OSAL/src/osal.c **** void osal_init(void) {
- 473              		.loc 2 204 22
+ 158:Modules/OS/OSAL/src/osal.c **** 
+ 159:Modules/OS/OSAL/src/osal.c **** /*===========================================================================*/
+ 160:Modules/OS/OSAL/src/osal.c **** /* Local function prototypes                                                 */
+ 161:Modules/OS/OSAL/src/osal.c **** /*===========================================================================*/
+ 162:Modules/OS/OSAL/src/osal.c **** 
+ 163:Modules/OS/OSAL/src/osal.c **** IRQ_HANDLER(SysTick_Handler);
+ 164:Modules/OS/OSAL/src/osal.c **** 
+ 165:Modules/OS/OSAL/src/osal.c **** /*===========================================================================*/
+ 166:Modules/OS/OSAL/src/osal.c **** /* Hook function prototypes                                                  */
+ 167:Modules/OS/OSAL/src/osal.c **** /*===========================================================================*/
+ 168:Modules/OS/OSAL/src/osal.c **** 
+ 169:Modules/OS/OSAL/src/osal.c **** /**
+ 170:Modules/OS/OSAL/src/osal.c ****  * @brief   OSAL Tick hook function prototype
+ 171:Modules/OS/OSAL/src/osal.c ****  * @details When OSAL_CFG_USE_TICK_HOOK is set to TRUE, the application must
+ 172:Modules/OS/OSAL/src/osal.c ****  *          provide a hook function with the following prototype that will be
+ 173:Modules/OS/OSAL/src/osal.c ****  *          invoked each time the SysTick generate an interrupt.
+ 174:Modules/OS/OSAL/src/osal.c ****  */
+ 175:Modules/OS/OSAL/src/osal.c **** #if (OSAL_CFG_USE_TICK_HOOK == TRUE)
+ 176:Modules/OS/OSAL/src/osal.c **** extern void osal_tick_hook(void);
+ 177:Modules/OS/OSAL/src/osal.c **** #endif
+ 178:Modules/OS/OSAL/src/osal.c **** 
+ 179:Modules/OS/OSAL/src/osal.c **** /*===========================================================================*/
+ 180:Modules/OS/OSAL/src/osal.c **** /* Module interrupt handlers.                                                */
+ 181:Modules/OS/OSAL/src/osal.c **** /*===========================================================================*/
+ 182:Modules/OS/OSAL/src/osal.c **** 
+ 183:Modules/OS/OSAL/src/osal.c **** /**
+ 184:Modules/OS/OSAL/src/osal.c ****  * @brief   SysTick interrupt handler
+ 185:Modules/OS/OSAL/src/osal.c ****  *
+ 186:Modules/OS/OSAL/src/osal.c ****  * @isr
+ 187:Modules/OS/OSAL/src/osal.c ****  */
+ 188:Modules/OS/OSAL/src/osal.c **** // IRQ_HANDLER(SysTick_Handler) {
+ 189:Modules/OS/OSAL/src/osal.c **** 
+ 190:Modules/OS/OSAL/src/osal.c **** //     IRQ_PROLOGUE();
+ 191:Modules/OS/OSAL/src/osal.c **** 
+ 192:Modules/OS/OSAL/src/osal.c **** //     osal_inc_tick();
+ 193:Modules/OS/OSAL/src/osal.c **** 
+ 194:Modules/OS/OSAL/src/osal.c **** // #if (OSAL_CFG_USE_TICK_HOOK == TRUE)
+ 195:Modules/OS/OSAL/src/osal.c **** //     osal_tick_hook();
+ 196:Modules/OS/OSAL/src/osal.c **** // #endif
+ 197:Modules/OS/OSAL/src/osal.c **** 
+ 198:Modules/OS/OSAL/src/osal.c **** //     IRQ_EPILOGUE();
+ 199:Modules/OS/OSAL/src/osal.c **** // }
+ 200:Modules/OS/OSAL/src/osal.c **** 
+ 201:Modules/OS/OSAL/src/osal.c **** /*===========================================================================*/
+ 202:Modules/OS/OSAL/src/osal.c **** /* Module exported functions.                                                */
+ 203:Modules/OS/OSAL/src/osal.c **** /*===========================================================================*/
+ 204:Modules/OS/OSAL/src/osal.c **** 
+ 205:Modules/OS/OSAL/src/osal.c **** void osal_init(void) {
+ 473              		.loc 2 205 22
  474              		.cfi_startproc
  475              		@ args = 0, pretend = 0, frame = 0
  476              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -3078,19 +3079,19 @@
  478              		.cfi_def_cfa_offset 8
  479              		.cfi_offset 3, -8
  480              		.cfi_offset 14, -4
- 205:Modules/OS/OSAL/src/osal.c **** 
- 206:Modules/OS/OSAL/src/osal.c ****     (void)osal_init_systick(OSAL_CFG_TICKS_PER_SEC, OSAL_CFG_TICK_INT_PRIO);
- 481              		.loc 2 206 11
+ 206:Modules/OS/OSAL/src/osal.c **** 
+ 207:Modules/OS/OSAL/src/osal.c ****     (void)osal_init_systick(OSAL_CFG_TICKS_PER_SEC, OSAL_CFG_TICK_INT_PRIO);
+ 481              		.loc 2 207 11
  482 0002 0421     		movs	r1, #4
  483 0004 4FF47A70 		mov	r0, #1000
  484 0008 FFF7FEFF 		bl	osal_init_systick
- 207:Modules/OS/OSAL/src/osal.c ****     osal_tick_cnt = 0;
- 485              		.loc 2 207 19
+ 208:Modules/OS/OSAL/src/osal.c ****     osal_tick_cnt = 0;
+ 485              		.loc 2 208 19
  486 000c 024B     		ldr	r3, .L42
  487 000e 0022     		movs	r2, #0
  488 0010 1A60     		str	r2, [r3]
- 208:Modules/OS/OSAL/src/osal.c **** }
- 489              		.loc 2 208 1
+ 209:Modules/OS/OSAL/src/osal.c **** }
+ 489              		.loc 2 209 1
  490 0012 00BF     		nop
  491 0014 08BD     		pop	{r3, pc}
  492              	.L43:
@@ -3108,20 +3109,20 @@
  505              		.thumb_func
  507              	osal_get_tick:
  508              	.LFB416:
- 209:Modules/OS/OSAL/src/osal.c **** 
- 210:Modules/OS/OSAL/src/osal.c **** uint32_t osal_get_tick(void) {
- 509              		.loc 2 210 30
+ 210:Modules/OS/OSAL/src/osal.c **** 
+ 211:Modules/OS/OSAL/src/osal.c **** uint32_t osal_get_tick(void) {
+ 509              		.loc 2 211 30
  510              		.cfi_startproc
  511              		@ args = 0, pretend = 0, frame = 0
  512              		@ frame_needed = 0, uses_anonymous_args = 0
  513              		@ link register save eliminated.
- 211:Modules/OS/OSAL/src/osal.c **** 
- 212:Modules/OS/OSAL/src/osal.c ****     return osal_tick_cnt;
- 514              		.loc 2 212 12
+ 212:Modules/OS/OSAL/src/osal.c **** 
+ 213:Modules/OS/OSAL/src/osal.c ****     return osal_tick_cnt;
+ 514              		.loc 2 213 12
  515 0000 014B     		ldr	r3, .L46
  516 0002 1B68     		ldr	r3, [r3]
- 213:Modules/OS/OSAL/src/osal.c **** }
- 517              		.loc 2 213 1
+ 214:Modules/OS/OSAL/src/osal.c **** }
+ 517              		.loc 2 214 1
  518 0004 1846     		mov	r0, r3
  519 0006 7047     		bx	lr
  520              	.L47:
@@ -3139,9 +3140,9 @@
  533              		.thumb_func
  535              	osal_delay_sec:
  536              	.LFB417:
- 214:Modules/OS/OSAL/src/osal.c **** 
- 215:Modules/OS/OSAL/src/osal.c **** void osal_delay_sec(uint32_t sec) {
- 537              		.loc 2 215 35
+ 215:Modules/OS/OSAL/src/osal.c **** 
+ 216:Modules/OS/OSAL/src/osal.c **** void osal_delay_sec(uint32_t sec) {
+ 537              		.loc 2 216 35
  538              		.cfi_startproc
  539              		@ args = 0, pretend = 0, frame = 8
  540              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -3151,16 +3152,16 @@
  544 0002 83B0     		sub	sp, sp, #12
  545              		.cfi_def_cfa_offset 16
  546 0004 0190     		str	r0, [sp, #4]
- 216:Modules/OS/OSAL/src/osal.c **** 
- 217:Modules/OS/OSAL/src/osal.c ****     osal_tick_delay(osal_systick_s2tk(sec));
- 547              		.loc 2 217 5
+ 217:Modules/OS/OSAL/src/osal.c **** 
+ 218:Modules/OS/OSAL/src/osal.c ****     osal_tick_delay(osal_systick_s2tk(sec));
+ 547              		.loc 2 218 5
  548 0006 0198     		ldr	r0, [sp, #4]
  549 0008 FFF7FEFF 		bl	osal_systick_s2tk
  550 000c 0346     		mov	r3, r0
  551 000e 1846     		mov	r0, r3
  552 0010 FFF7FEFF 		bl	osal_tick_delay
- 218:Modules/OS/OSAL/src/osal.c **** }
- 553              		.loc 2 218 1
+ 219:Modules/OS/OSAL/src/osal.c **** }
+ 553              		.loc 2 219 1
  554 0014 00BF     		nop
  555 0016 03B0     		add	sp, sp, #12
  556              		.cfi_def_cfa_offset 4
@@ -3177,9 +3178,9 @@
  568              		.thumb_func
  570              	osal_delay_millisec:
  571              	.LFB418:
- 219:Modules/OS/OSAL/src/osal.c **** 
- 220:Modules/OS/OSAL/src/osal.c **** void osal_delay_millisec(uint32_t msec) {
- 572              		.loc 2 220 41
+ 220:Modules/OS/OSAL/src/osal.c **** 
+ 221:Modules/OS/OSAL/src/osal.c **** void osal_delay_millisec(uint32_t msec) {
+ 572              		.loc 2 221 41
  573              		.cfi_startproc
  574              		@ args = 0, pretend = 0, frame = 8
  575              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -3189,16 +3190,16 @@
  579 0002 83B0     		sub	sp, sp, #12
  580              		.cfi_def_cfa_offset 16
  581 0004 0190     		str	r0, [sp, #4]
- 221:Modules/OS/OSAL/src/osal.c **** 
- 222:Modules/OS/OSAL/src/osal.c ****     osal_tick_delay(osal_systick_ms2tk(msec));
- 582              		.loc 2 222 5
+ 222:Modules/OS/OSAL/src/osal.c **** 
+ 223:Modules/OS/OSAL/src/osal.c ****     osal_tick_delay(osal_systick_ms2tk(msec));
+ 582              		.loc 2 223 5
  583 0006 0198     		ldr	r0, [sp, #4]
  584 0008 FFF7FEFF 		bl	osal_systick_ms2tk
  585 000c 0346     		mov	r3, r0
  586 000e 1846     		mov	r0, r3
  587 0010 FFF7FEFF 		bl	osal_tick_delay
- 223:Modules/OS/OSAL/src/osal.c **** }
- 588              		.loc 2 223 1
+ 224:Modules/OS/OSAL/src/osal.c **** }
+ 588              		.loc 2 224 1
  589 0014 00BF     		nop
  590 0016 03B0     		add	sp, sp, #12
  591              		.cfi_def_cfa_offset 4
@@ -3215,9 +3216,9 @@
  603              		.thumb_func
  605              	osal_delay_microsec:
  606              	.LFB419:
- 224:Modules/OS/OSAL/src/osal.c **** 
- 225:Modules/OS/OSAL/src/osal.c **** void osal_delay_microsec(uint32_t usec) {
- 607              		.loc 2 225 41
+ 225:Modules/OS/OSAL/src/osal.c **** 
+ 226:Modules/OS/OSAL/src/osal.c **** void osal_delay_microsec(uint32_t usec) {
+ 607              		.loc 2 226 41
  608              		.cfi_startproc
  609              		@ args = 0, pretend = 0, frame = 8
  610              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -3227,16 +3228,16 @@
  614 0002 83B0     		sub	sp, sp, #12
  615              		.cfi_def_cfa_offset 16
  616 0004 0190     		str	r0, [sp, #4]
- 226:Modules/OS/OSAL/src/osal.c **** 
- 227:Modules/OS/OSAL/src/osal.c ****     osal_tick_delay(osal_systick_us2tk(usec));
- 617              		.loc 2 227 5
+ 227:Modules/OS/OSAL/src/osal.c **** 
+ 228:Modules/OS/OSAL/src/osal.c ****     osal_tick_delay(osal_systick_us2tk(usec));
+ 617              		.loc 2 228 5
  618 0006 0198     		ldr	r0, [sp, #4]
  619 0008 FFF7FEFF 		bl	osal_systick_us2tk
  620 000c 0346     		mov	r3, r0
  621 000e 1846     		mov	r0, r3
  622 0010 FFF7FEFF 		bl	osal_tick_delay
- 228:Modules/OS/OSAL/src/osal.c **** }
- 623              		.loc 2 228 1
+ 229:Modules/OS/OSAL/src/osal.c **** }
+ 623              		.loc 2 229 1
  624 0014 00BF     		nop
  625 0016 03B0     		add	sp, sp, #12
  626              		.cfi_def_cfa_offset 4
@@ -3253,9 +3254,9 @@
  638              		.thumb_func
  640              	osal_tk2s:
  641              	.LFB420:
- 229:Modules/OS/OSAL/src/osal.c **** 
- 230:Modules/OS/OSAL/src/osal.c **** uint32_t osal_tk2s(uint32_t ticks) {
- 642              		.loc 2 230 36
+ 230:Modules/OS/OSAL/src/osal.c **** 
+ 231:Modules/OS/OSAL/src/osal.c **** uint32_t osal_tk2s(uint32_t ticks) {
+ 642              		.loc 2 231 36
  643              		.cfi_startproc
  644              		@ args = 0, pretend = 0, frame = 8
  645              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -3263,15 +3264,15 @@
  647 0000 82B0     		sub	sp, sp, #8
  648              		.cfi_def_cfa_offset 8
  649 0002 0190     		str	r0, [sp, #4]
- 231:Modules/OS/OSAL/src/osal.c **** 
- 232:Modules/OS/OSAL/src/osal.c ****     return (uint32_t)(((uint64_t)ticks ) / ((uint64_t)osal_ticks_per_sec));
- 650              		.loc 2 232 12
+ 232:Modules/OS/OSAL/src/osal.c **** 
+ 233:Modules/OS/OSAL/src/osal.c ****     return (uint32_t)(((uint64_t)ticks ) / ((uint64_t)osal_ticks_per_sec));
+ 650              		.loc 2 233 12
  651 0004 034B     		ldr	r3, .L53
  652 0006 1B68     		ldr	r3, [r3]
  653 0008 019A     		ldr	r2, [sp, #4]
  654 000a B2FBF3F3 		udiv	r3, r2, r3
- 233:Modules/OS/OSAL/src/osal.c **** }
- 655              		.loc 2 233 1
+ 234:Modules/OS/OSAL/src/osal.c **** }
+ 655              		.loc 2 234 1
  656 000e 1846     		mov	r0, r3
  657 0010 02B0     		add	sp, sp, #8
  658              		.cfi_def_cfa_offset 0
@@ -3293,9 +3294,9 @@
  675              		.thumb_func
  677              	osal_tk2ms:
  678              	.LFB421:
- 234:Modules/OS/OSAL/src/osal.c **** 
- 235:Modules/OS/OSAL/src/osal.c **** uint32_t osal_tk2ms(uint32_t ticks) {
- 679              		.loc 2 235 37
+ 235:Modules/OS/OSAL/src/osal.c **** 
+ 236:Modules/OS/OSAL/src/osal.c **** uint32_t osal_tk2ms(uint32_t ticks) {
+ 679              		.loc 2 236 37
  680              		.cfi_startproc
  681              		@ args = 0, pretend = 0, frame = 8
  682              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -3313,14 +3314,14 @@
  694 0004 83B0     		sub	sp, sp, #12
  695              		.cfi_def_cfa_offset 48
  696 0006 0190     		str	r0, [sp, #4]
- 236:Modules/OS/OSAL/src/osal.c **** 
- 237:Modules/OS/OSAL/src/osal.c ****     return (uint32_t)(((uint64_t)ticks * 1000ULL) / ((uint64_t)osal_ticks_per_sec));
- 697              		.loc 2 237 24
+ 237:Modules/OS/OSAL/src/osal.c **** 
+ 238:Modules/OS/OSAL/src/osal.c ****     return (uint32_t)(((uint64_t)ticks * 1000ULL) / ((uint64_t)osal_ticks_per_sec));
+ 697              		.loc 2 238 24
  698 0008 0199     		ldr	r1, [sp, #4]
  699 000a 0020     		movs	r0, #0
  700 000c 0C46     		mov	r4, r1
  701 000e 0546     		mov	r5, r0
- 702              		.loc 2 237 40
+ 702              		.loc 2 238 40
  703 0010 2046     		mov	r0, r4
  704 0012 2946     		mov	r1, r5
  705 0014 4FF00008 		mov	r8, #0
@@ -3350,22 +3351,22 @@
  729 005e 1F46     		mov	r7, r3
  730 0060 3046     		mov	r0, r6
  731 0062 3946     		mov	r1, r7
- 732              		.loc 2 237 54
+ 732              		.loc 2 238 54
  733 0064 074B     		ldr	r3, .L57
  734 0066 1B68     		ldr	r3, [r3]
  735 0068 0022     		movs	r2, #0
  736 006a 9A46     		mov	r10, r3
  737 006c 9346     		mov	fp, r2
- 738              		.loc 2 237 51
+ 738              		.loc 2 238 51
  739 006e 5246     		mov	r2, r10
  740 0070 5B46     		mov	r3, fp
  741 0072 FFF7FEFF 		bl	__aeabi_uldivmod
  742 0076 0246     		mov	r2, r0
  743 0078 0B46     		mov	r3, r1
- 744              		.loc 2 237 12
+ 744              		.loc 2 238 12
  745 007a 1346     		mov	r3, r2
- 238:Modules/OS/OSAL/src/osal.c **** }
- 746              		.loc 2 238 1
+ 239:Modules/OS/OSAL/src/osal.c **** }
+ 746              		.loc 2 239 1
  747 007c 1846     		mov	r0, r3
  748 007e 03B0     		add	sp, sp, #12
  749              		.cfi_def_cfa_offset 36
@@ -3386,9 +3387,9 @@
  765              		.thumb_func
  767              	osal_tk2us:
  768              	.LFB422:
- 239:Modules/OS/OSAL/src/osal.c **** 
- 240:Modules/OS/OSAL/src/osal.c **** uint32_t osal_tk2us(uint32_t ticks) {
- 769              		.loc 2 240 37
+ 240:Modules/OS/OSAL/src/osal.c **** 
+ 241:Modules/OS/OSAL/src/osal.c **** uint32_t osal_tk2us(uint32_t ticks) {
+ 769              		.loc 2 241 37
  770              		.cfi_startproc
  771              		@ args = 0, pretend = 0, frame = 24
  772              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -3406,14 +3407,14 @@
  784 0004 87B0     		sub	sp, sp, #28
  785              		.cfi_def_cfa_offset 64
  786 0006 0590     		str	r0, [sp, #20]
- 241:Modules/OS/OSAL/src/osal.c **** 
- 242:Modules/OS/OSAL/src/osal.c ****     return (uint32_t)(((uint64_t)ticks * 1000000ULL) / ((uint64_t)osal_ticks_per_sec));
- 787              		.loc 2 242 24
+ 242:Modules/OS/OSAL/src/osal.c **** 
+ 243:Modules/OS/OSAL/src/osal.c ****     return (uint32_t)(((uint64_t)ticks * 1000000ULL) / ((uint64_t)osal_ticks_per_sec));
+ 787              		.loc 2 243 24
  788 0008 059B     		ldr	r3, [sp, #20]
  789 000a 0022     		movs	r2, #0
  790 000c 9846     		mov	r8, r3
  791 000e 9146     		mov	r9, r2
- 792              		.loc 2 242 40
+ 792              		.loc 2 243 40
  793 0010 4246     		mov	r2, r8
  794 0012 4B46     		mov	r3, r9
  795 0014 4FF00000 		mov	r0, #0
@@ -3445,22 +3446,22 @@
  821 0068 0093     		str	r3, [sp]
  822 006a 4BEB0903 		adc	r3, fp, r9
  823 006e 0193     		str	r3, [sp, #4]
- 824              		.loc 2 242 57
+ 824              		.loc 2 243 57
  825 0070 084B     		ldr	r3, .L61
  826 0072 1B68     		ldr	r3, [r3]
  827 0074 0022     		movs	r2, #0
  828 0076 0293     		str	r3, [sp, #8]
  829 0078 0392     		str	r2, [sp, #12]
- 830              		.loc 2 242 54
+ 830              		.loc 2 243 54
  831 007a DDE90223 		ldrd	r2, [sp, #8]
  832 007e DDE90001 		ldrd	r0, [sp]
  833 0082 FFF7FEFF 		bl	__aeabi_uldivmod
  834 0086 0246     		mov	r2, r0
  835 0088 0B46     		mov	r3, r1
- 836              		.loc 2 242 12
+ 836              		.loc 2 243 12
  837 008a 1346     		mov	r3, r2
- 243:Modules/OS/OSAL/src/osal.c **** }
- 838              		.loc 2 243 1
+ 244:Modules/OS/OSAL/src/osal.c **** }
+ 838              		.loc 2 244 1
  839 008c 1846     		mov	r0, r3
  840 008e 07B0     		add	sp, sp, #28
  841              		.cfi_def_cfa_offset 36
@@ -3479,54 +3480,54 @@
  855              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\platform\\clock\\include
 DEFINED SYMBOLS
                             *ABS*:00000000 osal.c
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:19     .text.__NVIC_SetPriority:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:25     .text.__NVIC_SetPriority:00000000 __NVIC_SetPriority
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:84     .text.__NVIC_SetPriority:00000048 $d
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:90     .text.SysTick_Config:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:96     .text.SysTick_Config:00000000 SysTick_Config
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:151    .text.SysTick_Config:0000003c $d
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:160    .bss.osal_tick_cnt:00000000 osal_tick_cnt
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:157    .bss.osal_tick_cnt:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:163    .bss.osal_ticks_per_sec:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:166    .bss.osal_ticks_per_sec:00000000 osal_ticks_per_sec
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:169    .text.osal_inc_tick:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:176    .text.osal_inc_tick:00000000 osal_inc_tick
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:196    .text.osal_inc_tick:00000010 $d
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:201    .text.osal_init_systick:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:207    .text.osal_init_systick:00000000 osal_init_systick
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:271    .text.osal_init_systick:00000050 $d
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:277    .text.osal_tick_delay:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:283    .text.osal_tick_delay:00000000 osal_tick_delay
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:507    .text.osal_get_tick:00000000 osal_get_tick
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:322    .text.osal_systick_s2tk:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:328    .text.osal_systick_s2tk:00000000 osal_systick_s2tk
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:353    .text.osal_systick_s2tk:00000014 $d
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:358    .text.osal_systick_ms2tk:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:364    .text.osal_systick_ms2tk:00000000 osal_systick_ms2tk
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:405    .text.osal_systick_ms2tk:0000002c $d
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:411    .text.osal_systick_us2tk:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:417    .text.osal_systick_us2tk:00000000 osal_systick_us2tk
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:458    .text.osal_systick_us2tk:0000002c $d
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:464    .text.osal_init:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:471    .text.osal_init:00000000 osal_init
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:495    .text.osal_init:00000018 $d
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:500    .text.osal_get_tick:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:523    .text.osal_get_tick:00000008 $d
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:528    .text.osal_delay_sec:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:535    .text.osal_delay_sec:00000000 osal_delay_sec
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:563    .text.osal_delay_millisec:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:570    .text.osal_delay_millisec:00000000 osal_delay_millisec
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:598    .text.osal_delay_microsec:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:605    .text.osal_delay_microsec:00000000 osal_delay_microsec
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:633    .text.osal_tk2s:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:640    .text.osal_tk2s:00000000 osal_tk2s
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:664    .text.osal_tk2s:00000014 $d
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:670    .text.osal_tk2ms:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:677    .text.osal_tk2ms:00000000 osal_tk2ms
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:755    .text.osal_tk2ms:00000084 $d
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:760    .text.osal_tk2us:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:767    .text.osal_tk2us:00000000 osal_tk2us
-C:\Users\AAA\AppData\Local\Temp\ccBf5Dtm.s:847    .text.osal_tk2us:00000094 $d
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:19     .text.__NVIC_SetPriority:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:25     .text.__NVIC_SetPriority:00000000 __NVIC_SetPriority
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:84     .text.__NVIC_SetPriority:00000048 $d
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:90     .text.SysTick_Config:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:96     .text.SysTick_Config:00000000 SysTick_Config
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:151    .text.SysTick_Config:0000003c $d
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:160    .bss.osal_tick_cnt:00000000 osal_tick_cnt
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:157    .bss.osal_tick_cnt:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:163    .bss.osal_ticks_per_sec:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:166    .bss.osal_ticks_per_sec:00000000 osal_ticks_per_sec
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:169    .text.osal_inc_tick:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:176    .text.osal_inc_tick:00000000 osal_inc_tick
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:196    .text.osal_inc_tick:00000010 $d
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:201    .text.osal_init_systick:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:207    .text.osal_init_systick:00000000 osal_init_systick
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:271    .text.osal_init_systick:00000050 $d
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:277    .text.osal_tick_delay:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:283    .text.osal_tick_delay:00000000 osal_tick_delay
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:507    .text.osal_get_tick:00000000 osal_get_tick
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:322    .text.osal_systick_s2tk:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:328    .text.osal_systick_s2tk:00000000 osal_systick_s2tk
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:353    .text.osal_systick_s2tk:00000014 $d
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:358    .text.osal_systick_ms2tk:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:364    .text.osal_systick_ms2tk:00000000 osal_systick_ms2tk
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:405    .text.osal_systick_ms2tk:0000002c $d
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:411    .text.osal_systick_us2tk:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:417    .text.osal_systick_us2tk:00000000 osal_systick_us2tk
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:458    .text.osal_systick_us2tk:0000002c $d
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:464    .text.osal_init:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:471    .text.osal_init:00000000 osal_init
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:495    .text.osal_init:00000018 $d
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:500    .text.osal_get_tick:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:523    .text.osal_get_tick:00000008 $d
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:528    .text.osal_delay_sec:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:535    .text.osal_delay_sec:00000000 osal_delay_sec
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:563    .text.osal_delay_millisec:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:570    .text.osal_delay_millisec:00000000 osal_delay_millisec
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:598    .text.osal_delay_microsec:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:605    .text.osal_delay_microsec:00000000 osal_delay_microsec
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:633    .text.osal_tk2s:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:640    .text.osal_tk2s:00000000 osal_tk2s
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:664    .text.osal_tk2s:00000014 $d
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:670    .text.osal_tk2ms:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:677    .text.osal_tk2ms:00000000 osal_tk2ms
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:755    .text.osal_tk2ms:00000084 $d
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:760    .text.osal_tk2us:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:767    .text.osal_tk2us:00000000 osal_tk2us
+C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:847    .text.osal_tk2us:00000094 $d
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.osal_cfg.h.23.b97ea04faf646103324df3ecc2655260
                            .group:00000000 wm4.sr5e1xx.h.22.568547583bf3c00ded67adadc0110f08

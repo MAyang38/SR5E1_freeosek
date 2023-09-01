@@ -1504,85 +1504,446 @@
  168 0018 FFF7FEFF 		bl	StartOS
  169 001c 0023     		movs	r3, #0
   49:src/main.c    **** 
-  50:src/main.c    ****     
-  51:src/main.c    ****     /* Prepare frame to transmit.*/
-  52:src/main.c    ****     // frame.TYPE = CAN_ID_STD;
-  53:src/main.c    ****     // frame.ID = CAN_DEFAULT_FILTER_ID;
-  54:src/main.c    ****     // frame.DLC = CAN_MESSAGE_SIZE;
-  55:src/main.c    ****     // frame.data32[0] = CAN_DATA_TO_SEND;
-  56:src/main.c    ****     // frame.OPERATION = CAN_OPERATION_NORMAL;
-  57:src/main.c    **** 
-  58:src/main.c    ****     // // L9388_Init_res = CDD_L9388_Init();
-  59:src/main.c    ****     // // WDG2Init_res = CDD_L9388_WDG2_Init();
-  60:src/main.c    **** 
-  61:src/main.c    ****     // // CDD_L9388_NO_Ch1_Init_demo();
-  62:src/main.c    ****     // /* Application main loop */
-  63:src/main.c    ****     //     CDD_L9388_WDG2_Mainfunction();
-  64:src/main.c    **** 
-  65:src/main.c    ****     // for ( ; ; ) {
-  66:src/main.c    ****     //     osal_delay_millisec(11);
-  67:src/main.c    ****         
-  68:src/main.c    **** 
-  69:src/main.c    ****     //     CDD_L9388_Init_For_Test(Pwm_Type);
-  70:src/main.c    **** 
-  71:src/main.c    ****     //     CDD_L9388_Read_Status_For_Test();
-  72:src/main.c    **** 
-  73:src/main.c    **** 
-  74:src/main.c    ****     //     // 1. ADC_DR 寄存器 ADC_SEL写入0000    读取ADC_DATA_OUT位
-  75:src/main.c    ****     //     CDD_L9388_Read_ADC(0);
-  76:src/main.c    ****     //     // 2. VSOSER 寄存器 SEL_OUT_CMD 写入1 SEL_CONF 写入1    回读VSODR寄存器 
-  77:src/main.c    ****     //     L9388_Set_VSOSER();
-  78:src/main.c    ****     //     L9388_Read_VSODR();
-  79:src/main.c    ****     //     // 3. WLD1_SHLS_CONFIG寄存器 WLD_CMD位 写入1   回读WLD1_SHLSDR寄存器
-  80:src/main.c    ****     //     L9388_Set_WLD(1);
-  81:src/main.c    ****     //     L9388_Read_WLD1_SHLSDR();
-  82:src/main.c    ****         
-  83:src/main.c    ****     //     L9388_Set_SERVFLTMSK();
-  84:src/main.c    ****     //     L9388_Read_SERVFLTMSK();
-  85:src/main.c    ****         
-  86:src/main.c    ****     // }
-  87:src/main.c    **** }...
- 170              		.loc 3 87 1
+  50:src/main.c    **** 
+  51:src/main.c    **** }
+ 170              		.loc 3 51 1
  171 001e 1846     		mov	r0, r3
  172 0020 08BD     		pop	{r3, pc}
  173              		.cfi_endproc
  174              	.LFE445:
- 176 0022 00BF     		.text
- 177              	.Letext0:
- 178              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
- 179              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
- 180              		.file 7 "./common/include/test_env.h"
- 181              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\drivers\\comms\\can\\inc
+ 176 0022 00BF     		.section	.rodata
+ 177              		.align	2
+ 178              	.LC0:
+ 179 0000 496E6974 		.ascii	"InitTask: SetRelAlarm for TaskPeriodic.\000"
+ 179      5461736B 
+ 179      3A205365 
+ 179      7452656C 
+ 179      416C6172 
+ 180              		.align	2
+ 181              	.LC1:
+ 182 0028 496E6974 		.ascii	"InitTask: SetRelAlarm for AppCallback.\000"
+ 182      5461736B 
+ 182      3A205365 
+ 182      7452656C 
+ 182      416C6172 
+ 183 004f 00       		.align	2
+ 184              	.LC2:
+ 185 0050 496E6974 		.ascii	"InitTask: Activate TaskBlink.\000"
+ 185      5461736B 
+ 185      3A204163 
+ 185      74697661 
+ 185      74652054 
+ 186 006e 0000     		.align	2
+ 187              	.LC3:
+ 188 0070 496E6974 		.ascii	"InitTask: TerminateTask().\000"
+ 188      5461736B 
+ 188      3A205465 
+ 188      726D696E 
+ 188      61746554 
+ 189              		.section	.text.OSEK_TASK_TaskInit,"ax",%progbits
+ 190              		.align	1
+ 191              		.p2align 4,,15
+ 192              		.global	OSEK_TASK_TaskInit
+ 193              		.syntax unified
+ 194              		.thumb
+ 195              		.thumb_func
+ 197              	OSEK_TASK_TaskInit:
+ 198              	.LFB446:
+  52:src/main.c    **** 
+  53:src/main.c    **** 
+  54:src/main.c    **** TASK(TaskInit)
+  55:src/main.c    **** {
+ 199              		.loc 3 55 1
+ 200              		.cfi_startproc
+ 201              		@ args = 0, pretend = 0, frame = 0
+ 202              		@ frame_needed = 0, uses_anonymous_args = 0
+ 203 0000 08B5     		push	{r3, lr}
+ 204              		.cfi_def_cfa_offset 8
+ 205              		.cfi_offset 3, -8
+ 206              		.cfi_offset 14, -4
+  56:src/main.c    **** 	/* Set 500 tick alarm for TaskPeriodic */
+  57:src/main.c    **** 	printf("InitTask: SetRelAlarm for TaskPeriodic.\n");
+ 207              		.loc 3 57 2
+ 208 0002 1148     		ldr	r0, .L5
+ 209 0004 FFF7FEFF 		bl	puts
+  58:src/main.c    **** 	SetRelAlarm(ActivateTaskPeriodic, 0, 500);
+ 210              		.loc 3 58 2
+ 211 0008 4FF4FA72 		mov	r2, #500
+ 212 000c 0021     		movs	r1, #0
+ 213 000e 0020     		movs	r0, #0
+ 214 0010 FFF7FEFF 		bl	SetRelAlarm
+  59:src/main.c    **** 
+  60:src/main.c    **** 	/* Set 1000 tick callback alarm */
+  61:src/main.c    **** 	printf("InitTask: SetRelAlarm for AppCallback.\n");
+ 215              		.loc 3 61 2
+ 216 0014 0D48     		ldr	r0, .L5+4
+ 217 0016 FFF7FEFF 		bl	puts
+  62:src/main.c    **** 	SetRelAlarm(AppCallbackAlarm, 100, 1000);
+ 218              		.loc 3 62 2
+ 219 001a 4FF47A72 		mov	r2, #1000
+ 220 001e 6421     		movs	r1, #100
+ 221 0020 0120     		movs	r0, #1
+ 222 0022 FFF7FEFF 		bl	SetRelAlarm
+  63:src/main.c    **** 
+  64:src/main.c    **** 	/* Activate TaskBlink */
+  65:src/main.c    **** 	printf("InitTask: Activate TaskBlink.\n");
+ 223              		.loc 3 65 2
+ 224 0026 0A48     		ldr	r0, .L5+8
+ 225 0028 FFF7FEFF 		bl	puts
+  66:src/main.c    **** 	ActivateTask(TaskBlink);
+ 226              		.loc 3 66 2
+ 227 002c 0120     		movs	r0, #1
+ 228 002e FFF7FEFF 		bl	ActivateTask
+  67:src/main.c    **** 
+  68:src/main.c    **** 	/* Activate TaskBackground */
+  69:src/main.c    **** 	ActivateTask(TaskBackground);
+ 229              		.loc 3 69 2
+ 230 0032 0320     		movs	r0, #3
+ 231 0034 FFF7FEFF 		bl	ActivateTask
+  70:src/main.c    **** 
+  71:src/main.c    **** 	/* end InitTask */
+  72:src/main.c    **** 	printf("InitTask: TerminateTask().\n");
+ 232              		.loc 3 72 2
+ 233 0038 0648     		ldr	r0, .L5+12
+ 234 003a FFF7FEFF 		bl	puts
+  73:src/main.c    **** 	TerminateTask();
+ 235              		.loc 3 73 2
+ 236 003e FFF7FEFF 		bl	TerminateTask
+  74:src/main.c    **** }
+ 237              		.loc 3 74 1
+ 238 0042 00BF     		nop
+ 239 0044 08BD     		pop	{r3, pc}
+ 240              	.L6:
+ 241 0046 00BF     		.align	2
+ 242              	.L5:
+ 243 0048 00000000 		.word	.LC0
+ 244 004c 28000000 		.word	.LC1
+ 245 0050 50000000 		.word	.LC2
+ 246 0054 70000000 		.word	.LC3
+ 247              		.cfi_endproc
+ 248              	.LFE446:
+ 250              		.section	.rodata
+ 251 008b 00       		.align	2
+ 252              	.LC4:
+ 253 008c 5461736B 		.ascii	"TaskBlink: Init.\000"
+ 253      426C696E 
+ 253      6B3A2049 
+ 253      6E69742E 
+ 253      00
+ 254 009d 000000   		.align	2
+ 255              	.LC5:
+ 256 00a0 5461736B 		.ascii	"TaskBlink: Waiting for event...\000"
+ 256      426C696E 
+ 256      6B3A2057 
+ 256      61697469 
+ 256      6E672066 
+ 257              		.align	2
+ 258              	.LC6:
+ 259 00c0 5461736B 		.ascii	"TaskBlink: LED Toggle.\000"
+ 259      426C696E 
+ 259      6B3A204C 
+ 259      45442054 
+ 259      6F67676C 
+ 260              		.section	.text.OSEK_TASK_TaskBlink,"ax",%progbits
+ 261              		.align	1
+ 262              		.p2align 4,,15
+ 263              		.global	OSEK_TASK_TaskBlink
+ 264              		.syntax unified
+ 265              		.thumb
+ 266              		.thumb_func
+ 268              	OSEK_TASK_TaskBlink:
+ 269              	.LFB447:
+  75:src/main.c    **** 
+  76:src/main.c    **** /*
+  77:src/main.c    ****  * This task waits for an event to be set in order
+  78:src/main.c    ****  * to continue execution.
+  79:src/main.c    ****  */
+  80:src/main.c    **** TASK(TaskBlink)
+  81:src/main.c    **** {
+ 270              		.loc 3 81 1
+ 271              		.cfi_startproc
+ 272              		@ args = 0, pretend = 0, frame = 0
+ 273              		@ frame_needed = 0, uses_anonymous_args = 0
+ 274 0000 08B5     		push	{r3, lr}
+ 275              		.cfi_def_cfa_offset 8
+ 276              		.cfi_offset 3, -8
+ 277              		.cfi_offset 14, -4
+  82:src/main.c    **** 	printf("TaskBlink: Init.\n");
+ 278              		.loc 3 82 2
+ 279 0002 0848     		ldr	r0, .L9
+ 280 0004 FFF7FEFF 		bl	puts
+ 281              	.L8:
+  83:src/main.c    **** 	while(1)
+  84:src/main.c    **** 	{
+  85:src/main.c    **** 		printf("TaskBlink: Waiting for event...\n");
+ 282              		.loc 3 85 3 discriminator 1
+ 283 0008 0748     		ldr	r0, .L9+4
+ 284 000a FFF7FEFF 		bl	puts
+  86:src/main.c    **** 		WaitEvent(evBlink);
+ 285              		.loc 3 86 3 discriminator 1
+ 286 000e 0120     		movs	r0, #1
+ 287 0010 FFF7FEFF 		bl	WaitEvent
+  87:src/main.c    **** 		ClearEvent(evBlink);
+ 288              		.loc 3 87 3 discriminator 1
+ 289 0014 0120     		movs	r0, #1
+ 290 0016 FFF7FEFF 		bl	ClearEvent
+  88:src/main.c    **** 		printf("TaskBlink: LED Toggle.\n");
+ 291              		.loc 3 88 3 discriminator 1
+ 292 001a 0448     		ldr	r0, .L9+8
+ 293 001c FFF7FEFF 		bl	puts
+  85:src/main.c    **** 		WaitEvent(evBlink);
+ 294              		.loc 3 85 3 discriminator 1
+ 295 0020 F2E7     		b	.L8
+ 296              	.L10:
+ 297 0022 00BF     		.align	2
+ 298              	.L9:
+ 299 0024 8C000000 		.word	.LC4
+ 300 0028 A0000000 		.word	.LC5
+ 301 002c C0000000 		.word	.LC6
+ 302              		.cfi_endproc
+ 303              	.LFE447:
+ 305              		.section	.rodata
+ 306 00d7 00       		.align	2
+ 307              	.LC7:
+ 308 00d8 5461736B 		.ascii	"TaskPeriodic: Event set.\000"
+ 308      50657269 
+ 308      6F646963 
+ 308      3A204576 
+ 308      656E7420 
+ 309              		.section	.text.OSEK_TASK_TaskPeriodic,"ax",%progbits
+ 310              		.align	1
+ 311              		.p2align 4,,15
+ 312              		.global	OSEK_TASK_TaskPeriodic
+ 313              		.syntax unified
+ 314              		.thumb
+ 315              		.thumb_func
+ 317              	OSEK_TASK_TaskPeriodic:
+ 318              	.LFB448:
+  89:src/main.c    **** 
+  90:src/main.c    **** 	}
+  91:src/main.c    **** 	TerminateTask();
+  92:src/main.c    **** }
+  93:src/main.c    **** 
+  94:src/main.c    **** /*
+  95:src/main.c    ****  * This is a periodic task.
+  96:src/main.c    ****  */
+  97:src/main.c    **** TASK(TaskPeriodic)
+  98:src/main.c    **** {
+ 319              		.loc 3 98 1
+ 320              		.cfi_startproc
+ 321              		@ args = 0, pretend = 0, frame = 0
+ 322              		@ frame_needed = 0, uses_anonymous_args = 0
+ 323 0000 08B5     		push	{r3, lr}
+ 324              		.cfi_def_cfa_offset 8
+ 325              		.cfi_offset 3, -8
+ 326              		.cfi_offset 14, -4
+  99:src/main.c    **** 	printf("TaskPeriodic: Event set.\n");
+ 327              		.loc 3 99 2
+ 328 0002 0548     		ldr	r0, .L12
+ 329 0004 FFF7FEFF 		bl	puts
+ 100:src/main.c    **** 	SetEvent(TaskBlink, evBlink);
+ 330              		.loc 3 100 2
+ 331 0008 0121     		movs	r1, #1
+ 332 000a 0120     		movs	r0, #1
+ 333 000c FFF7FEFF 		bl	SetEvent
+ 101:src/main.c    **** 
+ 102:src/main.c    **** 	/* end TaskPeriodic */
+ 103:src/main.c    **** 	TerminateTask();
+ 334              		.loc 3 103 2
+ 335 0010 FFF7FEFF 		bl	TerminateTask
+ 104:src/main.c    **** }
+ 336              		.loc 3 104 1
+ 337 0014 00BF     		nop
+ 338 0016 08BD     		pop	{r3, pc}
+ 339              	.L13:
+ 340              		.align	2
+ 341              	.L12:
+ 342 0018 D8000000 		.word	.LC7
+ 343              		.cfi_endproc
+ 344              	.LFE448:
+ 346              		.section	.rodata
+ 347 00f1 000000   		.align	2
+ 348              	.LC8:
+ 349 00f4 5461736B 		.ascii	"TaskBackground: Running!\000"
+ 349      4261636B 
+ 349      67726F75 
+ 349      6E643A20 
+ 349      52756E6E 
+ 350 010d 000000   		.align	2
+ 351              	.LC9:
+ 352 0110 5461736B 		.ascii	"TaskBackground still running...\000"
+ 352      4261636B 
+ 352      67726F75 
+ 352      6E642073 
+ 352      74696C6C 
+ 353              		.section	.text.OSEK_TASK_TaskBackground,"ax",%progbits
+ 354              		.align	1
+ 355              		.p2align 4,,15
+ 356              		.global	OSEK_TASK_TaskBackground
+ 357              		.syntax unified
+ 358              		.thumb
+ 359              		.thumb_func
+ 361              	OSEK_TASK_TaskBackground:
+ 362              	.LFB449:
+ 105:src/main.c    **** 
+ 106:src/main.c    **** /*
+ 107:src/main.c    ****  * Just a background task with an infinite loop,
+ 108:src/main.c    ****  * it has to be defined with the minimum priority!!!
+ 109:src/main.c    ****  */
+ 110:src/main.c    **** TASK(TaskBackground)
+ 111:src/main.c    **** {
+ 363              		.loc 3 111 1
+ 364              		.cfi_startproc
+ 365              		@ args = 0, pretend = 0, frame = 8
+ 366              		@ frame_needed = 0, uses_anonymous_args = 0
+ 367 0000 00B5     		push	{lr}
+ 368              		.cfi_def_cfa_offset 4
+ 369              		.cfi_offset 14, -4
+ 370 0002 83B0     		sub	sp, sp, #12
+ 371              		.cfi_def_cfa_offset 16
+ 112:src/main.c    **** 	volatile int i = 0;
+ 372              		.loc 3 112 15
+ 373 0004 0023     		movs	r3, #0
+ 374 0006 0193     		str	r3, [sp, #4]
+ 113:src/main.c    **** 	printf("TaskBackground: Running!\n");
+ 375              		.loc 3 113 2
+ 376 0008 0748     		ldr	r0, .L17
+ 377 000a FFF7FEFF 		bl	puts
+ 378              	.L16:
+ 114:src/main.c    **** 	while(1)
+ 115:src/main.c    **** 	{
+ 116:src/main.c    **** 		i++;
+ 379              		.loc 3 116 4
+ 380 000e 019B     		ldr	r3, [sp, #4]
+ 381 0010 0133     		adds	r3, r3, #1
+ 382 0012 0193     		str	r3, [sp, #4]
+ 117:src/main.c    **** 		if(i == 0xFFFFF)
+ 383              		.loc 3 117 8
+ 384 0014 019B     		ldr	r3, [sp, #4]
+ 385              		.loc 3 117 5
+ 386 0016 054A     		ldr	r2, .L17+4
+ 387 0018 9342     		cmp	r3, r2
+ 388 001a F8D1     		bne	.L16
+ 118:src/main.c    **** 		{
+ 119:src/main.c    **** 			printf("TaskBackground still running...\n");
+ 389              		.loc 3 119 4
+ 390 001c 0448     		ldr	r0, .L17+8
+ 391 001e FFF7FEFF 		bl	puts
+ 120:src/main.c    **** 			i = 0;
+ 392              		.loc 3 120 6
+ 393 0022 0023     		movs	r3, #0
+ 394 0024 0193     		str	r3, [sp, #4]
+ 116:src/main.c    **** 		if(i == 0xFFFFF)
+ 395              		.loc 3 116 4
+ 396 0026 F2E7     		b	.L16
+ 397              	.L18:
+ 398              		.align	2
+ 399              	.L17:
+ 400 0028 F4000000 		.word	.LC8
+ 401 002c FFFF0F00 		.word	1048575
+ 402 0030 10010000 		.word	.LC9
+ 403              		.cfi_endproc
+ 404              	.LFE449:
+ 406              		.section	.rodata
+ 407              		.align	2
+ 408              	.LC10:
+ 409 0130 41707043 		.ascii	"AppCallback.\000"
+ 409      616C6C62 
+ 409      61636B2E 
+ 409      00
+ 410              		.section	.text.OSEK_CALLBACK_AppCallback,"ax",%progbits
+ 411              		.align	1
+ 412              		.p2align 4,,15
+ 413              		.global	OSEK_CALLBACK_AppCallback
+ 414              		.syntax unified
+ 415              		.thumb
+ 416              		.thumb_func
+ 418              	OSEK_CALLBACK_AppCallback:
+ 419              	.LFB450:
+ 121:src/main.c    **** 		}
+ 122:src/main.c    **** 	}
+ 123:src/main.c    **** }
+ 124:src/main.c    **** 
+ 125:src/main.c    **** /*
+ 126:src/main.c    ****  * Alarm Callback example.
+ 127:src/main.c    ****  */
+ 128:src/main.c    **** ALARMCALLBACK(AppCallback)
+ 129:src/main.c    **** {
+ 420              		.loc 3 129 1
+ 421              		.cfi_startproc
+ 422              		@ args = 0, pretend = 0, frame = 0
+ 423              		@ frame_needed = 0, uses_anonymous_args = 0
+ 424 0000 08B5     		push	{r3, lr}
+ 425              		.cfi_def_cfa_offset 8
+ 426              		.cfi_offset 3, -8
+ 427              		.cfi_offset 14, -4
+ 130:src/main.c    **** 	printf("AppCallback.\n");
+ 428              		.loc 3 130 2
+ 429 0002 0248     		ldr	r0, .L20
+ 430 0004 FFF7FEFF 		bl	puts
+ 131:src/main.c    **** }
+ 431              		.loc 3 131 1
+ 432 0008 00BF     		nop
+ 433 000a 08BD     		pop	{r3, pc}
+ 434              	.L21:
+ 435              		.align	2
+ 436              	.L20:
+ 437 000c 30010000 		.word	.LC10
+ 438              		.cfi_endproc
+ 439              	.LFE450:
+ 441              		.text
+ 442              	.Letext0:
+ 443              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
+ 444              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
+ 445              		.file 7 "./common/include/test_env.h"
+ 446              		.file 8 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\drivers\\comms\\can\\inc
+ 447              		.file 9 "<built-in>"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:19     .text.irq_enable_all:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:25     .text.irq_enable_all:00000000 irq_enable_all
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:58     .data.spi_master_tx_buffer:00000000 spi_master_tx_buffer
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:55     .data.spi_master_tx_buffer:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:65     .bss.spi_slave_rx_buffer:00000000 spi_slave_rx_buffer
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:62     .bss.spi_slave_rx_buffer:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:71     .bss.WDG2Init_res:00000000 WDG2Init_res
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:72     .bss.WDG2Init_res:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:77     .bss.L9388_Init_res:00000000 L9388_Init_res
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:78     .bss.L9388_Init_res:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:83     .bss.status:00000000 status
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:84     .bss.status:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:90     .bss.frame:00000000 frame
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:87     .bss.frame:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:97     .bss.test_value:00000000 test_value
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:94     .bss.test_value:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:103    .bss.os_counter:00000000 os_counter
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:104    .bss.os_counter:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:109    .bss.valve_change:00000000 valve_change
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:110    .bss.valve_change:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:116    .bss.Test_Input:00000000 Test_Input
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:113    .bss.Test_Input:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:122    .bss.Pwm_Type:00000000 Pwm_Type
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:123    .bss.Pwm_Type:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:129    .bss.Time_Count:00000000 Time_Count
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:126    .bss.Time_Count:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:132    .text.main:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:139    .text.main:00000000 main
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:19     .text.irq_enable_all:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:25     .text.irq_enable_all:00000000 irq_enable_all
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:58     .data.spi_master_tx_buffer:00000000 spi_master_tx_buffer
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:55     .data.spi_master_tx_buffer:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:65     .bss.spi_slave_rx_buffer:00000000 spi_slave_rx_buffer
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:62     .bss.spi_slave_rx_buffer:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:71     .bss.WDG2Init_res:00000000 WDG2Init_res
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:72     .bss.WDG2Init_res:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:77     .bss.L9388_Init_res:00000000 L9388_Init_res
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:78     .bss.L9388_Init_res:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:83     .bss.status:00000000 status
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:84     .bss.status:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:90     .bss.frame:00000000 frame
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:87     .bss.frame:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:97     .bss.test_value:00000000 test_value
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:94     .bss.test_value:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:103    .bss.os_counter:00000000 os_counter
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:104    .bss.os_counter:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:109    .bss.valve_change:00000000 valve_change
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:110    .bss.valve_change:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:116    .bss.Test_Input:00000000 Test_Input
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:113    .bss.Test_Input:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:122    .bss.Pwm_Type:00000000 Pwm_Type
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:123    .bss.Pwm_Type:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:129    .bss.Time_Count:00000000 Time_Count
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:126    .bss.Time_Count:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:132    .text.main:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:139    .text.main:00000000 main
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:177    .rodata:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:190    .text.OSEK_TASK_TaskInit:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:197    .text.OSEK_TASK_TaskInit:00000000 OSEK_TASK_TaskInit
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:243    .text.OSEK_TASK_TaskInit:00000048 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:261    .text.OSEK_TASK_TaskBlink:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:268    .text.OSEK_TASK_TaskBlink:00000000 OSEK_TASK_TaskBlink
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:299    .text.OSEK_TASK_TaskBlink:00000024 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:310    .text.OSEK_TASK_TaskPeriodic:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:317    .text.OSEK_TASK_TaskPeriodic:00000000 OSEK_TASK_TaskPeriodic
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:342    .text.OSEK_TASK_TaskPeriodic:00000018 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:354    .text.OSEK_TASK_TaskBackground:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:361    .text.OSEK_TASK_TaskBackground:00000000 OSEK_TASK_TaskBackground
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:400    .text.OSEK_TASK_TaskBackground:00000028 $d
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:411    .text.OSEK_CALLBACK_AppCallback:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:418    .text.OSEK_CALLBACK_AppCallback:00000000 OSEK_CALLBACK_AppCallback
+C:\Users\AAA\AppData\Local\Temp\ccgJF5HK.s:437    .text.OSEK_CALLBACK_AppCallback:0000000c $d
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
@@ -1655,7 +2016,7 @@ C:\Users\AAA\AppData\Local\Temp\ccmHhesO.s:139    .text.main:00000000 main
                            .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
                            .group:00000000 wm4.Types.h.71.60121fe8f901d8cc638eef90c346c61b
                            .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
-                           .group:00000000 wm4.Os_Arch.h.93.0863f8c3f86c55fe1f037e41544a1c6f
+                           .group:00000000 wm4.Os_Arch.h.93.12102c3b0d784f7b702d5066ade693b9
                            .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
 
 UNDEFINED SYMBOLS
@@ -1663,3 +2024,10 @@ test_env_init
 SPI_LLD_Init
 CAN_LLD_Init
 StartOS
+puts
+SetRelAlarm
+ActivateTask
+TerminateTask
+WaitEvent
+ClearEvent
+SetEvent

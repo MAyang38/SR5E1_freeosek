@@ -100,15 +100,17 @@ void CheckTerminatingTask_Arch(void)
 /* Task Stack Initialization */
 void InitStack_Arch(uint8 TaskID)
 {
-
+	
+	// 堆栈指针
 	uint32 * taskStack = (uint32 *)TasksConst[TaskID].StackPtr;
+	// 堆栈字大小   字节/4
 	int taskStackSizeWords = TasksConst[TaskID].StackSize/4;
-
+	// 寄存器
 	taskStack[taskStackSizeWords-1] = 1<<24; /* xPSR.T = 1 */
 	taskStack[taskStackSizeWords-2] = (uint32) TasksConst[TaskID].EntryPoint; /*PC*/
 	taskStack[taskStackSizeWords-3] = (uint32) ReturnHook_Arch; /* stacked LR */
 	taskStack[taskStackSizeWords-9] = 0xFFFFFFFD; /* current LR, return using PSP */
-
+	// 上下文地址
 	*(TasksConst[TaskID].TaskContext) = &(taskStack[taskStackSizeWords - 17]);
 
 }
@@ -124,10 +126,12 @@ void SysTick_Handler(void)
 #if (ALARMS_COUNT != 0)
 	/* counter increment */
 	static CounterIncrementType CounterIncrement = 1;
-   (void)CounterIncrement; /* TODO remove me */
+//    (void)CounterIncrement; /* TODO remove me */
 
 	/* increment the disable interrupt conter to avoid enable the interrupts */
 	IntSecure_Start();
+
+    osal_inc_tick();
 
 	/* call counter interrupt handler */
 	CounterIncrement = IncrementCounter(0, 1 /* CounterIncrement */); /* TODO FIXME */

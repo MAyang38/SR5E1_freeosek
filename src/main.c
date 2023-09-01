@@ -86,7 +86,7 @@ TASK(TaskBlink)
 		WaitEvent(evBlink);
 		ClearEvent(evBlink);
 		printf("TaskBlink: LED Toggle.\n");
-		STM_EVAL_LEDToggle(LED3);
+
 	}
 	TerminateTask();
 }

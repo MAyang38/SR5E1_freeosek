@@ -84,6 +84,7 @@ void StartOs_Arch(void)
 {
 	uint8f loopi;
 
+	// 初始化任务堆栈
 	/* init every task */
 	for( loopi = 0; loopi < TASKS_COUNT; loopi++)
 	{

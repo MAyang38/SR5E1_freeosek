@@ -2272,302 +2272,16 @@
   85 004c 00ED00E0 		.word	-536810240
   86              		.cfi_endproc
   87              	.LFE115:
-  89              		.section	.text.SysTick_Config,"ax",%progbits
+  89              		.section	.text.StartOs_Arch_SysTick,"ax",%progbits
   90              		.align	1
   91              		.p2align 4,,15
-  92              		.syntax unified
-  93              		.thumb
-  94              		.thumb_func
-  96              	SysTick_Config:
-  97              	.LFB123:
-2183:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2184:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2185:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** /**
-2186:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \brief   Get Interrupt Priority
-2187:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \details Reads the priority of a device specific interrupt or a processor exception.
-2188:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            The interrupt number can be positive to specify a device specific interrupt,
-2189:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            or negative to specify a processor exception.
-2190:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \param [in]   IRQn  Interrupt number.
-2191:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \return             Interrupt Priority.
-2192:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****                       Value is aligned automatically to the implemented priority bits of the microc
-2193:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****  */
-2194:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** __STATIC_INLINE uint32_t __NVIC_GetPriority(IRQn_Type IRQn)
-2195:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** {
-2196:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2197:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   if ((int32_t)(IRQn) >= 0)
-2198:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   {
-2199:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****     return(((uint32_t)NVIC->IP[((uint32_t)IRQn)]                >> (8U - __NVIC_PRIO_BITS)));
-2200:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   }
-2201:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   else
-2202:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   {
-2203:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****     return(((uint32_t)SCB->SHPR[(((uint32_t)IRQn) & 0xFUL)-4UL] >> (8U - __NVIC_PRIO_BITS)));
-2204:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   }
-2205:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** }
-2206:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2207:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2208:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** /**
-2209:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \brief   Encode Priority
-2210:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \details Encodes the priority for an interrupt with the given priority group,
-2211:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            preemptive priority value, and subpriority value.
-2212:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            In case of a conflict between priority grouping and available
-2213:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            priority bits (__NVIC_PRIO_BITS), the smallest possible priority group is set.
-2214:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \param [in]     PriorityGroup  Used priority group.
-2215:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \param [in]   PreemptPriority  Preemptive priority value (starting from 0).
-2216:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \param [in]       SubPriority  Subpriority value (starting from 0).
-2217:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \return                        Encoded priority. Value can be used in the function \ref NVIC_SetP
-2218:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****  */
-2219:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** __STATIC_INLINE uint32_t NVIC_EncodePriority (uint32_t PriorityGroup, uint32_t PreemptPriority, uin
-2220:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** {
-2221:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   uint32_t PriorityGroupTmp = (PriorityGroup & (uint32_t)0x07UL);   /* only values 0..7 are used   
-2222:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   uint32_t PreemptPriorityBits;
-2223:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   uint32_t SubPriorityBits;
-2224:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2225:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   PreemptPriorityBits = ((7UL - PriorityGroupTmp) > (uint32_t)(__NVIC_PRIO_BITS)) ? (uint32_t)(__NV
-2226:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint
-2227:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2228:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   return (
-2229:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            ((PreemptPriority & (uint32_t)((1UL << (PreemptPriorityBits)) - 1UL)) << SubPriorityBits
-2230:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            ((SubPriority     & (uint32_t)((1UL << (SubPriorityBits    )) - 1UL)))
-2231:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****          );
-2232:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** }
-2233:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2234:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2235:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** /**
-2236:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \brief   Decode Priority
-2237:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \details Decodes an interrupt priority value with a given priority group to
-2238:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            preemptive priority value and subpriority value.
-2239:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            In case of a conflict between priority grouping and available
-2240:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            priority bits (__NVIC_PRIO_BITS) the smallest possible priority group is set.
-2241:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \param [in]         Priority   Priority value, which can be retrieved with the function \ref NVIC
-2242:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \param [in]     PriorityGroup  Used priority group.
-2243:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \param [out] pPreemptPriority  Preemptive priority value (starting from 0).
-2244:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \param [out]     pSubPriority  Subpriority value (starting from 0).
-2245:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****  */
-2246:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** __STATIC_INLINE void NVIC_DecodePriority (uint32_t Priority, uint32_t PriorityGroup, uint32_t* cons
-2247:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** {
-2248:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   uint32_t PriorityGroupTmp = (PriorityGroup & (uint32_t)0x07UL);   /* only values 0..7 are used   
-2249:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   uint32_t PreemptPriorityBits;
-2250:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   uint32_t SubPriorityBits;
-2251:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2252:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   PreemptPriorityBits = ((7UL - PriorityGroupTmp) > (uint32_t)(__NVIC_PRIO_BITS)) ? (uint32_t)(__NV
-2253:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint
-2254:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2255:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   *pPreemptPriority = (Priority >> SubPriorityBits) & (uint32_t)((1UL << (PreemptPriorityBits)) - 1
-2256:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   *pSubPriority     = (Priority                   ) & (uint32_t)((1UL << (SubPriorityBits    )) - 1
-2257:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** }
-2258:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2259:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2260:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** /**
-2261:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \brief   Set Interrupt Vector
-2262:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \details Sets an interrupt vector in SRAM based interrupt vector table.
-2263:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            The interrupt number can be positive to specify a device specific interrupt,
-2264:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            or negative to specify a processor exception.
-2265:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            VTOR must been relocated to SRAM before.
-2266:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \param [in]   IRQn      Interrupt number
-2267:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \param [in]   vector    Address of interrupt handler function
-2268:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****  */
-2269:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** __STATIC_INLINE void __NVIC_SetVector(IRQn_Type IRQn, uint32_t vector)
-2270:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** {
-2271:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   uint32_t *vectors = (uint32_t *)SCB->VTOR;
-2272:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   vectors[(int32_t)IRQn + NVIC_USER_IRQ_OFFSET] = vector;
-2273:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   __DSB();
-2274:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** }
-2275:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2276:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2277:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** /**
-2278:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \brief   Get Interrupt Vector
-2279:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \details Reads an interrupt vector from interrupt vector table.
-2280:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            The interrupt number can be positive to specify a device specific interrupt,
-2281:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            or negative to specify a processor exception.
-2282:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \param [in]   IRQn      Interrupt number.
-2283:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \return                 Address of interrupt handler function
-2284:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****  */
-2285:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** __STATIC_INLINE uint32_t __NVIC_GetVector(IRQn_Type IRQn)
-2286:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** {
-2287:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   uint32_t *vectors = (uint32_t *)SCB->VTOR;
-2288:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   return vectors[(int32_t)IRQn + NVIC_USER_IRQ_OFFSET];
-2289:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** }
-2290:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2291:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2292:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** /**
-2293:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \brief   System Reset
-2294:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \details Initiates a system reset request to reset the MCU.
-2295:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****  */
-2296:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** __NO_RETURN __STATIC_INLINE void __NVIC_SystemReset(void)
-2297:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** {
-2298:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   __DSB();                                                          /* Ensure all outstanding memor
-2299:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****                                                                        buffered write are completed
-2300:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   SCB->AIRCR  = (uint32_t)((0x5FAUL << SCB_AIRCR_VECTKEY_Pos)    |
-2301:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****                            (SCB->AIRCR & SCB_AIRCR_PRIGROUP_Msk) |
-2302:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****                             SCB_AIRCR_SYSRESETREQ_Msk    );         /* Keep priority group unchange
-2303:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   __DSB();                                                          /* Ensure completion of memory 
-2304:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2305:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   for(;;)                                                           /* wait until reset */
-2306:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   {
-2307:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****     __NOP();
-2308:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   }
-2309:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** }
-2310:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2311:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** /*@} end of CMSIS_Core_NVICFunctions */
-2312:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2313:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2314:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** /* ##########################  MPU functions  #################################### */
-2315:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2316:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** #if defined (__MPU_PRESENT) && (__MPU_PRESENT == 1U)
-2317:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2318:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** #include "mpu_armv7.h"
-2319:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2320:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** #endif
-2321:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2322:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2323:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** /* ##########################  FPU functions  #################################### */
-2324:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** /**
-2325:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \ingroup  CMSIS_Core_FunctionInterface
-2326:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \defgroup CMSIS_Core_FpuFunctions FPU Functions
-2327:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \brief    Function that provides FPU type.
-2328:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   @{
-2329:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****  */
-2330:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2331:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** /**
-2332:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \brief   get FPU type
-2333:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \details returns the FPU type
-2334:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \returns
-2335:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****    - \b  0: No FPU
-2336:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****    - \b  1: Single precision FPU
-2337:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****    - \b  2: Double + Single precision FPU
-2338:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****  */
-2339:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** __STATIC_INLINE uint32_t SCB_GetFPUType(void)
-2340:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** {
-2341:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   uint32_t mvfr0;
-2342:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2343:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   mvfr0 = SCB->MVFR0;
-2344:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   if      ((mvfr0 & (FPU_MVFR0_Single_precision_Msk | FPU_MVFR0_Double_precision_Msk)) == 0x220U)
-2345:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   {
-2346:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****     return 2U;           /* Double + Single precision FPU */
-2347:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   }
-2348:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   else if ((mvfr0 & (FPU_MVFR0_Single_precision_Msk | FPU_MVFR0_Double_precision_Msk)) == 0x020U)
-2349:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   {
-2350:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****     return 1U;           /* Single precision FPU */
-2351:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   }
-2352:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   else
-2353:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   {
-2354:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****     return 0U;           /* No FPU */
-2355:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   }
-2356:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** }
-2357:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2358:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** /*@} end of CMSIS_Core_FpuFunctions */
-2359:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2360:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2361:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** /* ##########################  Cache functions  #################################### */
-2362:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2363:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** #if ((defined (__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)) || \
-2364:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****      (defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)))
-2365:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** #include "cachel1_armv7.h"
-2366:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** #endif
-2367:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2368:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2369:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** /* ##################################    SysTick function  ########################################
-2370:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** /**
-2371:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \ingroup  CMSIS_Core_FunctionInterface
-2372:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \defgroup CMSIS_Core_SysTickFunctions SysTick Functions
-2373:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \brief    Functions that configure the System.
-2374:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   @{
-2375:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****  */
-2376:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** #define __Vendor_SysTickConfig 0
-2377:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** #if defined (__Vendor_SysTickConfig) && (__Vendor_SysTickConfig == 0U)
-2378:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2379:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** /**
-2380:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \brief   System Tick Configuration
-2381:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \details Initializes the System Timer and its interrupt, and starts the System Tick Timer.
-2382:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            Counter is in free running mode to generate periodic interrupts.
-2383:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \param [in]  ticks  Number of ticks between two interrupts.
-2384:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \return          0  Function succeeded.
-2385:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \return          1  Function failed.
-2386:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   \note    When the variable <b>__Vendor_SysTickConfig</b> is set to 1, then the
-2387:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            function <b>SysTick_Config</b> is not included. In this case, the file <b><i>device</i>.
-2388:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****            must contain a vendor-specific implementation of this function.
-2389:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****  */
-2390:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** __STATIC_INLINE uint32_t SysTick_Config(uint32_t ticks)
-2391:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** {
-  98              		.loc 1 2391 1
-  99              		.cfi_startproc
- 100              		@ args = 0, pretend = 0, frame = 8
- 101              		@ frame_needed = 0, uses_anonymous_args = 0
- 102 0000 00B5     		push	{lr}
- 103              		.cfi_def_cfa_offset 4
- 104              		.cfi_offset 14, -4
- 105 0002 83B0     		sub	sp, sp, #12
- 106              		.cfi_def_cfa_offset 16
- 107 0004 0190     		str	r0, [sp, #4]
-2392:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   if ((ticks - 1UL) > SysTick_LOAD_RELOAD_Msk)
- 108              		.loc 1 2392 14
- 109 0006 019B     		ldr	r3, [sp, #4]
- 110 0008 013B     		subs	r3, r3, #1
- 111              		.loc 1 2392 6
- 112 000a B3F1807F 		cmp	r3, #16777216
- 113 000e 01D3     		bcc	.L8
-2393:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   {
-2394:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****     return (1UL);                                                   /* Reload value impossible */
- 114              		.loc 1 2394 12
- 115 0010 0123     		movs	r3, #1
- 116 0012 0FE0     		b	.L9
- 117              	.L8:
-2395:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   }
-2396:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-2397:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   SysTick->LOAD  = (uint32_t)(ticks - 1UL);                         /* set reload register */
- 118              		.loc 1 2397 10
- 119 0014 094A     		ldr	r2, .L10
- 120              		.loc 1 2397 20
- 121 0016 019B     		ldr	r3, [sp, #4]
- 122 0018 013B     		subs	r3, r3, #1
- 123              		.loc 1 2397 18
- 124 001a 5360     		str	r3, [r2, #4]
-2398:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   NVIC_SetPriority (SysTick_IRQn, (1UL << __NVIC_PRIO_BITS) - 1UL); /* set Priority for Systick Int
- 125              		.loc 1 2398 3
- 126 001c 0F21     		movs	r1, #15
- 127 001e 4FF0FF30 		mov	r0, #-1
- 128 0022 FFF7FEFF 		bl	__NVIC_SetPriority
-2399:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   SysTick->VAL   = 0UL;                                             /* Load the SysTick Counter Val
- 129              		.loc 1 2399 10
- 130 0026 054B     		ldr	r3, .L10
- 131              		.loc 1 2399 18
- 132 0028 0022     		movs	r2, #0
- 133 002a 9A60     		str	r2, [r3, #8]
-2400:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk |
- 134              		.loc 1 2400 10
- 135 002c 034B     		ldr	r3, .L10
- 136              		.loc 1 2400 18
- 137 002e 0722     		movs	r2, #7
- 138 0030 1A60     		str	r2, [r3]
-2401:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****                    SysTick_CTRL_TICKINT_Msk   |
-2402:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****                    SysTick_CTRL_ENABLE_Msk;                         /* Enable SysTick IRQ and SysTi
-2403:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   return (0UL);                                                     /* Function successful */
- 139              		.loc 1 2403 10
- 140 0032 0023     		movs	r3, #0
- 141              	.L9:
-2404:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** }
- 142              		.loc 1 2404 1
- 143 0034 1846     		mov	r0, r3
- 144 0036 03B0     		add	sp, sp, #12
- 145              		.cfi_def_cfa_offset 4
- 146              		@ sp needed
- 147 0038 5DF804FB 		ldr	pc, [sp], #4
- 148              	.L11:
- 149              		.align	2
- 150              	.L10:
- 151 003c 10E000E0 		.word	-536813552
- 152              		.cfi_endproc
- 153              	.LFE123:
- 155              		.section	.text.StartOs_Arch_SysTick,"ax",%progbits
- 156              		.align	1
- 157              		.p2align 4,,15
- 158              		.global	StartOs_Arch_SysTick
- 159              		.syntax unified
- 160              		.thumb
- 161              		.thumb_func
- 163              	StartOs_Arch_SysTick:
- 164              	.LFB390:
- 165              		.file 2 "Modules/OS/OSAL/src/StartOs_Arch_SysTick.c"
+  92              		.global	StartOs_Arch_SysTick
+  93              		.syntax unified
+  94              		.thumb
+  95              		.thumb_func
+  97              	StartOs_Arch_SysTick:
+  98              	.LFB390:
+  99              		.file 2 "Modules/OS/OSAL/src/StartOs_Arch_SysTick.c"
    1:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c **** /* Copyright 2014, Pablo Ridolfi
    2:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****  *
    3:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****  * This file is part of CIAA Firmware.
@@ -2647,79 +2361,65 @@
   77:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c **** /*==================[external functions definition]==========================*/
   78:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c **** void StartOs_Arch_SysTick(void)
   79:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c **** {
- 166              		.loc 2 79 1
- 167              		.cfi_startproc
- 168              		@ args = 0, pretend = 0, frame = 0
- 169              		@ frame_needed = 0, uses_anonymous_args = 0
- 170 0000 08B5     		push	{r3, lr}
- 171              		.cfi_def_cfa_offset 8
- 172              		.cfi_offset 3, -8
- 173              		.cfi_offset 14, -4
-  80:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    /* Activate MemFault, UsageFault and BusFault exceptions */
-  81:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk | SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk;
- 174              		.loc 2 81 15
- 175 0002 0E4B     		ldr	r3, .L13
- 176 0004 5B6A     		ldr	r3, [r3, #36]
- 177 0006 0D4A     		ldr	r2, .L13
- 178 0008 43F4E023 		orr	r3, r3, #458752
- 179 000c 5362     		str	r3, [r2, #36]
-  82:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c **** 
-  83:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    /* Set lowest priority for SysTick and PendSV */
-  84:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    NVIC_SetPriority(PendSV_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
- 180              		.loc 2 84 4
- 181 000e 0F21     		movs	r1, #15
- 182 0010 6FF00100 		mvn	r0, #1
- 183 0014 FFF7FEFF 		bl	__NVIC_SetPriority
-  85:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c **** 
-  86:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    /* Activate SysTick */
-  87:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    osal_inc_tick();
- 184              		.loc 2 87 4
- 185 0018 FFF7FEFF 		bl	osal_inc_tick
-  88:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    // SystemCoreClockUpdate();
-  89:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    SysTick_Config(SystemCoreClock/1000);
- 186              		.loc 2 89 4
- 187 001c 084B     		ldr	r3, .L13+4
- 188 001e 1B68     		ldr	r3, [r3]
- 189 0020 084A     		ldr	r2, .L13+8
- 190 0022 A2FB0323 		umull	r2, r3, r2, r3
- 191 0026 9B09     		lsrs	r3, r3, #6
- 192 0028 1846     		mov	r0, r3
- 193 002a FFF7FEFF 		bl	SysTick_Config
-  90:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c **** 
-  91:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    /* Update priority set by SysTick_Config */
-  92:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    NVIC_SetPriority(SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
- 194              		.loc 2 92 4
- 195 002e 0F21     		movs	r1, #15
- 196 0030 4FF0FF30 		mov	r0, #-1
- 197 0034 FFF7FEFF 		bl	__NVIC_SetPriority
-  93:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c **** }
- 198              		.loc 2 93 1
- 199 0038 00BF     		nop
- 200 003a 08BD     		pop	{r3, pc}
- 201              	.L14:
- 202              		.align	2
- 203              	.L13:
- 204 003c 00ED00E0 		.word	-536810240
- 205 0040 00000000 		.word	SystemCoreClock
- 206 0044 D34D6210 		.word	274877907
- 207              		.cfi_endproc
- 208              	.LFE390:
- 210              		.text
- 211              	.Letext0:
- 212              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
- 213              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
- 214              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\platform\\clock\\include
+ 100              		.loc 2 79 1
+ 101              		.cfi_startproc
+ 102              		@ args = 0, pretend = 0, frame = 0
+ 103              		@ frame_needed = 0, uses_anonymous_args = 0
+ 104 0000 08B5     		push	{r3, lr}
+ 105              		.cfi_def_cfa_offset 8
+ 106              		.cfi_offset 3, -8
+ 107              		.cfi_offset 14, -4
+  80:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    /* 激活内存故障，页故障，总线故障*/
+  81:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    /* Activate MemFault, UsageFault and BusFault exceptions */
+  82:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk | SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk;
+ 108              		.loc 2 82 15
+ 109 0002 074B     		ldr	r3, .L8
+ 110 0004 5B6A     		ldr	r3, [r3, #36]
+ 111 0006 064A     		ldr	r2, .L8
+ 112 0008 43F4E023 		orr	r3, r3, #458752
+ 113 000c 5362     		str	r3, [r2, #36]
+  83:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    /* 设置PendSV的优先级*/
+  84:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    /* Set lowest priority for SysTick and PendSV */
+  85:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    NVIC_SetPriority(PendSV_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
+ 114              		.loc 2 85 4
+ 115 000e 0F21     		movs	r1, #15
+ 116 0010 6FF00100 		mvn	r0, #1
+ 117 0014 FFF7FEFF 		bl	__NVIC_SetPriority
+  86:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c **** 
+  87:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    /* 初始化SysTick */ 
+  88:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    osal_init();
+ 118              		.loc 2 88 4
+ 119 0018 FFF7FEFF 		bl	osal_init
+  89:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    
+  90:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    /* Activate SysTick */
+  91:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    // // osal_inc_tick();
+  92:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    // SystemCoreClockUpdate();
+  93:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    // SysTick_Config(SystemCoreClock/1000);
+  94:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c **** 
+  95:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    // /* Update priority set by SysTick_Config */
+  96:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c ****    // NVIC_SetPriority(SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
+  97:Modules/OS/OSAL/src/StartOs_Arch_SysTick.c **** }
+ 120              		.loc 2 97 1
+ 121 001c 00BF     		nop
+ 122 001e 08BD     		pop	{r3, pc}
+ 123              	.L9:
+ 124              		.align	2
+ 125              	.L8:
+ 126 0020 00ED00E0 		.word	-536810240
+ 127              		.cfi_endproc
+ 128              	.LFE390:
+ 130              		.text
+ 131              	.Letext0:
+ 132              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
+ 133              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
 DEFINED SYMBOLS
                             *ABS*:00000000 StartOs_Arch_SysTick.c
-C:\Users\AAA\AppData\Local\Temp\ccqNAvTa.s:19     .text.__NVIC_SetPriority:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccqNAvTa.s:25     .text.__NVIC_SetPriority:00000000 __NVIC_SetPriority
-C:\Users\AAA\AppData\Local\Temp\ccqNAvTa.s:84     .text.__NVIC_SetPriority:00000048 $d
-C:\Users\AAA\AppData\Local\Temp\ccqNAvTa.s:90     .text.SysTick_Config:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccqNAvTa.s:96     .text.SysTick_Config:00000000 SysTick_Config
-C:\Users\AAA\AppData\Local\Temp\ccqNAvTa.s:151    .text.SysTick_Config:0000003c $d
-C:\Users\AAA\AppData\Local\Temp\ccqNAvTa.s:156    .text.StartOs_Arch_SysTick:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccqNAvTa.s:163    .text.StartOs_Arch_SysTick:00000000 StartOs_Arch_SysTick
-C:\Users\AAA\AppData\Local\Temp\ccqNAvTa.s:204    .text.StartOs_Arch_SysTick:0000003c $d
+C:\Users\AAA\AppData\Local\Temp\ccVxC4yI.s:19     .text.__NVIC_SetPriority:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccVxC4yI.s:25     .text.__NVIC_SetPriority:00000000 __NVIC_SetPriority
+C:\Users\AAA\AppData\Local\Temp\ccVxC4yI.s:84     .text.__NVIC_SetPriority:00000048 $d
+C:\Users\AAA\AppData\Local\Temp\ccVxC4yI.s:90     .text.StartOs_Arch_SysTick:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccVxC4yI.s:97     .text.StartOs_Arch_SysTick:00000000 StartOs_Arch_SysTick
+C:\Users\AAA\AppData\Local\Temp\ccVxC4yI.s:126    .text.StartOs_Arch_SysTick:00000020 $d
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
                            .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
@@ -2776,5 +2476,4 @@ C:\Users\AAA\AppData\Local\Temp\ccqNAvTa.s:204    .text.StartOs_Arch_SysTick:000
                            .group:00000000 wm4.osal.h.38.40390df6c87bbed5f1c054e622a926ee
 
 UNDEFINED SYMBOLS
-osal_inc_tick
-SystemCoreClock
+osal_init

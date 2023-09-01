@@ -94,7 +94,8 @@ void StartOS
 	uint8f loopi;
 	// 关中断
 	IntSecure_Start();
-
+	
+	// 设置应用模式
 	/* save the aplication mode */
 	ApplicationMode = Mode;
 

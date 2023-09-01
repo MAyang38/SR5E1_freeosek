@@ -77,21 +77,73 @@
 /*==================[external functions definition]==========================*/
 void StartOs_Arch_SysTick(void)
 {
+   /* 激活内存故障，页故障，总线故障*/
    /* Activate MemFault, UsageFault and BusFault exceptions */
    SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk | SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk;
-
+   /* 设置PendSV的优先级*/
    /* Set lowest priority for SysTick and PendSV */
    NVIC_SetPriority(PendSV_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
 
+   /* 初始化SysTick */ 
+   osal_init();
+   
    /* Activate SysTick */
-   osal_inc_tick();
+   // // osal_inc_tick();
    // SystemCoreClockUpdate();
-   SysTick_Config(SystemCoreClock/1000);
+   // SysTick_Config(SystemCoreClock/1000);
 
-   /* Update priority set by SysTick_Config */
-   NVIC_SetPriority(SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
+   // /* Update priority set by SysTick_Config */
+   // NVIC_SetPriority(SysTick_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
 }
 
+
+// void SystemCoreClockUpdate(void)
+// {
+//   uint32_t tmp = 0, pllvco = 0, pllp = 2, pllsource = 0, pllm = 2;
+
+//   /* Get SYSCLK source -------------------------------------------------------*/
+//   tmp = RCC->CFGR & RCC_CFGR_SWS;
+
+//   switch (tmp)
+//   {
+//     case 0x00:  /* HSI used as system clock source */
+//       SystemCoreClock = HSI_VALUE;
+//       break;
+//     case 0x04:  /* HSE used as system clock source */
+//       SystemCoreClock = HSE_VALUE;
+//       break;
+//     case 0x08:  /* PLL used as system clock source */
+
+//       /* PLL_VCO = (HSE_VALUE or HSI_VALUE / PLL_M) * PLL_N
+//          SYSCLK = PLL_VCO / PLL_P
+//          */
+//       pllsource = (RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) >> 22;
+//       pllm = RCC->PLLCFGR & RCC_PLLCFGR_PLLM;
+
+//       if (pllsource != 0)
+//       {
+//         /* HSE used as PLL clock source */
+//         pllvco = (HSE_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
+//       }
+//       else
+//       {
+//         /* HSI used as PLL clock source */
+//         pllvco = (HSI_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
+//       }
+
+//       pllp = (((RCC->PLLCFGR & RCC_PLLCFGR_PLLP) >>16) + 1 ) *2;
+//       SystemCoreClock = pllvco/pllp;
+//       break;
+//     default:
+//       SystemCoreClock = HSI_VALUE;
+//       break;
+//   }
+//   /* Compute HCLK frequency --------------------------------------------------*/
+//   /* Get HCLK prescaler */
+//   tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
+//   /* HCLK frequency */
+//   SystemCoreClock >>= tmp;
+// }
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
