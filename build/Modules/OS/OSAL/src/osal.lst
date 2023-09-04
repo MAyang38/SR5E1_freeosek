@@ -97,7 +97,7 @@
   71:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** #define __CORTEX_M                (7U)                                       /*!< Cortex-M Core */
   72:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
   73:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-  74:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** #define __NVIC_PRIO_BITS        4     
+  74:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** #define __NVIC_PRIO_BITS        4    
   75:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
   76:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** typedef enum {
   77:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   NonMaskableInt_IRQn         = -14,
@@ -3480,54 +3480,54 @@
  855              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\platform\\clock\\include
 DEFINED SYMBOLS
                             *ABS*:00000000 osal.c
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:19     .text.__NVIC_SetPriority:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:25     .text.__NVIC_SetPriority:00000000 __NVIC_SetPriority
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:84     .text.__NVIC_SetPriority:00000048 $d
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:90     .text.SysTick_Config:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:96     .text.SysTick_Config:00000000 SysTick_Config
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:151    .text.SysTick_Config:0000003c $d
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:160    .bss.osal_tick_cnt:00000000 osal_tick_cnt
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:157    .bss.osal_tick_cnt:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:163    .bss.osal_ticks_per_sec:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:166    .bss.osal_ticks_per_sec:00000000 osal_ticks_per_sec
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:169    .text.osal_inc_tick:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:176    .text.osal_inc_tick:00000000 osal_inc_tick
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:196    .text.osal_inc_tick:00000010 $d
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:201    .text.osal_init_systick:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:207    .text.osal_init_systick:00000000 osal_init_systick
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:271    .text.osal_init_systick:00000050 $d
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:277    .text.osal_tick_delay:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:283    .text.osal_tick_delay:00000000 osal_tick_delay
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:507    .text.osal_get_tick:00000000 osal_get_tick
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:322    .text.osal_systick_s2tk:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:328    .text.osal_systick_s2tk:00000000 osal_systick_s2tk
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:353    .text.osal_systick_s2tk:00000014 $d
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:358    .text.osal_systick_ms2tk:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:364    .text.osal_systick_ms2tk:00000000 osal_systick_ms2tk
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:405    .text.osal_systick_ms2tk:0000002c $d
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:411    .text.osal_systick_us2tk:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:417    .text.osal_systick_us2tk:00000000 osal_systick_us2tk
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:458    .text.osal_systick_us2tk:0000002c $d
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:464    .text.osal_init:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:471    .text.osal_init:00000000 osal_init
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:495    .text.osal_init:00000018 $d
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:500    .text.osal_get_tick:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:523    .text.osal_get_tick:00000008 $d
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:528    .text.osal_delay_sec:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:535    .text.osal_delay_sec:00000000 osal_delay_sec
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:563    .text.osal_delay_millisec:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:570    .text.osal_delay_millisec:00000000 osal_delay_millisec
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:598    .text.osal_delay_microsec:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:605    .text.osal_delay_microsec:00000000 osal_delay_microsec
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:633    .text.osal_tk2s:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:640    .text.osal_tk2s:00000000 osal_tk2s
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:664    .text.osal_tk2s:00000014 $d
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:670    .text.osal_tk2ms:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:677    .text.osal_tk2ms:00000000 osal_tk2ms
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:755    .text.osal_tk2ms:00000084 $d
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:760    .text.osal_tk2us:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:767    .text.osal_tk2us:00000000 osal_tk2us
-C:\Users\AAA\AppData\Local\Temp\ccgriLBv.s:847    .text.osal_tk2us:00000094 $d
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:19     .text.__NVIC_SetPriority:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:25     .text.__NVIC_SetPriority:00000000 __NVIC_SetPriority
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:84     .text.__NVIC_SetPriority:00000048 $d
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:90     .text.SysTick_Config:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:96     .text.SysTick_Config:00000000 SysTick_Config
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:151    .text.SysTick_Config:0000003c $d
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:160    .bss.osal_tick_cnt:00000000 osal_tick_cnt
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:157    .bss.osal_tick_cnt:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:163    .bss.osal_ticks_per_sec:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:166    .bss.osal_ticks_per_sec:00000000 osal_ticks_per_sec
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:169    .text.osal_inc_tick:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:176    .text.osal_inc_tick:00000000 osal_inc_tick
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:196    .text.osal_inc_tick:00000010 $d
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:201    .text.osal_init_systick:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:207    .text.osal_init_systick:00000000 osal_init_systick
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:271    .text.osal_init_systick:00000050 $d
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:277    .text.osal_tick_delay:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:283    .text.osal_tick_delay:00000000 osal_tick_delay
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:507    .text.osal_get_tick:00000000 osal_get_tick
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:322    .text.osal_systick_s2tk:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:328    .text.osal_systick_s2tk:00000000 osal_systick_s2tk
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:353    .text.osal_systick_s2tk:00000014 $d
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:358    .text.osal_systick_ms2tk:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:364    .text.osal_systick_ms2tk:00000000 osal_systick_ms2tk
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:405    .text.osal_systick_ms2tk:0000002c $d
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:411    .text.osal_systick_us2tk:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:417    .text.osal_systick_us2tk:00000000 osal_systick_us2tk
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:458    .text.osal_systick_us2tk:0000002c $d
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:464    .text.osal_init:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:471    .text.osal_init:00000000 osal_init
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:495    .text.osal_init:00000018 $d
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:500    .text.osal_get_tick:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:523    .text.osal_get_tick:00000008 $d
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:528    .text.osal_delay_sec:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:535    .text.osal_delay_sec:00000000 osal_delay_sec
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:563    .text.osal_delay_millisec:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:570    .text.osal_delay_millisec:00000000 osal_delay_millisec
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:598    .text.osal_delay_microsec:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:605    .text.osal_delay_microsec:00000000 osal_delay_microsec
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:633    .text.osal_tk2s:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:640    .text.osal_tk2s:00000000 osal_tk2s
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:664    .text.osal_tk2s:00000014 $d
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:670    .text.osal_tk2ms:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:677    .text.osal_tk2ms:00000000 osal_tk2ms
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:755    .text.osal_tk2ms:00000084 $d
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:760    .text.osal_tk2us:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:767    .text.osal_tk2us:00000000 osal_tk2us
+C:\Users\AAA\AppData\Local\Temp\cceMtXio.s:847    .text.osal_tk2us:00000094 $d
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.osal_cfg.h.23.b97ea04faf646103324df3ecc2655260
                            .group:00000000 wm4.sr5e1xx.h.22.568547583bf3c00ded67adadc0110f08

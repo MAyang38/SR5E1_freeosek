@@ -2091,38 +2091,38 @@
  1173              		.file 7 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\drivers\\comms\\spi\\inc
 DEFINED SYMBOLS
                             *ABS*:00000000 SPI_LLD_Init.c
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:19     .text.gpio_set_pin_moder:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:25     .text.gpio_set_pin_moder:00000000 gpio_set_pin_moder
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:104    .text.gpio_set_pin_otyper:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:110    .text.gpio_set_pin_otyper:00000000 gpio_set_pin_otyper
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:185    .text.gpio_set_pin_ospeedr:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:191    .text.gpio_set_pin_ospeedr:00000000 gpio_set_pin_ospeedr
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:269    .text.gpio_set_pin_pupdr:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:275    .text.gpio_set_pin_pupdr:00000000 gpio_set_pin_pupdr
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:353    .text.gpio_set_pin_afr:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:359    .text.gpio_set_pin_afr:00000000 gpio_set_pin_afr
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:478    .text.gpio_set_pin_ihystr:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:484    .text.gpio_set_pin_ihystr:00000000 gpio_set_pin_ihystr
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:562    .text.gpio_set_pin_trigenr:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:568    .text.gpio_set_pin_trigenr:00000000 gpio_set_pin_trigenr
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:643    .text.gpio_set_pin_safeselr:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:649    .text.gpio_set_pin_safeselr:00000000 gpio_set_pin_safeselr
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:724    .text.gpio_set_pin_safevalr:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:730    .text.gpio_set_pin_safevalr:00000000 gpio_set_pin_safevalr
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:805    .text.gpio_set_pin_mode:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:811    .text.gpio_set_pin_mode:00000000 gpio_set_pin_mode
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:928    .text.gpio_set_pin:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:934    .text.gpio_set_pin:00000000 gpio_set_pin
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:990    .bss.spi_master_completed:00000000 spi_master_completed
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:991    .bss.spi_master_completed:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:993    .text.spi_master_data_cb:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:999    .text.spi_master_data_cb:00000000 spi_master_data_cb
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:1023   .text.spi_master_data_cb:00000010 $d
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:1028   .text.spi_master_err_cb:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:1034   .text.spi_master_err_cb:00000000 spi_master_err_cb
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:1054   .text.SPI_LLD_Init:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:1061   .text.SPI_LLD_Init:00000000 SPI_LLD_Init
-C:\Users\AAA\AppData\Local\Temp\cc6KeesO.s:1161   .text.SPI_LLD_Init:000000a4 $d
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:19     .text.gpio_set_pin_moder:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:25     .text.gpio_set_pin_moder:00000000 gpio_set_pin_moder
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:104    .text.gpio_set_pin_otyper:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:110    .text.gpio_set_pin_otyper:00000000 gpio_set_pin_otyper
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:185    .text.gpio_set_pin_ospeedr:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:191    .text.gpio_set_pin_ospeedr:00000000 gpio_set_pin_ospeedr
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:269    .text.gpio_set_pin_pupdr:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:275    .text.gpio_set_pin_pupdr:00000000 gpio_set_pin_pupdr
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:353    .text.gpio_set_pin_afr:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:359    .text.gpio_set_pin_afr:00000000 gpio_set_pin_afr
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:478    .text.gpio_set_pin_ihystr:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:484    .text.gpio_set_pin_ihystr:00000000 gpio_set_pin_ihystr
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:562    .text.gpio_set_pin_trigenr:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:568    .text.gpio_set_pin_trigenr:00000000 gpio_set_pin_trigenr
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:643    .text.gpio_set_pin_safeselr:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:649    .text.gpio_set_pin_safeselr:00000000 gpio_set_pin_safeselr
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:724    .text.gpio_set_pin_safevalr:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:730    .text.gpio_set_pin_safevalr:00000000 gpio_set_pin_safevalr
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:805    .text.gpio_set_pin_mode:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:811    .text.gpio_set_pin_mode:00000000 gpio_set_pin_mode
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:928    .text.gpio_set_pin:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:934    .text.gpio_set_pin:00000000 gpio_set_pin
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:990    .bss.spi_master_completed:00000000 spi_master_completed
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:991    .bss.spi_master_completed:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:993    .text.spi_master_data_cb:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:999    .text.spi_master_data_cb:00000000 spi_master_data_cb
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:1023   .text.spi_master_data_cb:00000010 $d
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:1028   .text.spi_master_err_cb:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:1034   .text.spi_master_err_cb:00000000 spi_master_err_cb
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:1054   .text.SPI_LLD_Init:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:1061   .text.SPI_LLD_Init:00000000 SPI_LLD_Init
+C:\Users\AAA\AppData\Local\Temp\ccJ1ugmF.s:1161   .text.SPI_LLD_Init:000000a4 $d
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d

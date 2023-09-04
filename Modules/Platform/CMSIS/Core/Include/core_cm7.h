@@ -71,7 +71,7 @@
 #define __CORTEX_M                (7U)                                       /*!< Cortex-M Core */
 
 
-#define __NVIC_PRIO_BITS        4     
+#define __NVIC_PRIO_BITS        4    
 
 typedef enum {
   NonMaskableInt_IRQn         = -14,

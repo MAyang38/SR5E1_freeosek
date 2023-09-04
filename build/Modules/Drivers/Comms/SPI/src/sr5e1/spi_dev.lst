@@ -4416,39 +4416,39 @@
  1060              		.file 14 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\drivers\\system\\dma\\i
 DEFINED SYMBOLS
                             *ABS*:00000000 spi_dev.c
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:19     .text.spi_dev_get_reg_ptr:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:26     .text.spi_dev_get_reg_ptr:00000000 spi_dev_get_reg_ptr
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:82     .text.spi_dev_get_reg_ptr:0000003c $d
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:93     .text.spi_dev_get_clock:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:100    .text.spi_dev_get_clock:00000000 spi_dev_get_clock
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:155    .text.spi_dev_get_clock:0000003c $d
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:164    .text.spi_dev_clock_enable:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:171    .text.spi_dev_clock_enable:00000000 spi_dev_clock_enable
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:478    .text.spi_dev_clock_enable:00000264 $d
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:485    .text.spi_dev_clock_disable:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:492    .text.spi_dev_clock_disable:00000000 spi_dev_clock_disable
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:710    .text.spi_dev_clock_disable:0000016c $d
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:717    .text.spi_dev_get_dma_tx_trigger:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:724    .text.spi_dev_get_dma_tx_trigger:00000000 spi_dev_get_dma_tx_trigger
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:779    .text.spi_dev_get_dma_tx_trigger:0000003c $d
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:786    .text.spi_dev_get_dma_rx_trigger:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:793    .text.spi_dev_get_dma_rx_trigger:00000000 spi_dev_get_dma_rx_trigger
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:848    .text.spi_dev_get_dma_rx_trigger:0000003c $d
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:855    .text.spi_dev_get_vector:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:862    .text.spi_dev_get_vector:00000000 spi_dev_get_vector
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:917    .text.spi_dev_get_vector:00000044 $d
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:924    .text.VectorCC:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:931    .text.VectorCC:00000000 VectorCC
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:950    .text.VectorCC:0000000c $d
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:955    .text.VectorD0:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:962    .text.VectorD0:00000000 VectorD0
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:981    .text.VectorD0:0000000c $d
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:986    .text.Vector10C:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:993    .text.Vector10C:00000000 Vector10C
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:1012   .text.Vector10C:0000000c $d
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:1017   .text.Vector110:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:1024   .text.Vector110:00000000 Vector110
-C:\Users\AAA\AppData\Local\Temp\ccFP0R6n.s:1043   .text.Vector110:0000000c $d
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:19     .text.spi_dev_get_reg_ptr:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:26     .text.spi_dev_get_reg_ptr:00000000 spi_dev_get_reg_ptr
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:82     .text.spi_dev_get_reg_ptr:0000003c $d
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:93     .text.spi_dev_get_clock:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:100    .text.spi_dev_get_clock:00000000 spi_dev_get_clock
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:155    .text.spi_dev_get_clock:0000003c $d
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:164    .text.spi_dev_clock_enable:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:171    .text.spi_dev_clock_enable:00000000 spi_dev_clock_enable
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:478    .text.spi_dev_clock_enable:00000264 $d
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:485    .text.spi_dev_clock_disable:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:492    .text.spi_dev_clock_disable:00000000 spi_dev_clock_disable
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:710    .text.spi_dev_clock_disable:0000016c $d
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:717    .text.spi_dev_get_dma_tx_trigger:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:724    .text.spi_dev_get_dma_tx_trigger:00000000 spi_dev_get_dma_tx_trigger
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:779    .text.spi_dev_get_dma_tx_trigger:0000003c $d
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:786    .text.spi_dev_get_dma_rx_trigger:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:793    .text.spi_dev_get_dma_rx_trigger:00000000 spi_dev_get_dma_rx_trigger
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:848    .text.spi_dev_get_dma_rx_trigger:0000003c $d
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:855    .text.spi_dev_get_vector:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:862    .text.spi_dev_get_vector:00000000 spi_dev_get_vector
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:917    .text.spi_dev_get_vector:00000044 $d
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:924    .text.VectorCC:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:931    .text.VectorCC:00000000 VectorCC
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:950    .text.VectorCC:0000000c $d
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:955    .text.VectorD0:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:962    .text.VectorD0:00000000 VectorD0
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:981    .text.VectorD0:0000000c $d
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:986    .text.Vector10C:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:993    .text.Vector10C:00000000 Vector10C
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:1012   .text.Vector10C:0000000c $d
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:1017   .text.Vector110:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:1024   .text.Vector110:00000000 Vector110
+C:\Users\AAA\AppData\Local\Temp\ccMZs4ol.s:1043   .text.Vector110:0000000c $d
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.sr5e1xx.h.22.568547583bf3c00ded67adadc0110f08
                            .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c

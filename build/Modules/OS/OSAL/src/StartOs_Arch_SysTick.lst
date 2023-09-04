@@ -97,7 +97,7 @@
   71:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** #define __CORTEX_M                (7U)                                       /*!< Cortex-M Core */
   72:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
   73:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
-  74:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** #define __NVIC_PRIO_BITS        4     
+  74:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** #define __NVIC_PRIO_BITS        4    
   75:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** 
   76:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h **** typedef enum {
   77:d:\project\9388\e1\2023_7_27\sr5e1_l9388_freeosek\modules\platform\cmsis\core\include\core_cm7.h ****   NonMaskableInt_IRQn         = -14,
@@ -2414,12 +2414,12 @@
  133              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
 DEFINED SYMBOLS
                             *ABS*:00000000 StartOs_Arch_SysTick.c
-C:\Users\AAA\AppData\Local\Temp\ccVxC4yI.s:19     .text.__NVIC_SetPriority:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccVxC4yI.s:25     .text.__NVIC_SetPriority:00000000 __NVIC_SetPriority
-C:\Users\AAA\AppData\Local\Temp\ccVxC4yI.s:84     .text.__NVIC_SetPriority:00000048 $d
-C:\Users\AAA\AppData\Local\Temp\ccVxC4yI.s:90     .text.StartOs_Arch_SysTick:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\ccVxC4yI.s:97     .text.StartOs_Arch_SysTick:00000000 StartOs_Arch_SysTick
-C:\Users\AAA\AppData\Local\Temp\ccVxC4yI.s:126    .text.StartOs_Arch_SysTick:00000020 $d
+C:\Users\AAA\AppData\Local\Temp\ccCybjJM.s:19     .text.__NVIC_SetPriority:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccCybjJM.s:25     .text.__NVIC_SetPriority:00000000 __NVIC_SetPriority
+C:\Users\AAA\AppData\Local\Temp\ccCybjJM.s:84     .text.__NVIC_SetPriority:00000048 $d
+C:\Users\AAA\AppData\Local\Temp\ccCybjJM.s:90     .text.StartOs_Arch_SysTick:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccCybjJM.s:97     .text.StartOs_Arch_SysTick:00000000 StartOs_Arch_SysTick
+C:\Users\AAA\AppData\Local\Temp\ccCybjJM.s:126    .text.StartOs_Arch_SysTick:00000020 $d
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
                            .group:00000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
