@@ -99,7 +99,7 @@ void AddReady(TaskType TaskID)
 	* the valida entries for this array are between 0 and 3, so the -1 is needed
 	* since the lower priority is 0.
 	*/
-	priority = (READYLISTS_COUNT-1)-priority;
+	priority = (READYLISTS_COUNT - 1) - priority;
 
 	/* get ready list */
 	readylist = ReadyConst[priority].TaskRef;

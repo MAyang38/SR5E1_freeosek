@@ -131,7 +131,7 @@ StatusType Schedule
    }
    else
    {
-      /* nothing to check Runngin Task is invalid */
+      /* nothing to check Running Task is invalid */
    }
 
    if (ret == E_OK)

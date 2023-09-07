@@ -83,9 +83,11 @@
 /** \brief Task Definition */
 #define TaskBlink 1
 /** \brief Task Definition */
-#define TaskPeriodic 2
+#define TaskPeriodic_500ms 2
 /** \brief Task Definition */
 #define TaskBackground 3
+/** \brief Task Definition */
+#define TaskPeriodic_10ms 4
 
 /** \brief Definition of the Application Mode AppMode1 */
 #define AppMode1 0
@@ -95,9 +97,11 @@
 
 
 /** \brief Definition of the Alarm ActivateTaskPeriodic */
-#define ActivateTaskPeriodic 0
+#define Alarm_Periodic_500ms 0
 /** \brief Definition of the Alarm AppCallbackAlarm */
-#define AppCallbackAlarm 1
+#define Alarm_Periodic_1000ms 1
+
+#define Alarm_Periodic_10ms  2
 
 /** \brief Definition of the Counter HardwareCounter */
 #define HardwareCounter 0
@@ -172,14 +176,18 @@ DeclareTask(TaskInit);
 // }
 /** \brief Task Declaration of Task TaskBlink */
 DeclareTask(TaskBlink);
-/** \brief Task Declaration of Task TaskPeriodic */
-DeclareTask(TaskPeriodic);
+/** \brief Task Declaration of Task TaskPeriodic_500ms */
+DeclareTask(TaskPeriodic_500ms);
+
+/** \brief Task Declaration of Task TaskPeriodic_10ms */
+DeclareTask(TaskPeriodic_10ms);
+
 /** \brief Task Declaration of Task TaskBackground */
 DeclareTask(TaskBackground);
 
 
 /** \brief Alarm Callback declaration */
-extern void OSEK_CALLBACK_AppCallback(void);
+extern void OSEK_CALLBACK_Task_Periodic_1000ms(void);
 
 
 /** @} doxygen end group definition */

@@ -138,7 +138,7 @@
   97:Modules/OS/OSAL/src/ChainTask.c **** 	if ( taskid >= TASKS_COUNT )
   43              		.loc 1 97 5
   44 0010 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
-  45 0014 032B     		cmp	r3, #3
+  45 0014 042B     		cmp	r3, #4
   46 0016 03D9     		bls	.L2
   98:Modules/OS/OSAL/src/ChainTask.c **** 	{
   99:Modules/OS/OSAL/src/ChainTask.c **** 		/* \req OSEK_SYS_3.3.10-1/3 Added possible return values in Extended mode
@@ -573,9 +573,9 @@
  348              		.file 10 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\os_i
 DEFINED SYMBOLS
                             *ABS*:00000000 ChainTask.c
-C:\Users\AAA\AppData\Local\Temp\cc2YmhD5.s:19     .text.ChainTask:00000000 $t
-C:\Users\AAA\AppData\Local\Temp\cc2YmhD5.s:26     .text.ChainTask:00000000 ChainTask
-C:\Users\AAA\AppData\Local\Temp\cc2YmhD5.s:325    .text.ChainTask:000001f0 $d
+C:\Users\AAA\AppData\Local\Temp\cclnONUS.s:19     .text.ChainTask:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\cclnONUS.s:26     .text.ChainTask:00000000 ChainTask
+C:\Users\AAA\AppData\Local\Temp\cclnONUS.s:325    .text.ChainTask:000001f0 $d
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
                            .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
@@ -587,12 +587,12 @@ C:\Users\AAA\AppData\Local\Temp\cc2YmhD5.s:325    .text.ChainTask:000001f0 $d
                            .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
-                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Cfg.h.42.548617acea3b59fe3cf9fcc181c18ad9
                            .group:00000000 wm4.Os_Arch.h.93.12102c3b0d784f7b702d5066ade693b9
                            .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
                            .group:00000000 wm4.Os_Internal_Arch.h.35.0bf3ac38e9ac5f78b2da37fa4bf34633
                            .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
-                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.2874541beab7667cda0284b97947e0df
                            .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
 
 UNDEFINED SYMBOLS

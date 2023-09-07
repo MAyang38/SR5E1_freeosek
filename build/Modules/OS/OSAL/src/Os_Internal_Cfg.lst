@@ -51,253 +51,290 @@
   45      00000000 
   45      00000000 
   45      00000000 
-  46              		.global	ContextTaskTaskInit
-  47              		.section	.bss.ContextTaskTaskInit,"aw",%nobits
+  46              		.global	StackTaskTaskPeriodic_10ms
+  47              		.section	.bss.StackTaskTaskPeriodic_10ms,"aw",%nobits
   48              		.align	2
-  51              	ContextTaskTaskInit:
-  52 0000 00000000 		.space	4
-  53              		.global	ContextTaskTaskBlink
-  54              		.section	.bss.ContextTaskTaskBlink,"aw",%nobits
+  51              	StackTaskTaskPeriodic_10ms:
+  52 0000 00000000 		.space	512
+  52      00000000 
+  52      00000000 
+  52      00000000 
+  52      00000000 
+  53              		.global	ContextTaskTaskInit
+  54              		.section	.bss.ContextTaskTaskInit,"aw",%nobits
   55              		.align	2
-  58              	ContextTaskTaskBlink:
+  58              	ContextTaskTaskInit:
   59 0000 00000000 		.space	4
-  60              		.global	ContextTaskTaskPeriodic
-  61              		.section	.bss.ContextTaskTaskPeriodic,"aw",%nobits
+  60              		.global	ContextTaskTaskBlink
+  61              		.section	.bss.ContextTaskTaskBlink,"aw",%nobits
   62              		.align	2
-  65              	ContextTaskTaskPeriodic:
+  65              	ContextTaskTaskBlink:
   66 0000 00000000 		.space	4
-  67              		.global	ContextTaskTaskBackground
-  68              		.section	.bss.ContextTaskTaskBackground,"aw",%nobits
+  67              		.global	ContextTaskTaskPeriodic
+  68              		.section	.bss.ContextTaskTaskPeriodic,"aw",%nobits
   69              		.align	2
-  72              	ContextTaskTaskBackground:
+  72              	ContextTaskTaskPeriodic:
   73 0000 00000000 		.space	4
-  74              		.global	ReadyList2
-  75              		.section	.bss.ReadyList2,"aw",%nobits
+  74              		.global	ContextTaskTaskBackground
+  75              		.section	.bss.ContextTaskTaskBackground,"aw",%nobits
   76              		.align	2
-  79              	ReadyList2:
-  80 0000 00       		.space	1
-  81              		.global	ReadyList1
-  82              		.section	.bss.ReadyList1,"aw",%nobits
+  79              	ContextTaskTaskBackground:
+  80 0000 00000000 		.space	4
+  81              		.global	ContextTaskTaskPeriodic_10ms
+  82              		.section	.bss.ContextTaskTaskPeriodic_10ms,"aw",%nobits
   83              		.align	2
-  86              	ReadyList1:
-  87 0000 00       		.space	1
-  88              		.global	ReadyList0
-  89              		.section	.bss.ReadyList0,"aw",%nobits
+  86              	ContextTaskTaskPeriodic_10ms:
+  87 0000 00000000 		.space	4
+  88              		.global	ReadyList2
+  89              		.section	.bss.ReadyList2,"aw",%nobits
   90              		.align	2
-  93              	ReadyList0:
-  94 0000 0000     		.space	2
-  95              		.global	OSEK_ALARMLIST_HardwareCounter
-  96              		.section	.rodata.OSEK_ALARMLIST_HardwareCounter,"a"
+  93              	ReadyList2:
+  94 0000 00       		.space	1
+  95              		.global	ReadyList1
+  96              		.section	.bss.ReadyList1,"aw",%nobits
   97              		.align	2
- 100              	OSEK_ALARMLIST_HardwareCounter:
- 101 0000 0001     		.ascii	"\000\001"
- 102              		.global	TasksConst
- 103              		.section	.rodata.TasksConst,"a"
+ 100              	ReadyList1:
+ 101 0000 00       		.space	1
+ 102              		.global	ReadyList0
+ 103              		.section	.bss.ReadyList0,"aw",%nobits
  104              		.align	2
- 107              	TasksConst:
- 108 0000 00000000 		.word	OSEK_TASK_TaskInit
- 109 0004 00000000 		.word	ContextTaskTaskInit
- 110 0008 00000000 		.word	StackTaskTaskInit
- 111 000c 0002     		.short	512
- 112 000e 00       		.byte	0
- 113 000f 01       		.byte	1
- 114 0010 00       		.byte	0
- 115 0011 000000   		.space	3
- 116 0014 00000000 		.word	0
- 117 0018 00000000 		.word	0
- 118 001c 00000000 		.word	OSEK_TASK_TaskBlink
- 119 0020 00000000 		.word	ContextTaskTaskBlink
- 120 0024 00000000 		.word	StackTaskTaskBlink
- 121 0028 0002     		.short	512
- 122 002a 01       		.byte	1
- 123 002b 01       		.byte	1
- 124 002c 03       		.byte	3
- 125 002d 000000   		.space	3
- 126 0030 01000000 		.word	1
- 127 0034 00000000 		.word	0
- 128 0038 00000000 		.word	OSEK_TASK_TaskPeriodic
- 129 003c 00000000 		.word	ContextTaskTaskPeriodic
- 130 0040 00000000 		.word	StackTaskTaskPeriodic
- 131 0044 0002     		.short	512
- 132 0046 02       		.byte	2
- 133 0047 01       		.byte	1
- 134 0048 02       		.byte	2
- 135 0049 000000   		.space	3
- 136 004c 00000000 		.word	0
- 137 0050 00000000 		.word	0
- 138 0054 00000000 		.word	OSEK_TASK_TaskBackground
- 139 0058 00000000 		.word	ContextTaskTaskBackground
- 140 005c 00000000 		.word	StackTaskTaskBackground
- 141 0060 0002     		.short	512
- 142 0062 00       		.byte	0
- 143 0063 01       		.byte	1
- 144 0064 02       		.byte	2
- 145 0065 000000   		.space	3
- 146 0068 00000000 		.word	0
- 147 006c 00000000 		.word	0
- 148              		.global	TasksVar
- 149              		.section	.bss.TasksVar,"aw",%nobits
- 150              		.align	2
- 153              	TasksVar:
- 154 0000 00000000 		.space	80
- 154      00000000 
- 154      00000000 
- 154      00000000 
- 154      00000000 
- 155              		.global	TasksAppModeAppMode1
- 156              		.section	.rodata.TasksAppModeAppMode1,"a"
- 157              		.align	2
- 160              	TasksAppModeAppMode1:
- 161 0000 00       		.space	1
- 162              		.global	AutoStart
- 163              		.section	.rodata.AutoStart,"a"
- 164              		.align	2
- 167              	AutoStart:
- 168 0000 01       		.byte	1
- 169 0001 000000   		.space	3
- 170 0004 00000000 		.word	TasksAppModeAppMode1
- 171              		.global	ReadyConst
- 172              		.section	.rodata.ReadyConst,"a"
- 173              		.align	2
- 176              	ReadyConst:
- 177 0000 01       		.byte	1
- 178 0001 000000   		.space	3
- 179 0004 00000000 		.word	ReadyList2
- 180 0008 01       		.byte	1
- 181 0009 000000   		.space	3
- 182 000c 00000000 		.word	ReadyList1
- 183 0010 02       		.byte	2
- 184 0011 000000   		.space	3
- 185 0014 00000000 		.word	ReadyList0
- 186              		.global	ReadyVar
- 187              		.section	.bss.ReadyVar,"aw",%nobits
+ 107              	ReadyList0:
+ 108 0000 0000     		.space	2
+ 109              		.global	OSEK_ALARMLIST_HardwareCounter
+ 110              		.section	.rodata.OSEK_ALARMLIST_HardwareCounter,"a"
+ 111              		.align	2
+ 114              	OSEK_ALARMLIST_HardwareCounter:
+ 115 0000 000102   		.ascii	"\000\001\002"
+ 116              		.global	TasksConst
+ 117              		.section	.rodata.TasksConst,"a"
+ 118              		.align	2
+ 121              	TasksConst:
+ 122 0000 00000000 		.word	OSEK_TASK_TaskInit
+ 123 0004 00000000 		.word	ContextTaskTaskInit
+ 124 0008 00000000 		.word	StackTaskTaskInit
+ 125 000c 0002     		.short	512
+ 126 000e 00       		.byte	0
+ 127 000f 01       		.byte	1
+ 128 0010 00       		.byte	0
+ 129 0011 000000   		.space	3
+ 130 0014 00000000 		.word	0
+ 131 0018 00000000 		.word	0
+ 132 001c 00000000 		.word	OSEK_TASK_TaskBlink
+ 133 0020 00000000 		.word	ContextTaskTaskBlink
+ 134 0024 00000000 		.word	StackTaskTaskBlink
+ 135 0028 0002     		.short	512
+ 136 002a 01       		.byte	1
+ 137 002b 01       		.byte	1
+ 138 002c 03       		.byte	3
+ 139 002d 000000   		.space	3
+ 140 0030 01000000 		.word	1
+ 141 0034 00000000 		.word	0
+ 142 0038 00000000 		.word	OSEK_TASK_TaskPeriodic_500ms
+ 143 003c 00000000 		.word	ContextTaskTaskPeriodic
+ 144 0040 00000000 		.word	StackTaskTaskPeriodic
+ 145 0044 0002     		.short	512
+ 146 0046 02       		.byte	2
+ 147 0047 01       		.byte	1
+ 148 0048 02       		.byte	2
+ 149 0049 000000   		.space	3
+ 150 004c 00000000 		.word	0
+ 151 0050 00000000 		.word	0
+ 152 0054 00000000 		.word	OSEK_TASK_TaskBackground
+ 153 0058 00000000 		.word	ContextTaskTaskBackground
+ 154 005c 00000000 		.word	StackTaskTaskBackground
+ 155 0060 0002     		.short	512
+ 156 0062 00       		.byte	0
+ 157 0063 01       		.byte	1
+ 158 0064 02       		.byte	2
+ 159 0065 000000   		.space	3
+ 160 0068 00000000 		.word	0
+ 161 006c 00000000 		.word	0
+ 162 0070 00000000 		.word	OSEK_TASK_TaskPeriodic_10ms
+ 163 0074 00000000 		.word	ContextTaskTaskPeriodic_10ms
+ 164 0078 00000000 		.word	StackTaskTaskPeriodic_10ms
+ 165 007c 0002     		.short	512
+ 166 007e 02       		.byte	2
+ 167 007f 01       		.byte	1
+ 168 0080 02       		.byte	2
+ 169 0081 000000   		.space	3
+ 170 0084 00000000 		.word	0
+ 171 0088 00000000 		.word	0
+ 172              		.global	TasksVar
+ 173              		.section	.bss.TasksVar,"aw",%nobits
+ 174              		.align	2
+ 177              	TasksVar:
+ 178 0000 00000000 		.space	100
+ 178      00000000 
+ 178      00000000 
+ 178      00000000 
+ 178      00000000 
+ 179              		.global	TasksAppModeAppMode1
+ 180              		.section	.rodata.TasksAppModeAppMode1,"a"
+ 181              		.align	2
+ 184              	TasksAppModeAppMode1:
+ 185 0000 00       		.space	1
+ 186              		.global	AutoStart
+ 187              		.section	.rodata.AutoStart,"a"
  188              		.align	2
- 191              	ReadyVar:
- 192 0000 00000000 		.space	6
- 192      0000
- 193              		.global	ResourcesPriority
- 194              		.section	.rodata.ResourcesPriority,"a"
- 195              		.align	2
- 198              	ResourcesPriority:
- 199              		.global	AlarmsVar
- 200              		.section	.bss.AlarmsVar,"aw",%nobits
- 201              		.align	2
- 204              	AlarmsVar:
- 205 0000 00000000 		.space	24
- 205      00000000 
- 205      00000000 
- 205      00000000 
- 205      00000000 
- 206              		.global	AlarmsConst
- 207              		.section	.rodata.AlarmsConst,"a"
- 208              		.align	2
- 211              	AlarmsConst:
- 212 0000 00       		.byte	0
- 213 0001 02       		.byte	2
- 214 0002 0000     		.space	2
- 215 0004 00000000 		.word	0
- 216 0008 02       		.byte	2
- 217 0009 000000   		.space	3
- 218 000c 00000000 		.word	0
- 219 0010 00       		.byte	0
- 220 0011 000000   		.space	3
- 221 0014 00       		.byte	0
- 222 0015 00       		.byte	0
- 223 0016 0000     		.space	2
- 224 0018 00000000 		.word	OSEK_CALLBACK_AppCallback
- 225 001c 00       		.byte	0
- 226 001d 000000   		.space	3
- 227 0020 00000000 		.word	0
- 228 0024 00       		.byte	0
- 229 0025 000000   		.space	3
- 230              		.global	AutoStartAlarm
- 231              		.section	.rodata.AutoStartAlarm,"a"
+ 191              	AutoStart:
+ 192 0000 01       		.byte	1
+ 193 0001 000000   		.space	3
+ 194 0004 00000000 		.word	TasksAppModeAppMode1
+ 195              		.global	ReadyConst
+ 196              		.section	.rodata.ReadyConst,"a"
+ 197              		.align	2
+ 200              	ReadyConst:
+ 201 0000 02       		.byte	2
+ 202 0001 000000   		.space	3
+ 203 0004 00000000 		.word	ReadyList2
+ 204 0008 01       		.byte	1
+ 205 0009 000000   		.space	3
+ 206 000c 00000000 		.word	ReadyList1
+ 207 0010 02       		.byte	2
+ 208 0011 000000   		.space	3
+ 209 0014 00000000 		.word	ReadyList0
+ 210              		.global	ReadyVar
+ 211              		.section	.bss.ReadyVar,"aw",%nobits
+ 212              		.align	2
+ 215              	ReadyVar:
+ 216 0000 00000000 		.space	6
+ 216      0000
+ 217              		.global	ResourcesPriority
+ 218              		.section	.rodata.ResourcesPriority,"a"
+ 219              		.align	2
+ 222              	ResourcesPriority:
+ 223              		.global	AlarmsVar
+ 224              		.section	.bss.AlarmsVar,"aw",%nobits
+ 225              		.align	2
+ 228              	AlarmsVar:
+ 229 0000 00000000 		.space	36
+ 229      00000000 
+ 229      00000000 
+ 229      00000000 
+ 229      00000000 
+ 230              		.global	AlarmsConst
+ 231              		.section	.rodata.AlarmsConst,"a"
  232              		.align	2
- 235              	AutoStartAlarm:
- 236              		.global	CountersVar
- 237              		.section	.bss.CountersVar,"aw",%nobits
- 238              		.align	2
- 241              	CountersVar:
- 242 0000 00000000 		.space	4
- 243              		.global	CountersConst
- 244              		.section	.rodata.CountersConst,"a"
- 245              		.align	2
- 248              	CountersConst:
- 249 0000 02       		.byte	2
- 250 0001 000000   		.space	3
- 251 0004 00000000 		.word	OSEK_ALARMLIST_HardwareCounter
- 252 0008 00879303 		.word	60000000
- 253 000c 01000000 		.word	1
- 254 0010 01000000 		.word	1
- 255              		.global	ApplicationMode
- 256              		.section	.bss.ApplicationMode,"aw",%nobits
- 259              	ApplicationMode:
- 260 0000 00       		.space	1
- 261              		.global	ErrorHookRunning
- 262              		.section	.bss.ErrorHookRunning,"aw",%nobits
- 265              	ErrorHookRunning:
- 266 0000 00       		.space	1
- 267              		.text
- 268              	.Letext0:
- 269              		.file 1 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
- 270              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
- 271              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\Types
- 272              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\Os_In
- 273              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\os.h"
- 274              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\Os_In
- 275              		.file 7 "Modules/OS/OSAL/src/Os_Internal_Cfg.c"
+ 235              	AlarmsConst:
+ 236 0000 00       		.byte	0
+ 237 0001 02       		.byte	2
+ 238 0002 0000     		.space	2
+ 239 0004 00000000 		.word	0
+ 240 0008 02       		.byte	2
+ 241 0009 000000   		.space	3
+ 242 000c 00000000 		.word	0
+ 243 0010 00       		.byte	0
+ 244 0011 000000   		.space	3
+ 245 0014 00       		.byte	0
+ 246 0015 00       		.byte	0
+ 247 0016 0000     		.space	2
+ 248 0018 00000000 		.word	OSEK_CALLBACK_Task_Periodic_1000ms
+ 249 001c 00       		.byte	0
+ 250 001d 000000   		.space	3
+ 251 0020 00000000 		.word	0
+ 252 0024 00       		.byte	0
+ 253 0025 000000   		.space	3
+ 254 0028 00       		.byte	0
+ 255 0029 02       		.byte	2
+ 256 002a 0000     		.space	2
+ 257 002c 00000000 		.word	0
+ 258 0030 04       		.byte	4
+ 259 0031 000000   		.space	3
+ 260 0034 00000000 		.word	0
+ 261 0038 00       		.byte	0
+ 262 0039 000000   		.space	3
+ 263              		.global	AutoStartAlarm
+ 264              		.section	.rodata.AutoStartAlarm,"a"
+ 265              		.align	2
+ 268              	AutoStartAlarm:
+ 269              		.global	CountersVar
+ 270              		.section	.bss.CountersVar,"aw",%nobits
+ 271              		.align	2
+ 274              	CountersVar:
+ 275 0000 00000000 		.space	4
+ 276              		.global	CountersConst
+ 277              		.section	.rodata.CountersConst,"a"
+ 278              		.align	2
+ 281              	CountersConst:
+ 282 0000 03       		.byte	3
+ 283 0001 000000   		.space	3
+ 284 0004 00000000 		.word	OSEK_ALARMLIST_HardwareCounter
+ 285 0008 00879303 		.word	60000000
+ 286 000c 01000000 		.word	1
+ 287 0010 01000000 		.word	1
+ 288              		.global	ApplicationMode
+ 289              		.section	.bss.ApplicationMode,"aw",%nobits
+ 292              	ApplicationMode:
+ 293 0000 00       		.space	1
+ 294              		.global	ErrorHookRunning
+ 295              		.section	.bss.ErrorHookRunning,"aw",%nobits
+ 298              	ErrorHookRunning:
+ 299 0000 00       		.space	1
+ 300              		.text
+ 301              	.Letext0:
+ 302              		.file 1 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
+ 303              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
+ 304              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\Types
+ 305              		.file 4 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\Os_In
+ 306              		.file 5 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\os.h"
+ 307              		.file 6 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\modules\\os\\osal\\include\\Os_In
+ 308              		.file 7 "Modules/OS/OSAL/src/Os_Internal_Cfg.c"
 DEFINED SYMBOLS
                             *ABS*:00000000 Os_Internal_Cfg.c
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:23     .bss.StackTaskTaskInit:00000000 StackTaskTaskInit
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:20     .bss.StackTaskTaskInit:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:30     .bss.StackTaskTaskBlink:00000000 StackTaskTaskBlink
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:27     .bss.StackTaskTaskBlink:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:37     .bss.StackTaskTaskPeriodic:00000000 StackTaskTaskPeriodic
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:34     .bss.StackTaskTaskPeriodic:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:44     .bss.StackTaskTaskBackground:00000000 StackTaskTaskBackground
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:41     .bss.StackTaskTaskBackground:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:51     .bss.ContextTaskTaskInit:00000000 ContextTaskTaskInit
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:48     .bss.ContextTaskTaskInit:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:58     .bss.ContextTaskTaskBlink:00000000 ContextTaskTaskBlink
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:55     .bss.ContextTaskTaskBlink:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:65     .bss.ContextTaskTaskPeriodic:00000000 ContextTaskTaskPeriodic
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:62     .bss.ContextTaskTaskPeriodic:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:72     .bss.ContextTaskTaskBackground:00000000 ContextTaskTaskBackground
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:69     .bss.ContextTaskTaskBackground:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:79     .bss.ReadyList2:00000000 ReadyList2
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:76     .bss.ReadyList2:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:86     .bss.ReadyList1:00000000 ReadyList1
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:83     .bss.ReadyList1:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:93     .bss.ReadyList0:00000000 ReadyList0
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:90     .bss.ReadyList0:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:100    .rodata.OSEK_ALARMLIST_HardwareCounter:00000000 OSEK_ALARMLIST_HardwareCounter
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:97     .rodata.OSEK_ALARMLIST_HardwareCounter:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:107    .rodata.TasksConst:00000000 TasksConst
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:104    .rodata.TasksConst:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:153    .bss.TasksVar:00000000 TasksVar
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:150    .bss.TasksVar:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:160    .rodata.TasksAppModeAppMode1:00000000 TasksAppModeAppMode1
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:157    .rodata.TasksAppModeAppMode1:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:167    .rodata.AutoStart:00000000 AutoStart
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:164    .rodata.AutoStart:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:176    .rodata.ReadyConst:00000000 ReadyConst
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:173    .rodata.ReadyConst:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:191    .bss.ReadyVar:00000000 ReadyVar
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:188    .bss.ReadyVar:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:198    .rodata.ResourcesPriority:00000000 ResourcesPriority
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:204    .bss.AlarmsVar:00000000 AlarmsVar
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:201    .bss.AlarmsVar:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:211    .rodata.AlarmsConst:00000000 AlarmsConst
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:208    .rodata.AlarmsConst:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:235    .rodata.AutoStartAlarm:00000000 AutoStartAlarm
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:241    .bss.CountersVar:00000000 CountersVar
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:238    .bss.CountersVar:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:248    .rodata.CountersConst:00000000 CountersConst
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:245    .rodata.CountersConst:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:259    .bss.ApplicationMode:00000000 ApplicationMode
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:260    .bss.ApplicationMode:00000000 $d
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:265    .bss.ErrorHookRunning:00000000 ErrorHookRunning
-C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:266    .bss.ErrorHookRunning:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:23     .bss.StackTaskTaskInit:00000000 StackTaskTaskInit
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:20     .bss.StackTaskTaskInit:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:30     .bss.StackTaskTaskBlink:00000000 StackTaskTaskBlink
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:27     .bss.StackTaskTaskBlink:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:37     .bss.StackTaskTaskPeriodic:00000000 StackTaskTaskPeriodic
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:34     .bss.StackTaskTaskPeriodic:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:44     .bss.StackTaskTaskBackground:00000000 StackTaskTaskBackground
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:41     .bss.StackTaskTaskBackground:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:51     .bss.StackTaskTaskPeriodic_10ms:00000000 StackTaskTaskPeriodic_10ms
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:48     .bss.StackTaskTaskPeriodic_10ms:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:58     .bss.ContextTaskTaskInit:00000000 ContextTaskTaskInit
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:55     .bss.ContextTaskTaskInit:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:65     .bss.ContextTaskTaskBlink:00000000 ContextTaskTaskBlink
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:62     .bss.ContextTaskTaskBlink:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:72     .bss.ContextTaskTaskPeriodic:00000000 ContextTaskTaskPeriodic
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:69     .bss.ContextTaskTaskPeriodic:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:79     .bss.ContextTaskTaskBackground:00000000 ContextTaskTaskBackground
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:76     .bss.ContextTaskTaskBackground:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:86     .bss.ContextTaskTaskPeriodic_10ms:00000000 ContextTaskTaskPeriodic_10ms
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:83     .bss.ContextTaskTaskPeriodic_10ms:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:93     .bss.ReadyList2:00000000 ReadyList2
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:90     .bss.ReadyList2:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:100    .bss.ReadyList1:00000000 ReadyList1
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:97     .bss.ReadyList1:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:107    .bss.ReadyList0:00000000 ReadyList0
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:104    .bss.ReadyList0:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:114    .rodata.OSEK_ALARMLIST_HardwareCounter:00000000 OSEK_ALARMLIST_HardwareCounter
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:111    .rodata.OSEK_ALARMLIST_HardwareCounter:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:121    .rodata.TasksConst:00000000 TasksConst
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:118    .rodata.TasksConst:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:177    .bss.TasksVar:00000000 TasksVar
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:174    .bss.TasksVar:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:184    .rodata.TasksAppModeAppMode1:00000000 TasksAppModeAppMode1
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:181    .rodata.TasksAppModeAppMode1:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:191    .rodata.AutoStart:00000000 AutoStart
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:188    .rodata.AutoStart:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:200    .rodata.ReadyConst:00000000 ReadyConst
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:197    .rodata.ReadyConst:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:215    .bss.ReadyVar:00000000 ReadyVar
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:212    .bss.ReadyVar:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:222    .rodata.ResourcesPriority:00000000 ResourcesPriority
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:228    .bss.AlarmsVar:00000000 AlarmsVar
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:225    .bss.AlarmsVar:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:235    .rodata.AlarmsConst:00000000 AlarmsConst
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:232    .rodata.AlarmsConst:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:268    .rodata.AutoStartAlarm:00000000 AutoStartAlarm
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:274    .bss.CountersVar:00000000 CountersVar
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:271    .bss.CountersVar:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:281    .rodata.CountersConst:00000000 CountersConst
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:278    .rodata.CountersConst:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:292    .bss.ApplicationMode:00000000 ApplicationMode
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:293    .bss.ApplicationMode:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:298    .bss.ErrorHookRunning:00000000 ErrorHookRunning
+C:\Users\AAA\AppData\Local\Temp\cc8xMIbW.s:299    .bss.ErrorHookRunning:00000000 $d
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.Compiler.h.37.21976e385218db9c908e92701adcc031
                            .group:00000000 wm4.Types.h.71.4412dfbb75820d0512c0e074dd5535a3
@@ -309,17 +346,18 @@ C:\Users\AAA\AppData\Local\Temp\ccvxAS5P.s:266    .bss.ErrorHookRunning:00000000
                            .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.Types.h.138.ef43a0c9706bafb70401eec7b92ddf85
-                           .group:00000000 wm4.Os_Cfg.h.42.b70a4e53fdd4e3c8f378c7331fd65a35
+                           .group:00000000 wm4.Os_Cfg.h.42.548617acea3b59fe3cf9fcc181c18ad9
                            .group:00000000 wm4.Os_Arch.h.93.12102c3b0d784f7b702d5066ade693b9
                            .group:00000000 wm4.os.h.87.e22781870e0c5fc4344bfdd6275b723d
                            .group:00000000 wm4.Os_Internal_Arch.h.35.0bf3ac38e9ac5f78b2da37fa4bf34633
                            .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
-                           .group:00000000 wm4.Os_Internal_Cfg.h.41.153a419c81b225b8f854c568ce44c0a2
+                           .group:00000000 wm4.Os_Internal_Cfg.h.41.2874541beab7667cda0284b97947e0df
                            .group:00000000 wm4.os_internal.h.84.e9d92fe93bbc56f6b3dec8f49cbfd369
 
 UNDEFINED SYMBOLS
 OSEK_TASK_TaskInit
 OSEK_TASK_TaskBlink
-OSEK_TASK_TaskPeriodic
+OSEK_TASK_TaskPeriodic_500ms
 OSEK_TASK_TaskBackground
-OSEK_CALLBACK_AppCallback
+OSEK_TASK_TaskPeriodic_10ms
+OSEK_CALLBACK_Task_Periodic_1000ms
