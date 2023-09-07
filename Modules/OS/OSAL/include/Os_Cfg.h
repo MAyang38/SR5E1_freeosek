@@ -83,11 +83,13 @@
 /** \brief Task Definition */
 #define TaskBlink 1
 /** \brief Task Definition */
-#define TaskPeriodic_500ms 2
+#define TaskPeriodic_100ms 2
 /** \brief Task Definition */
 #define TaskBackground 3
 /** \brief Task Definition */
 #define TaskPeriodic_10ms 4
+/** \brief Task Definition */
+#define TaskPeriodic_1ms 5
 
 /** \brief Definition of the Application Mode AppMode1 */
 #define AppMode1 0
@@ -97,11 +99,13 @@
 
 
 /** \brief Definition of the Alarm ActivateTaskPeriodic */
-#define Alarm_Periodic_500ms 0
+#define Alarm_Periodic_100ms 0
 /** \brief Definition of the Alarm AppCallbackAlarm */
 #define Alarm_Periodic_1000ms 1
-
+/** \brief Definition of the Alarm AppCallbackAlarm */
 #define Alarm_Periodic_10ms  2
+/** \brief Definition of the Alarm AppCallbackAlarm */
+#define Alarm_Periodic_1ms  3
 
 /** \brief Definition of the Counter HardwareCounter */
 #define HardwareCounter 0
@@ -176,11 +180,13 @@ DeclareTask(TaskInit);
 // }
 /** \brief Task Declaration of Task TaskBlink */
 DeclareTask(TaskBlink);
-/** \brief Task Declaration of Task TaskPeriodic_500ms */
-DeclareTask(TaskPeriodic_500ms);
+/** \brief Task Declaration of Task TaskPeriodic_100ms */
+DeclareTask(TaskPeriodic_100ms);
 
 /** \brief Task Declaration of Task TaskPeriodic_10ms */
 DeclareTask(TaskPeriodic_10ms);
+
+DeclareTask(TaskPeriodic_1ms);
 
 /** \brief Task Declaration of Task TaskBackground */
 DeclareTask(TaskBackground);

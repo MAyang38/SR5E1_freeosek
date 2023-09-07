@@ -86,7 +86,8 @@ uint8 StackTaskTaskPeriodic[512];
 uint8 StackTaskTaskBackground[512];
 /** \brief TaskPeriodic stack */
 uint8 StackTaskTaskPeriodic_10ms[512];
-
+/** \brief TaskPeriodic stack */
+uint8 StackTaskTaskPeriodic_1ms[512];
 
 /** \brief TaskInit context */
 TaskContextType ContextTaskTaskInit;
@@ -96,8 +97,10 @@ TaskContextType ContextTaskTaskBlink;
 TaskContextType ContextTaskTaskPeriodic;
 /** \brief TaskBackground context */
 TaskContextType ContextTaskTaskBackground;
-
+/** \brief TaskBackground context */
 TaskContextType ContextTaskTaskPeriodic_10ms;
+/** \brief TaskBackground context */
+TaskContextType ContextTaskTaskPeriodic_1ms;
 
 /** \brief Ready List for Priority 2 */
 TaskType ReadyList2[1];
@@ -109,9 +112,10 @@ TaskType ReadyList1[1];
 TaskType ReadyList0[2];
 
 const AlarmType OSEK_ALARMLIST_HardwareCounter[3] = {
-	Alarm_Periodic_500ms, /* this alarm has to be incremented with this counter */
+	Alarm_Periodic_100ms, /* this alarm has to be incremented with this counter */
 	Alarm_Periodic_1000ms, /* this alarm has to be incremented with this counter */
 	Alarm_Periodic_10ms,
+	Alarm_Periodic_1ms,
 };
 
 
@@ -184,7 +188,7 @@ const TaskConstType TasksConst[TASKS_COUNT] = {
 	},
 	/* Task TaskPeriodic */
 	{
- 		OSEK_TASK_TaskPeriodic_500ms,	/* task entry point */
+ 		OSEK_TASK_TaskPeriodic_100ms,	/* task entry point */
 		&ContextTaskTaskPeriodic, /* pointer to task context */
 		StackTaskTaskPeriodic, /* pointer stack memory */
 		512, /* stack size */
@@ -230,6 +234,21 @@ const TaskConstType TasksConst[TASKS_COUNT] = {
 		0 , /* events mask */
 		0 /* resources mask */
 	},
+	{
+ 		OSEK_TASK_TaskPeriodic_1ms,	/* task entry point */
+		&ContextTaskTaskPeriodic_1ms, /* pointer to task context */
+		StackTaskTaskPeriodic_1ms, /* pointer stack memory */
+		512, /* stack size */
+		2, /* task priority */
+		1, /* task max activations */
+		{
+			0, /* basic task */
+			1, /* preemtive task */
+			0
+		}, /* task const flags */
+		0 , /* events mask */
+		0 /* resources mask */
+	},
 };
 
 /** \brief TaskVar Array */
@@ -250,7 +269,7 @@ const AutoStartType AutoStart[1]  = {
 
 const ReadyConstType ReadyConst[3] = { 
 	{
-		2, /* Length of this ready list */
+		3, /* Length of this ready list */
 		ReadyList2 /* Pointer to the Ready List */
 	},
 	{
@@ -273,15 +292,15 @@ const TaskPriorityType ResourcesPriority[0]  = {
 };
 /** TODO replace next line with: 
  ** AlarmVarType AlarmsVar[2]; */
-AlarmVarType AlarmsVar[3];
+AlarmVarType AlarmsVar[4];
 
-const AlarmConstType AlarmsConst[3]  = {
+const AlarmConstType AlarmsConst[4]  = {
 	{
 		OSEK_COUNTER_HardwareCounter, /* Counter */
 		ACTIVATETASK, /* Alarm action */
 		{
 			NULL, /* no callback */
-			TaskPeriodic_500ms, /* TaskID */
+			TaskPeriodic_100ms, /* TaskID */
 			0, /* no event */
 			0 /* no counter */
 		},
@@ -305,6 +324,16 @@ const AlarmConstType AlarmsConst[3]  = {
 			0, /* no event */
 			0 /* no counter */
 		},
+	},
+	{
+		OSEK_COUNTER_HardwareCounter, /* Counter */
+		ACTIVATETASK, /* Alarm action */
+		{
+			NULL, /* callback */
+			TaskPeriodic_1ms, /* no taskid */
+			0, /* no event */
+			0 /* no counter */
+		},
 	}
 };
 
@@ -316,7 +345,7 @@ CounterVarType CountersVar[1];
 
 const CounterConstType CountersConst[1] = {
 	{
-		3, /* quantity of alarms for this counter */
+		4, /* quantity of alarms for this counter */
 		(AlarmType*)OSEK_ALARMLIST_HardwareCounter, /* alarms list */
 		60000000, /* max allowed value */
 		1, /* min cycle */

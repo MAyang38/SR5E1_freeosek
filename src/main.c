@@ -42,8 +42,8 @@ uint32_t Time_Count = 0;
 //      GPIO_MODE_OSPEEDR_HIGH |                    \
 //      GPIO_MODE_PUPDR_PULLDOWN )                   
     
-#define OS_GPIO_500 gpio_iopack(GPIO_PORT_G, GPIO_PIN_5)
-#define OS_GPIO_CFG_500                           \
+#define OS_GPIO_100 gpio_iopack(GPIO_PORT_G, GPIO_PIN_5)
+#define OS_GPIO_CFG_100                           \
     (GPIO_MODE_MODER_OUTPUT |                 \
      GPIO_MODE_OTYPER_PUSHPULL |                 \
      GPIO_MODE_OSPEEDR_HIGH |                    \
@@ -91,7 +91,7 @@ int main(void) {
                    TEST_INIT_OSAL));
     /*LLD-Init*/
 	gpio_set_pin_mode(OS_GPIO_10, OS_GPIO_CFG_10);
-    gpio_set_pin_mode(OS_GPIO_500, OS_GPIO_CFG_500);
+    gpio_set_pin_mode(OS_GPIO_100, OS_GPIO_CFG_100);
     gpio_set_pin_mode(OS_GPIO_1000, OS_GPIO_CFG_1000);
 
     SPI_LLD_Init();
@@ -121,13 +121,17 @@ TASK(TaskInit)
 
 	/* Set 10 ms alarm for TaskPeriodic_10ms */
 
-	/* Set 500 ms alarm for TaskPeriodic_500ms */
-	SetRelAlarm(Alarm_Periodic_500ms, 0, 500);
+	/* Set 500 ms alarm for TaskPeriodic_100ms */
+	SetRelAlarm(Alarm_Periodic_100ms, 0, 100);
 
 	/* Set 1000 ms callback alarm */
 	SetRelAlarm(Alarm_Periodic_1000ms, 0, 1000);
 
 	SetRelAlarm(Alarm_Periodic_10ms, 0, 10);
+
+	/* Set 1 ms callback alarm */
+	SetRelAlarm(Alarm_Periodic_1ms, 0, 1);
+
 	/* Activate TaskBlink */
 	ActivateTask(TaskBlink);
 
@@ -158,6 +162,20 @@ TASK(TaskBlink)
 	TerminateTask();
 }
 
+TASK(TaskPeriodic_1ms)
+{
+
+
+	// printf("TaskPeriodic: Event set.\n");
+	gpio_toggle_pin(OS_GPIO_10);
+
+	// gpio_toggle_pin(OS_GPIO_500);
+	// SetEvent(TaskBlink, evBlink);
+
+	/* end TaskPeriodic */
+	TerminateTask();
+}
+
 
 TASK(TaskPeriodic_10ms)
 {
@@ -177,13 +195,13 @@ TASK(TaskPeriodic_10ms)
 /*
  * This is a periodic task.
  */
-TASK(TaskPeriodic_500ms)
+TASK(TaskPeriodic_100ms)
 {
 
 
 	// printf("TaskPeriodic: Event set.\n");
 
-	gpio_toggle_pin(OS_GPIO_500);
+	gpio_toggle_pin(OS_GPIO_100);
 	// SetEvent(TaskBlink, evBlink);
 
 	/* end TaskPeriodic */
