@@ -1,9 +1,9 @@
-# StellarE SDK TestID01
+# StellarE OS  SDK 
 
-## Blinking LED
+## OS period task
 
 ### Description: 
-	TestID01 blinks USER_LED_A each 250ms.
+	this project has 4 period tasks: 1ms, 10ms, 100ms, 1000ms
 ### Supported Platforms:
 -----------------------------------------------------------
 #### EVBE7000P
