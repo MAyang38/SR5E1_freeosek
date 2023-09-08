@@ -1921,90 +1921,90 @@
  1626              	.LFE474:
  1628              		.text
  1629              	.Letext0:
- 1630              		.file 2 "e:\\project\\\270\357\302\267\\9388\\e1\\sr5e1_freeosek\\tools\\toolchain\\arm\\mingw64_n
- 1631              		.file 3 "e:\\project\\\270\357\302\267\\9388\\e1\\sr5e1_freeosek\\tools\\toolchain\\arm\\mingw64_n
+ 1630              		.file 2 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
+ 1631              		.file 3 "d:\\project\\9388\\e1\\2023_7_27\\sr5e1_l9388_freeosek\\tools\\toolchain\\arm\\mingw64_nt
  1632              		.file 4 "CDD/CDD_L9388/include/CDD_L9388_Struct.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 CDD_L9388_IF.c
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:19     .text.CDD_L9388_Init:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:26     .text.CDD_L9388_Init:00000000 CDD_L9388_Init
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:77     .text.CDD_L9388_WDG2_Init:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:84     .text.CDD_L9388_WDG2_Init:00000000 CDD_L9388_WDG2_Init
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:159    .bss.channel:00000000 channel
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:160    .bss.channel:00000000 $d
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:165    .bss.mode:00000000 mode
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:166    .bss.mode:00000000 $d
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:168    .text.CDD_L9388_Solenoid_Drivers_Global_conf:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:175    .text.CDD_L9388_Solenoid_Drivers_Global_conf:00000000 CDD_L9388_Solenoid_Drivers_Global_conf
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:214    .text.CDD_L9388_NO_TC_Current_set:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:221    .text.CDD_L9388_NO_TC_Current_set:00000000 CDD_L9388_NO_TC_Current_set
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:254    .text.CDD_L9388_NO_TC_PWM_set:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:261    .text.CDD_L9388_NO_TC_PWM_set:00000000 CDD_L9388_NO_TC_PWM_set
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:293    .text.CDD_L9388_ESV_Current_set:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:300    .text.CDD_L9388_ESV_Current_set:00000000 CDD_L9388_ESV_Current_set
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:333    .text.CDD_L9388_ESV_PWM_set:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:340    .text.CDD_L9388_ESV_PWM_set:00000000 CDD_L9388_ESV_PWM_set
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:372    .text.CDD_L9388_ON_OFF_Config:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:379    .text.CDD_L9388_ON_OFF_Config:00000000 CDD_L9388_ON_OFF_Config
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:411    .text.CDD_L9388_SHLS_Conf:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:418    .text.CDD_L9388_SHLS_Conf:00000000 CDD_L9388_SHLS_Conf
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:450    .text.CDD_L9388_Read_NO_TC_Exception:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:457    .text.CDD_L9388_Read_NO_TC_Exception:00000000 CDD_L9388_Read_NO_TC_Exception
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:484    .text.CDD_L9388_Read_ESV_Exception:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:491    .text.CDD_L9388_Read_ESV_Exception:00000000 CDD_L9388_Read_ESV_Exception
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:518    .text.CDD_L9388_Read_ON_OFF_diag:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:525    .text.CDD_L9388_Read_ON_OFF_diag:00000000 CDD_L9388_Read_ON_OFF_diag
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:552    .text.CDD_L9388_WDG2_Mainfunction:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:559    .text.CDD_L9388_WDG2_Mainfunction:00000000 CDD_L9388_WDG2_Mainfunction
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:578    .text.CDD_L9388_NO_Ch1_Init_demo:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:585    .text.CDD_L9388_NO_Ch1_Init_demo:00000000 CDD_L9388_NO_Ch1_Init_demo
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:627    .text.CDD_L9388_NO_Ch1_Init_demo:0000003c $d
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:633    .text.CDD_L9388_ReadADVoltage:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:640    .text.CDD_L9388_ReadADVoltage:00000000 CDD_L9388_ReadADVoltage
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:673    .text.CDD_L9388_Pump_Config:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:680    .text.CDD_L9388_Pump_Config:00000000 CDD_L9388_Pump_Config
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:717    .text.CDD_L9388_WSI_Config:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:724    .text.CDD_L9388_WSI_Config:00000000 CDD_L9388_WSI_Config
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:761    .text.CDD_L9388_VPWR_Diag:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:768    .text.CDD_L9388_VPWR_Diag:00000000 CDD_L9388_VPWR_Diag
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:815    .text.CDD_L9388_VPWR_Diag:0000003c $d
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:820    .text.CDD_L9388_VDD_Diag:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:827    .text.CDD_L9388_VDD_Diag:00000000 CDD_L9388_VDD_Diag
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:864    .text.CDD_L9388_VDD_Diag:00000028 $d
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:869    .text.CDD_L9388_VDD5_Diag:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:876    .text.CDD_L9388_VDD5_Diag:00000000 CDD_L9388_VDD5_Diag
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:915    .text.CDD_L9388_VDD5_Diag:0000002c $d
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:920    .text.CDD_L9388_Charge_Pump_Diag:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:927    .text.CDD_L9388_Charge_Pump_Diag:00000000 CDD_L9388_Charge_Pump_Diag
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:974    .text.CDD_L9388_Charge_Pump_Diag:0000003c $d
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:979    .text.CDD_L9388_Oscillator_Diag:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:986    .text.CDD_L9388_Oscillator_Diag:00000000 CDD_L9388_Oscillator_Diag
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1040   .text.CDD_L9388_Oscillator_Diag:0000004c $d
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1049   .bss.Die_Temperature:00000000 Die_Temperature
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1046   .bss.Die_Temperature:00000000 $d
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1052   .text.CDD_L9388_Die_Temperature_Diag:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1059   .text.CDD_L9388_Die_Temperature_Diag:00000000 CDD_L9388_Die_Temperature_Diag
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1104   .text.CDD_L9388_Die_Temperature_Diag:0000003c $d
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1110   .text.CDD_L9388_Prun_WD_Diag:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1117   .text.CDD_L9388_Prun_WD_Diag:00000000 CDD_L9388_Prun_WD_Diag
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1156   .text.CDD_L9388_Prun_WD_Diag:00000030 $d
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1161   .text.CDD_L9388_SPI_Diag:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1168   .text.CDD_L9388_SPI_Diag:00000000 CDD_L9388_SPI_Diag
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1205   .text.CDD_L9388_SPI_Diag:00000028 $d
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1210   .text.CDD_L9388_PUMPDR_Diag:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1217   .text.CDD_L9388_PUMPDR_Diag:00000000 CDD_L9388_PUMPDR_Diag
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1268   .text.CDD_L9388_PUMPDR_Diag:00000040 $d
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1273   .text.CDD_L9388_VSO_Diag:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1280   .text.CDD_L9388_VSO_Diag:00000000 CDD_L9388_VSO_Diag
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1319   .text.CDD_L9388_VSO_Diag:0000002c $d
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1324   .text.CDD_L9388_RESOUTPUT_Diag:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1331   .text.CDD_L9388_RESOUTPUT_Diag:00000000 CDD_L9388_RESOUTPUT_Diag
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1370   .text.CDD_L9388_RESOUTPUT_Diag:0000002c $d
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1375   .text.CDD_L9388_Init_For_Test:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1382   .text.CDD_L9388_Init_For_Test:00000000 CDD_L9388_Init_For_Test
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1534   .text.CDD_L9388_Init_For_Test:00000128 $d
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1539   .text.CDD_L9388_Read_Status_For_Test:00000000 $t
-C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1546   .text.CDD_L9388_Read_Status_For_Test:00000000 CDD_L9388_Read_Status_For_Test
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:19     .text.CDD_L9388_Init:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:26     .text.CDD_L9388_Init:00000000 CDD_L9388_Init
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:77     .text.CDD_L9388_WDG2_Init:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:84     .text.CDD_L9388_WDG2_Init:00000000 CDD_L9388_WDG2_Init
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:159    .bss.channel:00000000 channel
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:160    .bss.channel:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:165    .bss.mode:00000000 mode
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:166    .bss.mode:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:168    .text.CDD_L9388_Solenoid_Drivers_Global_conf:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:175    .text.CDD_L9388_Solenoid_Drivers_Global_conf:00000000 CDD_L9388_Solenoid_Drivers_Global_conf
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:214    .text.CDD_L9388_NO_TC_Current_set:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:221    .text.CDD_L9388_NO_TC_Current_set:00000000 CDD_L9388_NO_TC_Current_set
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:254    .text.CDD_L9388_NO_TC_PWM_set:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:261    .text.CDD_L9388_NO_TC_PWM_set:00000000 CDD_L9388_NO_TC_PWM_set
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:293    .text.CDD_L9388_ESV_Current_set:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:300    .text.CDD_L9388_ESV_Current_set:00000000 CDD_L9388_ESV_Current_set
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:333    .text.CDD_L9388_ESV_PWM_set:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:340    .text.CDD_L9388_ESV_PWM_set:00000000 CDD_L9388_ESV_PWM_set
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:372    .text.CDD_L9388_ON_OFF_Config:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:379    .text.CDD_L9388_ON_OFF_Config:00000000 CDD_L9388_ON_OFF_Config
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:411    .text.CDD_L9388_SHLS_Conf:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:418    .text.CDD_L9388_SHLS_Conf:00000000 CDD_L9388_SHLS_Conf
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:450    .text.CDD_L9388_Read_NO_TC_Exception:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:457    .text.CDD_L9388_Read_NO_TC_Exception:00000000 CDD_L9388_Read_NO_TC_Exception
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:484    .text.CDD_L9388_Read_ESV_Exception:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:491    .text.CDD_L9388_Read_ESV_Exception:00000000 CDD_L9388_Read_ESV_Exception
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:518    .text.CDD_L9388_Read_ON_OFF_diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:525    .text.CDD_L9388_Read_ON_OFF_diag:00000000 CDD_L9388_Read_ON_OFF_diag
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:552    .text.CDD_L9388_WDG2_Mainfunction:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:559    .text.CDD_L9388_WDG2_Mainfunction:00000000 CDD_L9388_WDG2_Mainfunction
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:578    .text.CDD_L9388_NO_Ch1_Init_demo:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:585    .text.CDD_L9388_NO_Ch1_Init_demo:00000000 CDD_L9388_NO_Ch1_Init_demo
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:627    .text.CDD_L9388_NO_Ch1_Init_demo:0000003c $d
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:633    .text.CDD_L9388_ReadADVoltage:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:640    .text.CDD_L9388_ReadADVoltage:00000000 CDD_L9388_ReadADVoltage
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:673    .text.CDD_L9388_Pump_Config:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:680    .text.CDD_L9388_Pump_Config:00000000 CDD_L9388_Pump_Config
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:717    .text.CDD_L9388_WSI_Config:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:724    .text.CDD_L9388_WSI_Config:00000000 CDD_L9388_WSI_Config
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:761    .text.CDD_L9388_VPWR_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:768    .text.CDD_L9388_VPWR_Diag:00000000 CDD_L9388_VPWR_Diag
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:815    .text.CDD_L9388_VPWR_Diag:0000003c $d
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:820    .text.CDD_L9388_VDD_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:827    .text.CDD_L9388_VDD_Diag:00000000 CDD_L9388_VDD_Diag
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:864    .text.CDD_L9388_VDD_Diag:00000028 $d
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:869    .text.CDD_L9388_VDD5_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:876    .text.CDD_L9388_VDD5_Diag:00000000 CDD_L9388_VDD5_Diag
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:915    .text.CDD_L9388_VDD5_Diag:0000002c $d
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:920    .text.CDD_L9388_Charge_Pump_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:927    .text.CDD_L9388_Charge_Pump_Diag:00000000 CDD_L9388_Charge_Pump_Diag
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:974    .text.CDD_L9388_Charge_Pump_Diag:0000003c $d
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:979    .text.CDD_L9388_Oscillator_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:986    .text.CDD_L9388_Oscillator_Diag:00000000 CDD_L9388_Oscillator_Diag
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1040   .text.CDD_L9388_Oscillator_Diag:0000004c $d
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1049   .bss.Die_Temperature:00000000 Die_Temperature
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1046   .bss.Die_Temperature:00000000 $d
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1052   .text.CDD_L9388_Die_Temperature_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1059   .text.CDD_L9388_Die_Temperature_Diag:00000000 CDD_L9388_Die_Temperature_Diag
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1104   .text.CDD_L9388_Die_Temperature_Diag:0000003c $d
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1110   .text.CDD_L9388_Prun_WD_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1117   .text.CDD_L9388_Prun_WD_Diag:00000000 CDD_L9388_Prun_WD_Diag
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1156   .text.CDD_L9388_Prun_WD_Diag:00000030 $d
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1161   .text.CDD_L9388_SPI_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1168   .text.CDD_L9388_SPI_Diag:00000000 CDD_L9388_SPI_Diag
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1205   .text.CDD_L9388_SPI_Diag:00000028 $d
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1210   .text.CDD_L9388_PUMPDR_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1217   .text.CDD_L9388_PUMPDR_Diag:00000000 CDD_L9388_PUMPDR_Diag
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1268   .text.CDD_L9388_PUMPDR_Diag:00000040 $d
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1273   .text.CDD_L9388_VSO_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1280   .text.CDD_L9388_VSO_Diag:00000000 CDD_L9388_VSO_Diag
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1319   .text.CDD_L9388_VSO_Diag:0000002c $d
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1324   .text.CDD_L9388_RESOUTPUT_Diag:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1331   .text.CDD_L9388_RESOUTPUT_Diag:00000000 CDD_L9388_RESOUTPUT_Diag
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1370   .text.CDD_L9388_RESOUTPUT_Diag:0000002c $d
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1375   .text.CDD_L9388_Init_For_Test:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1382   .text.CDD_L9388_Init_For_Test:00000000 CDD_L9388_Init_For_Test
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1534   .text.CDD_L9388_Init_For_Test:00000128 $d
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1539   .text.CDD_L9388_Read_Status_For_Test:00000000 $t
+C:\Users\AAA\AppData\Local\Temp\ccXt3O2d.s:1546   .text.CDD_L9388_Read_Status_For_Test:00000000 CDD_L9388_Read_Status_For_Test
                            .group:00000000 wm4.0.a614e68b47a8f647caa7e8088949ad9c
                            .group:00000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
                            .group:00000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
@@ -2061,8 +2061,8 @@ C:\Users\mayang\AppData\Local\Temp\cchhyMpZ.s:1546   .text.CDD_L9388_Read_Status
                            .group:00000000 wm4.clock.h.37.c942461032b5a15e2a4133c6666f70ce
                            .group:00000000 wm4.gpio.h.25.d41a0c19fda8c2de42e666afb48ec15a
                            .group:00000000 wm4.irq.h.37.78714f25754c8b09d1428599101f6cc7
-                           .group:00000000 wm4.osal_cfg.h.23.b97ea04faf646103324df3ecc2655260
-                           .group:00000000 wm4.osal.h.38.40390df6c87bbed5f1c054e622a926ee
+                           .group:00000000 wm4.osal_cfg.h.23.445a48a7c79d5e664d276455054585cd
+                           .group:00000000 wm4.osal.h.38.7c99d2333d3777d378590e7082a3f708
                            .group:00000000 wm4.test_env.h.57.690797a2e7b6aa0f01d5a7ba687211c6
                            .group:00000000 wm4.evbe7000p.h.25.2f49fb17c3dd8379489c2784aa8b2c97
                            .group:00000000 wm4.test_env.h.92.68c13ade9b3e38ad2c77de7ebbfe3e53

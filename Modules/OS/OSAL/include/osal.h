@@ -35,6 +35,8 @@
  * @name OSAL Tick Frequency macros
  * @{
  */
+#define OSAL_TICKS_PER_SEC_2000     2000U /* 1000 ticks per second -> 1 tick per ms */
+
 #define OSAL_TICKS_PER_SEC_1000     1000U /* 1000 ticks per second -> 1 tick per ms */
 #define OSAL_TICKS_PER_SEC_100      100U  /* 100  ticks per second -> 1 tick per 10ms */
 #define OSAL_TICKS_PER_SEC_10       10U   /* 10   ticks per second -> 1 tick per 100ms */

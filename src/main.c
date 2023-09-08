@@ -31,17 +31,8 @@ uint32_t Test_Input = 0;
 uint8_t Pwm_Type = 0;
 uint32_t Time_Count = 0; 
 
-
-
-// #define OS_GPIO       gpio_iopack(GPIO_PORT_G, GPIO_PIN_5)
-
-// /* Slave select gpio configuration.*/
-// #define OS_GPIO_CFG                   \
-//     (GPIO_MODE_MODER_OUTPUT |                    \
-//      GPIO_MODE_OTYPER_PUSHPULL |                 \
-//      GPIO_MODE_OSPEEDR_HIGH |                    \
-//      GPIO_MODE_PUPDR_PULLDOWN )                   
-    
+/*   OS  GPIO  init */
+void GPIO_LLD_init(void);
 #define OS_GPIO_100 gpio_iopack(GPIO_PORT_G, GPIO_PIN_5)
 #define OS_GPIO_CFG_100                           \
     (GPIO_MODE_MODER_OUTPUT |                 \
@@ -76,6 +67,18 @@ uint32_t Time_Count = 0;
      GPIO_MODE_TRIGENR_IN_ENABLED |              \
      GPIO_MODE_SAFESELR_DISABLED |               \
      GPIO_MODE_SAFEVALR_LOW)
+#define OS_GPIO_1 gpio_iopack(GPIO_PORT_H, GPIO_PIN_2)
+#define OS_GPIO_CFG_1                             \
+    (GPIO_MODE_MODER_OUTPUT |                 \
+     GPIO_MODE_OTYPER_PUSHPULL |                 \
+     GPIO_MODE_OSPEEDR_HIGH |                    \
+     GPIO_MODE_PUPDR_PULLUP |                  \
+     GPIO_MODE_AFR(5U) |                         \
+     GPIO_MODE_IHYSTR_CMOS |                     \
+     GPIO_MODE_TRIGENR_IN_ENABLED |              \
+     GPIO_MODE_SAFESELR_DISABLED |               \
+     GPIO_MODE_SAFEVALR_LOW)
+
 
 int main(void) {
 
@@ -89,137 +92,57 @@ int main(void) {
                    TEST_INIT_BOARD    |
                    TEST_INIT_IRQ      |
                    TEST_INIT_OSAL));
-    /*LLD-Init*/
-	gpio_set_pin_mode(OS_GPIO_10, OS_GPIO_CFG_10);
-    gpio_set_pin_mode(OS_GPIO_100, OS_GPIO_CFG_100);
-    gpio_set_pin_mode(OS_GPIO_1000, OS_GPIO_CFG_1000);
-
+    
+	/* LLD init.*/
+	GPIO_LLD_init();
     SPI_LLD_Init();
     CAN_LLD_Init();
-// gpio_write_pin(OS_GPIO, 1 );
-	// while(1)
-	// {
-	// 	// gpio_write_pin(OS_GPIO,1);
-	// 	gpio_set_pin(OS_GPIO);
-	// 	osal_delay_millisec(1000);
-	// 	// gpio_write_pin(OS_GPIO, 0);
-	// 	gpio_clear_pin(OS_GPIO);
-	// 	osal_delay_millisec(1000);
 
-	// }
-    // printf("Starting OSEK-OS in AppMode1\n");
+	/* start OS */
     StartOS(AppMode1);
 
-
-	
-
-}
-
-
-TASK(TaskInit)
-{
-
-	/* Set 10 ms alarm for TaskPeriodic_10ms */
-
-	/* Set 500 ms alarm for TaskPeriodic_100ms */
-	SetRelAlarm(Alarm_Periodic_100ms, 0, 100);
-
-	/* Set 1000 ms callback alarm */
-	SetRelAlarm(Alarm_Periodic_1000ms, 0, 1000);
-
-	SetRelAlarm(Alarm_Periodic_10ms, 0, 10);
-
-	/* Set 1 ms callback alarm */
-	SetRelAlarm(Alarm_Periodic_1ms, 0, 1);
-
-	/* Activate TaskBlink */
-	ActivateTask(TaskBlink);
-
-	/* Activate TaskBackground */
-	ActivateTask(TaskBackground);
-
-	/* end InitTask */
-	TerminateTask();
+	/* this shoule not be excuted*/
+	while(1);
 }
 
 /*
- * This task waits for an event to be set in order
- * to continue execution.
+ * This is 1ms a periodic task.
  */
-TASK(TaskBlink)
-{
-	// printf("TaskBlink: Init.\n");
-	
-	
-	// while(1)
-	// {
-	// 	// printf("TaskBlink: Waiting for event...\n");
-	// 	WaitEvent(evBlink);
-	// 	ClearEvent(evBlink);
-	// 	// printf("TaskBlink: LED Toggle.\n");
-
-	// }
-	TerminateTask();
-}
-
 TASK(TaskPeriodic_1ms)
 {
-
-
-	// printf("TaskPeriodic: Event set.\n");
-	gpio_toggle_pin(OS_GPIO_10);
-
-	// gpio_toggle_pin(OS_GPIO_500);
-	// SetEvent(TaskBlink, evBlink);
-
+	gpio_toggle_pin(OS_GPIO_1);
 	/* end TaskPeriodic */
 	TerminateTask();
 }
-
-
+/*
+ * This is a 10ms periodic task.
+ */
 TASK(TaskPeriodic_10ms)
 {
-
-
-	// printf("TaskPeriodic: Event set.\n");
 	gpio_toggle_pin(OS_GPIO_10);
-
-	// gpio_toggle_pin(OS_GPIO_500);
-	// SetEvent(TaskBlink, evBlink);
-
 	/* end TaskPeriodic */
 	TerminateTask();
 }
-
-
 /*
- * This is a periodic task.
+ * This is a 100ms periodic task.
  */
 TASK(TaskPeriodic_100ms)
 {
-
-
-	// printf("TaskPeriodic: Event set.\n");
-
 	gpio_toggle_pin(OS_GPIO_100);
-	// SetEvent(TaskBlink, evBlink);
-
 	/* end TaskPeriodic */
 	TerminateTask();
 }
-
 /*
- * Alarm Callback example.
+ * Alarm 1000ms Callback example.
  */
 
 ALARMCALLBACK(Task_Periodic_1000ms)
 {
-
-
 	gpio_toggle_pin(OS_GPIO_1000);
-
 	// printf("AppCallback.\n");
 }
+
+
 
 /*
  * Just a background task with an infinite loop,
@@ -240,3 +163,47 @@ TASK(TaskBackground)
 	}
 }
 
+/*
+ * This task waits for an event to be set in order
+ * to continue execution.
+ */
+TASK(TaskBlink)
+{
+	
+	TerminateTask();
+}
+
+
+TASK(TaskInit)
+{
+
+	
+
+	/* Set 100 ms alarm for TaskPeriodic_100ms */
+	SetRelAlarm(Alarm_Periodic_100ms, 0, 200);
+
+	/* Set 1000 ms callback alarm */
+	SetRelAlarm(Alarm_Periodic_1000ms, 0, 2000);
+
+	SetRelAlarm(Alarm_Periodic_10ms, 0, 20);
+
+	/* Set 1 ms callback alarm */
+	SetRelAlarm(Alarm_Periodic_1ms, 0, 2);
+
+	/* Activate TaskBlink */
+	ActivateTask(TaskBlink);
+
+	/* Activate TaskBackground */
+	ActivateTask(TaskBackground);
+
+	/* end InitTask */
+	TerminateTask();
+}
+
+
+void GPIO_LLD_init()
+{	gpio_set_pin_mode(OS_GPIO_1, OS_GPIO_CFG_1);
+	gpio_set_pin_mode(OS_GPIO_10, OS_GPIO_CFG_10);
+    gpio_set_pin_mode(OS_GPIO_100, OS_GPIO_CFG_100);
+    gpio_set_pin_mode(OS_GPIO_1000, OS_GPIO_CFG_1000);
+}

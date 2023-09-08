@@ -30,7 +30,7 @@
  * @name    OSAL Tick Frequency
  * @{
  */
-#define OSAL_CFG_TICKS_PER_SEC              OSAL_TICKS_PER_SEC_1000
+#define OSAL_CFG_TICKS_PER_SEC              OSAL_TICKS_PER_SEC_2000
 /** @} */
 
 /** 

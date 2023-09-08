@@ -103,7 +103,7 @@ TaskContextType ContextTaskTaskPeriodic_10ms;
 TaskContextType ContextTaskTaskPeriodic_1ms;
 
 /** \brief Ready List for Priority 2 */
-TaskType ReadyList2[1];
+TaskType ReadyList2[3];
 
 /** \brief Ready List for Priority 1 */
 TaskType ReadyList1[1];
@@ -111,7 +111,7 @@ TaskType ReadyList1[1];
 /** \brief Ready List for Priority 0 */
 TaskType ReadyList0[2];
 
-const AlarmType OSEK_ALARMLIST_HardwareCounter[3] = {
+const AlarmType OSEK_ALARMLIST_HardwareCounter[4] = {
 	Alarm_Periodic_100ms, /* this alarm has to be incremented with this counter */
 	Alarm_Periodic_1000ms, /* this alarm has to be incremented with this counter */
 	Alarm_Periodic_10ms,
